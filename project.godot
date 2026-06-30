@@ -22,7 +22,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/hex_strategy_map/plugin.cfg", "res://addons/hexagon_tilemaplayer/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot-neovim/plugin.cfg", "res://addons/hex_strategy_map/plugin.cfg", "res://addons/hexagon_tilemaplayer/plugin.cfg")
 
 [physics]
 
