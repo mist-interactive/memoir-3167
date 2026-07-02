@@ -1,22 +1,20 @@
 extends HexagonTileMapLayer
 
 @export var highlight_layer: TileMapLayer
+var player_hex := {}
 
-@rpc
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.is_pressed():
-		if event.button_index == MOUSE_BUTTON_LEFT:
-			# var click_position: Vector2 = event.global_position
-			var click_position: Vector2 = get_global_mouse_position()
-			var local_pos := to_local(click_position)
-			var hex_coordinate: Vector2i = local_to_map(local_pos)
-			print("Player clicked at coord\t: ", click_position)
-			print("Screen click at hex\t: ", hex_coordinate)
-			highlight_hex(hex_coordinate)
-			# Send the coordinate to the server
-			# request_hex_selection.rpc(hex_coord)
+func _ready() -> void:
+	assert(highlight_layer)
+	assert(Network)
+	Network.hex_broadcast.connect(_on_hex_broadcast)
 
-@rpc
-func highlight_hex(hex_coord: Vector2i) -> void:
+func _input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		var hex: Vector2i = local_to_map(to_local(get_global_mouse_position()))
+		Network.request_hex_selection.rpc_id(1, hex)
+
+func _on_hex_broadcast(peer_id: int, hex: Vector2i) -> void:
+	player_hex[peer_id] = hex
 	highlight_layer.clear()
-	highlight_layer.set_cell(hex_coord, 0, Vector2i(0, 0))
+	for id in player_hex.keys():
+		highlight_layer.set_cell(player_hex[id], 0, Vector2i(0, 0))

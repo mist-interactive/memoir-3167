@@ -68,7 +68,7 @@ enum DebugModeFlags {
 ## [br] You can enable multiple debug options at once by combining them with the bitwise OR operator.
 ## [br] See [enum DebugModeFlags].
 ## [codeblock]
-## # Show both coordinates and connections
+## # Show both cMapHighlightoordinates and connections
 ## tilemap.debug_mode = HexagonTileMapLayer.DebugModeFlags.TILES_COORDS | HexagonTileMapLayer.DebugModeFlags.CONNECTIONS
 ## [/codeblock]
 ## [codeblock]
