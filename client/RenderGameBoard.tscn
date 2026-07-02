@@ -1,0 +1,44 @@
+[gd_scene format=3 uid="uid://dnlfaqv8ui3to"]
+
+[ext_resource type="Script" uid="uid://df5g57xxw3cdj" path="res://client/render_game_board.gd" id="1_r5dy0"]
+
+[node name="RenderGameBoard" type="Node2D" unique_id=1277280754]
+script = ExtResource("1_r5dy0")
+
+[node name="PlayerTurn" type="Label" parent="." unique_id=397915478]
+offset_left = 484.0
+offset_top = 260.0
+offset_right = 615.0
+offset_bottom = 306.0
+text = "MatchId: "
+
+[node name="MatchId" type="Label" parent="." unique_id=2069122923]
+offset_left = 484.0
+offset_top = 285.0
+offset_right = 575.0
+offset_bottom = 308.0
+text = "Player turn:"
+
+[node name="Points" type="Label" parent="." unique_id=986663311]
+offset_left = 483.0
+offset_top = 308.0
+offset_right = 540.0
+offset_bottom = 331.0
+text = "Points: "
+
+[node name="AddPoints" type="Button" parent="." unique_id=1198480730]
+offset_left = 414.0
+offset_top = 345.0
+offset_right = 498.0
+offset_bottom = 376.0
+text = "Add point"
+
+[node name="RemovePoints" type="Button" parent="." unique_id=2078573957]
+offset_left = 521.0
+offset_top = 345.0
+offset_right = 637.0
+offset_bottom = 376.0
+text = "Remove point"
+
+[connection signal="pressed" from="AddPoints" to="." method="_on_add_points_pressed"]
+[connection signal="pressed" from="RemovePoints" to="." method="_on_remove_points_pressed"]
