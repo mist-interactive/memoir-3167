@@ -11,9 +11,13 @@ config_version=5
 [application]
 
 config/name="Memoir 3167"
-run/main_scene="uid://sb5qw0ue2vc4"
-config/features=PackedStringArray("4.7", "GL Compatibility")
+run/main_scene="uid://2qyum6urv8ru"
+config/features=PackedStringArray("4.6", "GL Compatibility")
 config/icon="res://icon.svg"
+
+[autoload]
+
+Network="*uid://b5yts342uqubh"
 
 [display]
 
