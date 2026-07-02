@@ -1,5 +1,6 @@
 extends Node
-@onready var renderGameBoard = preload("res://client/RenderGameBoard.tscn")
+# @onready var renderGameBoard = preload("res://client/RenderGameBoard.tscn")
+@onready var renderGameBoard = preload("res://scenes/battlefield/battlefield.tscn")
 
 func _ready() -> void:
 	print("here")
