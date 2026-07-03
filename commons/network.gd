@@ -44,3 +44,13 @@ func request_hex_selection(hex: Vector2i) -> void:
 func sync_hex_selection(peer_id: int, hex: Vector2i) -> void:
 	# runs on all peers
 	hex_broadcast.emit(peer_id, hex)
+	
+# Antti: receive map_data from server
+signal map_data_received(map_data: Array)
+
+@rpc("authority", "call_remote", "reliable")
+func receive_map_data(map_data: Array) -> void:
+	if multiplayer.is_server():
+		return
+	map_data_received.emit(map_data)
+	pass
