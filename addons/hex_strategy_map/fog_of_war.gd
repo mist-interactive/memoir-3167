@@ -19,7 +19,6 @@ extends RefCounted
 ## Emitted when the fog state of a cell changes for a player.
 ## Useful for updating the renderer incrementally without traversing the entire grid.
 signal fog_changed(player_id: int, coord: Vector2i, old_state: int, new_state: int)
-signal fog_changed(player_id: int, coord: Vector2i, old_state: int, new_state: int)
 
 ## Associated hexagonal grid. Does not change after _init.
 ## All public methods have a guard "if grid == null: return" — class invariant.
