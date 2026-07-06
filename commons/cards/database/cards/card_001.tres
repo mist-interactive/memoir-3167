@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="CommandCard" format=3 uid="uid://ueu0pvn2mpwd"]
+
+[ext_resource type="Script" uid="uid://brv7b2q4f6ws5" path="res://commons/cards/command_card/CommandCard.gd" id="1_swsj8"]
+
+[resource]
+script = ExtResource("1_swsj8")
+id = "001"
+display_name = "card1"
+metadata/_custom_type_script = "uid://brv7b2q4f6ws5"
