@@ -18,8 +18,6 @@ enum Ground {
 	SAND,
 	DESERT,
 	WATER,
-	SNOW,
-	VOLCANO,
 }
 
 enum Feature {

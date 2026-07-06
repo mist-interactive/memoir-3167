@@ -17,8 +17,8 @@ const FEATURE_ATLAS: Dictionary = {
 	[FIELDS_DECOR_SHEET_ID, Vector2i(1, 1)]: HexCell.Feature.FOREST,
 }
 
-@export var MapLayer: HexagonTileMapLayer
-@export var MapDecorLayer: HexagonTileMapLayer
+@export var MapGroundLayer: HexagonTileMapLayer
+@export var MapFeatureLayer: HexagonTileMapLayer
 
 # Check box to bake map on inspector
 @export var bake_map: bool = false:
@@ -39,19 +39,19 @@ func save_to_file(content: String) -> void:
 
 func _bake_map() -> void:
 	print("Start baking the map")
-	if MapLayer == null:
-		push_error("MapLayer is not assigned!")
+	if MapGroundLayer == null:
+		push_error("MapGroundLayer is not assigned!")
 		return
 	var map_data: Array[Dictionary] = []
-	var used_cells: Array[Vector2i] = MapLayer.get_used_cells()
+	var used_cells: Array[Vector2i] = MapGroundLayer.get_used_cells()
 	if used_cells.is_empty():
 		print("The map is empty. Nothing to bake.")
 		return
 	print("Found ", used_cells.size(), " tiles. Baking...")
 	for coord in used_cells:
 		# Get the ground type
-		var ground_source_id: int = MapLayer.get_cell_source_id(coord)
-		var ground_atlas_coords: Vector2i = MapLayer.get_cell_atlas_coords(coord)
+		var ground_source_id: int = MapGroundLayer.get_cell_source_id(coord)
+		var ground_atlas_coords: Vector2i = MapGroundLayer.get_cell_atlas_coords(coord)
 		var ground_key: Array = [ground_source_id, ground_atlas_coords]
 		var final_ground: int
 		if GROUND_ATLAS.has(ground_key):
@@ -60,8 +60,8 @@ func _bake_map() -> void:
 			push_warning("Found an unknown ground tile at ", coord)
 
 		# Get the feature type (if any)
-		var feature_source_id: int = MapDecorLayer.get_cell_source_id(coord)
-		var feature_atlas_coords: Vector2i = MapDecorLayer.get_cell_atlas_coords(coord)
+		var feature_source_id: int = MapFeatureLayer.get_cell_source_id(coord)
+		var feature_atlas_coords: Vector2i = MapFeatureLayer.get_cell_atlas_coords(coord)
 		var feature_key: Array = [feature_source_id, feature_atlas_coords]
 		var final_feature: int
 		if FEATURE_ATLAS.has(feature_key):
