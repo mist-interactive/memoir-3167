@@ -11,6 +11,7 @@ func _ready() -> void:
 func _input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		var hex: Vector2i = local_to_map(to_local(get_global_mouse_position()))
+		print(hex)
 		Network.request_hex_selection.rpc_id(1, hex)
 
 func _on_hex_broadcast(peer_id: int, hex: Vector2i) -> void:
