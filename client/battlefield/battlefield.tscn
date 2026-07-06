@@ -2,12 +2,12 @@
 
 [ext_resource type="PackedScene" uid="uid://bnvkbvf5d8tyv" path="res://scenes/map_baker/map_baker.tscn" id="1_siwgj"]
 [ext_resource type="Texture2D" uid="uid://dq8khvkm5weph" path="res://assets/sprites/hex/fields_ground_sprite_sheet.png" id="2_4ok02"]
-[ext_resource type="Script" uid="uid://doeqye6s2a65e" path="res://scenes/battlefield/map_controller.gd" id="3_stskl"]
+[ext_resource type="Script" uid="uid://doeqye6s2a65e" path="res://client/battlefield/map_controller.gd" id="3_stskl"]
 [ext_resource type="Script" uid="uid://buj6ft1vvdf2f" path="res://addons/hexagon_tilemaplayer/hexagon_tilemaplayer.gd" id="4_4ok02"]
-[ext_resource type="Script" uid="uid://7tdnt2pcipdq" path="res://scenes/battlefield/camera_controller.gd" id="5_7nanj"]
+[ext_resource type="Script" uid="uid://7tdnt2pcipdq" path="res://client/battlefield/camera_controller.gd" id="5_7nanj"]
 [ext_resource type="Texture2D" uid="uid://bbk0bb2k6twkd" path="res://assets/sprites/hex/fields_feature_sprite_sheet.png" id="7_yttjq"]
 [ext_resource type="Texture2D" uid="uid://l08uw4hx56l0" path="res://assets/sprites/hex/highlight.png" id="13_56ovr"]
-[ext_resource type="Script" uid="uid://birdmambhh8rf" path="res://scenes/battlefield/map_highlight.gd" id="13_upguu"]
+[ext_resource type="Script" uid="uid://birdmambhh8rf" path="res://client/battlefield/map_highlight.gd" id="13_upguu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e5smb"]
 texture = ExtResource("2_4ok02")
@@ -51,10 +51,9 @@ sources/0 = SubResource("TileSetAtlasSource_upguu")
 
 [node name="Battlefield" type="Node2D" unique_id=1534648312]
 
-[node name="MapBaker" parent="." unique_id=621948442 node_paths=PackedStringArray("MapLayer", "MapDecorLayer") instance=ExtResource("1_siwgj")]
-MapLayer = NodePath("../MapGround")
-MapDecorLayer = NodePath("../MapFeature")
-bake_map = false
+[node name="MapBaker" parent="." unique_id=621948442 node_paths=PackedStringArray("MapGroundLayer", "MapFeatureLayer") instance=ExtResource("1_siwgj")]
+MapGroundLayer = NodePath("../MapGround")
+MapFeatureLayer = NodePath("../MapFeature")
 
 [node name="MapGround" type="TileMapLayer" parent="." unique_id=1769591625 node_paths=PackedStringArray("highlight_layer")]
 tile_map_data = PackedByteArray("AAAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAABAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAABAAAAAAAAAAUAAAAAAAAAAAAAAAYAAAABAAAAAAACAAAAAAABAAAAAAACAAEAAAAAAAAAAAACAAIAAAABAAAAAAACAAMAAAAAAAAAAAACAAQAAAABAAAAAAACAAUAAAAAAAAAAAACAAYAAAABAAAAAAAEAAAAAAABAAAAAAAEAAEAAAAAAAAAAAAEAAIAAAABAAAAAAAEAAMAAAAAAAAAAAAEAAQAAAABAAAAAAAEAAUAAAAAAAAAAAAEAAYAAAABAAAAAAAGAAAAAAABAAAAAAAGAAEAAAAAAAAAAAAGAAIAAAABAAAAAAAGAAMAAAAAAAAAAAAGAAQAAAABAAAAAAAGAAUAAAAAAAAAAAAGAAYAAAABAAAAAAAIAAAAAAABAAAAAAAIAAEAAAAAAAAAAAAIAAIAAAABAAAAAAAIAAMAAAAAAAAAAAAIAAQAAAABAAAAAAAIAAUAAAAAAAAAAAAIAAYAAAABAAAAAAABAAEAAAACAAAAAAADAAEAAAACAAAAAAAFAAEAAAACAAAAAAAHAAEAAAACAAAAAAABAAMAAAACAAAAAAADAAMAAAACAAAAAAAFAAMAAAACAAAAAAAHAAMAAAACAAAAAAABAAUAAAACAAAAAAADAAUAAAACAAAAAAAFAAUAAAACAAAAAAAHAAUAAAACAAAAAAABAAAAAAABAAAAAAADAAAAAAABAAAAAAAFAAAAAAABAAAAAAAHAAAAAAABAAAAAAABAAIAAAABAAAAAAADAAIAAAABAAAAAAAFAAIAAAABAAAAAAAHAAIAAAABAAAAAAABAAQAAAABAAAAAAADAAQAAAABAAAAAAAFAAQAAAABAAAAAAAHAAQAAAABAAAAAAAAAAcAAAAAAAAAAAABAAYAAAABAAAAAAACAAcAAAAAAAAAAAADAAYAAAABAAAAAAAEAAcAAAAAAAAAAAAFAAYAAAABAAAAAAAGAAcAAAAAAAAAAAAHAAYAAAABAAAAAAAIAAcAAAAAAAAAAAA=")
