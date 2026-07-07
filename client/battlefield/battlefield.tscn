@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bnvkbvf5d8tyv" path="res://scenes/map_baker/map_baker.tscn" id="1_siwgj"]
 [ext_resource type="Texture2D" uid="uid://dq8khvkm5weph" path="res://assets/sprites/hex/fields_ground_sprite_sheet.png" id="2_4ok02"]
+[ext_resource type="Script" uid="uid://cgtpxpasdke04" path="res://client/battlefield/client_map_manager.gd" id="2_ynl45"]
 [ext_resource type="Script" uid="uid://doeqye6s2a65e" path="res://client/battlefield/map_controller.gd" id="3_stskl"]
 [ext_resource type="Script" uid="uid://buj6ft1vvdf2f" path="res://addons/hexagon_tilemaplayer/hexagon_tilemaplayer.gd" id="4_4ok02"]
 [ext_resource type="Script" uid="uid://7tdnt2pcipdq" path="res://client/battlefield/camera_controller.gd" id="5_7nanj"]
@@ -54,6 +55,11 @@ sources/0 = SubResource("TileSetAtlasSource_upguu")
 [node name="MapBaker" parent="." unique_id=621948442 node_paths=PackedStringArray("MapGroundLayer", "MapFeatureLayer") instance=ExtResource("1_siwgj")]
 MapGroundLayer = NodePath("../MapGround")
 MapFeatureLayer = NodePath("../MapFeature")
+
+[node name="MapManager" type="Node" parent="." unique_id=225508304 node_paths=PackedStringArray("MapGroundLayer", "MapFeaturesLayer")]
+script = ExtResource("2_ynl45")
+MapGroundLayer = NodePath("../MapGround")
+MapFeaturesLayer = NodePath("../MapFeature")
 
 [node name="MapGround" type="TileMapLayer" parent="." unique_id=1769591625 node_paths=PackedStringArray("highlight_layer")]
 tile_map_data = PackedByteArray("AAAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAABAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAABAAAAAAAAAAUAAAAAAAAAAAAAAAYAAAABAAAAAAACAAAAAAABAAAAAAACAAEAAAAAAAAAAAACAAIAAAABAAAAAAACAAMAAAAAAAAAAAACAAQAAAABAAAAAAACAAUAAAAAAAAAAAACAAYAAAABAAAAAAAEAAAAAAABAAAAAAAEAAEAAAAAAAAAAAAEAAIAAAABAAAAAAAEAAMAAAAAAAAAAAAEAAQAAAABAAAAAAAEAAUAAAAAAAAAAAAEAAYAAAABAAAAAAAGAAAAAAABAAAAAAAGAAEAAAAAAAAAAAAGAAIAAAABAAAAAAAGAAMAAAAAAAAAAAAGAAQAAAABAAAAAAAGAAUAAAAAAAAAAAAGAAYAAAABAAAAAAAIAAAAAAABAAAAAAAIAAEAAAAAAAAAAAAIAAIAAAABAAAAAAAIAAMAAAAAAAAAAAAIAAQAAAABAAAAAAAIAAUAAAAAAAAAAAAIAAYAAAABAAAAAAABAAEAAAACAAAAAAADAAEAAAACAAAAAAAFAAEAAAACAAAAAAAHAAEAAAACAAAAAAABAAMAAAACAAAAAAADAAMAAAACAAAAAAAFAAMAAAACAAAAAAAHAAMAAAACAAAAAAABAAUAAAACAAAAAAADAAUAAAACAAAAAAAFAAUAAAACAAAAAAAHAAUAAAACAAAAAAABAAAAAAABAAAAAAADAAAAAAABAAAAAAAFAAAAAAABAAAAAAAHAAAAAAABAAAAAAABAAIAAAABAAAAAAADAAIAAAABAAAAAAAFAAIAAAABAAAAAAAHAAIAAAABAAAAAAABAAQAAAABAAAAAAADAAQAAAABAAAAAAAFAAQAAAABAAAAAAAHAAQAAAABAAAAAAAAAAcAAAAAAAAAAAABAAYAAAABAAAAAAACAAcAAAAAAAAAAAADAAYAAAABAAAAAAAEAAcAAAAAAAAAAAAFAAYAAAABAAAAAAAGAAcAAAAAAAAAAAAHAAYAAAABAAAAAAAIAAcAAAAAAAAAAAA=")

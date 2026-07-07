@@ -2,21 +2,6 @@
 
 extends Node
 
-const FIELDS_SPRITE_SHEET_ID := 0
-const FIELDS_DECOR_SHEET_ID := 0
-const GROUND_ATLAS: Dictionary = {
-	[FIELDS_SPRITE_SHEET_ID, Vector2i(0, 0)]: HexCell.Ground.FIELDS,
-	[FIELDS_SPRITE_SHEET_ID, Vector2i(1, 0)]: HexCell.Ground.SAND,
-	[FIELDS_SPRITE_SHEET_ID, Vector2i(2, 0)]: HexCell.Ground.WATER,
-
-}
-const FEATURE_ATLAS: Dictionary = {
-	[FIELDS_DECOR_SHEET_ID, Vector2i(0, 0)]: HexCell.Feature.HILL,
-	[FIELDS_DECOR_SHEET_ID, Vector2i(1, 0)]: HexCell.Feature.MOUNTAIN,
-	[FIELDS_DECOR_SHEET_ID, Vector2i(1, 0)]: HexCell.Feature.ROCKS,
-	[FIELDS_DECOR_SHEET_ID, Vector2i(1, 1)]: HexCell.Feature.FOREST,
-}
-
 @export var MapGroundLayer: HexagonTileMapLayer
 @export var MapFeatureLayer: HexagonTileMapLayer
 
@@ -54,8 +39,8 @@ func _bake_map() -> void:
 		var ground_atlas_coords: Vector2i = MapGroundLayer.get_cell_atlas_coords(coord)
 		var ground_key: Array = [ground_source_id, ground_atlas_coords]
 		var final_ground: int
-		if GROUND_ATLAS.has(ground_key):
-			final_ground = GROUND_ATLAS[ground_key]
+		if MapData.GROUND_ATLAS.has(ground_key):
+			final_ground = MapData.GROUND_ATLAS[ground_key]
 		else:
 			push_warning("Found an unknown ground tile at ", coord)
 
@@ -64,8 +49,8 @@ func _bake_map() -> void:
 		var feature_atlas_coords: Vector2i = MapFeatureLayer.get_cell_atlas_coords(coord)
 		var feature_key: Array = [feature_source_id, feature_atlas_coords]
 		var final_feature: int
-		if FEATURE_ATLAS.has(feature_key):
-			final_feature = FEATURE_ATLAS[feature_key]
+		if MapData.FEATURE_ATLAS.has(feature_key):
+			final_feature = MapData.FEATURE_ATLAS[feature_key]
 		else:
 			final_feature = HexCell.Feature.NONE
 		var temp_hex = HexCell.new(coord, final_ground, final_feature)
