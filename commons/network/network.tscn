@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://b5yts342uqubh"]
+
+[ext_resource type="Script" uid="uid://b8kj7hat3e0mj" path="res://commons/network/network.gd" id="1_qmnym"]
+[ext_resource type="Script" uid="uid://87p1uo7s4h4h" path="res://commons/network/matchNetwork.gd" id="2_51hul"]
+
+[node name="Network" type="Node" unique_id=1103206024 node_paths=PackedStringArray("Match")]
+script = ExtResource("1_qmnym")
+Match = NodePath("Match")
+
+[node name="Match" type="Node" parent="." unique_id=1127822169]
+script = ExtResource("2_51hul")
