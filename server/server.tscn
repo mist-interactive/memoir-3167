@@ -7,8 +7,9 @@
 [node name="Server" type="Node2D" unique_id=392908937]
 script = ExtResource("1_7u81u")
 
-[node name="QueueManager" type="Node" parent="." unique_id=426631389]
+[node name="QueueManager" type="Node" parent="." unique_id=426631389 node_paths=PackedStringArray("matchManager")]
 script = ExtResource("2_0wvpq")
+matchManager = NodePath("../MatchManager")
 
 [node name="MatchManager" type="Node" parent="." unique_id=762747872]
 script = ExtResource("3_u3pyk")
