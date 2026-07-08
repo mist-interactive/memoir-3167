@@ -3,11 +3,8 @@ var peer: WebSocketMultiplayerPeer
 var port: int = 6669
 var peers: Array[int]
 
-@onready var queueManager: QueueManager = $QueueManager
-
 func _ready() -> void:
 	name = "SERVER"
-	#multiplayer.root_path = get_path()
 
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
@@ -21,7 +18,6 @@ func _ready() -> void:
 func _on_peer_connected(id: int) -> void:
 	print("A new client has connected id: ", id)
 	peers.append(id)
-	#queueManager.enqueue_player(id)
 
 func _on_peer_disconnected(id: int) -> void:
 	print("Client has disconnected: ", id)
