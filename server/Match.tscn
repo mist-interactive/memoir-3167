@@ -1,9 +1,0 @@
-[gd_scene format=3 uid="uid://3c1tw50iuev0"]
-
-[sub_resource type="GDScript" id="GDScript_cdyvt"]
-script/source = "extends Node
-@onready var matchState:MatchState = $MatchState
-"
-
-[node name="Match" type="Node" unique_id=1423129748]
-script = SubResource("GDScript_cdyvt")
