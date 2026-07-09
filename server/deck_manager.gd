@@ -1,15 +1,19 @@
 class_name DeckManager
-extends RefCounted
+extends Node
 
 var draw_pile: Array[String] = []
 var discard_pile: Array[String] = []
 var player_hands: Dictionary = {}
 
+func _init(player1: int, player2: int, starting_cards: Array[String]) -> void:
+	name = "deckmanager"
+	initialize_deck(starting_cards)
+
 # Initialize the deck with card IDs based on your game design
 func initialize_deck(starting_cards: Array[String]) -> void:
 	draw_pile = starting_cards.duplicate()
 	shuffle_deck()
-
+	
 func shuffle_deck() -> void:
 	# If the draw pile is empty, shuffle the discard pile back into it
 	if draw_pile.is_empty() and not discard_pile.is_empty():
