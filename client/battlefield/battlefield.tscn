@@ -1,0 +1,93 @@
+[gd_scene format=4 uid="uid://ct57afg2bcg0e"]
+
+[ext_resource type="PackedScene" uid="uid://bnvkbvf5d8tyv" path="res://scenes/map_baker/map_baker.tscn" id="1_siwgj"]
+[ext_resource type="Texture2D" uid="uid://dq8khvkm5weph" path="res://assets/sprites/hex/fields_ground_sprite_sheet.png" id="2_4ok02"]
+[ext_resource type="Script" uid="uid://cgtpxpasdke04" path="res://client/battlefield/client_map_manager.gd" id="2_ynl45"]
+[ext_resource type="Script" uid="uid://doeqye6s2a65e" path="res://client/battlefield/map_controller.gd" id="3_stskl"]
+[ext_resource type="Script" uid="uid://buj6ft1vvdf2f" path="res://addons/hexagon_tilemaplayer/hexagon_tilemaplayer.gd" id="4_4ok02"]
+[ext_resource type="Script" uid="uid://7tdnt2pcipdq" path="res://client/battlefield/camera_controller.gd" id="5_7nanj"]
+[ext_resource type="Texture2D" uid="uid://bbk0bb2k6twkd" path="res://assets/sprites/hex/fields_feature_sprite_sheet.png" id="7_yttjq"]
+[ext_resource type="Texture2D" uid="uid://l08uw4hx56l0" path="res://assets/sprites/hex/highlight.png" id="13_56ovr"]
+[ext_resource type="Script" uid="uid://birdmambhh8rf" path="res://client/battlefield/map_highlight.gd" id="13_upguu"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e5smb"]
+texture = ExtResource("2_4ok02")
+texture_region_size = Vector2i(512, 442)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_o6wfx"]
+tile_shape = 3
+tile_offset_axis = 1
+tile_size = Vector2i(512, 442)
+sources/0 = SubResource("TileSetAtlasSource_e5smb")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mhs4e"]
+texture = ExtResource("7_yttjq")
+texture_region_size = Vector2i(512, 512)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(0, 35)
+1:0/0 = 0
+1:0/0/texture_origin = Vector2i(0, 35)
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_jqkp6"]
+tile_shape = 3
+tile_offset_axis = 1
+tile_size = Vector2i(512, 442)
+sources/0 = SubResource("TileSetAtlasSource_mhs4e")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_upguu"]
+texture = ExtResource("13_56ovr")
+texture_region_size = Vector2i(512, 442)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_ql7mu"]
+tile_shape = 3
+tile_offset_axis = 1
+tile_size = Vector2i(512, 442)
+sources/0 = SubResource("TileSetAtlasSource_upguu")
+
+[node name="Battlefield" type="Node2D" unique_id=1534648312]
+
+[node name="MapBaker" parent="." unique_id=621948442 node_paths=PackedStringArray("MapGroundLayer", "MapFeatureLayer") instance=ExtResource("1_siwgj")]
+MapGroundLayer = NodePath("../MapGround")
+MapFeatureLayer = NodePath("../MapFeature")
+bake_map = false
+
+[node name="MapManager" type="Node" parent="." unique_id=225508304 node_paths=PackedStringArray("MapGroundLayer", "MapFeaturesLayer")]
+script = ExtResource("2_ynl45")
+MapGroundLayer = NodePath("../MapGround")
+MapFeaturesLayer = NodePath("../MapFeature")
+
+[node name="MapGround" type="TileMapLayer" parent="." unique_id=1769591625 node_paths=PackedStringArray("highlight_layer")]
+tile_map_data = PackedByteArray("AAAAAAAAAAABAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAABAAAAAAAAAAMAAAABAAAAAAAAAAQAAAABAAAAAAAAAAUAAAAAAAAAAAAAAAYAAAABAAAAAAACAAAAAAABAAAAAAACAAEAAAAAAAAAAAACAAIAAAABAAAAAAACAAMAAAACAAAAAAACAAQAAAACAAAAAAACAAUAAAABAAAAAAACAAYAAAABAAAAAAAEAAAAAAABAAAAAAAEAAEAAAABAAAAAAAEAAIAAAABAAAAAAAEAAMAAAAAAAAAAAAEAAQAAAABAAAAAAAEAAUAAAAAAAAAAAAEAAYAAAABAAAAAAAGAAAAAAABAAAAAAAGAAEAAAAAAAAAAAAGAAIAAAABAAAAAAAGAAMAAAAAAAAAAAAGAAQAAAAAAAAAAAAGAAUAAAAAAAAAAAAGAAYAAAACAAAAAAAIAAAAAAABAAAAAAAIAAEAAAAAAAAAAAAIAAIAAAABAAAAAAAIAAMAAAAAAAAAAAAIAAQAAAABAAAAAAAIAAUAAAAAAAAAAAAIAAYAAAACAAAAAAABAAEAAAAAAAAAAAADAAEAAAAAAAAAAAAFAAEAAAAAAAAAAAAHAAEAAAACAAAAAAABAAMAAAACAAAAAAADAAMAAAACAAAAAAAFAAMAAAAAAAAAAAAHAAMAAAACAAAAAAABAAUAAAABAAAAAAADAAUAAAACAAAAAAAFAAUAAAACAAAAAAAHAAUAAAACAAAAAAABAAAAAAAAAAAAAAADAAAAAAABAAAAAAAFAAAAAAABAAAAAAAHAAAAAAABAAAAAAABAAIAAAABAAAAAAADAAIAAAABAAAAAAAFAAIAAAABAAAAAAAHAAIAAAABAAAAAAABAAQAAAABAAAAAAADAAQAAAABAAAAAAAFAAQAAAAAAAAAAAAHAAQAAAABAAAAAAAAAAcAAAAAAAAAAAABAAYAAAABAAAAAAACAAcAAAAAAAAAAAADAAYAAAABAAAAAAAEAAcAAAAAAAAAAAAFAAYAAAABAAAAAAAGAAcAAAACAAAAAAAHAAYAAAABAAAAAAAIAAcAAAAAAAAAAAAJAAAAAAAAAAAAAAAKAAAAAAABAAAAAAALAAAAAAABAAAAAAAMAAAAAAABAAAAAAANAAAAAAABAAAAAAAOAAAAAAABAAAAAAAJAAIAAAAAAAAAAAAKAAIAAAABAAAAAAALAAIAAAACAAAAAAAMAAIAAAACAAAAAAANAAIAAAAAAAAAAAAOAAIAAAABAAAAAAAJAAQAAAABAAAAAAAKAAQAAAABAAAAAAALAAQAAAABAAAAAAAMAAQAAAABAAAAAAANAAQAAAABAAAAAAAOAAQAAAAAAAAAAAAJAAYAAAACAAAAAAAKAAYAAAACAAAAAAALAAYAAAACAAAAAAAMAAYAAAACAAAAAAANAAYAAAAAAAAAAAAOAAYAAAACAAAAAAAKAAcAAAAAAAAAAAAMAAcAAAAAAAAAAAAOAAcAAAAAAAAAAAAJAAUAAAACAAAAAAAKAAUAAAACAAAAAAALAAUAAAACAAAAAAAMAAUAAAACAAAAAAANAAUAAAACAAAAAAAOAAUAAAAAAAAAAAAJAAEAAAAAAAAAAAAKAAEAAAAAAAAAAAALAAEAAAAAAAAAAAAMAAEAAAAAAAAAAAANAAEAAAAAAAAAAAAOAAEAAAABAAAAAAAJAAMAAAAAAAAAAAAKAAMAAAACAAAAAAALAAMAAAACAAAAAAAMAAMAAAACAAAAAAANAAMAAAAAAAAAAAAOAAMAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_o6wfx")
+script = ExtResource("3_stskl")
+highlight_layer = NodePath("../MapHighlight")
+debug_mode = 1
+metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
+
+[node name="MapFeature" type="TileMapLayer" parent="." unique_id=12123868]
+tile_map_data = PackedByteArray("AAAEAAIAAAABAAAAAAAEAAQAAAABAAEAAAAGAAIAAAABAAEAAAABAAQAAAABAAEAAAAAAAIAAAAAAAEAAAAFAAAAAAAAAAEAAAAHAAQAAAAAAAEAAAACAAYAAAABAAAAAAAIAAEAAAABAAAAAAAIAAQAAAAAAAAAAAAKAAAAAAAAAAEAAAANAAEAAAAAAAEAAAAOAAQAAAABAAEAAAAHAAAAAAABAAEAAAAAAAMAAAABAAEAAAAOAAMAAAABAAEAAAALAAQAAAABAAEAAAALAAEAAAABAAAAAAAOAAcAAAABAAAAAAANAAYAAAABAAAAAAAOAAAAAAABAAAAAAAGAAAAAAAAAAAAAAANAAQAAAAAAAAAAAABAAAAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_jqkp6")
+script = ExtResource("4_4ok02")
+metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
+
+[node name="MapHighlight" type="TileMapLayer" parent="." unique_id=1870725227]
+modulate = Color(1, 1, 1, 0.5019608)
+tile_set = SubResource("TileSet_ql7mu")
+script = ExtResource("13_upguu")
+metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
+
+[node name="UnitContainer" type="Node2D" parent="." unique_id=1804487023]
+
+[node name="UICanvas" type="CanvasLayer" parent="." unique_id=1086948552]
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1708214605 node_paths=PackedStringArray("target_map")]
+position = Vector2(2877, 1619)
+zoom = Vector2(0.305, 0.305)
+script = ExtResource("5_7nanj")
+target_map = NodePath("../MapGround")

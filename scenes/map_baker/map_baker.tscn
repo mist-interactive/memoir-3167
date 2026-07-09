@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://bnvkbvf5d8tyv"]
+
+[ext_resource type="Script" uid="uid://8vqx7bkithx8" path="res://scenes/map_baker/map_baker.gd" id="1_7ngbr"]
+
+[node name="MapBaker" type="Node" unique_id=621948442 node_paths=PackedStringArray("MapLayer", "MapDecorLayer")]
+script = ExtResource("1_7ngbr")
+MapLayer = NodePath("")
+MapDecorLayer = NodePath("")
+bake_map = true
