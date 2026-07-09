@@ -10,7 +10,7 @@ func _ready() -> void:
 func create_new_match(peerId1: int, peerId2: int) -> void:
 	print("Call to create new match")
 	var matchState = MatchState.new(_next_match_id, [peerId1, peerId2])
-	var battleField = Battlefield.new("map.json")
+	var battleField = BattlefieldState.new("map.json")
 	
 	var matchNode = matchController.new(matchState, battleField)
 	matchNode.name = "Match_%d" % _next_match_id
