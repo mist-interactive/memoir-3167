@@ -5,13 +5,13 @@ extends Node
 @export var MapGroundLayer: HexagonTileMapLayer
 @export var MapFeatureLayer: HexagonTileMapLayer
 
-# Check box to bake map on inspector
+# Check box "button" to bake map on inspector
 @export var bake_map: bool = false:
 	set(value):
-		bake_map = true
 		if value == true:
-			_bake_map()
-			bake_map = false
+			if is_inside_tree():
+				_bake_map()
+		bake_map = false
 
 func save_to_file(content: String) -> void:
 	var file = FileAccess.open("res://maps/map.json", FileAccess.WRITE)
