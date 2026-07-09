@@ -1,0 +1,75 @@
+class_name ClientMapManager
+
+extends Node
+
+@export var MapGroundLayer: HexagonTileMapLayer
+@export var MapFeaturesLayer: HexagonTileMapLayer
+
+signal map_loaded
+
+var GROUND_TO_TILE: Dictionary = {}
+var FEATURE_TO_TILE: Dictionary = {}
+
+func _ready() -> void:
+	# Automatically invert the dictionaries from MapData for fast lookups on the client.
+	for key in MapData.GROUND_ATLAS:
+		var enum_value = MapData.GROUND_ATLAS[key]
+		GROUND_TO_TILE[enum_value] = key
+		
+	for key in MapData.FEATURE_ATLAS:
+		var enum_value = MapData.FEATURE_ATLAS[key]
+		FEATURE_TO_TILE[enum_value] = key
+	load_map("map")
+
+@rpc("authority", "call_remote", "reliable")
+func load_map(map_name: String) -> void:
+	var filepath: String = "res://maps/" + map_name +".json"
+	print("Client loading map ", map_name)
+	if not FileAccess.file_exists(filepath):
+		push_error("No such map file: ", filepath)
+		return
+	var file := FileAccess.open(filepath, FileAccess.READ)
+	var json_string: String = file.get_as_text()
+	file.close()
+	var map_data = JSON.parse_string(json_string)
+	if typeof(map_data) != TYPE_ARRAY:
+		push_error("Map file is corruct or not formatted as an Array")
+		return
+
+	print("Map file parsed succesfully. Reconstructing map...")
+	MapGroundLayer.clear()
+	MapFeaturesLayer.clear()
+	for cell_dict in map_data:
+		var coord = HexCell._parse_coord(cell_dict, "coord")
+		var ground_type: int = cell_dict.get("ground")
+		if GROUND_TO_TILE.has(ground_type):
+			var tile_info: Array = GROUND_TO_TILE[ground_type]
+			var source_id: int = tile_info[0]
+			var atlas_coord: Vector2i = tile_info[1]
+			MapGroundLayer.set_cell(coord, source_id, atlas_coord)
+		else:
+			push_warning("Client doesn't have visual data for the Ground enum: ", ground_type)
+		var feature_type: int = cell_dict.get("feature")
+		if FEATURE_TO_TILE.has(feature_type):
+			var tile_info: Array = FEATURE_TO_TILE[feature_type]
+			var source_id: int = tile_info[0]
+			var atlas_coord: Vector2i = tile_info[1]
+			MapFeaturesLayer.set_cell(coord, source_id, atlas_coord)
+		else:
+			push_warning("Client doesn't have visual data for the Feature enum: ", feature_type)
+	print("Map reconstruction complete!")
+	map_loaded.emit()
+	rpc_id(1, "client_finished_loading_map")
+	pass
+
+"""	
+# On the Server script:
+# "any_peer" means any connected client is allowed to send this message to the server
+@rpc("any_peer", "call_remote", "reliable")
+func client_finished_loading_map() -> void:
+	var sender_id = multiplayer.get_remote_sender_id()
+	print("Client ", sender_id, " has finished loading the map!")
+	# The server can now mark this player as "ready to play"
+
+Once they have that function on their end, your client will successfully handshake with the server after painting the tiles!
+"""
