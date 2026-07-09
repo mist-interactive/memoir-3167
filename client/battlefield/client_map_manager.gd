@@ -4,6 +4,7 @@ extends Node
 
 @export var MapGroundLayer: HexagonTileMapLayer
 @export var MapFeaturesLayer: HexagonTileMapLayer
+@onready var BattlefieldState: BattlefieldState = $"../../BattlefieldState"
 
 signal map_loaded
 
@@ -19,9 +20,8 @@ func _ready() -> void:
 	for key in MapData.FEATURE_ATLAS:
 		var enum_value = MapData.FEATURE_ATLAS[key]
 		FEATURE_TO_TILE[enum_value] = key
-	load_map("map")
+	load_map(BattlefieldState.mapName)
 
-@rpc("authority", "call_remote", "reliable")
 func load_map(map_name: String) -> void:
 	var filepath: String = "res://maps/" + map_name +".json"
 	print("Client loading map ", map_name)

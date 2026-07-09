@@ -1,11 +1,11 @@
 extends Node
 class_name  matchController
 var matchState: MatchState
-var battlefield: Battlefield
+var battlefield: BattlefieldState
 
 var connected: Dictionary[int, bool]
 
-func _init(matchState: MatchState, battlefield: Battlefield) -> void:
+func _init(matchState: MatchState, battlefield: BattlefieldState) -> void:
 	self.matchState = matchState
 	self.battlefield = battlefield
 
