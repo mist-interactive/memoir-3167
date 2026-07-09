@@ -6,6 +6,7 @@ extends Resource
 @export var display_name: String = ""
 @export_multiline var description: String = ""
 @export var card_target: GameEnums.Sector
+@export var quantity: int = 1
 # any other variables the cards might need
 #
 # 
