@@ -3,9 +3,18 @@ extends Node
 
 # The @export_dir hint gives you a nice folder picker in the Godot inspector
 @export_dir var cards_directory: String = "res://commons/cards/database/cards"
-
+static var instance: CardDatabase = null
 # Our final, globally accessible registry mapping string IDs to CommandCards
 var card_registry: Dictionary = {}
+
+func _enter_tree() -> void:
+	# 2. The moment this node wakes up in the server tree, it registers itself globally
+	if instance == null:
+		instance = self
+	else:
+		# Anti-duplication fallback: prevents accidentally spawning two databases
+		push_warning("A CardDatabase instance already exists! Deleting duplicate.")
+		queue_free()
 
 func _ready() -> void:
 	_load_cards_from_directory(cards_directory)
