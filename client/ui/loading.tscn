@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://bkaktjljq8pme"]
+
+[ext_resource type="Script" uid="uid://byxlusre1qg1i" path="res://client/ui/LoadingScene.gd" id="1_wbw4t"]
+
+[node name="Loader" type="Node2D" unique_id=1067640567 node_paths=PackedStringArray("progressBar")]
+script = ExtResource("1_wbw4t")
+progressBar = NodePath("ProgressBar")
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=1243035752]
+offset_left = 436.0
+offset_top = 285.0
+offset_right = 781.0
+offset_bottom = 324.0
+step = 1.0
