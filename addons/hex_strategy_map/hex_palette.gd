@@ -10,11 +10,9 @@ extends Resource
 ## Dictionary and Callable are not reliably serializable as exports.
 
 const DEFAULT_TERRAIN_COLORS: Dictionary = {
-	HexCell.Ground.ROAD: Color(0.36, 0.25, 0.20),
-	HexCell.Ground.PLAINS: Color(0.18, 0.35, 0.22),
-	HexCell.Ground.FOREST: Color(0.10, 0.22, 0.12),
-	HexCell.Ground.MOUNTAIN: Color(0.40, 0.38, 0.35),
-	HexCell.Ground.WATER: Color(0.12, 0.22, 0.42),
+	HexCell.Ground.FIELDS: Color(0.463, 0.565, 0.0, 1.0),
+	HexCell.Ground.SAND: Color(0.925, 0.745, 0.396, 1.0),
+	HexCell.Ground.WATER: Color(0.035, 0.714, 0.973, 1.0),
 }
 
 const DEFAULT_FOG_COLORS: Dictionary = {
