@@ -16,7 +16,6 @@ extends RefCounted
 enum Ground {
 	FIELDS,
 	SAND,
-	DESERT,
 	WATER,
 }
 

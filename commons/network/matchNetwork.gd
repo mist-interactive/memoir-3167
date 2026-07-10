@@ -22,6 +22,6 @@ func init(matchId: int, mapName: String, player_ids: Array[int]) -> void:
 	print("creating game")
 	if multiplayer.is_server():
 		return
-	var battleField: Battlefield = Battlefield.new(mapName)
+	var battleField: BattlefieldState = BattlefieldState.new(mapName)
 	var matchState: MatchState = MatchState.new(matchId, player_ids)
 	init_match_requested.emit(battleField, matchState)

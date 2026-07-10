@@ -1,11 +1,11 @@
 extends Node
-class_name Battlefield
+class_name BattlefieldState
 var map: Dictionary[Vector2i, HexCell]
 var loaded: bool
 var mapName: String
 
 func _init(mapName: String) -> void:
-	name = "battlefield"
+	name = "BattlefieldState"
 	self.mapName = mapName
 	loaded = parseAndLoadMap(mapName)
 
