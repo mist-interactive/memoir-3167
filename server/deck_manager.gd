@@ -5,19 +5,23 @@ var draw_pile: Array[String] = []
 var discard_pile: Array[String] = []
 var player_hands: Dictionary = {}
 
-func _init(player1: int, player2: int, starting_cards: Array[String]) -> void:
-	name = "deckmanager"
-	initialize_deck(starting_cards)
+@onready var card_db: CardDatabase = CardDatabase.instance
 
-# Initialize the deck with card IDs based on your game design
+func _init(player1: int, player2: int) -> void:
+	name = "deckmanager"
+	var raw_keys: Array = CardDatabase.instance.card_registry.keys()
+	var typed_starting_cards: Array[String] = []
+	typed_starting_cards.assign(raw_keys)
+	initialize_deck(typed_starting_cards)
+
 func initialize_deck(starting_cards: Array[String]) -> void:
-	draw_pile = starting_cards.duplicate()
+	draw_pile.clear()
+	draw_pile.assign(starting_cards)
 	shuffle_deck()
-	
+
 func shuffle_deck() -> void:
-	# If the draw pile is empty, shuffle the discard pile back into it
 	if draw_pile.is_empty() and not discard_pile.is_empty():
-		draw_pile = discard_pile.duplicate()
+		draw_pile.assign(discard_pile)
 		discard_pile.clear()
 		
 	draw_pile.shuffle()
@@ -32,7 +36,7 @@ func draw_card(peer_id: int) -> String:
 	var drawn_card_id: String = draw_pile.pop_back()
 	
 	if not player_hands.has(peer_id):
-		player_hands[peer_id] = []
+		player_hands[peer_id] = [] as Array[String]
 		
 	player_hands[peer_id].append(drawn_card_id)
 	return drawn_card_id
