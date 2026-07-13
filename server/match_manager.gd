@@ -6,6 +6,8 @@ var matches: Dictionary[int, matchController] = {}
 
 func _ready() -> void:
 	Network.Match.connect_match_requested.connect(_on_player_connect)
+	Network.Match.update_client_match_change_requested.connect(_on_client_match_state_change)
+	
 
 func create_new_match(peerId1: int, peerId2: int) -> void:
 	print("Call to create new match")
@@ -39,3 +41,10 @@ func _on_connect_match_requested(peer_id: int) -> void:
 	var matchId: int = peer_to_match[peer_id]
 	var matchCtl: matchController = matches[matchId]
 	Network.Match.init(matchId, matchCtl.battlefield.mapName, matchCtl.matchState.player_ids)
+
+func _on_client_match_state_change(peer_id: int, state: MatchState.STATE):
+	print("Client state change")
+	var matchId: int = peer_to_match[peer_id]
+	var matchCtl: matchController = matches[matchId]
+	matchCtl.handle_client_state_change(peer_id, state)
+	
