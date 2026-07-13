@@ -12,3 +12,10 @@ func _init(matchId: int, player_ids: Array[int]) -> void:
 	self.player_ids = player_ids
 	self.scores[player_ids[0]] = 0
 	self.scores[player_ids[0]] = 0
+	Network.Match.match_state_change_requested.connect(_on_state_change)
+	
+
+# signal handlers
+func _on_state_change(state: MatchState.STATE):
+	print("Upding client state")
+	self.state = state
