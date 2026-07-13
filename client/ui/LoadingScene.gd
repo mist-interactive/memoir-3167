@@ -2,6 +2,8 @@ extends Node2D
 class_name Loader
 var tasks: Array[Task]
 @export var progressBar: ProgressBar
+@onready var taskLabel = $CanvasLayer/Label
+@onready var background = $WinterOfWonder
 
 class Task:
 	var weight: float
@@ -15,28 +17,40 @@ class Task:
 func stage(name: String, job: Callable, weight: float = 1.0) -> Loader:
 	tasks.append(Task.new(name, job, weight))
 	return self
-
+	
+func _ready() -> void:
+	self.hide_loader()
+	
 func run() -> void:
 	var total_weight: float = 0.0
 	var completed_weight: float = 0.0
 	progressBar.value = 0
+	self.show_loader()
 	for task in tasks:
 		total_weight += task.weight
 
-	while !tasks.is_empty():
-		var task: Task = tasks.pop_front()
+	for task: Task in tasks:
+		taskLabel.text = task.name
 		await task.execute.call()
 		completed_weight += task.weight
-		print("Completed task: ", task.name)
-		progressBar.value = (completed_weight / total_weight) * 100
+		var target = completed_weight / total_weight * 100
+		var tween = create_tween()
+		tween.tween_property(progressBar, "value", target, 0.25)
+		await tween.finished
 
-func _ready() -> void:
-	stage("test1", func(): await get_tree().create_timer(1).timeout)\
-	.stage("test2", func(): await get_tree().create_timer(1).timeout)\
-	.stage("test3", func(): await get_tree().create_timer(1).timeout)\
-	.stage("test4", func(): await get_tree().create_timer(1).timeout)\
-	.stage("test5", func(): await get_tree().create_timer(1).timeout)\
-	.run()
+	tasks.clear()
+	self.hide_loader()
 
-func _process(delta: float) -> void:
-	pass
+func show_loader() -> void:
+	background.show()
+	taskLabel.show()
+	progressBar.show()
+	
+func hide_loader() -> void:
+	background.hide()
+	taskLabel.hide()
+	progressBar.hide()
+
+func wait_untill(cond: Callable) -> void:
+	while !cond.call():
+		await get_tree().process_frame
