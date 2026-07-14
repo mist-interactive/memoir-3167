@@ -10,6 +10,9 @@ func _init(matchState: MatchState, battlefield: BattlefieldState) -> void:
 	self.matchState = matchState
 	self.battlefield = battlefield
 
+func _physics_process(delta: float) -> void:
+	matchState.sync()
+
 func clients_are_ready():
 	if player_status.size() != 2:
 		return false
@@ -29,6 +32,4 @@ func handle_disconnect(player_id: int) -> void:
 func handle_client_state_change(player_id: int, state: MatchState.STATE) -> void:
 	player_status[player_id] = state
 	if matchState.state == MatchState.STATE.INITIALIZING && clients_are_ready():
-		matchState.state == MatchState.STATE.READY
-		Network.Match.update_match_state.rpc_id(matchState.player_ids[0], MatchState.STATE.READY)
-		Network.Match.update_match_state.rpc_id(matchState.player_ids[1], MatchState.STATE.READY)
+		matchState.state = MatchState.STATE.READY
