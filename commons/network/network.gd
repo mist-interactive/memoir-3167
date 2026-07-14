@@ -1,5 +1,7 @@
 extends Node
 @export var Match: MatchNetwork
+@export var Actions: ActionsNetwork
+@export var Client: ClientNetwork
 
 signal join_queue_requested(peer_id: int)
 
