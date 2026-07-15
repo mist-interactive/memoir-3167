@@ -20,7 +20,7 @@ func create_new_match(peerId1: int, peerId2: int) -> void:
 	peer_to_match[peerId1] = matchState.matchId
 	peer_to_match[peerId2] = matchState.matchId
 	matches[_next_match_id] = matchNode
-	++_next_match_id
+	_next_match_id += 1
 	Network.Match.match_created.rpc_id(peerId1)
 	Network.Match.match_created.rpc_id(peerId2)
 
