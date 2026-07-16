@@ -4,7 +4,6 @@ extends Node2D
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
 
-
 @export var owner_id: int = 1
 @export var hex_coord: Vector2i = Vector2i.ZERO:
 	set(new_coord):
@@ -15,6 +14,7 @@ extends Node2D
 		if is_inside_tree():
 			_animate_to_hex(new_coord)
 
+var unit_uuid: String = ""
 var is_selected: bool = false
 
 func _ready() -> void:
