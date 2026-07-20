@@ -36,7 +36,7 @@ const EDGE_COST: Dictionary = {
 }
 
 ## Hex size in pixels (circumscribed radius, pointy-top odd-r).
-const HEX_SIZE: float = 32.0
+const HEX_SIZE: float = 512 / 2
 ## Precalculated sqrt(3) for the offset↔pixel conversion formula (pointy-top hexes).
 const HEX_SQRT3: float = 1.7320508075688772
 
@@ -248,11 +248,16 @@ static func deserialize(data: Dictionary) -> HexGrid:
 # --- Coordinates ---
 
 ## Odd-r offset to pixel (pointy-top hexes).
-static func offset_to_pixel(coord: Vector2i, size: float = HEX_SIZE) -> Vector2:
+static func offset_to_pixel_pointy_top(coord: Vector2i, size: float = HEX_SIZE) -> Vector2:
 	var x := size * HEX_SQRT3 * (coord.x + 0.5 * (coord.y & 1))
 	var y := size * 1.5 * coord.y
 	return Vector2(x, y)
 
+# Odd-q offset to pixe (flat-top hexes).
+static func offset_to_pixel(coord: Vector2i, size: float = HEX_SIZE) -> Vector2:
+	var x := size * 1.5 * coord.x
+	var y := size * HEX_SQRT3 * (coord.y + 0.5 * (coord.x & 1))
+	return Vector2(x, y)
 
 ## Pixel to nearest odd-r offset.
 static func pixel_to_offset(pixel: Vector2, size: float = HEX_SIZE) -> Vector2i:

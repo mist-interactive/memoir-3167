@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 Network="*uid://b5yts342uqubh"
 UnitManager="*uid://c8boswoawotlr"
+HexMetrics="*uid://b5k33exfq62ot"
 
 [display]
 
@@ -27,7 +28,7 @@ window/stretch/aspect="expand"
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/hex_strategy_map/plugin.cfg", "res://addons/hexagon_tilemaplayer/plugin.cfg", "res://addons/script-ide/plugin.cfg")
+enabled=PackedStringArray("res://addons/hex_strategy_map/plugin.cfg", "res://addons/hexagon_tilemaplayer/plugin.cfg")
 
 [input]
 

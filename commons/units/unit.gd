@@ -9,26 +9,30 @@ extends Node2D
 	set(new_coord):
 		if hex_coord == new_coord:
 			return
-		UnitManager.move_unit(self, hex_coord, new_coord)
 		hex_coord = new_coord
 		if is_inside_tree():
 			_animate_to_hex(new_coord)
+		else:
+			position = HexGrid.offset_to_pixel(new_coord) + visual_offset
 
-var unit_uuid: String = ""
+var uuid: String = ""
+var type: String = ""
 var is_selected: bool = false
+var visual_offset: Vector2:
+	get:
+		return Vector2(HexMetrics.half_width, HexMetrics.half_height)
 
 func _ready() -> void:
-	UnitManager.add_unit(self, hex_coord)
 	pass
 
 func _animate_to_hex(target_coord: Vector2i) -> void:
 	# Calculate where this hex actually is on the screen
 	# (Assuming you have a HexGrid autoload with your math)
-	var target_pixel_pos = HexGrid.offset_to_pixel(target_coord)
+	var target_pixel_pos = HexGrid.offset_to_pixel(target_coord) + visual_offset
 	
 	# Smoothly slide the unit over 0.5 seconds
 	var tween = create_tween()
 	tween.tween_property(self, "position", target_pixel_pos, 0.5).set_trans(Tween.TRANS_SINE)
 
 func _exit_tree() -> void:
-	UnitManager.remove_unit(hex_coord)
+	pass
