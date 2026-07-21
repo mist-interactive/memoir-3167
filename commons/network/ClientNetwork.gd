@@ -3,10 +3,10 @@ class_name ClientNetwork
 
 signal auth_check_requested(peer_id: int, jtw_token: String)
 @rpc("any_peer", "call_remote")
-func auth_check(jtw_token: String) -> void:
+func auth_check(jwt_token: String) -> void:
 	if !multiplayer.is_server():
 		return
-	auth_check_requested.emit(multiplayer.get_remote_sender_id(), jtw_token)
+	auth_check_requested.emit(multiplayer.get_remote_sender_id(), jwt_token)
 
 signal sync_requested(snapshot: Dictionary)
 @rpc("authority", "call_remote")

@@ -1,5 +1,5 @@
 extends Node
-class_name Client
+class_name ClientState
 var authenticated: bool = false:
 	set(val):
 		should_sync = true
@@ -13,7 +13,7 @@ var should_sync: bool = false
 func _init(peer_id: int) -> void:
 	name = "clientState"
 	self.peer_id = peer_id
-	Network.Client.sync_requested.connect(_on_sync)
+	Network.Client.sync_requested.connect(_on_sync_requested)
 
 func get_snapshot() -> Dictionary:
 	return {
@@ -29,7 +29,7 @@ func sync() -> void:
 	should_sync = false
 	Network.Client.sync.rpc_id(peer_id, get_snapshot())
 
-func _on_sync(snapshot: Dictionary) -> void:
+func _on_sync_requested(snapshot: Dictionary) -> void:
 	authenticated = snapshot.authenticated
 	uuid = snapshot.uuid
 	display_name = snapshot.display_name

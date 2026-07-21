@@ -1,7 +1,7 @@
 extends Node
 @export var loader: Loader
 @export var menu: Node2D
-@export var client: Client
+@export var client: ClientState
 var peer: WebSocketMultiplayerPeer
 var url: String = "ws://localhost:6669"
 var connected: bool = false
@@ -9,7 +9,7 @@ var connected: bool = false
 func _ready() -> void:
 	await loader.stage("Initializing connection...", initialize_connection) \
 	.stage("Waiting to establish connection...", func(): await loader.wait_untill(func(): return connected == true)) \
-	.stage("Initializing client...", func(): client = Client.new(multiplayer.get_unique_id())) \
+	.stage("Initializing client...", func(): client = ClientState.new(multiplayer.get_unique_id())) \
 	.stage("Authenticating client...", func():
 		Network.Client.auth_check.rpc_id(1, "fsdfsdf")
 		await loader.wait_untill(func(): return client.authenticated)
