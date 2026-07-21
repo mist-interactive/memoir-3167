@@ -1,7 +1,7 @@
 extends Node
 var peer: WebSocketMultiplayerPeer
 var port: int = 6669
-var clients: Dictionary[int, Client]
+var clients: Dictionary[int, ClientState]
 var sessions: Dictionary[int, int] # uuid -> peer_id
 
 func _ready() -> void:
@@ -9,7 +9,7 @@ func _ready() -> void:
 
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
-	Network.Client.auth_check_requested.connect(_on_auth_check)
+	Network.Client.auth_check_requested.connect(_on_auth_check_requested)
 
 	peer = WebSocketMultiplayerPeer.new()
 	peer.create_server(port)
@@ -18,18 +18,18 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	for peer_id in clients.keys():
-		var client: Client = clients[peer_id]
+		var client: ClientState = clients[peer_id]
 		client.sync()
 
 func _on_peer_connected(id: int) -> void:
 	print("A new client has connected id: ", id)
-	clients[id] = Client.new(id)
+	clients[id] = ClientState.new(id)
 
 func _on_peer_disconnected(id: int) -> void:
 	print("Client has disconnected: ", id)
 	clients.erase(id)
 
-func _on_auth_check(peer_id: int, jtw_token: String) -> void:
+func _on_auth_check_requested(peer_id: int, jwt_token: String) -> void:
 	print("Authenticating client %d..." % peer_id)
-	var client: Client = clients[peer_id]
+	var client: ClientState = clients[peer_id]
 	client.authenticated = true
