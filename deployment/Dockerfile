@@ -20,3 +20,6 @@ RUN wget https://downloads.tuxfamily.org/godotengine/${GODOT_VERSION}/Godot_v${G
     && unzip Godot_v${GODOT_VERSION}-stable_export_templates.tpz \
     && mv templates/* ~/.local/share/godot/templates/${GODOT_VERSION}.stable \
     && rm -f Godot_v${GODOT_VERSION}-stable_export_templates.tpz Godot_v${GODOT_VERSION}-stable_linux_server.64.zip
+
+# build cmd : godot --headless --path path_to_your_project --export-release my_export_preset_name game.exe
+RUN godot --headless --path ~/memoir-3167 --export-release "Linux" "~/memoir-3167.bin"
