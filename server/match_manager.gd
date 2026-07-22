@@ -24,11 +24,14 @@ func create_new_match(peerId1: int, peerId2: int) -> void:
 	var battleField = BattlefieldState.new("map.json")
 	var deckManager = DeckManager.new(peerId1, peerId2)
 	var matchNode = matchController.new(matchState, battleField, deckManager)
+	var unit_manager = UnitManager.new()
 	deckManager.name = "DeckManager"
 	matchNode.name = "Match_%d" % _next_match_id
 	matchNode.add_child(matchState)
 	matchNode.add_child(battleField)
 	matchNode.add_child(deckManager)
+	matchNode.add_child(unit_manager)
+	
 	get_parent().add_child(matchNode)
 	peer_to_match[peerId1] = matchState.matchId
 	peer_to_match[peerId2] = matchState.matchId

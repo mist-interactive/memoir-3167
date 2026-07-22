@@ -259,12 +259,43 @@ static func offset_to_pixel(coord: Vector2i, size: float = HEX_SIZE) -> Vector2:
 	var y := size * HEX_SQRT3 * (coord.y + 0.5 * (coord.x & 1))
 	return Vector2(x, y)
 
-## Pixel to nearest odd-r offset.
-static func pixel_to_offset(pixel: Vector2, size: float = HEX_SIZE) -> Vector2i:
+## Pixel to nearest odd-r offset (pointy-top hexes).
+static func pixel_to_offset_pointy_top(pixel: Vector2, size: float = HEX_SIZE) -> Vector2i:
 	var q: float = (HEX_SQRT3 / 3.0 * pixel.x - 1.0 / 3.0 * pixel.y) / size
 	var r: float = (2.0 / 3.0 * pixel.y) / size
 	return _cube_to_offset(cube_round(q, r))
 
+## Pixel to nearest odd-r offset (flat-top hexes).
+static func pixel_to_offset(pixel: Vector2, size: float = HEX_SIZE) -> Vector2i:
+	# 1. Convert pixel to fractional axial coordinates (q, r)
+	var q_frac: float = (2.0 / 3.0 * pixel.x) / size
+	var r_frac: float = (-1.0 / 3.0 * pixel.x + sqrt(3.0) / 3.0 * pixel.y) / size
+	
+	# 2. Convert to fractional cube (s = -q - r)
+	var s_frac: float = -q_frac - r_frac
+	
+	# 3. Round to the nearest whole cube coordinate
+	var rx := int(round(q_frac))
+	var ry := int(round(s_frac))
+	var rz := int(round(r_frac))
+	
+	var x_diff := abs(rx - q_frac)
+	var y_diff := abs(ry - s_frac)
+	var z_diff := abs(rz - r_frac)
+	
+	if x_diff > y_diff and x_diff > z_diff:
+		rx = -ry - rz
+	elif y_diff > z_diff:
+		ry = -rx - rz
+	else:
+		rz = -rx - ry
+		
+	# 4. Convert the whole cube back to Odd-Q offset coordinates
+	# rx represents column (q), rz represents row (r)
+	var col: int = rx
+	var row: int = rz + int((rx - (rx & 1)) / 2)
+	
+	return Vector2i(col, row)
 
 ## Offset to cube coordinates (for distance and direction).
 static func offset_to_cube(coord: Vector2i) -> Vector3i:
