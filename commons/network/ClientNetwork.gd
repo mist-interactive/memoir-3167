@@ -1,7 +1,7 @@
 extends Node
 class_name ClientNetwork
 
-signal auth_check_requested(peer_id: int, jtw_token: String)
+signal auth_check_requested(peer_id: int, jwt_token: String)
 @rpc("any_peer", "call_remote")
 func auth_check(jwt_token: String) -> void:
 	if !multiplayer.is_server():
