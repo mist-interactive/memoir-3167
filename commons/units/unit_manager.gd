@@ -1,15 +1,19 @@
-# UnitManager is autoloaded and is globally accessible
+class_name UnitManager
 extends Node
 
 # The Unit Grid:
 # Key = Vector2i (hex coord), Value = Unit
 var unit_grid: Dictionary = {}
 var units_by_id: Dictionary = {}
+var active_container: Node
 
 func add_unit(unit: Variant, coord: Vector2i) -> void:
+	if unit_grid.has(coord):
+		return
 	unit_grid[coord] = unit
 	units_by_id[unit.uuid] = unit
-	print("Unit registered at ", coord, " | Total units: ", unit_grid.size())
+	if multiplayer.is_server():
+		print("Unit registered at ", coord, " | Total units: ", unit_grid.size())
 	
 func remove_unit(coord: Vector2i) -> void:
 	if unit_grid.has(coord):

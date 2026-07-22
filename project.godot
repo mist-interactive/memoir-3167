@@ -18,7 +18,6 @@ config/icon="res://icon.svg"
 [autoload]
 
 Network="*uid://b5yts342uqubh"
-UnitManager="*uid://c8boswoawotlr"
 HexMetrics="*uid://b5k33exfq62ot"
 
 [display]
