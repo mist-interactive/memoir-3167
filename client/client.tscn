@@ -1,15 +1,20 @@
 [gd_scene format=3 uid="uid://bs3t6guj4a2p3"]
 
 [ext_resource type="Script" uid="uid://i7jv0kni8l8j" path="res://client/client.gd" id="1_6t3qf"]
+[ext_resource type="PackedScene" uid="uid://bkaktjljq8pme" path="res://client/ui/loading.tscn" id="2_7kp2r"]
 [ext_resource type="Script" uid="uid://pkrd7ih275by" path="res://client/menu.gd" id="2_gdxsl"]
 [ext_resource type="Script" uid="uid://sdu83b0qi5xm" path="res://client/game.gd" id="3_mgmel"]
 
-[node name="Client" type="Node" unique_id=637407369]
+[node name="Client" type="Node" unique_id=637407369 node_paths=PackedStringArray("loader", "menu")]
 script = ExtResource("1_6t3qf")
+loader = NodePath("UI/Loader")
+menu = NodePath("UI/Menu")
 
 [node name="UI" type="Node" parent="." unique_id=959618433]
 
-[node name="Menu" type="Node" parent="UI" unique_id=757640691]
+[node name="Loader" parent="UI" unique_id=1067640567 instance=ExtResource("2_7kp2r")]
+
+[node name="Menu" type="Node2D" parent="UI" unique_id=901605974]
 script = ExtResource("2_gdxsl")
 
 [node name="Button" type="Button" parent="UI/Menu" unique_id=70241061]
@@ -19,7 +24,9 @@ offset_right = 601.0
 offset_bottom = 316.0
 text = "Find game"
 
-[node name="Game" type="Node" parent="." unique_id=291744170]
+[node name="Game" type="Node" parent="." unique_id=291744170 node_paths=PackedStringArray("loader", "menu")]
 script = ExtResource("3_mgmel")
+loader = NodePath("../UI/Loader")
+menu = NodePath("../UI/Menu")
 
 [connection signal="pressed" from="UI/Menu/Button" to="UI/Menu" method="_on_button_pressed"]

@@ -1,6 +1,9 @@
-extends Node
+extends Node2D
 var queuing: bool = false
 @onready var queueBtn =  $Button
+
+func _ready() -> void:
+	hide()
 
 func _on_button_pressed() -> void:
 	if !queuing:
