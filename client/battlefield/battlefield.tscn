@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://ct57afg2bcg0e"]
 
 [ext_resource type="PackedScene" uid="uid://bnvkbvf5d8tyv" path="res://scenes/map_baker/map_baker.tscn" id="1_siwgj"]
+[ext_resource type="Script" uid="uid://chagsifi7w8n6" path="res://client/battlefield/battlefield.gd" id="1_u0eng"]
 [ext_resource type="Texture2D" uid="uid://dq8khvkm5weph" path="res://assets/sprites/hex/fields_ground_sprite_sheet.png" id="2_4ok02"]
 [ext_resource type="Script" uid="uid://cgtpxpasdke04" path="res://client/battlefield/client_map_manager.gd" id="2_ynl45"]
 [ext_resource type="Script" uid="uid://doeqye6s2a65e" path="res://client/battlefield/map_controller.gd" id="3_stskl"]
@@ -8,6 +9,9 @@
 [ext_resource type="Script" uid="uid://7tdnt2pcipdq" path="res://client/battlefield/camera_controller.gd" id="5_7nanj"]
 [ext_resource type="Texture2D" uid="uid://bbk0bb2k6twkd" path="res://assets/sprites/hex/fields_feature_sprite_sheet.png" id="7_yttjq"]
 [ext_resource type="Script" uid="uid://dokagb5eik4vp" path="res://client/battlefield/button.gd" id="9_cuxbe"]
+[ext_resource type="Script" uid="uid://cpytl0qe8h6u5" path="res://client/battlefield/player_hand_ui.gd" id="9_cuxbe"]
+[ext_resource type="Script" uid="uid://5n1dlvt3tw4s" path="res://client/battlefield/margin_container.gd" id="10_f3lu3"]
+[ext_resource type="PackedScene" uid="uid://bs3n3ysl7e5vc" path="res://client/player_hand/card_ui.tscn" id="12_f3lu3"]
 [ext_resource type="Texture2D" uid="uid://l08uw4hx56l0" path="res://assets/sprites/hex/highlight.png" id="13_56ovr"]
 [ext_resource type="Script" uid="uid://birdmambhh8rf" path="res://client/battlefield/map_highlight.gd" id="13_upguu"]
 
@@ -51,7 +55,16 @@ tile_offset_axis = 1
 tile_size = Vector2i(512, 442)
 sources/0 = SubResource("TileSetAtlasSource_upguu")
 
+[sub_resource type="Curve" id="Curve_u0eng"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5081967, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_f3lu3"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 0.4965517), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
 [node name="Battlefield" type="Node2D" unique_id=1534648312]
+script = ExtResource("1_u0eng")
 
 [node name="MapBaker" parent="." unique_id=621948442 node_paths=PackedStringArray("MapGroundLayer", "MapFeatureLayer") instance=ExtResource("1_siwgj")]
 MapGroundLayer = NodePath("../MapGround")
@@ -95,6 +108,23 @@ offset_bottom = 1355.0
 theme_override_font_sizes/font_size = 54
 text = "Draw card"
 script = ExtResource("9_cuxbe")
+
+[node name="MarginContainer" type="MarginContainer" parent="UICanvas" unique_id=2042215150]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("10_f3lu3")
+
+[node name="PlayerHandUI" type="HBoxContainer" parent="UICanvas/MarginContainer" unique_id=1786282647]
+layout_mode = 2
+script = ExtResource("9_cuxbe")
+card_ui_scene = ExtResource("12_f3lu3")
+hand_curve = SubResource("Curve_u0eng")
+rotation_curve = SubResource("Curve_f3lu3")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1708214605 node_paths=PackedStringArray("target_map")]
 position = Vector2(2877, 1619)
