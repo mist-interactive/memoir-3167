@@ -13,9 +13,18 @@ Client = NodePath("Client")
 
 [node name="Actions" type="Node" parent="." unique_id=799996140]
 script = ExtResource("2_1uyt4")
+[ext_resource type="Script" uid="uid://87p1uo7s4h4h" path="res://commons/network/matchNetwork.gd" id="2_51hul"]
+[ext_resource type="Script" uid="uid://bv4vhgs6f66ij" path="res://commons/network/cardNetwork.gd" id="3_1uyt4"]
+
+[node name="Network" type="Node" unique_id=1103206024 node_paths=PackedStringArray("Match", "Card")]
+script = ExtResource("1_qmnym")
+Match = NodePath("Match")
+Card = NodePath("CardNetwork")
 
 [node name="Match" type="Node" parent="." unique_id=1127822169]
 script = ExtResource("2_51hul")
 
 [node name="Client" type="Node" parent="." unique_id=1464937758]
 script = ExtResource("4_5g0sp")
+[node name="CardNetwork" type="Node" parent="." unique_id=973789890]
+script = ExtResource("3_1uyt4")
