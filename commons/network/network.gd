@@ -3,6 +3,8 @@ extends Node
 @export var Actions: ActionsNetwork
 @export var Client: ClientNetwork
 @export var Hand: HandNetwork
+@export var Card: CardNetwork
+
 signal join_queue_requested(peer_id: int)
 
 @rpc("any_peer","call_remote")
@@ -10,7 +12,6 @@ func join_queue() -> void:
 	print("calling to server")
 	join_queue_requested.emit(multiplayer.get_remote_sender_id())
 
-# usva
 signal hex_selected(peer_id: int, hex: Vector2i)
 signal hex_broadcast(peer_id: int, hex: Vector2i)
 
