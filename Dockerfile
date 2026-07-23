@@ -15,25 +15,21 @@ RUN unzip godot.zip && \
 	mkdir -p ~/.config/godot && \
 	mkdir -p $GODOT_EXPORT_TEMPLATES_DIR
 
-RUN git clone https://github.com/mist-interactive/godot_export_templates.git godot_export_templates 
+RUN git clone https://github.com/mist-interactive/godot_export_templates.git godot_export_templates
 RUN cd godot_export_templates && \
 	tar -xf linux_release_4_7_1.tar.xz && \
 	tar -xf web_release_4_7_1.tar.xz && \
-	mv linux_release.x86_64 $GODOT_EXPORT_TEMPLATES_DIR/ && \
-	mv web_release $GODOT_EXPORT_TEMPLATES_DIR/
+	mv linux_release.x86_64 "$GODOT_EXPORT_TEMPLATES_DIR" && \
+    mv web_nothreads_release.zip "$GODOT_EXPORT_TEMPLATES_DIR" && \
+    mv web_release.zip "$GODOT_EXPORT_TEMPLATES_DIR"
+
 RUN rm -rf godot_export_templates
 
 COPY . /root/memoir-3167/
 COPY ./deployment/entrypoint.sh /
 RUN chmod +x ./entrypoint.sh
 
-# build cmd : godot --headless --path path_to_your_project --export-release my_export_preset_name game.exe
-# build cmd : godot --headless --path path_to_your_project --export-release my_export_preset_name game.exe
-#RUN godot --headless --path ~/memoir-3167 --export-release "Linux" "~/memoir-3167.bin"
-
-# RUN godot --headless --path ~/memoir-3167 --export-release "Linux" "/root/test/memoir-3167.bin"
-
-# CMD ["sh"]
+# build for the web
+RUN mkdir /root/web && godot --headless --path /root/memoir-3167 --export-release "Web" "/root/web/index.html"
 
 ENTRYPOINT ["./entrypoint.sh"]
-CMD ["bash"]
