@@ -16,6 +16,7 @@ func _ready() -> void:
 	Network.Actions.execute_orders_requested.connect(_on_execute_orders)
 	Network.Actions.draw_card_requested.connect(_on_draw_card)
 
+	Network.Card.play_card_requested.connect(_on_play_card_requested)
 
 func create_new_match(peerId1: int, peerId2: int) -> void:
 	print("Call to create new match")
@@ -23,7 +24,7 @@ func create_new_match(peerId1: int, peerId2: int) -> void:
 	matchState.initialize(_next_match_id, [peerId1, peerId2])
 	var battleField = BattlefieldState.new("map.json")
 	var deckManager = DeckManager.new(peerId1, peerId2)
-	
+	deckManager.name = "DeckManager"
 	var matchNode = matchController.new(matchState, battleField)
 	matchNode.name = "Match_%d" % _next_match_id
 	matchNode.add_child(matchState)
@@ -36,6 +37,7 @@ func create_new_match(peerId1: int, peerId2: int) -> void:
 	_next_match_id += 1
 	Network.Match.match_created.rpc_id(peerId1)
 	Network.Match.match_created.rpc_id(peerId2)
+	deckManager.start_deck_distribution(peerId1, peerId2)
 
 func get_match(peer_id: int) -> matchController:
 	var matchId: int = peer_to_match[peer_id]
@@ -106,3 +108,23 @@ func _on_draw_card(peer_id: int) -> void:
 	var turnPhase: MatchState.TURN_PHASE = matchCtl.matchState.phase
 	if !isPeerTurn || turnPhase != MatchState.TURN_PHASE.DRAW_CARD:
 		return
+	var matchId: int = peer_to_match[peer_id]
+	var matchCtl: matchController = matches[matchId]
+	Network.Match.init(matchId, matchCtl.battlefield.mapName, matchCtl.matchState.player_ids)
+	
+func _on_play_card_requested(peer_id: int, card_id: String) -> void:
+	if not peer_to_match.has(peer_id):
+		return
+	var matchId: int = peer_to_match[peer_id]
+	if not matches.has(matchId):
+		return
+	var matchCtl: matchController = matches[matchId]
+	var deck_node: DeckManager = matchCtl.get_node("DeckManager") as DeckManager
+	if not deck_node:
+		return
+	if deck_node.authenticate_and_use_card(peer_id, card_id):
+		Network.Card.confirm_card_played.rpc_id(peer_id, card_id)
+	else:
+		print("failure, card not found")
+		
+	
