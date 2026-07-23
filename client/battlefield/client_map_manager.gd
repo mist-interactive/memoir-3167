@@ -5,6 +5,10 @@ extends Node
 @export var MapGroundLayer: HexagonTileMapLayer
 @export var MapFeaturesLayer: HexagonTileMapLayer
 @onready var BattlefieldState: BattlefieldState = $"../../BattlefieldState"
+@onready var hand_ui: PlayerHandUI = $"../UICanvas/MarginContainer/PlayerHandUI"
+
+func setup_hand_ui(hand_model: PlayerHandModel) -> void:
+	hand_ui.initialize(hand_model)
 
 signal map_loaded
 
@@ -23,7 +27,7 @@ func _ready() -> void:
 	load_map(BattlefieldState.mapName)
 
 func load_map(map_name: String) -> void:
-	var filepath: String = "res://maps/" + map_name +".json"
+	var filepath: String = "res://maps/" + map_name
 	print("Client loading map ", map_name)
 	if not FileAccess.file_exists(filepath):
 		push_error("No such map file: ", filepath)
@@ -58,8 +62,8 @@ func load_map(map_name: String) -> void:
 		else:
 			push_warning("Client doesn't have visual data for the Feature enum: ", feature_type)
 	print("Map reconstruction complete!")
-	map_loaded.emit()
-	rpc_id(1, "client_finished_loading_map")
+	#map_loaded.emit()
+	#rpc_id(1, "client_finished_loading_map")
 	pass
 
 """	
