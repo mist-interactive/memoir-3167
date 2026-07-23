@@ -1,5 +1,9 @@
 extends Node
 class_name MatchState
+
+enum STATE { INITIALIZING, READY, IN_PROGRESS, PAUSED, ENDED }
+enum TurnPhase { WAIT_FOR_CARD, WAIT_FOR_ORDERS, EXECUTE_ORDERS }
+
 var matchId: int
 var player_ids: Array[int]
 var scores: Dictionary[int, int]
@@ -18,6 +22,11 @@ var player_turn_index: int:
 var should_sync: bool = true
 enum STATE {INITIALIZING, READY, IN_PROGRESS, PAUSED, ENDED}
 enum TURN_PHASE {START, PLAY_CARD, ISSUE_ORDERS, EXECUTE_ORDERS, DRAW_CARD}
+var scores: Dictionary[int, int]    
+var state: STATE = STATE.INITIALIZING
+
+var current_turn_peer_id: int = 0
+var current_turn_phase: TurnPhase = TurnPhase.WAIT_FOR_CARD
 
 func _init() -> void:
 	name = "matchState"
@@ -59,3 +68,5 @@ func sync() -> void:
 func is_player_turn(player_id: int) -> bool:
 	var index: int = player_ids.find(player_id)
 	return index == player_turn_index
+	if player_ids.size() > 1:
+		self.scores[player_ids[1]] = 0
