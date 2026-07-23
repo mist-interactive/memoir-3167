@@ -109,7 +109,7 @@ func _on_draw_card(peer_id: int) -> void:
 	if !isPeerTurn || turnPhase != MatchState.TURN_PHASE.DRAW_CARD:
 		return
 	var matchId: int = peer_to_match[peer_id]
-	var matchCtl: matchController = matches[matchId]
+	#var matchCtl: matchController = matches[matchId]
 	Network.Match.init(matchId, matchCtl.battlefield.mapName, matchCtl.matchState.player_ids)
 	
 func _on_play_card_requested(peer_id: int, card_id: String) -> void:

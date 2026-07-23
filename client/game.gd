@@ -17,15 +17,10 @@ func create_new_match(matchId: int, mapName: String, player_ids: Array[int]):
 	.stage("Waiting oponents to ready up...", func(): await loader.wait_untill(func(): return get_child(1).state == MatchState.STATE.READY)) \
 	.run()
 	add_child(battlefieldRenderer)
-	print("DEBUG: game.gd local_hand ID: ", local_hand.get_instance_id())
-	print("newMatch: ", matchState.matchId)
 	var battlefield_node = renderGameBoard.instantiate()
 	add_child(battlefield_node)
 	if battlefield_node.has_method("setup_hand_ui"):
 		battlefield_node.setup_hand_ui(local_hand)
-
-func _ready() -> void:
-	Network.Match.init_match_requested.connect(create_new_match)
 
 # from usva vv
 # func create_new_match(battleField: BattlefieldState, matchState: MatchState) -> void:

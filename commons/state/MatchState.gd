@@ -20,10 +20,7 @@ var player_turn_index: int:
 		player_turn_index = newIndex
 		should_sync = true
 var should_sync: bool = true
-enum STATE {INITIALIZING, READY, IN_PROGRESS, PAUSED, ENDED}
 enum TURN_PHASE {START, PLAY_CARD, ISSUE_ORDERS, EXECUTE_ORDERS, DRAW_CARD}
-var scores: Dictionary[int, int]    
-var state: STATE = STATE.INITIALIZING
 
 var current_turn_peer_id: int = 0
 var current_turn_phase: TurnPhase = TurnPhase.WAIT_FOR_CARD
