@@ -1,5 +1,6 @@
 extends Node
 class_name MatchState
+
 var matchId: int
 var player_ids: Array[int]
 var scores: Dictionary[int, int]
@@ -59,3 +60,5 @@ func sync() -> void:
 func is_player_turn(player_id: int) -> bool:
 	var index: int = player_ids.find(player_id)
 	return index == player_turn_index
+	if player_ids.size() > 1:
+		self.scores[player_ids[1]] = 0
