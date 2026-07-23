@@ -5,7 +5,7 @@ var draw_pile: Array[String] = []
 var discard_pile: Array[String] = []
 
 var _next_instance_id: int = 1000 
-var initial_hand_size: int = 15
+var initial_hand_size: int = 6
 
 # Maps peer_id to an Array of Dictionaries: Array[Dictionary]
 # Each dict inside the hand array holds: {"instance_id": int, "card_id": String}
