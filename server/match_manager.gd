@@ -16,6 +16,7 @@ func _ready() -> void:
 	Network.Actions.draw_card_requested.connect(_on_draw_card)
 
 	#Network.Card.play_card_requested.connect(_on_play_card_requested)
+	Network.Match.server_hex_requested.connect(_on_server_hex_requested)
 
 func create_new_match(peerId1: int, peerId2: int) -> void:
 	print("Call to create new match")
@@ -27,6 +28,7 @@ func create_new_match(peerId1: int, peerId2: int) -> void:
 	var unit_manager = UnitManager.new()
 	deckManager.name = "DeckManager"
 	matchNode.name = "Match_%d" % _next_match_id
+	matchNode.unit_manager = unit_manager
 	matchNode.add_child(matchState)
 	matchNode.add_child(battleField)
 	matchNode.add_child(deckManager)
@@ -106,3 +108,11 @@ func _on_draw_card(peer_id: int) -> void:
 		#return
 	#if deck_node.authenticate_and_use_card(peer_id, card_id):
 		#Network.Card.confirm_card_played.rpc_id(peer_id, card_id)
+
+func _on_server_hex_requested(peer_id: int, hex: Vector2i) -> void:
+	print("server hex requested by ", peer_id, " at ", hex)
+	if not peer_to_match.has(peer_id):
+		return
+	var matchId: int = peer_to_match[peer_id]
+	var match_controller = matches[matchId]
+	match_controller.process_hex_click(peer_id, hex)

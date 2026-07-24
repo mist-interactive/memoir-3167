@@ -14,9 +14,10 @@ func _input(event: InputEvent) -> void:
 		var math_pos: Vector2 = click_position - Vector2(HexMetrics.half_width, HexMetrics.half_height)
 		var hex: Vector2i = HexGrid.pixel_to_offset(math_pos, HexMetrics.HEX_SIZE)
 		#var hex: Vector2i = local_to_map(to_local(get_global_mouse_position()))
-		Network.request_hex_selection.rpc_id(1, hex)
+		Network.Match.request_hex_selection.rpc_id(1, hex)
 
 func _on_hex_broadcast(peer_id: int, hex: Vector2i) -> void:
+	print("on hex broadcast")
 	player_hex[peer_id] = hex
 	highlight_layer.clear()
 	for id in player_hex.keys():
