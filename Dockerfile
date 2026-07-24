@@ -1,4 +1,4 @@
-FROM debian:bookworm-slim
+FROM debian:bookworm-slim AS build
 
 ENV GODOT_VERSION "4.7.1"
 ENV GODOT_EXPORT_TEMPLATES_DIR "/root/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
@@ -18,18 +18,17 @@ RUN unzip godot.zip && \
 RUN git clone https://github.com/mist-interactive/godot_export_templates.git godot_export_templates
 RUN cd godot_export_templates && \
 	tar -xf linux_release_4_7_1.tar.xz && \
-	tar -xf web_release_4_7_1.tar.xz && \
-	mv linux_release.x86_64 "$GODOT_EXPORT_TEMPLATES_DIR" && \
-    mv web_nothreads_release.zip "$GODOT_EXPORT_TEMPLATES_DIR" && \
-    mv web_release.zip "$GODOT_EXPORT_TEMPLATES_DIR"
+	mv linux_release.x86_64 "$GODOT_EXPORT_TEMPLATES_DIR"
 
 RUN rm -rf godot_export_templates
 
 COPY . /root/memoir-3167/
-COPY ./deployment/entrypoint.sh /
-RUN chmod +x ./entrypoint.sh
 
-# build for the web
-RUN mkdir /root/web && godot --headless --path /root/memoir-3167 --export-release "Web" "/root/web/index.html"
+RUN mkdir -p /root/server/
+RUN godot --headless --path /root/memoir-3167 --export-release "Linux" "/root/server/memoir-3167.bin"
 
-ENTRYPOINT ["./entrypoint.sh"]
+FROM debian:bookworm-slim
+
+COPY --from=build /root/server/ /bin
+
+CMD ["memoir-3167.bin"]
