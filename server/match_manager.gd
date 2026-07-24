@@ -6,6 +6,7 @@ var matches: Dictionary[int, MatchController] = {}
 
 func _ready() -> void:
 	Network.Match.connect_match_requested.connect(_on_player_connect)
+	Network.Match.server_hex_requested.connect(_on_server_hex_requested)
 
 func create_new_match(peerId1: int, peerId2: int) -> void:
 	print("Call to create new match")
@@ -15,6 +16,7 @@ func create_new_match(peerId1: int, peerId2: int) -> void:
 	
 	var matchNode = MatchController.new(matchState, battleField)
 	matchNode.name = "Match_%d" % _next_match_id
+	matchNode.unit_manager = unit_manager
 	matchNode.add_child(matchState)
 	matchNode.add_child(battleField)
 	matchNode.add_child(unit_manager)
@@ -43,3 +45,11 @@ func _on_connect_match_requested(peer_id: int) -> void:
 	var matchId: int = peer_to_match[peer_id]
 	var matchCtl: MatchController = matches[matchId]
 	Network.Match.init(matchId, matchCtl.battlefield.mapName, matchCtl.matchState.player_ids)
+
+func _on_server_hex_requested(peer_id: int, hex: Vector2i) -> void:
+	print("server hex requested by ", peer_id, " at ", hex)
+	if not peer_to_match.has(peer_id):
+		return
+	var matchId: int = peer_to_match[peer_id]
+	var match_controller = matches[matchId]
+	match_controller.process_hex_click(peer_id, hex)

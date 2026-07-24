@@ -1,6 +1,8 @@
 extends Node
 class_name MatchNetwork
 
+signal server_hex_requested(peer_id: int, hex: Vector2i)
+
 signal connect_match_requested
 @rpc("any_peer","call_remote")
 func connect_match() -> void:
@@ -13,7 +15,6 @@ func connect_match() -> void:
 func match_created() -> void:
 	if multiplayer.is_server():
 		return
-	print("here")
 	Network.Match.connect_match.rpc()
 
 signal init_match_requested
@@ -25,3 +26,11 @@ func init(matchId: int, mapName: String, player_ids: Array[int]) -> void:
 	var battleField: BattlefieldState = BattlefieldState.new(mapName)
 	var matchState: MatchState = MatchState.new(matchId, player_ids)
 	init_match_requested.emit(battleField, matchState)
+
+@rpc("any_peer", "call_remote", "reliable")
+func request_hex_selection(hex: Vector2i) -> void:
+	if !multiplayer.is_server():
+		return
+	print("hex selection requested")
+	var sender := multiplayer.get_remote_sender_id()
+	server_hex_requested.emit(sender, hex)
