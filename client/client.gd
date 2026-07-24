@@ -69,3 +69,18 @@ func reconnect_to_server():
 	var err = peer.create_client(url)
 	await get_tree().create_timer(2).timeout
 	multiplayer.multiplayer_peer = peer
+	connected = true
+
+func get_cookie(cookie_name: String) -> String:
+	if not OS.has_feature("web"):
+		return ""
+	# JavaScript to find a specific cookie by name
+	var js_code = """
+		(function() {
+			var match = document.cookie.match(new RegExp('(^| )' + '%s' + '=([^;]+)'));
+			return match ? match[2] : '';
+		})();
+	""" % cookie_name
+	var result = JavaScriptBridge.eval(js_code)
+	return str(result) if result else ""
+	
