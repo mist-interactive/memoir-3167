@@ -72,3 +72,8 @@ func sync_spawn_unit(owner_id: int, unit_type: String, unique_id: String, coord:
 	new_unit_node.owner_id = owner_id
 	get_tree().current_scene.add_child(new_unit_node)
 	unit_manager.add_unit(new_unit_node, coord)
+
+func process_hex_click(peer_id:int, hex: Vector2i) -> void:
+	spawn_unit_on_server(peer_id, "test", hex)
+	for player in matchState.player_ids:
+		
