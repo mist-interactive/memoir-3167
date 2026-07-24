@@ -2,6 +2,7 @@ extends Node
 class_name MatchNetwork
 
 signal server_hex_requested(peer_id: int, hex: Vector2i)
+signal hex_broadcast(peer_id: int, hex: Vector2i)
 
 signal connect_match_requested
 @rpc("any_peer","call_remote")
@@ -34,3 +35,7 @@ func request_hex_selection(hex: Vector2i) -> void:
 	print("hex selection requested")
 	var sender := multiplayer.get_remote_sender_id()
 	server_hex_requested.emit(sender, hex)
+
+@rpc("authority", "call_remote", "reliable")
+func receive_hex_broadcast(peer_id: int, hex: Vector2i) -> void:
+	hex_broadcast.emit(peer_id, hex)

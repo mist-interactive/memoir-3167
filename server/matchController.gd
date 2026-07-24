@@ -43,4 +43,4 @@ func sync_spawn_unit(owner_id: int, unit_type: String, unique_id: String, coord:
 func process_hex_click(peer_id:int, hex: Vector2i) -> void:
 	spawn_unit_on_server(peer_id, "test", hex)
 	for player in matchState.player_ids:
-		
+		Network.Match.receive_hex_broadcast.rpc_id(player, peer_id, hex)
