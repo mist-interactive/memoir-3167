@@ -2,7 +2,7 @@ extends Node
 @export var Match: MatchNetwork
 @export var Actions: ActionsNetwork
 @export var Client: ClientNetwork
-
+@export var Hand: HandNetwork
 signal join_queue_requested(peer_id: int)
 
 @rpc("any_peer","call_remote")
