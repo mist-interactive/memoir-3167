@@ -17,11 +17,15 @@ func _ready() -> void:
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
+	var raw_jwt_token: String = get_cookie("test")
+	if raw_jwt_token.is_empty():
+		#Handle missing token
+		return
 	await loader.stage("Initializing connection...", initialize_connection) \
 	.stage("Waiting to establish connection...", func(): await loader.wait_untill(func(): return connected == true)) \
 	.stage("Initializing client...", func(): client = ClientState.new(multiplayer.get_unique_id())) \
 	.stage("Authenticating client...", func():
-		Network.Client.auth_check.rpc_id(1, "fsdfsdf")
+		Network.Client.auth_check.rpc_id(1, raw_jwt_token)
 		await loader.wait_untill(func(): return client.authenticated)
 	) \
 	.run()
@@ -73,7 +77,7 @@ func reconnect_to_server():
 
 func get_cookie(cookie_name: String) -> String:
 	if not OS.has_feature("web"):
-		return ""
+		return "jwt_local_dummy_text"
 	# JavaScript to find a specific cookie by name
 	var js_code = """
 		(function() {
