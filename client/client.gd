@@ -3,7 +3,7 @@ extends Node
 @export var menu: Node2D
 @export var client: ClientState
 var peer: WebSocketMultiplayerPeer
-var url: String = "ws://localhost:6669"
+var url: String = "ws://localhost:80/ws/"
 var connected: bool = false
 
 func _ready() -> void:
