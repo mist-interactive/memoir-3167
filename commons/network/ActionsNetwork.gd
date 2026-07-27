@@ -1,6 +1,11 @@
 extends Node
 class_name ActionsNetwork
 
+signal hand_drawn_requested
+@rpc("authority", "call_remote")
+func  hand_drawn() -> void:
+	pass
+
 signal play_card_requested(peer_id: int)
 @rpc("any_peer", "call_remote")
 func play_card() -> void:
@@ -19,4 +24,6 @@ func execute_orders() ->void:
 signal draw_card_requested(peer_id: int)
 @rpc("any_peer", "call_remote")
 func draw_card() ->void:
-	pass
+	if !multiplayer.is_server():
+		return
+	draw_card_requested.emit(multiplayer.get_remote_sender_id())
