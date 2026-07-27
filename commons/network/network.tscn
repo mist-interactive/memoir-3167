@@ -1,44 +1,31 @@
-[gd_scene format=3 uid="uid://b5yts342uqubh"]
+[gd_scene format=3 uid="uid://dkddnxw2gwyjf"]
 
 [ext_resource type="Script" uid="uid://b8kj7hat3e0mj" path="res://commons/network/network.gd" id="1_qmnym"]
 [ext_resource type="Script" uid="uid://dc3wrkpwwk6cr" path="res://commons/network/ActionsNetwork.gd" id="2_1uyt4"]
 [ext_resource type="Script" uid="uid://87p1uo7s4h4h" path="res://commons/network/matchNetwork.gd" id="2_51hul"]
 [ext_resource type="Script" uid="uid://4jm5c0m0aatv" path="res://commons/network/ClientNetwork.gd" id="4_5g0sp"]
-[ext_resource type="Script" uid="uid://l4ntr62ni0wo" path="res://commons/network/HandNetwork.gd" id="5_5pbef"]
 [ext_resource type="Script" uid="uid://bv4vhgs6f66ij" path="res://commons/network/cardNetwork.gd" id="5_4uwqq"]
+[ext_resource type="Script" uid="uid://l4ntr62ni0wo" path="res://commons/network/HandNetwork.gd" id="5_5pbef"]
 
-[node name="Network" type="Node" unique_id=1103206024 node_paths=PackedStringArray("Match", "Actions", "Client", "Hand")]
-[node name="Network" type="Node" unique_id=1325971778 node_paths=PackedStringArray("Match", "Actions", "Client", "Card")]
+[node name="Network" type="Node" unique_id=1673834017 node_paths=PackedStringArray("Match", "Actions", "Client", "Hand", "Card")]
 script = ExtResource("1_qmnym")
 Match = NodePath("Match")
 Actions = NodePath("Actions")
 Client = NodePath("Client")
 Hand = NodePath("Hand")
+Card = NodePath("Card")
 
-[node name="Actions" type="Node" parent="." unique_id=799996140]
+[node name="Actions" type="Node" parent="." unique_id=186502016]
 script = ExtResource("2_1uyt4")
-[ext_resource type="Script" uid="uid://87p1uo7s4h4h" path="res://commons/network/matchNetwork.gd" id="2_51hul"]
-[ext_resource type="Script" uid="uid://bv4vhgs6f66ij" path="res://commons/network/cardNetwork.gd" id="3_1uyt4"]
 
-[node name="Network" type="Node" unique_id=1103206024 node_paths=PackedStringArray("Match", "Card")]
-script = ExtResource("1_qmnym")
-Match = NodePath("Match")
-Card = NodePath("CardNetwork")
-
-[node name="Match" type="Node" parent="." unique_id=335348658]
-script = ExtResource("2_5pbef")
-
-[node name="Client" type="Node" parent="." unique_id=1464937758]
-script = ExtResource("4_5g0sp")
-
-[node name="Hand" type="Node" parent="." unique_id=709224438]
-script = ExtResource("5_5pbef")
-[node name="CardNetwork" type="Node" parent="." unique_id=973789890]
-[node name="Actions" type="Node" parent="." unique_id=1296414538]
-script = ExtResource("3_1uyt4")
-
-[node name="Client" type="Node" parent="." unique_id=2129203336]
-script = ExtResource("4_5g0sp")
-
-[node name="CardNetwork" type="Node" parent="." unique_id=375280287]
+[node name="Card" type="Node" parent="." unique_id=1417019603]
 script = ExtResource("5_4uwqq")
+
+[node name="Match" type="Node" parent="." unique_id=662550857]
+script = ExtResource("2_51hul")
+
+[node name="Hand" type="Node" parent="." unique_id=546489085]
+script = ExtResource("5_5pbef")
+
+[node name="Client" type="Node" parent="." unique_id=1321509962]
+script = ExtResource("4_5g0sp")

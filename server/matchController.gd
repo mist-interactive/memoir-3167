@@ -36,9 +36,9 @@ func handle_client_state_change(player_id: int, state: MatchState.STATE) -> void
 	if matchState.state == MatchState.STATE.INITIALIZING && clients_are_ready():
 		matchState.state = MatchState.STATE.IN_PROGRESS
 		deckManager.draw_hand(matchState.player_ids[0])
-		Network.Actions.hand_drawn.rpc_id(matchState.player_ids[0])
+		#Network.Actions.hand_drawn.rpc_id(matchState.player_ids[0])
 		deckManager.draw_hand(matchState.player_ids[1])
-		Network.Actions.hand_drawn.rpc_id(matchState.player_ids[1])
+		#Network.Actions.hand_drawn.rpc_id(matchState.player_ids[1])
 
 func isPhase(phase: MatchState.TURN_PHASE) -> bool:
 	return matchState.phase == phase

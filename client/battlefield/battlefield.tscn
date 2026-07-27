@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://buj6ft1vvdf2f" path="res://addons/hexagon_tilemaplayer/hexagon_tilemaplayer.gd" id="4_4ok02"]
 [ext_resource type="Script" uid="uid://7tdnt2pcipdq" path="res://client/battlefield/camera_controller.gd" id="5_7nanj"]
 [ext_resource type="Texture2D" uid="uid://bbk0bb2k6twkd" path="res://assets/sprites/hex/fields_feature_sprite_sheet.png" id="7_yttjq"]
-[ext_resource type="Script" uid="uid://dokagb5eik4vp" path="res://client/battlefield/button.gd" id="9_cuxbe"]
 [ext_resource type="Script" uid="uid://cpytl0qe8h6u5" path="res://client/battlefield/player_hand_ui.gd" id="9_cuxbe"]
 [ext_resource type="Script" uid="uid://5n1dlvt3tw4s" path="res://client/battlefield/margin_container.gd" id="10_f3lu3"]
 [ext_resource type="PackedScene" uid="uid://bs3n3ysl7e5vc" path="res://client/player_hand/card_ui.tscn" id="12_f3lu3"]
@@ -114,6 +113,10 @@ anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
+offset_left = -576.0
+offset_top = -648.0
+offset_right = -576.0
+offset_bottom = -648.0
 grow_horizontal = 2
 grow_vertical = 0
 script = ExtResource("10_f3lu3")

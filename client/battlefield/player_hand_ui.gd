@@ -10,21 +10,19 @@ extends Control
 @export var y_min: float = 0.0
 @export var y_max: float = -15.0
 @export var default_separation: float = 10.0
+@onready var handState: HandState = $"../../../../HandState"
 
-var _hand_model: PlayerHandModel
-
-func initialize(hand_model: PlayerHandModel) -> void:
-	_hand_model = hand_model
+func initialize() -> void:
+	print("here")
 	_clear_hand()
+	Network.Card.local_card_received.connect(_on_model_card_added)
+	Network.Card.local_card_removed.connect(_on_model_card_removed)
+	Network.Actions.hand_drawn_requested.connect(_on_hand_synchronized)
+	_on_hand_synchronized()
 
-	_hand_model.card_added.connect(_on_model_card_added)
-	_hand_model.card_removed.connect(_on_model_card_removed)
-	_hand_model.hand_synchronized.connect(_on_hand_synchronized)
-
-	if not _hand_model.is_empty():
-		_on_hand_synchronized(_hand_model.get_cards())
-
-func _on_hand_synchronized(hand_data: Dictionary) -> void:
+func _on_hand_synchronized() -> void:
+	print("on hand sync !!!_!_!_!!_!_!_")
+	var hand_data: Dictionary = handState.card_ids
 	_clear_hand()
 	for instance_id: int in hand_data:
 		var card_id: String = hand_data[instance_id]

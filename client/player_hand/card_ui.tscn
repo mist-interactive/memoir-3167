@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://bs3n3ysl7e5vc"]
 
 [ext_resource type="Script" uid="uid://bfgpsi28noghb" path="res://client/player_hand/CardUi.gd" id="1_ii6mt"]
-[ext_resource type="Script" uid="uid://ipgysn3hmyjr" path="res://client/player_hand/description_label.gd" id="2_ghylh"]
 
 [node name="CardUI" type="MarginContainer" unique_id=1384061792 node_paths=PackedStringArray("title_label", "description_label")]
 custom_minimum_size = Vector2(120, 220)
@@ -30,4 +29,3 @@ layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 2
 autowrap_mode = 3
-script = ExtResource("2_ghylh")
