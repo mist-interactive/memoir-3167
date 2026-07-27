@@ -98,7 +98,6 @@ metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
 [node name="UnitContainer" type="Node2D" parent="." unique_id=1804487023]
 
 [node name="UICanvas" type="CanvasLayer" parent="." unique_id=1086948552]
-follow_viewport_enabled = true
 
 [node name="Button" type="Button" parent="UICanvas" unique_id=721084783]
 offset_left = 4737.0
