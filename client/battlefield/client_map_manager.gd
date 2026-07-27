@@ -7,8 +7,9 @@ extends Node
 @onready var BattlefieldState: BattlefieldState = $"../../BattlefieldState"
 @onready var hand_ui: PlayerHandUI = $"../UICanvas/MarginContainer/PlayerHandUI"
 
-func setup_hand_ui(hand_model: PlayerHandModel) -> void:
-	hand_ui.initialize(hand_model)
+func setup_hand_ui() -> void:
+	hand_ui.initialize()
+	pass
 
 signal map_loaded
 
