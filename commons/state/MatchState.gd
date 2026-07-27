@@ -7,7 +7,7 @@ var state: STATE = STATE.INITIALIZING:
 	set(newState):
 		state = newState
 		should_sync = true
-var phase: TURN_PHASE = TURN_PHASE.START:
+var phase: TURN_PHASE = TURN_PHASE.DRAW_HAND:
 	set(newPhase):
 		phase = newPhase
 		should_sync = true
@@ -17,7 +17,7 @@ var player_turn_index: int:
 		should_sync = true
 var should_sync: bool = true
 enum STATE {INITIALIZING, READY, IN_PROGRESS, PAUSED, ENDED}
-enum TURN_PHASE {START, PLAY_CARD, ISSUE_ORDERS, EXECUTE_ORDERS, DRAW_CARD}
+enum TURN_PHASE {DRAW_HAND, PLAY_CARD, ISSUE_ORDERS, EXECUTE_ORDERS, DRAW_CARD}
 
 func _init() -> void:
 	name = "matchState"
@@ -29,7 +29,7 @@ func initialize(matchId: int, player_ids: Array[int]) -> void:
 	self.player_turn_index = randi_range(0,1)
 	self.scores[player_ids[0]] = 0
 	self.scores[player_ids[1]] = 0
-	self.phase = TURN_PHASE.START
+	self.phase = TURN_PHASE.DRAW_HAND
 
 func get_snapshot() -> Dictionary:
 	return {
