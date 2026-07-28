@@ -1,4 +1,4 @@
-class_name GameEnums
+class_name SectorEnums
 extends RefCounted
 
 enum Sector {

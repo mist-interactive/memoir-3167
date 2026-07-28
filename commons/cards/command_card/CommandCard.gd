@@ -3,13 +3,13 @@ extends Resource
 
 @export_group("Command Card Properties")
 @export var id: String = ""
-@export var display_name: String = ""
-@export_multiline var description: String = ""
-@export var card_target: GameEnums.Sector = GameEnums.Sector.ALL
+@export var title_label: String = ""
+@export_multiline var description_label: String = ""
+@export var card_target: SectorEnums.Sector = SectorEnums.Sector.ALL
 @export var quantity: int = 1
+@export_group("Visuals")
+@export var card_art: Texture2D
 # any other variables the cards might need
-#
-# 
 
 
 # creating a .tres card file
