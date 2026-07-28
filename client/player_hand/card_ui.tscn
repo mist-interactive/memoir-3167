@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://bs3n3ysl7e5vc"]
+
+[ext_resource type="Script" uid="uid://bfgpsi28noghb" path="res://client/player_hand/CardUi.gd" id="1_ii6mt"]
+
+[node name="CardUI" type="MarginContainer" unique_id=1384061792 node_paths=PackedStringArray("title_label", "description_label")]
+custom_minimum_size = Vector2(120, 220)
+offset_right = 1.0
+offset_bottom = 23.0
+pivot_offset = Vector2(75, 110)
+script = ExtResource("1_ii6mt")
+title_label = NodePath("title_label")
+description_label = NodePath("description_label")
+
+[node name="background_texture" type="TextureRect" parent="." unique_id=1947103247]
+layout_mode = 2
+expand_mode = 1
+stretch_mode = 5
+
+[node name="title_label" type="Label" parent="." unique_id=174640353]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(0, 165)
+layout_mode = 2
+autowrap_mode = 3
+
+[node name="description_label" type="Label" parent="." unique_id=248198948]
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(0, 87.975)
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 2
+autowrap_mode = 3

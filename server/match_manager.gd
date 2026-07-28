@@ -3,8 +3,7 @@ class_name MatchManager
 var _next_match_id: int = 0
 var peer_to_match: Dictionary[int, int] = {}
 var matches: Dictionary[int, matchController] = {}
-@onready var card_database: Node = $"../CardDatabase" 
-
+@onready var card_database: Node = $"../CardDatabase"
 
 func _ready() -> void:
 	Network.Match.connect_match_requested.connect(_on_player_connect)
@@ -16,6 +15,7 @@ func _ready() -> void:
 	Network.Actions.execute_orders_requested.connect(_on_execute_orders)
 	Network.Actions.draw_card_requested.connect(_on_draw_card)
 
+	#Network.Card.play_card_requested.connect(_on_play_card_requested)
 
 func create_new_match(peerId1: int, peerId2: int) -> void:
 	print("Call to create new match")
@@ -23,8 +23,8 @@ func create_new_match(peerId1: int, peerId2: int) -> void:
 	matchState.initialize(_next_match_id, [peerId1, peerId2])
 	var battleField = BattlefieldState.new("map.json")
 	var deckManager = DeckManager.new(peerId1, peerId2)
-	
-	var matchNode = matchController.new(matchState, battleField)
+	var matchNode = matchController.new(matchState, battleField, deckManager)
+	deckManager.name = "DeckManager"
 	matchNode.name = "Match_%d" % _next_match_id
 	matchNode.add_child(matchState)
 	matchNode.add_child(battleField)
@@ -63,46 +63,43 @@ func _on_client_match_state_change(peer_id: int, state: MatchState.STATE):
 	print("Client state change")
 	var matchCtl: matchController = get_match(peer_id)
 	matchCtl.handle_client_state_change(peer_id, state)
-	
+
 # player actions
-func _on_play_card(peer_id: int) -> void:
+func _on_play_card(peer_id: int, card_id: String) -> void:
 	var matchCtl: matchController = get_match(peer_id)
-	var state: MatchState.STATE = matchCtl.matchState.state
-	if state != MatchState.STATE.IN_PROGRESS:
+	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(MatchState.TURN_PHASE.PLAY_CARD):
 		return
-	var isPeerTurn: bool = matchCtl.matchState.is_player_turn(peer_id)
-	var turnPhase: MatchState.TURN_PHASE = matchCtl.matchState.phase
-	if !isPeerTurn || turnPhase != MatchState.TURN_PHASE.PLAY_CARD:
-		return
-	pass
+	if matchCtl.deckManager.authenticate_and_use_card(peer_id, card_id):
+		Network.Card.confirm_card_played.rpc_id(peer_id, card_id)
 
 func _on_issue_order(peer_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
-	var state: MatchState.STATE = matchCtl.matchState.state
-	if state != MatchState.STATE.IN_PROGRESS:
+	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(MatchState.TURN_PHASE.ISSUE_ORDERS):
 		return
-	var isPeerTurn: bool = matchCtl.matchState.is_player_turn(peer_id)
-	var turnPhase: MatchState.TURN_PHASE = matchCtl.matchState.phase
-	if !isPeerTurn || turnPhase != MatchState.TURN_PHASE.ISSUE_ORDERS:
-		return
-	pass
 
 func _on_execute_orders(peer_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
-	var state: MatchState.STATE = matchCtl.matchState.state
-	if state != MatchState.STATE.IN_PROGRESS:
-		return
-	var isPeerTurn: bool = matchCtl.matchState.is_player_turn(peer_id)
-	var turnPhase: MatchState.TURN_PHASE = matchCtl.matchState.phase
-	if !isPeerTurn || turnPhase != MatchState.TURN_PHASE.EXECUTE_ORDERS:
+	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(MatchState.TURN_PHASE.EXECUTE_ORDERS):
 		return
 
 func _on_draw_card(peer_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
-	var state: MatchState.STATE = matchCtl.matchState.state
-	if state != MatchState.STATE.IN_PROGRESS:
+	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(MatchState.TURN_PHASE.DRAW_CARD):
 		return
-	var isPeerTurn: bool = matchCtl.matchState.is_player_turn(peer_id)
-	var turnPhase: MatchState.TURN_PHASE = matchCtl.matchState.phase
-	if !isPeerTurn || turnPhase != MatchState.TURN_PHASE.DRAW_CARD:
-		return
+	matchCtl.deckManager.draw_card(peer_id)
+	# var matchId: int = peer_to_match[peer_id]
+	# var matchCtl: matchController = matches[matchId]
+	# Network.Match.init(matchId, matchCtl.battlefield.mapName, matchCtl.matchState.player_ids)
+	
+#func _on_play_card_requested(peer_id: int, card_id: String) -> void:
+	#if not peer_to_match.has(peer_id):
+		#return
+	#var matchId: int = peer_to_match[peer_id]
+	#if not matches.has(matchId):
+		#return
+	#var matchCtl: matchController = matches[matchId]
+	#var deck_node: DeckManager = matchCtl.get_node("DeckManager") as DeckManager
+	#if not deck_node:
+		#return
+	#if deck_node.authenticate_and_use_card(peer_id, card_id):
+		#Network.Card.confirm_card_played.rpc_id(peer_id, card_id)
