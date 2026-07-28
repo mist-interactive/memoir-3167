@@ -30,3 +30,7 @@ func _on_sync_requested(snapshot: Dictionary):
 func add_card(instance_id: int, card_id: String) -> void:
 	card_ids[instance_id] = card_id
 	should_sync = true
+
+func remove_card(instance_id: int) -> void:
+	card_ids.erase(instance_id)
+	should_sync = true

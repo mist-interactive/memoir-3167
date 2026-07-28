@@ -15,7 +15,7 @@ extends Control
 func initialize() -> void:
 	_clear_hand()
 	Network.Card.local_card_received.connect(_on_model_card_added)
-	Network.Card.local_card_removed.connect(_on_model_card_removed)
+	Network.Actions.card_played_received.connect(_on_model_card_removed)
 	Network.Actions.hand_drawn_requested.connect(_on_hand_synchronized)
 	_on_hand_synchronized()
 
@@ -31,7 +31,9 @@ func _on_model_card_added(instance_id: int, card_id: String) -> void:
 	_instantiate_card_node(instance_id, card_id)
 	_recalculate_layout()
 
-func _on_model_card_removed(instance_id: int) -> void:
+func _on_model_card_removed(peer_id: int, instance_id: int) -> void:
+	if multiplayer.get_unique_id() != peer_id:
+		return
 	var card_node: Node = get_node_or_null(str(instance_id))
 	if card_node:
 		remove_child(card_node)
@@ -92,7 +94,7 @@ func _recalculate_layout() -> void:
 		card.rotation_degrees = max_rotation_degrees * rot_multiplier
 
 func _on_card_clicked_by_player(instance_id: int) -> void:
-	Network.Card.request_play_card.rpc(instance_id)
+	Network.Actions.play_card.rpc(instance_id)
 
 func _clear_hand() -> void:
 	for child: Node in get_children():

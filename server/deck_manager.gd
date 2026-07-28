@@ -37,10 +37,10 @@ func initialize_match_deck() -> void:
 	shuffle_deck()
 	print("Server Deck Manager: Deck initialized with %d total cards." % draw_pile.size())
 
-func draw_card(peer_id: int) -> void:
+func draw_card(peer_id: int) -> bool:
 	if draw_pile.is_empty():
 		shuffle_deck()
-		if draw_pile.is_empty(): return
+		if draw_pile.is_empty(): return false
 
 	var drawn_card_id: String = draw_pile.pop_back()
 	var assigned_id: int = _next_instance_id
@@ -55,6 +55,7 @@ func draw_card(peer_id: int) -> void:
 	player_hands[peer_id].opponent_hand_size = get_opponent_hand_size(peer_id)
 	
 	Network.Card.receive_card_from_server.rpc_id(peer_id, assigned_id, drawn_card_id)
+	return true
 
 func shuffle_deck() -> void:
 	if draw_pile.is_empty() and not discard_pile.is_empty():
@@ -63,24 +64,12 @@ func shuffle_deck() -> void:
 	
 	draw_pile.shuffle()
 
-func authenticate_and_use_card(peer_id: int, target_instance_id: String) -> bool:
-	# ... Phase/Turn verification checks go here ...
-	#var found_index: int = -1
-	#var hand: HandState = player_hands[peer_id]
-	#if not player_hands.has(peer_id):
-		#return false # could not map peer_id to hand
-	#for i in range(hand.size()):
-		#if hand[i]["instance_id"] == target_instance_id:
-			#found_index = i
-			#break
-			#
-	#if found_index == -1:
-		#return false
-		#
-	#var used_card_data = hand[found_index]
-	#hand.remove_at(found_index)
-	#discard_pile.append(used_card_data["card_id"])
-	
+func play_card(peer_id: int, instance_id: int) -> bool:
+	if !hasCardInHand(peer_id, instance_id):
+		return false
+	player_hands[peer_id].remove_card(instance_id)
+	for peer in player_hands:
+		Network.Actions.card_played.rpc_id(peer, peer_id, instance_id)
 	return true
 
 func draw_hand(peer_id: int) -> void:
@@ -100,3 +89,7 @@ func get_opponent_hand_size(peer_id: int) -> int:
 func initialize_opponents_hands() -> void:
 	for key in player_hands:
 		player_hands[key].opponent_hand_size = get_opponent_hand_size(key)
+
+# helper functions
+func hasCardInHand(peer_id: int, instance_id: int) -> bool:
+	return player_hands[peer_id].card_ids.has(instance_id)
