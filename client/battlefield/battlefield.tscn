@@ -8,6 +8,7 @@
 [ext_resource type="Script" uid="uid://buj6ft1vvdf2f" path="res://addons/hexagon_tilemaplayer/hexagon_tilemaplayer.gd" id="4_4ok02"]
 [ext_resource type="Script" uid="uid://7tdnt2pcipdq" path="res://client/battlefield/camera_controller.gd" id="5_7nanj"]
 [ext_resource type="Texture2D" uid="uid://bbk0bb2k6twkd" path="res://assets/sprites/hex/fields_feature_sprite_sheet.png" id="7_yttjq"]
+[ext_resource type="PackedScene" uid="uid://buxwxqa5ikfqd" path="res://commons/units/Unit.tscn" id="8_xfsvk"]
 [ext_resource type="Texture2D" uid="uid://l08uw4hx56l0" path="res://assets/sprites/hex/highlight.png" id="13_56ovr"]
 [ext_resource type="Script" uid="uid://birdmambhh8rf" path="res://client/battlefield/map_highlight.gd" id="13_upguu"]
 
@@ -55,9 +56,10 @@ sources/0 = SubResource("TileSetAtlasSource_upguu")
 script = ExtResource("1_cuxbe")
 unit_container = NodePath("UnitContainer")
 
-[node name="MapBaker" parent="." unique_id=621948442 node_paths=PackedStringArray("MapGroundLayer", "MapFeatureLayer") instance=ExtResource("1_siwgj")]
+[node name="MapBaker" parent="." unique_id=621948442 node_paths=PackedStringArray("MapGroundLayer", "MapFeatureLayer", "UnitContainer") instance=ExtResource("1_siwgj")]
 MapGroundLayer = NodePath("../MapGround")
 MapFeatureLayer = NodePath("../MapFeature")
+UnitContainer = NodePath("../UnitContainer")
 bake_map = false
 
 [node name="MapManager" type="Node" parent="." unique_id=225508304 node_paths=PackedStringArray("MapGroundLayer", "MapFeaturesLayer")]
@@ -80,6 +82,9 @@ script = ExtResource("4_4ok02")
 metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
 
 [node name="UnitContainer" type="Node2D" parent="." unique_id=1804487023]
+
+[node name="Unit" parent="UnitContainer" unique_id=829278407 instance=ExtResource("8_xfsvk")]
+position = Vector2(260, 202)
 
 [node name="MapHighlight" type="TileMapLayer" parent="." unique_id=1870725227]
 modulate = Color(1, 1, 1, 0.5019608)

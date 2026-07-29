@@ -35,6 +35,7 @@ func request_hex_selection(hex: Vector2i) -> void:
 	print("hex selection requested")
 	var sender := multiplayer.get_remote_sender_id()
 	server_hex_requested.emit(sender, hex)
+	
 
 @rpc("authority", "call_remote", "reliable")
 func receive_hex_broadcast(peer_id: int, hex: Vector2i) -> void:

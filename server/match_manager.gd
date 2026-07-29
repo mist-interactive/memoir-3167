@@ -13,6 +13,7 @@ func create_new_match(peerId1: int, peerId2: int) -> void:
 	var matchState = MatchState.new(_next_match_id, [peerId1, peerId2])
 	var battleField = BattlefieldState.new("map.json")
 	var unit_manager = UnitManager.new()
+	unit_manager.name = "UnitManager"
 	
 	var matchNode = MatchController.new(matchState, battleField)
 	matchNode.name = "Match_%d" % _next_match_id

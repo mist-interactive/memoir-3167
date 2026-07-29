@@ -15,7 +15,7 @@ extends Node2D
 		else:
 			position = HexGrid.offset_to_pixel(new_coord) + visual_offset
 
-var uuid: String = ""
+var uuid: int = -1
 var type: String = ""
 var is_selected: bool = false
 var visual_offset: Vector2:
