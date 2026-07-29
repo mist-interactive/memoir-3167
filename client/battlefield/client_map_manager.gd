@@ -6,10 +6,12 @@ extends Node
 @export var MapFeaturesLayer: HexagonTileMapLayer
 @onready var BattlefieldState: BattlefieldState = $"../../BattlefieldState"
 @onready var hand_ui: PlayerHandUI = $"../UICanvas/MarginContainer/PlayerHandUI"
+@onready var enemy_hand_ui: EnemyHandUI = $"../UICanvas/MarginContainer2/EnemyHandUI"
 
-func setup_hand_ui() -> void:
+
+func setup_hand_ui(player_ids: Array[int]) -> void:
 	hand_ui.initialize()
-	pass
+	enemy_hand_ui.initialize(player_ids[0])
 
 signal map_loaded
 
