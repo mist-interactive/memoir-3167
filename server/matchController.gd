@@ -1,5 +1,5 @@
 extends Node
-class_name  MatchController
+class_name  matchController
 var matchState: MatchState
 var battlefield: BattlefieldState
 var deckManager: DeckManager
