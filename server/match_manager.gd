@@ -2,7 +2,7 @@ extends Node
 class_name MatchManager
 var _next_match_id: int = 0
 var peer_to_match: Dictionary[int, int] = {}
-var matches: Dictionary[int, MatchController] = {}
+var matches: Dictionary[int, matchController] = {}
 
 func _ready() -> void:
 	Network.Match.connect_match_requested.connect(_on_player_connect)
@@ -15,7 +15,7 @@ func create_new_match(peerId1: int, peerId2: int) -> void:
 	var unit_manager = UnitManager.new()
 	unit_manager.name = "UnitManager"
 	
-	var matchNode = MatchController.new(matchState, battleField)
+	var matchNode = matchController.new(matchState, battleField)
 	matchNode.name = "Match_%d" % _next_match_id
 	matchNode.unit_manager = unit_manager
 	matchNode.add_child(matchState)
@@ -32,19 +32,19 @@ func create_new_match(peerId1: int, peerId2: int) -> void:
 # signals handlers
 func _on_player_connect(peer_id: int) -> void:
 	var matchId: int = peer_to_match[peer_id]
-	var matchCtl: MatchController = matches[matchId]
+	var matchCtl: matchController = matches[matchId]
 	matchCtl.handle_connect(peer_id)
 	
 func _on_player_disconnect(peed_id: int) -> void:
 	var matchId: int = peer_to_match[peed_id]
-	var matchCtl: MatchController = matches[matchId]
+	var matchCtl: matchController = matches[matchId]
 	matchCtl.handle_disconnect(peed_id)
 	# Should this be added?
 	#peer_to_match.erase(peed_id)
 
 func _on_connect_match_requested(peer_id: int) -> void:
 	var matchId: int = peer_to_match[peer_id]
-	var matchCtl: MatchController = matches[matchId]
+	var matchCtl: matchController = matches[matchId]
 	Network.Match.init(matchId, matchCtl.battlefield.mapName, matchCtl.matchState.player_ids)
 
 func _on_server_hex_requested(peer_id: int, hex: Vector2i) -> void:
