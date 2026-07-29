@@ -6,6 +6,7 @@ extends Node
 var unit_grid: Dictionary = {}
 var units_by_id: Dictionary = {}
 var active_container: Node
+var _unit_id_counter: int = 0
 
 func add_unit(unit: Variant, coord: Vector2i) -> void:
 	if unit_grid.has(coord):
@@ -21,15 +22,6 @@ func remove_unit(coord: Vector2i) -> void:
 		units_by_id.erase(unit_to_remove.uuid)
 		unit_grid.erase(coord)
 
-# Add this? Change declaration to use Variant?		
-'''
-func remove_unit(id: String) -> void:
-	if units_by_id.has(id):
-		var unit_to_remove = units_by_id[id]
-		units_by_id.erase(id)
-		unit_grid.erase(unit_to_remove.hex_coord)
-'''
-
 func move_unit(unit: Variant, old_coord: Vector2i, new_coord: Vector2i) -> void:
 		remove_unit(old_coord)
 		add_unit(unit, new_coord)
@@ -37,5 +29,12 @@ func move_unit(unit: Variant, old_coord: Vector2i, new_coord: Vector2i) -> void:
 func get_unit_at(coord: Vector2i) -> Variant:
 	return unit_grid.get(coord)
 	
-func get_unit_by_id(id: String) -> Variant:
+func get_unit_by_id(id: int) -> Variant:
 	return units_by_id.get(id)
+	
+func generate_server_unit_id() -> int:
+	if not multiplayer.is_server():
+		push_error("Client tried to generate a unit ID.")
+		return -1
+	_unit_id_counter += 1
+	return _unit_id_counter
