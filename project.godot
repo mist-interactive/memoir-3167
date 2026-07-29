@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 Network="*uid://dkddnxw2gwyjf"
 CardDatabase="*uid://qg84syo3goe7"
+HexMetrics="*uid://b5k33exfq62ot"
 
 [display]
 
