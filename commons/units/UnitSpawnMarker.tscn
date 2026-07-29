@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://hefmcl73f8pb"]
+
+[ext_resource type="Script" uid="uid://bu5pvjj0jwc1x" path="res://commons/units/unit_spawn_marker.gd" id="1_6uw2k"]
+[ext_resource type="Texture2D" uid="uid://b36rlwjyo7k5n" path="res://icon.svg" id="1_bhgym"]
+
+[node name="UnitSpawnMarker" type="Sprite2D" unique_id=276452804]
+texture = ExtResource("1_bhgym")
+script = ExtResource("1_6uw2k")
