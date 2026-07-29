@@ -13,7 +13,6 @@ extends Control
 @onready var handState: HandState = $"../../../../HandState"
 
 func initialize() -> void:
-	print("here")
 	_clear_hand()
 	Network.Card.local_card_received.connect(_on_model_card_added)
 	Network.Card.local_card_removed.connect(_on_model_card_removed)
@@ -21,7 +20,6 @@ func initialize() -> void:
 	_on_hand_synchronized()
 
 func _on_hand_synchronized() -> void:
-	print("on hand sync !!!_!_!_!!_!_!_")
 	var hand_data: Dictionary = handState.card_ids
 	_clear_hand()
 	for instance_id: int in hand_data:
