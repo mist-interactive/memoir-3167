@@ -84,3 +84,4 @@ func _on_draw_card(peer_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
 	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(MatchState.TURN_PHASE.DRAW_CARD):
 		return
+	matchCtl.deckManager.draw_card(peer_id) 
