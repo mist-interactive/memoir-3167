@@ -20,6 +20,7 @@ func _physics_process(delta: float) -> void:
 		if not hand.should_sync:
 			continue
 		Network.Hand.sync.rpc_id(peer_id, hand.get_snapshot())
+		hand.should_sync = false
 
 func initialize_match_deck() -> void:
 	draw_pile.clear()
@@ -51,6 +52,7 @@ func draw_card(peer_id: int) -> void:
 	}
 	
 	player_hands[peer_id].add_card(assigned_id, drawn_card_id)
+	player_hands[peer_id].opponent_hand_size = get_opponent_hand_size(peer_id)
 	
 	Network.Card.receive_card_from_server.rpc_id(peer_id, assigned_id, drawn_card_id)
 
@@ -87,4 +89,14 @@ func draw_hand(peer_id: int) -> void:
 	for i in range(initial_hand_size):
 		draw_card(peer_id)
 	Network.Actions.hand_drawn.rpc_id(peer_id)
-	
+	player_hands[peer_id].opponent_hand_size = get_opponent_hand_size(peer_id)
+
+func get_opponent_hand_size(peer_id: int) -> int:
+	for key in player_hands:
+		if key != peer_id:
+			return player_hands[key].card_ids.size()
+	return -1
+
+func initialize_opponents_hands() -> void:
+	for key in player_hands:
+		player_hands[key].opponent_hand_size = get_opponent_hand_size(key)
