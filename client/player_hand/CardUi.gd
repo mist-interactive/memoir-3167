@@ -32,6 +32,16 @@ func setup_visuals(instance_id: int, id: String) -> void:
 	description_label.text = card_data.description_label
 	get_child(0).texture = card_data.card_art
 
+func setup_enemy_visuals(instance_id: int, id: String) -> void:
+	_instance_id = instance_id
+	
+	var card_data: CommandCard = CardDatabase.get_card(id)
+	if not card_data:
+		push_error("Card UI: Database missing definition for ", id)
+		return
+
+	get_child(0).texture = card_data.card_art
+
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		card_clicked.emit(_instance_id)
