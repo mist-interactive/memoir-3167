@@ -25,11 +25,15 @@ func _on_connected_to_server() -> void:
 
 func _on_connection_failed() -> void:
 	print("Failed to connect")
-	
+
 func _on_server_disconnected() -> void:
 	print("Server disconnected")
 
 func initialize_connection() -> void:
+    if OS.has_feature("web"):
+		var host = JavaScriptBridge.eval("window.location.hostname")
+		url = "ws://" + host + ":8080/ws"
+		print(url)
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
