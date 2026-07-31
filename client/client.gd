@@ -30,7 +30,7 @@ func _on_server_disconnected() -> void:
 	print("Server disconnected")
 
 func initialize_connection() -> void:
-    if OS.has_feature("web"):
+	if OS.has_feature("web"):
 		var host = JavaScriptBridge.eval("window.location.hostname")
 		url = "ws://" + host + ":8080/ws"
 		print(url)
