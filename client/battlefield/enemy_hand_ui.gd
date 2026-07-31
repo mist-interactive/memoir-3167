@@ -14,17 +14,20 @@ extends Control
 func initialize(peer_id: int) -> void:
 	_on_hand_synchronized(peer_id)
 
+# builds the whole hand of a client
 func _on_hand_synchronized(peer_id: int) -> void:
 	for id in range(handState.opponent_hand_size):
 		_instantiate_card_node(id, "001")
 	_recalculate_layout()
 
+# creates a new cardui node
 func _instantiate_card_node(instance_id: int, card_id: String) -> void:
 	var new_card: CardUI = card_ui_scene.instantiate() as CardUI
 	new_card.name = str(instance_id)
 	add_child(new_card)
 	new_card.setup_enemy_visuals(instance_id, card_id)
 
+# removes a cardui node
 func _on_model_card_removed(instance_id: int) -> void:
 	var card_node: Node = get_node_or_null(str(instance_id))
 	if card_node:
@@ -32,6 +35,11 @@ func _on_model_card_removed(instance_id: int) -> void:
 		card_node.queue_free()
 		_recalculate_layout()
 
+# call this to create a new cardui node
+func _on_model_card_added(instance_id: int) -> void:
+	_instantiate_card_node(instance_id, "000")
+
+# dont worry about it
 func _recalculate_layout() -> void:
 	var card_count: int = get_child_count()
 	if card_count == 0:
