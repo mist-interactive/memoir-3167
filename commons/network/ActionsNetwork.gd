@@ -37,3 +37,8 @@ func draw_card() ->void:
 	if !multiplayer.is_server():
 		return
 	draw_card_requested.emit(multiplayer.get_remote_sender_id())
+
+signal enemy_hand_size_changed(new_size: int)
+@rpc("authority", "call_remote", "reliable")
+func receive_enemy_hand_update(new_size: int) -> void:
+	enemy_hand_size_changed.emit(new_size)
