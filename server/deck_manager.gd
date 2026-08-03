@@ -70,6 +70,8 @@ func play_card(peer_id: int, instance_id: int) -> bool:
 	player_hands[peer_id].remove_card(instance_id)
 	for peer in player_hands:
 		Network.Actions.card_played.rpc_id(peer, peer_id, instance_id)
+	Network.Actions.receive_enemy_hand_update.rpc_id(get_opponent_id(peer_id), player_hands[peer_id].card_ids.size())
+	
 	return true
 
 func draw_hand(peer_id: int) -> void:
