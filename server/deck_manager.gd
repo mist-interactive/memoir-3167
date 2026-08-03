@@ -82,6 +82,12 @@ func draw_hand(peer_id: int) -> void:
 	Network.Actions.hand_drawn.rpc_id(peer_id)
 	player_hands[peer_id].opponent_hand_size = get_opponent_hand_size(peer_id)
 
+func get_opponent_id(peer_id: int) -> int:
+	for key in player_hands:
+		if key != peer_id:
+			return key
+	return -1
+
 func get_opponent_hand_size(peer_id: int) -> int:
 	for key in player_hands:
 		if key != peer_id:
