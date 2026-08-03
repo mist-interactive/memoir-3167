@@ -16,5 +16,4 @@ func create_new_match(matchId: int, mapName: String, player_ids: Array[int]):
 	.stage("Waiting oponents to ready up...", func(): await loader.wait_untill(func(): return get_child(1).state == MatchState.STATE.IN_PROGRESS)) \
 	.run()
 	add_child(battlefieldRenderer)
-	battlefieldRenderer.setup_hand_ui()
-	
+	battlefieldRenderer.setup_hand_ui(player_ids)
