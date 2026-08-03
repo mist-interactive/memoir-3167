@@ -11,7 +11,9 @@
 [ext_resource type="Script" uid="uid://cpytl0qe8h6u5" path="res://client/battlefield/player_hand_ui.gd" id="9_cuxbe"]
 [ext_resource type="Script" uid="uid://5n1dlvt3tw4s" path="res://client/battlefield/margin_container.gd" id="10_f3lu3"]
 [ext_resource type="PackedScene" uid="uid://bs3n3ysl7e5vc" path="res://client/player_hand/card_ui.tscn" id="12_f3lu3"]
+[ext_resource type="Script" uid="uid://pu2komq7negi" path="res://client/battlefield/margin_container_2.gd" id="13_0hlkx"]
 [ext_resource type="Texture2D" uid="uid://l08uw4hx56l0" path="res://assets/sprites/hex/highlight.png" id="13_56ovr"]
+[ext_resource type="Script" uid="uid://ixegjorc6cco" path="res://client/battlefield/enemy_hand_ui.gd" id="13_ec6rr"]
 [ext_resource type="Script" uid="uid://birdmambhh8rf" path="res://client/battlefield/map_highlight.gd" id="13_upguu"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e5smb"]
@@ -60,6 +62,14 @@ point_count = 3
 
 [sub_resource type="Curve" id="Curve_f3lu3"]
 _data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.5, 0.4965517), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_ec6rr"]
+_data = [Vector2(0, 0), 0.0, 3.8448043, 0, 0, Vector2(0.5, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -5.543506, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="Curve" id="Curve_0hlkx"]
+_data = [Vector2(0.03474903, 0.010526419), 0.0, 0.0, 0, 0, Vector2(0.48262545, 0.46315795), 0.0, 0.0, 0, 0, Vector2(0.9845559, 0.9368422), 0.0, 0.0, 0, 0]
 point_count = 3
 
 [node name="Battlefield" type="Node2D" unique_id=1534648312]
@@ -127,6 +137,27 @@ script = ExtResource("9_cuxbe")
 card_ui_scene = ExtResource("12_f3lu3")
 hand_curve = SubResource("Curve_u0eng")
 rotation_curve = SubResource("Curve_f3lu3")
+
+[node name="MarginContainer2" type="MarginContainer" parent="UICanvas" unique_id=491818102]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -576.0
+offset_top = -648.0
+offset_right = -576.0
+offset_bottom = -648.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("13_0hlkx")
+
+[node name="EnemyHandUI" type="HBoxContainer" parent="UICanvas/MarginContainer2" unique_id=924088399]
+layout_mode = 2
+script = ExtResource("13_ec6rr")
+card_ui_scene = ExtResource("12_f3lu3")
+hand_curve = SubResource("Curve_ec6rr")
+rotation_curve = SubResource("Curve_0hlkx")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1708214605 node_paths=PackedStringArray("target_map")]
 position = Vector2(2877, 1619)
