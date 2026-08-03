@@ -32,14 +32,8 @@ func setup_visuals(instance_id: int, id: String) -> void:
 	description_label.text = card_data.description_label
 	get_child(0).texture = card_data.card_art
 
-func setup_enemy_visuals(instance_id: int, id: String) -> void:
-	_instance_id = instance_id
-	
-	var card_data: CommandCard = CardDatabase.get_card(id)
-	if not card_data:
-		push_error("Card UI: Database missing definition for ", id)
-		return
-
+func setup_enemy_visuals() -> void:
+	var card_data: CommandCard = CardDatabase.get_card("001")
 	get_child(0).texture = card_data.card_art
 
 func _gui_input(event: InputEvent) -> void:
