@@ -6,12 +6,12 @@ extends Sprite2D
 var _hex_map: TileMapLayer = null
 
 const TEXTURE_MAP: Dictionary = {
-	[1, "infantry"]: preload("res://assets/sprites/units/infantry_sprite_sheet.png"),	
-	[2, "infantry"]: preload("res://assets/sprites/units/infantry_sprite_sheet.png"),	
-	[1, "tank"]: preload("res://assets/sprites/units/tank_sprite_sheet.png"),	
-	[2, "tank"]: preload("res://assets/sprites/units/tank_sprite_sheet.png"),	
-	[1, "artillery"]: preload("res://assets/sprites/units/artillery_sprite_sheet.png"),	
-	[2, "artillery"]: preload("res://assets/sprites/units/artillery_sprite_sheet.png"),	
+	[1, GameEnums.UnitType.INFANTRY]: preload("res://assets/sprites/units/infantry_sprite_sheet.png"),	
+	[2, GameEnums.UnitType.INFANTRY]: preload("res://assets/sprites/units/infantry_sprite_sheet.png"),	
+	[1, GameEnums.UnitType.TANK]: preload("res://assets/sprites/units/tank_sprite_sheet.png"),	
+	[2, GameEnums.UnitType.TANK]: preload("res://assets/sprites/units/tank_sprite_sheet.png"),	
+	[1, GameEnums.UnitType.ARTILLERY]: preload("res://assets/sprites/units/artillery_sprite_sheet.png"),	
+	[2, GameEnums.UnitType.ARTILLERY]: preload("res://assets/sprites/units/artillery_sprite_sheet.png"),	
 }
 
 var sprite_sheet
@@ -23,7 +23,7 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		set_notify_local_transform(true)
 
-@export_enum("infantry", "tank", "artillery") var unit_type: String = "infantry":
+@export var unit_type: GameEnums.UnitType = GameEnums.UnitType.INFANTRY:
 	set(value):
 		unit_type = value
 		_update_node_name()
@@ -37,8 +37,7 @@ func _ready() -> void:
 
 func serialize(coord: Vector2i) -> Dictionary:
 	return {
-		"coord_x": coord.x,
-		"coord_y": coord.y,
+		"coord": [coord.x, coord.y],
 		"type": unit_type,
 		"owner_id": owner_id
 		}
@@ -54,21 +53,21 @@ func _update_visual() -> void:
 		return
 	scale = Vector2(6, 6)
 	texture = sprite_sheet
-	if unit_type == "infantry":
+	if unit_type == GameEnums.UnitType.INFANTRY:
 		hframes = 4
 		vframes = 5
 		if owner_id == 1:
 			frame = 0
 		if owner_id == 2:
 			frame = 16
-	if unit_type == "tank":
+	if unit_type == GameEnums.UnitType.TANK:
 		hframes = 5
 		vframes = 5
 		if owner_id == 1:
 			frame = 0
 		if owner_id == 2:
 			frame = 20
-	if unit_type == "artillery":
+	if unit_type == GameEnums.UnitType.ARTILLERY:
 		hframes = 6
 		vframes = 5
 		if owner_id == 1:
@@ -130,7 +129,8 @@ func _reindex_group() -> void:
 		target.name = "Temp_%d" % target.get_instance_id()
 
 	var current_owner: int = -1
-	var current_type: String = ""
+	var current_type: GameEnums.UnitType = GameEnums.UnitType.INFANTRY
+	var current_type_str: String = ""
 	var count: int = 0
 	
 	for i in range(markers.size()):
@@ -138,10 +138,11 @@ func _reindex_group() -> void:
 		if target.owner_id != current_owner or target.unit_type != current_type:
 			current_owner = target.owner_id
 			current_type = target.unit_type
+			current_type_str = GameEnums.UnitType.keys()[target.unit_type].capitalize()
 			count = 0
 		else:
 			count += 1
-		var expected_name = "Player%s_%s_%d" % [current_owner, current_type, count + 1]
+		var expected_name = "Player%s_%s_%d" % [current_owner, current_type_str, count + 1]
 		if target.name != expected_name:
 			target.name = expected_name
 		parent.move_child(target, i)
