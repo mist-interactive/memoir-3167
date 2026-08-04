@@ -10,9 +10,9 @@ func _ready() -> void:
 	unit_manager.active_container = unit_container
 	add_child(unit_manager)
 
-func setup_hand_ui() -> void:
+func setup_hand_ui(player_ids: Array[int]) -> void:
 	# Delegate the responsibility to the child that actually manages the UI/Map
 	if map_manager:
-		map_manager.setup_hand_ui()
+		map_manager.setup_hand_ui(player_ids)
 	else:
 		push_error("Battlefield root could not find ClientMapManager.")
