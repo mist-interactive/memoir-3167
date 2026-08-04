@@ -5,11 +5,11 @@ extends Control
 @export var hand_curve: Curve
 @export var rotation_curve: Curve
 
-@export var base_card_size: Vector2 = Vector2(120.0, 220.0)
+@export var base_card_size: Vector2 = Vector2(267.0, 358.0)
 @export var max_rotation_degrees: float = 5.0
 @export var y_min: float = 0.0
 @export var y_max: float = -15.0
-@export var default_separation: float = 10.0
+@export var default_separation: float = -5.0
 @onready var handState: HandState = $"../../../../HandState"
 
 func initialize() -> void:
@@ -51,7 +51,6 @@ func _recalculate_layout() -> void:
 	var card_count: int = get_child_count()
 	if card_count == 0:
 		return
-
 	var viewport_width: float = get_viewport_rect().size.x
 	var available_hand_width: float = viewport_width / 1.5
 	
@@ -60,11 +59,9 @@ func _recalculate_layout() -> void:
 	var start_x: float = 0.0
 
 	if total_unscaled_width > available_hand_width and card_count > 1:
-		# Overlap required: distribute remaining width across gaps
 		separation = (available_hand_width - base_card_size.x) / float(card_count - 1) - base_card_size.x
 		start_x = (viewport_width - available_hand_width) / 2.0
 	else:
-		# Centered with fixed spacing
 		var total_footprint: float = (card_count * base_card_size.x) + ((card_count - 1) * separation)
 		start_x = (viewport_width - total_footprint) / 2.0
 
@@ -73,12 +70,10 @@ func _recalculate_layout() -> void:
 		if not card:
 			continue
 
-		# Lock size & center pivot point for rotational transform
 		card.custom_minimum_size = base_card_size
 		card.size = base_card_size
 		card.pivot_offset = base_card_size / 2.0
 
-		# Safe curve sampling
 		var sample_point: float = 0.5 if card_count == 1 else float(i) / float(card_count - 1)
 		var y_multiplier: float = hand_curve.sample(sample_point) if hand_curve else 0.0
 		var rot_multiplier: float = rotation_curve.sample(sample_point) if rotation_curve else 0.0
@@ -89,9 +84,21 @@ func _recalculate_layout() -> void:
 
 		var target_x: float = start_x + float(i) * (base_card_size.x + separation)
 		var target_y: float = y_min + (y_max * y_multiplier)
+		
+		var target_pos = Vector2(target_x, target_y - base_card_size.y / 2.0)
+		var target_rot = max_rotation_degrees * rot_multiplier
 
-		card.position = Vector2(target_x, target_y)
-		card.rotation_degrees = max_rotation_degrees * rot_multiplier
+		# Smoothly tween active hand cards to their layout slots 📈
+		var tween: Tween = create_tween().set_parallel(true)
+		tween.tween_property(card, "position", target_pos, 0.2)\
+			.set_trans(Tween.TRANS_QUAD)\
+			.set_ease(Tween.EASE_OUT)
+		tween.tween_property(card, "rotation_degrees", target_rot, 0.2)\
+			.set_trans(Tween.TRANS_QUAD)\
+			.set_ease(Tween.EASE_OUT)
+			
+		#card.position = Vector2(target_x, target_y - base_card_size.y / 2)
+		#card.rotation_degrees = max_rotation_degrees * rot_multiplier
 
 func _on_card_clicked_by_player(instance_id: int) -> void:
 	Network.Actions.play_card.rpc(instance_id)
