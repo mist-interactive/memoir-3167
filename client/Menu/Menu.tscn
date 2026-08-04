@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://cjgs81rvtu3oa" path="res://client/Menu/menu.gd" id="1_iwbta"]
 [ext_resource type="Shader" uid="uid://h2wnn72fmsbh" path="res://client/Menu/Avatar.gdshader" id="2_3fffv"]
 [ext_resource type="Texture2D" uid="uid://cuth3b1hyk4oa" path="res://assets/usva-13.webp" id="2_qdv16"]
+[ext_resource type="Script" uid="uid://c660eng6n25st" path="res://client/Menu/avatar.gd" id="3_7up6s"]
 [ext_resource type="Script" uid="uid://bs25pwh2fx7pk" path="res://client/Menu/pages.gd" id="4_0fscp"]
 [ext_resource type="Script" uid="uid://dtqhjghm2hctv" path="res://client/Menu/texture_rect.gd" id="4_tmffh"]
 [ext_resource type="Script" uid="uid://bt5x5k46c00r8" path="res://client/Menu/play.gd" id="6_jw8mt"]
@@ -59,7 +60,7 @@ border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.14509805, 0.16078432, 0.21176471, 1)
+border_color = Color(0.08627451, 0.09019608, 0.13725491, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
@@ -80,12 +81,14 @@ offset_top = 24.0
 offset_right = 1150.0
 offset_bottom = 86.0
 color = Color(0.12156863, 0.14509805, 0.2, 1)
+metadata/_edit_lock_ = true
 
 [node name="Left" type="Node2D" parent="Navbar" unique_id=535759853 node_paths=PackedStringArray("playBtn", "profileBtn", "settingsBtn")]
 script = ExtResource("1_0fscp")
 playBtn = NodePath("Play")
 profileBtn = NodePath("Profile")
 settingsBtn = NodePath("Settings")
+metadata/_edit_lock_ = true
 
 [node name="Play" type="Button" parent="Navbar/Left" unique_id=1814489066]
 offset_left = 78.0
@@ -128,7 +131,9 @@ offset_bottom = 95.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_k3olm")
 metadata/_edit_lock_ = true
 
-[node name="Avatar" type="Node2D" parent="Navbar/Right" unique_id=1588136829]
+[node name="Avatar" type="Node2D" parent="Navbar/Right" unique_id=1588136829 node_paths=PackedStringArray("connectionStatus")]
+script = ExtResource("3_7up6s")
+connectionStatus = NodePath("ConnectionStatus")
 
 [node name="TextureRect" type="TextureRect" parent="Navbar/Right/Avatar" unique_id=211124587]
 top_level = true
@@ -159,7 +164,7 @@ offset_right = 1111.0
 offset_bottom = 68.0
 text = "usva jpleninen"
 
-[node name="Panel" type="Panel" parent="Navbar/Right/Avatar" unique_id=452304162]
+[node name="ConnectionStatus" type="Panel" parent="Navbar/Right/Avatar" unique_id=452304162]
 show_behind_parent = true
 offset_left = 834.0
 offset_top = 49.0
@@ -228,10 +233,10 @@ offset_bottom = 850.0
 mouse_filter = 2
 color = Color(0.08627451, 0.09019608, 0.13725491, 1)
 
-[connection signal="button_down" from="Navbar/Left/Play" to="Pages" method="_on_play_button_down"]
 [connection signal="button_down" from="Navbar/Left/Play" to="Navbar/Left" method="_on_play_button_down"]
-[connection signal="button_down" from="Navbar/Left/Profile" to="Pages" method="_on_profile_button_down"]
+[connection signal="button_down" from="Navbar/Left/Play" to="Pages" method="_on_play_button_down"]
 [connection signal="button_down" from="Navbar/Left/Profile" to="Navbar/Left" method="_on_profile_button_down"]
-[connection signal="button_down" from="Navbar/Left/Settings" to="Pages" method="_on_settings_button_down"]
+[connection signal="button_down" from="Navbar/Left/Profile" to="Pages" method="_on_profile_button_down"]
 [connection signal="button_down" from="Navbar/Left/Settings" to="Navbar/Left" method="_on_settings_button_down"]
+[connection signal="button_down" from="Navbar/Left/Settings" to="Pages" method="_on_settings_button_down"]
 [connection signal="button_down" from="Pages/Play/FindGame" to="Pages/Play" method="_on_find_game_button_down"]
