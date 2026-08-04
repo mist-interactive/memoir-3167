@@ -2,14 +2,38 @@
 
 [ext_resource type="Script" uid="uid://bfgpsi28noghb" path="res://client/player_hand/CardUi.gd" id="1_ii6mt"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ii6mt"]
+bg_color = Color(0.9119239, 0.88776505, 0.9849506, 1)
+corner_radius_top_left = 14
+corner_radius_top_right = 14
+corner_radius_bottom_right = 14
+corner_radius_bottom_left = 14
+shadow_color = Color(0.0627451, 0.0627451, 0.0627451, 0.42352942)
+shadow_size = 1
+shadow_offset = Vector2(-4, 24.36)
+
 [node name="CardUI" type="MarginContainer" unique_id=1384061792 node_paths=PackedStringArray("title_label", "description_label")]
-custom_minimum_size = Vector2(120, 220)
-offset_right = 1.0
-offset_bottom = 23.0
-pivot_offset = Vector2(75, 110)
+custom_minimum_size = Vector2(267, 358)
+custom_maximum_size = Vector2(267, 358)
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -648.0
+offset_right = -1032.0
+offset_bottom = -428.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(133, 179)
 script = ExtResource("1_ii6mt")
 title_label = NodePath("title_label")
 description_label = NodePath("description_label")
+
+[node name="ReferenceRect" type="Panel" parent="." unique_id=1347091456]
+visible = false
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ii6mt")
 
 [node name="background_texture" type="TextureRect" parent="." unique_id=1947103247]
 layout_mode = 2
@@ -29,3 +53,6 @@ layout_mode = 2
 horizontal_alignment = 1
 vertical_alignment = 2
 autowrap_mode = 3
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]
