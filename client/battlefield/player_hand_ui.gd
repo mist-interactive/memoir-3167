@@ -88,7 +88,6 @@ func _recalculate_layout() -> void:
 		var target_pos = Vector2(target_x, target_y - base_card_size.y / 2.0)
 		var target_rot = max_rotation_degrees * rot_multiplier
 
-		# Smoothly tween active hand cards to their layout slots 📈
 		var tween: Tween = create_tween().set_parallel(true)
 		tween.tween_property(card, "position", target_pos, 0.2)\
 			.set_trans(Tween.TRANS_QUAD)\
@@ -96,9 +95,6 @@ func _recalculate_layout() -> void:
 		tween.tween_property(card, "rotation_degrees", target_rot, 0.2)\
 			.set_trans(Tween.TRANS_QUAD)\
 			.set_ease(Tween.EASE_OUT)
-			
-		#card.position = Vector2(target_x, target_y - base_card_size.y / 2)
-		#card.rotation_degrees = max_rotation_degrees * rot_multiplier
 
 func _on_card_clicked_by_player(instance_id: int) -> void:
 	Network.Actions.play_card.rpc(instance_id)
