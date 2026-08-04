@@ -1,10 +1,10 @@
-class_name SectorEnums
 extends RefCounted
 
 enum Sector {
 	LEFT,
-	MIDDLE,
-	RIGHT,
+	LEFT_CENTER,
+	CENTER,
+	RIGHT_CENTER,
 	ANY,
 	ALL
 }
