@@ -4,40 +4,41 @@ extends Control
 @export var card_ui_scene: PackedScene
 @export var hand_curve: Curve
 @export var rotation_curve: Curve
-@export var base_card_size: Vector2 = Vector2(120.0, 220.0)
+@export var base_card_size: Vector2 = Vector2(267.0, 358.0)
 @export var max_rotation_degrees: float = 5.0
 @export var y_min: float = 0.0
 @export var y_max: float = -15.0
-@export var default_separation: float = 10.0
+@export var default_separation: float = -5.0
 @onready var handState: HandState = $"../../../../HandState"
+
+func _ready() -> void:
+	Network.Actions.enemy_hand_size_changed.connect(_on_enemy_hand_size_changed)
+
+func _on_enemy_hand_size_changed(new_size: int) -> void:
+	while new_size < get_child_count():
+		_remove_card_node()
+	while new_size > get_child_count():
+		_add_card_node()
+	_recalculate_layout()
 
 func initialize(peer_id: int) -> void:
 	_on_hand_synchronized(peer_id)
 
-# builds the whole hand of a client
 func _on_hand_synchronized(peer_id: int) -> void:
 	for id in range(handState.opponent_hand_size):
-		_instantiate_card_node(id, "001")
+		_add_card_node()
 	_recalculate_layout()
 
-# creates a new cardui node
-func _instantiate_card_node(instance_id: int, card_id: String) -> void:
+func _add_card_node() -> void:
 	var new_card: CardUI = card_ui_scene.instantiate() as CardUI
-	new_card.name = str(instance_id)
 	add_child(new_card)
-	new_card.setup_enemy_visuals(instance_id, card_id)
+	new_card.setup_enemy_visuals()
+	new_card.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-# removes a cardui node
-func _on_model_card_removed(instance_id: int) -> void:
-	var card_node: Node = get_node_or_null(str(instance_id))
-	if card_node:
-		remove_child(card_node)
-		card_node.queue_free()
-		_recalculate_layout()
-
-# call this to create a new cardui node
-func _on_model_card_added(instance_id: int) -> void:
-	_instantiate_card_node(instance_id, "000")
+func _remove_card_node() -> void:
+	var card = get_child(-1)
+	remove_child(card)
+	card.queue_free()
 
 # dont worry about it
 func _recalculate_layout() -> void:
@@ -57,7 +58,6 @@ func _recalculate_layout() -> void:
 		separation = (available_hand_width - base_card_size.x) / float(card_count - 1) - base_card_size.x
 		start_x = (viewport_width - available_hand_width) / 2.0
 	else:
-		# Centered with fixed spacing
 		var total_footprint: float = (card_count * base_card_size.x) + ((card_count - 1) * separation)
 		start_x = (viewport_width - total_footprint) / 2.0
 		
@@ -83,5 +83,7 @@ func _recalculate_layout() -> void:
 		var target_x: float = start_x + float(i) * (base_card_size.x + separation)
 		var target_y: float = y_min + (y_max * y_multiplier)
 		
-		card.position = Vector2(target_x, target_y)
+		var canvas_size: Vector2 = get_viewport_rect().size
+		
+		card.position = Vector2(target_x, target_y - base_card_size.y / 2)
 		card.rotation_degrees = max_rotation_degrees * rot_multiplier
