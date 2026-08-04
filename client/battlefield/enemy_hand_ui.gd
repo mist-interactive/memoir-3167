@@ -4,18 +4,17 @@ extends Control
 @export var card_ui_scene: PackedScene
 @export var hand_curve: Curve
 @export var rotation_curve: Curve
-@export var base_card_size: Vector2 = Vector2(120.0, 220.0)
+@export var base_card_size: Vector2 = Vector2(267.0, 358.0)
 @export var max_rotation_degrees: float = 5.0
 @export var y_min: float = 0.0
 @export var y_max: float = -15.0
-@export var default_separation: float = 10.0
+@export var default_separation: float = -5.0
 @onready var handState: HandState = $"../../../../HandState"
 
 func _ready() -> void:
 	Network.Actions.enemy_hand_size_changed.connect(_on_enemy_hand_size_changed)
 
 func _on_enemy_hand_size_changed(new_size: int) -> void:
-	print("enemy_hand_ui: _on_enemy_hand_size_changed()")
 	while new_size < get_child_count():
 		_remove_card_node()
 	while new_size > get_child_count():
@@ -34,6 +33,7 @@ func _add_card_node() -> void:
 	var new_card: CardUI = card_ui_scene.instantiate() as CardUI
 	add_child(new_card)
 	new_card.setup_enemy_visuals()
+	new_card.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func _remove_card_node() -> void:
 	var card = get_child(-1)
@@ -58,7 +58,6 @@ func _recalculate_layout() -> void:
 		separation = (available_hand_width - base_card_size.x) / float(card_count - 1) - base_card_size.x
 		start_x = (viewport_width - available_hand_width) / 2.0
 	else:
-		# Centered with fixed spacing
 		var total_footprint: float = (card_count * base_card_size.x) + ((card_count - 1) * separation)
 		start_x = (viewport_width - total_footprint) / 2.0
 		
@@ -84,5 +83,7 @@ func _recalculate_layout() -> void:
 		var target_x: float = start_x + float(i) * (base_card_size.x + separation)
 		var target_y: float = y_min + (y_max * y_multiplier)
 		
-		card.position = Vector2(target_x, target_y)
+		var canvas_size: Vector2 = get_viewport_rect().size
+		
+		card.position = Vector2(target_x, target_y - base_card_size.y / 2)
 		card.rotation_degrees = max_rotation_degrees * rot_multiplier
