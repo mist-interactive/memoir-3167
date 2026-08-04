@@ -15,6 +15,9 @@ func _ready() -> void:
 	Network.Actions.execute_orders_requested.connect(_on_execute_orders)
 	Network.Actions.draw_card_requested.connect(_on_draw_card)
 
+	#Network.Card.play_card_requested.connect(_on_play_card_requested)
+	Network.Match.server_hex_requested.connect(_on_server_hex_requested)
+
 func create_new_match(peerId1: int, peerId2: int) -> void:
 	print("Call to create new match")
 	var matchState = MatchState.new()
@@ -22,11 +25,17 @@ func create_new_match(peerId1: int, peerId2: int) -> void:
 	var battleField = BattlefieldState.new("map.json")
 	var deckManager = DeckManager.new(peerId1, peerId2)
 	var matchNode = matchController.new(matchState, battleField, deckManager)
+	var unit_manager = UnitManager.new()
 	deckManager.name = "DeckManager"
+	unit_manager.name = "UnitManager"
+	
 	matchNode.name = "Match_%d" % _next_match_id
+	matchNode.unit_manager = unit_manager
 	matchNode.add_child(matchState)
 	matchNode.add_child(battleField)
 	matchNode.add_child(deckManager)
+	matchNode.add_child(unit_manager)
+	
 	get_parent().add_child(matchNode)
 	peer_to_match[peerId1] = matchState.matchId
 	peer_to_match[peerId2] = matchState.matchId
@@ -85,3 +94,11 @@ func _on_draw_card(peer_id: int) -> void:
 	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(MatchState.TURN_PHASE.DRAW_CARD):
 		return
 	matchCtl.deckManager.draw_card(peer_id) 
+	
+func _on_server_hex_requested(peer_id: int, hex: Vector2i) -> void:
+	print("server hex requested by ", peer_id, " at ", hex)
+	if not peer_to_match.has(peer_id):
+		return
+	var matchId: int = peer_to_match[peer_id]
+	var match_controller = matches[matchId]
+	match_controller.process_hex_click(peer_id, hex)

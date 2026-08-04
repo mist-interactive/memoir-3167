@@ -4,6 +4,7 @@ extends Node
 
 @export var MapGroundLayer: HexagonTileMapLayer
 @export var MapFeatureLayer: HexagonTileMapLayer
+@export var UnitContainer: Node2D
 
 # Check box "button" to bake map on inspector
 @export var bake_map: bool = false:
