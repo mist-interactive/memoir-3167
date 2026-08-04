@@ -28,11 +28,22 @@ func _bake_map() -> void:
 	if MapGroundLayer == null:
 		push_error("MapGroundLayer is not assigned!")
 		return
-	var map_data: Array[Dictionary] = []
+	var map_data: Dictionary = {
+		"hexes": [],
+		"units": [],
+	}
+	map_data["hexes"] = _get_hex_data()
+	map_data["units"] = _get_unit_data()
+	var map_json_string: String = JSON.stringify(map_data, "\t")
+	save_to_file(map_json_string)
+	pass
+
+func _get_hex_data() -> Array[Dictionary]:
+	var hex_data: Array[Dictionary]
 	var used_cells: Array[Vector2i] = MapGroundLayer.get_used_cells()
 	if used_cells.is_empty():
 		print("The map is empty. Nothing to bake.")
-		return
+		return []
 	print("Found ", used_cells.size(), " tiles. Baking...")
 	for coord in used_cells:
 		# Get the ground type
@@ -55,7 +66,18 @@ func _bake_map() -> void:
 		else:
 			final_feature = HexCell.Feature.NONE
 		var temp_hex = HexCell.new(coord, final_ground, final_feature)
-		map_data.append(temp_hex.serialize())
-	var map_json_string: String = JSON.stringify(map_data, "\t")
-	save_to_file(map_json_string)
-	pass
+		hex_data.append(temp_hex.serialize())
+	return hex_data
+
+func _get_unit_data() -> Array[Dictionary]:
+	var unit_data: Array[Dictionary]
+	var count: int = 0
+	for child in UnitContainer.get_children():
+		if not child is UnitSpawnMarker:
+			continue
+		var pos := MapGroundLayer.local_to_map(child.position)
+		unit_data.append(child.serialize(pos))
+		print(child.unit_type)
+		count += 1
+	print(count, " units found")
+	return unit_data
