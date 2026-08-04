@@ -94,7 +94,8 @@ func _on_draw_card(peer_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
 	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(MatchState.TURN_PHASE.DRAW_CARD):
 		return
-	matchCtl.deckManager.draw_card(peer_id) 
+	if matchCtl.deckManager.draw_card(peer_id):
+		matchCtl.matchState.phase = MatchState.TURN_PHASE.PLAY_CARD
 	
 func _on_server_hex_requested(peer_id: int, hex: Vector2i) -> void:
 	print("server hex requested by ", peer_id, " at ", hex)
@@ -103,8 +104,6 @@ func _on_server_hex_requested(peer_id: int, hex: Vector2i) -> void:
 	var matchId: int = peer_to_match[peer_id]
 	var match_controller = matches[matchId]
 	match_controller.process_hex_click(peer_id, hex)
-	if matchCtl.deckManager.draw_card(peer_id):
-		matchCtl.matchState.phase = MatchState.TURN_PHASE.PLAY_CARD
 	# var matchId: int = peer_to_match[peer_id]
 	# var matchCtl: matchController = matches[matchId]
 	# Network.Match.init(matchId, matchCtl.battlefield.mapName, matchCtl.matchState.player_ids)
