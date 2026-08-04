@@ -3,9 +3,11 @@ class_name  matchController
 var matchState: MatchState
 var battlefield: BattlefieldState
 var deckManager: DeckManager
+var unit_manager: UnitManager
 
 var connected: Dictionary[int, bool]
 var player_status: Dictionary[int, MatchState.STATE]
+var UNIT_SCENE = preload("res://commons/units/Unit.tscn")
 
 func _init(matchState: MatchState, battlefield: BattlefieldState, deckManager: DeckManager) -> void:
 	self.matchState = matchState
@@ -50,3 +52,28 @@ func isPlayerTurn(peer_id: int) -> bool:
 func isInProgress() ->bool:
 	return matchState.state == MatchState.STATE.IN_PROGRESS
 	
+# Antti
+func spawn_unit_on_server(owner_id: int, unit_type: String, start_coord: Vector2i) -> void:
+	if not multiplayer.is_server():
+		return
+	var unique_id: int = unit_manager.generate_server_unit_id()
+	var new_unit_data = UnitData.new(owner_id, unit_type, unique_id, start_coord)
+	unit_manager.add_unit(new_unit_data, start_coord)
+	for peer in matchState.player_ids:
+		sync_spawn_unit.rpc_id(peer, owner_id, unit_type, unique_id, start_coord)
+
+@rpc("authority", "call_remote", "reliable")
+func sync_spawn_unit(owner_id: int, unit_type: String, unique_id: int, coord: Vector2i) -> void:
+	var new_unit_node = UNIT_SCENE.instantiate()
+	new_unit_node.name = str(unique_id)
+	new_unit_node.uuid = str(unique_id)
+	new_unit_node.type = unit_type
+	new_unit_node.hex_coord = coord
+	new_unit_node.owner_id = owner_id
+	unit_manager.active_container.add_child(new_unit_node)
+	unit_manager.add_unit(new_unit_node, coord)
+
+func process_hex_click(peer_id:int, hex: Vector2i) -> void:
+	spawn_unit_on_server(peer_id, "test", hex)
+	for player in matchState.player_ids:
+		Network.Match.receive_hex_broadcast.rpc_id(player, peer_id, hex)

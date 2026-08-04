@@ -75,8 +75,7 @@ point_count = 3
 [node name="Battlefield" type="Node2D" unique_id=1534648312]
 script = ExtResource("1_u0eng")
 
-[node name="MapBaker" parent="." unique_id=621948442 node_paths=PackedStringArray("MapGroundLayer", "MapFeatureLayer") instance=ExtResource("1_siwgj")]
-MapGroundLayer = NodePath("../MapGround")
+[node name="MapBaker" parent="." unique_id=621948442 node_paths=PackedStringArray("MapFeatureLayer") instance=ExtResource("1_siwgj")]
 MapFeatureLayer = NodePath("../MapFeature")
 
 [node name="MapManager" type="Node" parent="." unique_id=225508304 node_paths=PackedStringArray("MapGroundLayer", "MapFeaturesLayer")]
