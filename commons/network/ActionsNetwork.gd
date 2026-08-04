@@ -6,7 +6,6 @@ signal hand_drawn_requested
 func  hand_drawn() -> void:
 	if multiplayer.is_server():
 		return
-	print("fdsffffffffffff")
 	hand_drawn_requested.emit()
 
 signal play_card_requested(peer_id: int, card_id: String)
