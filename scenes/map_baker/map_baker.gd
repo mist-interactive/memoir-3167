@@ -81,7 +81,6 @@ func _get_unit_data() -> Array[Dictionary]:
 			continue
 		var pos := MapGroundLayer.local_to_map(child.position)
 		unit_data.append(child.serialize(pos))
-		print(child.unit_type)
 		count += 1
 	print(count, " units found")
 	return unit_data

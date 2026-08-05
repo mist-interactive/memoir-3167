@@ -17,15 +17,14 @@
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e5smb"]
 texture = ExtResource("2_4ok02")
-texture_region_size = Vector2i(512, 442)
+texture_region_size = Vector2i(442, 512)
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_o6wfx"]
 tile_shape = 3
-tile_offset_axis = 1
-tile_size = Vector2i(512, 442)
+tile_size = Vector2i(442, 512)
 sources/0 = SubResource("TileSetAtlasSource_e5smb")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mhs4e"]
@@ -40,19 +39,17 @@ texture_region_size = Vector2i(512, 512)
 
 [sub_resource type="TileSet" id="TileSet_jqkp6"]
 tile_shape = 3
-tile_offset_axis = 1
-tile_size = Vector2i(512, 442)
+tile_size = Vector2i(442, 512)
 sources/0 = SubResource("TileSetAtlasSource_mhs4e")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_upguu"]
 texture = ExtResource("13_56ovr")
-texture_region_size = Vector2i(512, 442)
+texture_region_size = Vector2i(442, 512)
 0:0/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_ql7mu"]
 tile_shape = 3
-tile_offset_axis = 1
-tile_size = Vector2i(512, 442)
+tile_size = Vector2i(442, 512)
 sources/0 = SubResource("TileSetAtlasSource_upguu")
 
 [sub_resource type="Curve" id="Curve_u0eng"]

@@ -14,7 +14,7 @@ func _ready() -> void:
 	_calculate_dimensions()
 	
 func _calculate_dimensions() -> void:
-	tile_width = HEX_SIZE * 2.0
-	tile_height = HEX_SIZE * SQRT3
-	half_width = HEX_SIZE
-	half_height = tile_height / 2.0
+	tile_width = HEX_SIZE * SQRT3
+	tile_height = HEX_SIZE * 2.0
+	half_width = tile_width / 2.0
+	half_height = HEX_SIZE
