@@ -1583,6 +1583,10 @@
 			"tag": 0
 		}
 	],
+	"sectors": {
+		"left_sector_max": 5,
+		"right_sector_min": 9
+	},
 	"units": [
 		{
 			"coord": [
