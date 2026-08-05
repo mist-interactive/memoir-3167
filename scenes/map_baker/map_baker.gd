@@ -34,6 +34,7 @@ func _bake_map() -> void:
 	}
 	map_data["hexes"] = _get_hex_data()
 	map_data["units"] = _get_unit_data()
+	print(_get_map_sectors())
 	var map_json_string: String = JSON.stringify(map_data, "\t")
 	save_to_file(map_json_string)
 	pass
@@ -81,3 +82,12 @@ func _get_unit_data() -> Array[Dictionary]:
 		count += 1
 	print(count, " units found")
 	return unit_data
+
+func _get_map_sectors() -> Dictionary:
+	var used_rect: Rect2i = MapGroundLayer.get_used_rect()
+	var map_width: int = used_rect.size.x
+	var sector_width: int = map_width / 3
+	return {
+		"left_sector_max": used_rect.position.x + sector_width,
+		"right_sector_min": (used_rect.end.x - 1) - sector_width
+	}
