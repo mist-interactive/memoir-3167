@@ -58,6 +58,7 @@ script = ExtResource("1_87gq2")
 MapGroundLayer = NodePath("../MapGround")
 MapFeatureLayer = NodePath("../MapFeature")
 UnitContainer = NodePath("../UnitContainer")
+MapName = "map"
 
 [node name="MapManager" type="Node" parent="." unique_id=225508304 node_paths=PackedStringArray("MapGroundLayer", "MapFeaturesLayer")]
 script = ExtResource("3_4xhwn")
@@ -73,7 +74,7 @@ debug_mode = 1
 metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
 
 [node name="MapFeature" type="TileMapLayer" parent="." unique_id=12123868]
-tile_map_data = PackedByteArray("AAAEAAIAAAABAAAAAAAEAAQAAAABAAEAAAAGAAIAAAABAAEAAAABAAQAAAABAAEAAAAAAAIAAAAAAAEAAAAFAAAAAAAAAAEAAAAHAAQAAAAAAAEAAAACAAYAAAABAAAAAAAIAAEAAAABAAAAAAAIAAQAAAAAAAAAAAAKAAAAAAAAAAEAAAANAAEAAAAAAAEAAAAOAAQAAAABAAEAAAAHAAAAAAABAAEAAAAAAAMAAAABAAEAAAAOAAMAAAABAAEAAAALAAQAAAABAAEAAAALAAEAAAABAAAAAAAOAAcAAAABAAAAAAANAAYAAAABAAAAAAAOAAAAAAABAAAAAAAGAAAAAAAAAAAAAAANAAQAAAAAAAAAAAABAAAAAAAAAAAAAAA=")
+tile_map_data = PackedByteArray("AAAEAAIAAAABAAAAAAAEAAQAAAABAAEAAAAGAAIAAAABAAEAAAABAAQAAAABAAEAAAAAAAIAAAAAAAEAAAAFAAAAAAAAAAEAAAAHAAQAAAAAAAEAAAACAAYAAAABAAAAAAAIAAEAAAABAAAAAAAIAAQAAAAAAAAAAAAKAAAAAAAAAAEAAAANAAEAAAAAAAEAAAAOAAQAAAABAAEAAAAHAAAAAAABAAEAAAAAAAMAAAABAAEAAAAOAAMAAAABAAEAAAALAAQAAAABAAEAAAALAAEAAAABAAAAAAAOAAcAAAABAAAAAAANAAYAAAABAAAAAAAOAAAAAAABAAAAAAAGAAAAAAAAAAAAAAANAAQAAAAAAAAAAAABAAAAAAAAAAAAAAAFAAIAAAAAAAAAAAAEAAMAAAAAAAAAAAAFAAMAAAAAAAAAAAAGAAMAAAAAAAAAAAA=")
 tile_set = SubResource("TileSet_jqkp6")
 script = ExtResource("7_yyf4b")
 metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
@@ -86,58 +87,45 @@ metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
 
 [node name="UnitContainer" type="Node2D" parent="." unique_id=1804487023]
 
-[node name="Player1_artillery_1" parent="UnitContainer" unique_id=1738471653 instance=ExtResource("10_rxatx")]
-position = Vector2(1989, 2560)
-texture = ExtResource("11_kvb7t")
-hframes = 6
-frame = 0
-unit_type = "artillery"
-owner_id = 1
-
-[node name="Player1_artillery_2" parent="UnitContainer" unique_id=2064396777 instance=ExtResource("10_rxatx")]
-position = Vector2(5083, 2560)
-texture = ExtResource("11_kvb7t")
-hframes = 6
-frame = 0
-unit_type = "artillery"
-owner_id = 1
-
-[node name="Player1_artillery_3" parent="UnitContainer" unique_id=276452804 instance=ExtResource("10_rxatx")]
+[node name="Player1_Tank_1" parent="UnitContainer" unique_id=276452804 instance=ExtResource("10_rxatx")]
 position = Vector2(640, 2652)
-texture = ExtResource("11_kvb7t")
-hframes = 6
-frame = 0
-unit_type = "artillery"
-owner_id = 1
-
-[node name="Player1_tank_1" parent="UnitContainer" unique_id=831944555 instance=ExtResource("10_rxatx")]
-position = Vector2(2431, 1792)
 texture = ExtResource("11_rxatx")
 hframes = 5
 frame = 0
-unit_type = "tank"
+unit_type = 1
 owner_id = 1
 
-[node name="Player2_artillery_1" parent="UnitContainer" unique_id=92435159 instance=ExtResource("10_rxatx")]
-position = Vector2(4199, 1792)
+[node name="Player1_Artillery_1" parent="UnitContainer" unique_id=831944555 instance=ExtResource("10_rxatx")]
+position = Vector2(2560, 1989)
 texture = ExtResource("11_kvb7t")
 hframes = 6
-frame = 24
-unit_type = "artillery"
+frame = 0
+unit_type = 2
+owner_id = 1
 
-[node name="Player2_artillery_2" parent="UnitContainer" unique_id=1119667285 instance=ExtResource("10_rxatx")]
-position = Vector2(1547, 2560)
+[node name="Player1_Artillery_2" parent="UnitContainer" unique_id=2064396777 instance=ExtResource("10_rxatx")]
+position = Vector2(4864, 3315)
 texture = ExtResource("11_kvb7t")
 hframes = 6
-frame = 24
-unit_type = "artillery"
+frame = 0
+unit_type = 2
+owner_id = 1
 
-[node name="Player2_tank_1" parent="UnitContainer" unique_id=827465877 instance=ExtResource("10_rxatx")]
-position = Vector2(3315, 2560)
+[node name="Player2_Infantry_1" parent="UnitContainer" unique_id=827465877 instance=ExtResource("10_rxatx")]
+position = Vector2(3328, 3315)
+
+[node name="Player2_Infantry_2" parent="UnitContainer" unique_id=1119667285 instance=ExtResource("10_rxatx")]
+position = Vector2(1792, 2873)
+
+[node name="Player2_Infantry_3" parent="UnitContainer" unique_id=1738471653 instance=ExtResource("10_rxatx")]
+position = Vector2(2176, 3094)
+
+[node name="Player2_Tank_1" parent="UnitContainer" unique_id=92435159 instance=ExtResource("10_rxatx")]
+position = Vector2(4480, 2210)
 texture = ExtResource("11_rxatx")
 hframes = 5
 frame = 20
-unit_type = "tank"
+unit_type = 1
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1708214605 node_paths=PackedStringArray("target_map")]
 position = Vector2(2877, 1619)
