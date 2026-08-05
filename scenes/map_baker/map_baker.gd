@@ -5,6 +5,7 @@ extends Node
 @export var MapGroundLayer: HexagonTileMapLayer
 @export var MapFeatureLayer: HexagonTileMapLayer
 @export var UnitContainer: Node2D
+@export var MapName: String
 
 # Check box "button" to bake map on inspector
 @export var bake_map: bool = false:
@@ -15,7 +16,8 @@ extends Node
 		bake_map = false
 
 func save_to_file(content: String) -> void:
-	var file = FileAccess.open("res://maps/map.json", FileAccess.WRITE)
+	var file_name = "res://maps/" + MapName + ".json"
+	var file = FileAccess.open(file_name, FileAccess.WRITE)
 	if file:
 		print("Saving map to a file")
 		file.store_string(content)
