@@ -61,6 +61,7 @@ script = ExtResource("1_87gq2")
 MapGroundLayer = NodePath("../MapGround")
 MapFeatureLayer = NodePath("../MapFeature")
 UnitContainer = NodePath("../UnitContainer")
+MapName = "map"
 
 [node name="MapManager" type="Node" parent="." unique_id=225508304 node_paths=PackedStringArray("MapGroundLayer", "MapFeaturesLayer")]
 script = ExtResource("3_4xhwn")
