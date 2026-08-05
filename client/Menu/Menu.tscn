@@ -3,7 +3,6 @@
 [ext_resource type="Script" uid="uid://cq1vksyu0l3ni" path="res://client/Menu/NavButtons.gd" id="1_0fscp"]
 [ext_resource type="Script" uid="uid://cjgs81rvtu3oa" path="res://client/Menu/menu.gd" id="1_iwbta"]
 [ext_resource type="Shader" uid="uid://h2wnn72fmsbh" path="res://client/Menu/Avatar.gdshader" id="2_3fffv"]
-[ext_resource type="Texture2D" uid="uid://cuth3b1hyk4oa" path="res://assets/usva-13.webp" id="2_qdv16"]
 [ext_resource type="Script" uid="uid://c660eng6n25st" path="res://client/Menu/avatar.gd" id="3_7up6s"]
 [ext_resource type="Script" uid="uid://bs25pwh2fx7pk" path="res://client/Menu/pages.gd" id="4_0fscp"]
 [ext_resource type="Script" uid="uid://bt5x5k46c00r8" path="res://client/Menu/play.gd" id="6_jw8mt"]
@@ -141,7 +140,6 @@ offset_left = 874.0
 offset_top = 6.0
 offset_right = 969.0
 offset_bottom = 101.0
-texture = ExtResource("2_qdv16")
 expand_mode = 1
 
 [node name="Rank" type="Label" parent="Navbar/Right/Avatar" unique_id=361648466]
