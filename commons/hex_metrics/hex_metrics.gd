@@ -2,7 +2,7 @@ extends Node
 
 # The circumscribed radius (half the width of a flat-top tile).
 # Set this to match the X dimension of your TileSet divided by 2.
-const HEX_SIZE: float = 256.0
+const HEX_SIZE: float = 221.0
 const SQRT3: float = 1.7320508075688772
 
 var tile_width: float
