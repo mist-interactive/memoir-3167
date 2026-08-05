@@ -33,10 +33,11 @@ func _bake_map() -> void:
 	var map_data: Dictionary = {
 		"hexes": [],
 		"units": [],
+		"sectors": {}
 	}
 	map_data["hexes"] = _get_hex_data()
 	map_data["units"] = _get_unit_data()
-	print(_get_map_sectors())
+	map_data["sectors"] = _get_map_sectors()
 	var map_json_string: String = JSON.stringify(map_data, "\t")
 	save_to_file(map_json_string)
 	pass
