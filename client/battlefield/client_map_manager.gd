@@ -8,12 +8,9 @@ extends Node
 @onready var hand_ui: PlayerHandUI = $"../UICanvas/MarginContainer/PlayerHandUI"
 @onready var enemy_hand_ui: EnemyHandUI = $"../UICanvas/MarginContainer2/EnemyHandUI"
 
-
 func setup_hand_ui(player_ids: Array[int]) -> void:
 	hand_ui.initialize()
 	enemy_hand_ui.initialize(player_ids[0])
-
-signal map_loaded
 
 var GROUND_TO_TILE: Dictionary = {}
 var FEATURE_TO_TILE: Dictionary = {}
@@ -39,15 +36,21 @@ func load_map(map_name: String) -> void:
 	var json_string: String = file.get_as_text()
 	file.close()
 	var map_data = JSON.parse_string(json_string)
-	if typeof(map_data) != TYPE_ARRAY:
-		push_error("Map file is corruct or not formatted as an Array")
+	if typeof(map_data) != TYPE_DICTIONARY:
+		push_error("Map file is corruct or not formatted as a Dictionary")
 		return
-
 	print("Map file parsed succesfully. Reconstructing map...")
 	MapGroundLayer.clear()
 	MapFeaturesLayer.clear()
-	for cell_dict in map_data:
-		var coord = HexCell._parse_coord(cell_dict, "coord")
+	_parse_hex_data(map_data)
+	_parse_unit_data(map_data)
+	print("Map reconstruction complete!")
+	pass
+	
+func _parse_hex_data(map_data: Dictionary) -> void:
+	var hex_array: Array = map_data.get("hexes", [])
+	for cell_dict in hex_array:
+		var coord: Vector2i = HexCell._parse_coord(cell_dict, "coord")
 		var ground_type: int = cell_dict.get("ground")
 		if GROUND_TO_TILE.has(ground_type):
 			var tile_info: Array = GROUND_TO_TILE[ground_type]
@@ -64,19 +67,6 @@ func load_map(map_name: String) -> void:
 			MapFeaturesLayer.set_cell(coord, source_id, atlas_coord)
 		else:
 			push_warning("Client doesn't have visual data for the Feature enum: ", feature_type)
-	print("Map reconstruction complete!")
-	#map_loaded.emit()
-	#rpc_id(1, "client_finished_loading_map")
+
+func _parse_unit_data(map_data: Dictionary) -> void:
 	pass
-
-"""	
-# On the Server script:
-# "any_peer" means any connected client is allowed to send this message to the server
-@rpc("any_peer", "call_remote", "reliable")
-func client_finished_loading_map() -> void:
-	var sender_id = multiplayer.get_remote_sender_id()
-	print("Client ", sender_id, " has finished loading the map!")
-	# The server can now mark this player as "ready to play"
-
-Once they have that function on their end, your client will successfully handshake with the server after painting the tiles!
-"""
