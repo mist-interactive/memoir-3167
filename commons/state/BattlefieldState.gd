@@ -1,11 +1,10 @@
 extends Node
 class_name BattlefieldState
 var map: Dictionary[Vector2i, HexCell]
-var units: Dictionary[Vector2i, UnitData] # hexCoords -> UnitData 
 var units_to_spawn_player_1: Array[Dictionary]
 var units_to_spawn_player_2: Array[Dictionary]
-var left_sector_max: int =  5
-var right_sector_min: int =  9
+var left_sector_max: int
+var right_sector_min: int
 var loaded: bool
 var mapName: String
 
