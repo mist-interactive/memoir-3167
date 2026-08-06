@@ -1,13 +1,28 @@
 class_name UnitData
 extends RefCounted
 
-var owner_id: int
-var uuid: int
+var owner_id: int # peer_id or uuid
+var uuid: int = -1
 var hex_coord: Vector2i
-var type: String
+var type: enums.UnitType
+var isDirty: bool = false
 
-func _init(owner_id: int, type: String, id: int, coord: Vector2i) -> void:
+func _init(owner_id: int, type: int, id: int, coord: Vector2i) -> void:
 	self.uuid = id
 	self.hex_coord = coord
 	self.type = type
 	self.owner_id = owner_id
+	
+func get_snapshot() -> Dictionary:
+	return {
+		"uuid": uuid,
+		"hex_coord": hex_coord,
+		"type": type,
+		"owner_id": owner_id
+	}
+
+func sync() -> void:
+	if !isDirty:
+		return
+	Network.Units.sync_unit.rpc_id(owner_id, get_snapshot())
+	isDirty = false
