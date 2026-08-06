@@ -7,7 +7,7 @@ var unit_manager: UnitManager
 
 var connected: Dictionary[int, bool]
 var player_status: Dictionary[int, MatchState.STATE]
-var UNIT_SCENE = preload("res://commons/units/Unit.tscn")
+var UNIT_SCENE = preload("res://client/units/Unit.tscn")
 
 func _init(matchState: MatchState, battlefield: BattlefieldState, deckManager: DeckManager) -> void:
 	self.matchState = matchState
@@ -24,6 +24,13 @@ func clients_are_ready():
 	var player_id2 = matchState.player_ids[1]
 	return player_status[player_id1] == MatchState.STATE.READY && player_status[player_id2] == MatchState.STATE.READY
 
+func ready_to_initialize_board():
+	if player_status.size() != 2:
+		return false
+	var player_id1 = matchState.player_ids[0]
+	var player_id2 = matchState.player_ids[1]
+	return player_status[player_id1] == MatchState.STATE.INITIALIZE_BOARD && player_status[player_id2] == MatchState.STATE.INITIALIZE_BOARD
+
 # signal handlers
 func handle_connect(player_id: int) -> void:
 	self.connected[player_id] = true
@@ -36,12 +43,14 @@ func handle_disconnect(player_id: int) -> void:
 func handle_client_state_change(player_id: int, state: MatchState.STATE) -> void:
 	player_status[player_id] = state
 	if matchState.state == MatchState.STATE.INITIALIZING && clients_are_ready():
-		matchState.state = MatchState.STATE.IN_PROGRESS
-		deckManager.draw_hand(matchState.player_ids[0])
-		#Network.Actions.hand_drawn.rpc_id(matchState.player_ids[0])
+		matchState.state = MatchState.STATE.INITIALIZE_BOARD
+		deckManager.draw_hand(matchState.player_ids[0]) # shoud move to initialize_board stage
 		deckManager.draw_hand(matchState.player_ids[1])
-		#Network.Actions.hand_drawn.rpc_id(matchState.player_ids[1])
 		deckManager.initialize_opponents_hands()
+
+	if matchState.state == MatchState.STATE.INITIALIZE_BOARD && ready_to_initialize_board():
+		matchState.state = MatchState.STATE.IN_PROGRESS
+		unit_manager.spawn_units(matchState.player_ids[0], matchState.player_ids[1])
 		matchState.phase = MatchState.TURN_PHASE.PLAY_CARD
 
 func isPhase(phase: MatchState.TURN_PHASE) -> bool:
@@ -57,11 +66,11 @@ func isInProgress() ->bool:
 func spawn_unit_on_server(owner_id: int, unit_type: String, start_coord: Vector2i) -> void:
 	if not multiplayer.is_server():
 		return
-	var unique_id: int = unit_manager.generate_server_unit_id()
-	var new_unit_data = UnitData.new(owner_id, unit_type, unique_id, start_coord)
-	unit_manager.add_unit(new_unit_data, start_coord)
-	for peer in matchState.player_ids:
-		sync_spawn_unit.rpc_id(peer, owner_id, unit_type, unique_id, start_coord)
+	#var unique_id: int = unit_manager.generate_server_unit_id()
+	#var new_unit_data = UnitData.new(owner_id, unit_type, unique_id, start_coord)
+	#unit_manager.add_unit(new_unit_data, start_coord)
+	#for peer in matchState.player_ids:
+		#sync_spawn_unit.rpc_id(peer, owner_id, unit_type, unique_id, start_coord)
 
 @rpc("authority", "call_remote", "reliable")
 func sync_spawn_unit(owner_id: int, unit_type: String, unique_id: int, coord: Vector2i) -> void:
