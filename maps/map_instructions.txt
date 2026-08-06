@@ -1,0 +1,7 @@
+To build map.json do the following:
+1. Open the project in Godot
+2. In FileSystem open res://maps/map_designer.tscn
+3. Select the MapBaker node under the Battlefield node
+4. In Inspector on the right side click the Bake Map [] On checkbox
+5. The <Map Name>.json is generated
+6. If the map is not loaded into FileSystem, go to Project -> Reload Current Project
