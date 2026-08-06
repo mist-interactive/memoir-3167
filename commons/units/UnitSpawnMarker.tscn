@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bu5pvjj0jwc1x" path="res://commons/units/unit_spawn_marker.gd" id="1_6uw2k"]
 [ext_resource type="Texture2D" uid="uid://dke2albmj8fh0" path="res://assets/sprites/units/infantry_sprite_sheet.png" id="1_bhgym"]
 
-[node name="UnitSpawnMarker" type="Sprite2D" unique_id=276452804]
+[node name="Player2_Infantry_1" type="Sprite2D" unique_id=276452804]
 scale = Vector2(6, 6)
 texture = ExtResource("1_bhgym")
 hframes = 4
