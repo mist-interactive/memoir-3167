@@ -4,17 +4,6 @@ class_name UnitSpawnMarker
 extends Sprite2D
 
 var _hex_map: TileMapLayer = null
-
-const TEXTURE_MAP: Dictionary = {
-	[1, GameEnums.UnitType.INFANTRY]: preload("res://assets/sprites/units/infantry_sprite_sheet.png"),	
-	[2, GameEnums.UnitType.INFANTRY]: preload("res://assets/sprites/units/infantry_sprite_sheet.png"),	
-	[1, GameEnums.UnitType.TANK]: preload("res://assets/sprites/units/tank_sprite_sheet.png"),	
-	[2, GameEnums.UnitType.TANK]: preload("res://assets/sprites/units/tank_sprite_sheet.png"),	
-	[1, GameEnums.UnitType.ARTILLERY]: preload("res://assets/sprites/units/artillery_sprite_sheet.png"),	
-	[2, GameEnums.UnitType.ARTILLERY]: preload("res://assets/sprites/units/artillery_sprite_sheet.png"),	
-}
-
-var sprite_sheet
 var _is_snapping: bool = false
 
 func _ready() -> void:
@@ -45,35 +34,7 @@ func serialize(coord: Vector2i) -> Dictionary:
 func _update_visual() -> void:
 	if !Engine.is_editor_hint():
 		return
-	var key = [owner_id, unit_type]
-	if TEXTURE_MAP.has(key):
-		sprite_sheet = TEXTURE_MAP.get(key)
-	else:
-		push_warning("No sprite sheet found with the key: ", key)
-		return
-	scale = Vector2(6, 6)
-	texture = sprite_sheet
-	if unit_type == GameEnums.UnitType.INFANTRY:
-		hframes = 4
-		vframes = 5
-		if owner_id == 1:
-			frame = 0
-		if owner_id == 2:
-			frame = 16
-	if unit_type == GameEnums.UnitType.TANK:
-		hframes = 5
-		vframes = 5
-		if owner_id == 1:
-			frame = 0
-		if owner_id == 2:
-			frame = 20
-	if unit_type == GameEnums.UnitType.ARTILLERY:
-		hframes = 6
-		vframes = 5
-		if owner_id == 1:
-			frame = 0
-		if owner_id == 2:
-			frame = 24
+	UnitVisuals.apply_unit_visuals(self, owner_id, unit_type)
 
 func _get_hex_map() -> TileMapLayer:
 	if _hex_map != null:
