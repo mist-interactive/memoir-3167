@@ -17,7 +17,7 @@ func _ready() -> void:
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
-	var raw_jwt_token: String = get_cookie("test")
+	var raw_jwt_token: String = get_jwt("window.gameJWT")
 	if raw_jwt_token.is_empty():
 		#Handle missing token
 		return
@@ -75,16 +75,11 @@ func reconnect_to_server():
 	multiplayer.multiplayer_peer = peer
 	connected = true
 
-func get_cookie(cookie_name: String) -> String:
+func get_jwt(jwt_path: String) -> String:
 	if not OS.has_feature("web"):
 		return "jwt_local_dummy_text"
 	# JavaScript to find a specific cookie by name
-	var js_code = """
-		(function() {
-			var match = document.cookie.match(new RegExp('(^| )' + '%s' + '=([^;]+)'));
-			return match ? match[2] : '';
-		})();
-	""" % cookie_name
-	var result = JavaScriptBridge.eval(js_code)
-	return str(result) if result else ""
+	var token = JavaScriptBridge.eval(jwt_path)
+	print(token)
+	return str(token) if token else ""
 	
