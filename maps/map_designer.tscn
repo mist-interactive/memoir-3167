@@ -9,7 +9,7 @@
 [ext_resource type="Script" uid="uid://buj6ft1vvdf2f" path="res://addons/hexagon_tilemaplayer/hexagon_tilemaplayer.gd" id="7_yyf4b"]
 [ext_resource type="Texture2D" uid="uid://l08uw4hx56l0" path="res://assets/sprites/hex/highlight.png" id="8_wy7vx"]
 [ext_resource type="Script" uid="uid://birdmambhh8rf" path="res://client/battlefield/map_highlight.gd" id="9_4r7qn"]
-[ext_resource type="PackedScene" uid="uid://hefmcl73f8pb" path="res://commons/units/UnitSpawnMarker.tscn" id="10_rxatx"]
+[ext_resource type="PackedScene" uid="uid://hefmcl73f8pb" path="res://client/units/UnitSpawnMarker.tscn" id="10_rxatx"]
 [ext_resource type="Texture2D" uid="uid://w6gqi2ht6c1" path="res://assets/sprites/units/artillery_sprite_sheet.png" id="11_kvb7t"]
 [ext_resource type="Texture2D" uid="uid://c3e467q1ibvtl" path="res://assets/sprites/units/tank_sprite_sheet.png" id="11_rxatx"]
 [ext_resource type="Script" uid="uid://7tdnt2pcipdq" path="res://client/battlefield/camera_controller.gd" id="13_pa0pi"]
