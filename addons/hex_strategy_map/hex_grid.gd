@@ -248,25 +248,25 @@ static func deserialize(data: Dictionary) -> HexGrid:
 # --- Coordinates ---
 
 ## Odd-r offset to pixel (pointy-top hexes).
-static func offset_to_pixel_pointy_top(coord: Vector2i, size: float = HEX_SIZE) -> Vector2:
+static func offset_to_pixel(coord: Vector2i, size: float = HEX_SIZE) -> Vector2:
 	var x := size * HEX_SQRT3 * (coord.x + 0.5 * (coord.y & 1))
 	var y := size * 1.5 * coord.y
 	return Vector2(x, y)
 
 # Odd-q offset to pixe (flat-top hexes).
-static func offset_to_pixel(coord: Vector2i, size: float = HEX_SIZE) -> Vector2:
+static func offset_to_pixel_flat_top(coord: Vector2i, size: float = HEX_SIZE) -> Vector2:
 	var x := size * 1.5 * coord.x
 	var y := size * HEX_SQRT3 * (coord.y + 0.5 * (coord.x & 1))
 	return Vector2(x, y)
 
 ## Pixel to nearest odd-r offset (pointy-top hexes).
-static func pixel_to_offset_pointy_top(pixel: Vector2, size: float = HEX_SIZE) -> Vector2i:
+static func pixel_to_offset(pixel: Vector2, size: float = HEX_SIZE) -> Vector2i:
 	var q: float = (HEX_SQRT3 / 3.0 * pixel.x - 1.0 / 3.0 * pixel.y) / size
 	var r: float = (2.0 / 3.0 * pixel.y) / size
 	return _cube_to_offset(cube_round(q, r))
 
 ## Pixel to nearest odd-r offset (flat-top hexes).
-static func pixel_to_offset(pixel: Vector2, size: float = HEX_SIZE) -> Vector2i:
+static func pixel_to_offset_flat_top(pixel: Vector2, size: float = HEX_SIZE) -> Vector2i:
 	# 1. Convert pixel to fractional axial coordinates (q, r)
 	var q_frac: float = (2.0 / 3.0 * pixel.x) / size
 	var r_frac: float = (-1.0 / 3.0 * pixel.x + sqrt(3.0) / 3.0 * pixel.y) / size
