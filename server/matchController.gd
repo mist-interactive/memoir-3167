@@ -54,7 +54,7 @@ func isInProgress() ->bool:
 	return matchState.state == MatchState.STATE.IN_PROGRESS
 	
 # Antti
-func spawn_unit_on_server(owner_id: int, unit_type: String, start_coord: Vector2i) -> void:
+func spawn_unit_on_server(owner_id: int, unit_type: int, start_coord: Vector2i) -> void:
 	if not multiplayer.is_server():
 		return
 	var unique_id: int = unit_manager.generate_server_unit_id()
@@ -75,6 +75,6 @@ func sync_spawn_unit(owner_id: int, unit_type: String, unique_id: int, coord: Ve
 	unit_manager.add_unit(new_unit_node, coord)
 
 func process_hex_click(peer_id:int, hex: Vector2i) -> void:
-	spawn_unit_on_server(peer_id, "test", hex)
+	spawn_unit_on_server(peer_id, GameEnums.UnitType.INFANTRY, hex)
 	for player in matchState.player_ids:
 		Network.Match.receive_hex_broadcast.rpc_id(player, peer_id, hex)
