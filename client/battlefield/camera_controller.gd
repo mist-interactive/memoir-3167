@@ -8,11 +8,20 @@ extends Camera2D
 
 @export var target_map: TileMapLayer
 
+@export var map_manager: ClientMapManager
+
 var IS_MIDDLEMOUSE_DOWN: bool = false
 
 func _ready():
+	set_process_unhandled_input(false)
+	if map_manager:
+		map_manager.map_loaded.connect(_on_map_loaded)
+	else:
+		push_error("ClientMapManager reference missing from Camera2D")
+
+func _on_map_loaded() -> void:
 	setup_camera_limits()
-	pass
+	set_process_unhandled_input(true)
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
