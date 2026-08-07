@@ -3,7 +3,7 @@ class_name  matchController
 var matchState: MatchState
 var battlefield: BattlefieldState
 var deckManager: DeckManager
-var unit_manager: UnitManager
+var unit_manager: ServerUnitManager
 
 var connected: Dictionary[int, bool]
 var player_status: Dictionary[int, MatchState.STATE]
