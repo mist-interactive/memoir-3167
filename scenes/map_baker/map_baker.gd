@@ -7,6 +7,9 @@ extends Node
 @export var UnitContainer: Node2D
 @export var MapName: String
 
+var _left_max_x: int
+var _right_min_x: int
+
 # Check box "button" to bake map on inspector
 @export var bake_map: bool = false:
 	set(value):
@@ -33,11 +36,12 @@ func _bake_map() -> void:
 	var map_data: Dictionary = {
 		"hexes": [],
 		"units": [],
-		"sectors": {}
+		"sectors": [],
 	}
+	_calculate_map_boundaries()
 	map_data["hexes"] = _get_hex_data()
 	map_data["units"] = _get_unit_data()
-	map_data["sectors"] = _get_map_sectors()
+	map_data["sectors"] = _get_map_boundaries()
 	var map_json_string: String = JSON.stringify(map_data, "\t")
 	save_to_file(map_json_string)
 	pass
@@ -69,7 +73,8 @@ func _get_hex_data() -> Array[Dictionary]:
 			final_feature = MapData.FEATURE_ATLAS[feature_key]
 		else:
 			final_feature = HexCell.Feature.NONE
-		var temp_hex = HexCell.new(coord, final_ground, final_feature)
+		var sector = _get_hex_sector(coord)
+		var temp_hex = HexCell.new(coord, final_ground, final_feature, sector)
 		hex_data.append(temp_hex.serialize())
 	return hex_data
 
@@ -85,11 +90,35 @@ func _get_unit_data() -> Array[Dictionary]:
 	print(count, " units found")
 	return unit_data
 
-func _get_map_sectors() -> Dictionary:
+func _calculate_map_boundaries() -> void:
 	var used_rect: Rect2i = MapGroundLayer.get_used_rect()
 	var map_width: int = used_rect.size.x
 	var sector_width: int = map_width / 3
+	_left_max_x = used_rect.position.x + sector_width - 1
+	_right_min_x = used_rect.end.x - sector_width
+
+func _get_map_boundaries() -> Dictionary:
 	return {
-		"left_sector_max": used_rect.position.x + sector_width,
-		"right_sector_min": (used_rect.end.x - 1) - sector_width
+		"left_sector_max": _left_max_x,
+		"right_sector_min": _right_min_x
 	}
+
+func _get_hex_sector(coord: Vector2i) -> int:
+	var is_odd_row: bool = (coord.y % 2 != 0)
+	var right_straddle_col: int = _right_min_x - 1
+	if coord.x < _left_max_x:
+		return GameEnums.Sector.LEFT
+	elif coord.x == _left_max_x:
+		if is_odd_row:
+			return GameEnums.Sector.LEFT | GameEnums.Sector.CENTER
+		else:
+			return GameEnums.Sector.LEFT
+	elif coord.x < right_straddle_col:
+		return GameEnums.Sector.CENTER
+	elif coord.x == right_straddle_col:
+		if is_odd_row:
+			return GameEnums.Sector.CENTER | GameEnums.Sector.RIGHT
+		else:
+			return GameEnums.Sector.CENTER
+	else:
+		return GameEnums.Sector.RIGHT
