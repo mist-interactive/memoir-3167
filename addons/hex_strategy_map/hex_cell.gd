@@ -41,6 +41,8 @@ enum Terrain {
 
 ## Offset coordinate (x = column, y = row) of the cell in the HexGrid.
 var coord: Vector2i = Vector2i.ZERO
+## Sector that the tile belongs to
+var sector: GameEnums.Sector = GameEnums.Sector.NONE
 ## Active terrain ground type. One of Ground.* or a custom integer constant.
 var ground: int = Ground.FIELDS
 ## Active terrain feature type. One of Feature.* or a custom integer constant.
@@ -61,8 +63,9 @@ var elevation: float = 0.0
 
 ## Creates the cell at [param cell_coord] with [param cell_terrain].
 ## HexGrid calls this method internally during generate_cells().
-func _init(cell_coord: Vector2i = Vector2i.ZERO, cell_ground: int = Ground.FIELDS, cell_feature: int = Feature.PLAINS) -> void:
+func _init(cell_coord: Vector2i = Vector2i.ZERO, cell_ground: int = Ground.FIELDS, cell_feature: int = Feature.PLAINS, cell_sector: GameEnums.Sector = GameEnums.Sector.NONE) -> void:
 	coord = cell_coord
+	sector = cell_sector
 	ground = cell_ground
 	feature = cell_feature
 
@@ -157,6 +160,7 @@ func serialize() -> Dictionary:
 		explored_serial[str(pid)] = _explored_by[pid]
 	return {
 		"coord": [coord.x, coord.y],
+		"sector": sector,
 		"ground": ground,
 		"feature": feature,
 		"location_type": location_type,
@@ -183,6 +187,7 @@ static func _parse_coord(data: Dictionary, key: String, default: Vector2i = Vect
 static func deserialize(data: Dictionary) -> HexCell:
 	var cell_coord := _parse_coord(data, "coord")
 	var cell := HexCell.new(cell_coord, data.get("ground", Ground.FIELDS), data.get("feature", Feature.PLAINS))
+	cell.sector = data.get("sector", GameEnums.Sector.NONE)
 	cell.location_type = data.get("location_type", 0)
 	cell.location_data = data.get("location_data", {})
 	var explored_raw: Dictionary = data.get("explored_by", {})
