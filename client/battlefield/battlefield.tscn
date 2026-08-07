@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://chagsifi7w8n6" path="res://client/battlefield/battlefield.gd" id="1_u0eng"]
 [ext_resource type="Texture2D" uid="uid://dq8khvkm5weph" path="res://assets/sprites/hex/fields_ground_sprite_sheet.png" id="2_4ok02"]
 [ext_resource type="Script" uid="uid://cgtpxpasdke04" path="res://client/battlefield/client_map_manager.gd" id="2_ynl45"]
+[ext_resource type="PackedScene" uid="uid://buxwxqa5ikfqd" path="res://commons/units/Unit.tscn" id="3_0hlkx"]
 [ext_resource type="Script" uid="uid://doeqye6s2a65e" path="res://client/battlefield/map_controller.gd" id="3_stskl"]
 [ext_resource type="Script" uid="uid://buj6ft1vvdf2f" path="res://addons/hexagon_tilemaplayer/hexagon_tilemaplayer.gd" id="4_4ok02"]
 [ext_resource type="Script" uid="uid://7tdnt2pcipdq" path="res://client/battlefield/camera_controller.gd" id="5_7nanj"]
@@ -71,10 +72,12 @@ point_count = 3
 [node name="Battlefield" type="Node2D" unique_id=1534648312]
 script = ExtResource("1_u0eng")
 
-[node name="MapManager" type="Node" parent="." unique_id=225508304 node_paths=PackedStringArray("MapGroundLayer", "MapFeaturesLayer")]
+[node name="MapManager" type="Node" parent="." unique_id=225508304 node_paths=PackedStringArray("map_ground_layer", "map_features_layer", "unit_container")]
 script = ExtResource("2_ynl45")
-MapGroundLayer = NodePath("../MapGround")
-MapFeaturesLayer = NodePath("../MapFeature")
+map_ground_layer = NodePath("../MapGround")
+map_features_layer = NodePath("../MapFeature")
+unit_container = NodePath("../UnitContainer")
+unit_scene = ExtResource("3_0hlkx")
 
 [node name="MapGround" type="TileMapLayer" parent="." unique_id=1769591625 node_paths=PackedStringArray("highlight_layer")]
 tile_set = SubResource("TileSet_o6wfx")
@@ -145,10 +148,11 @@ card_ui_scene = ExtResource("12_f3lu3")
 hand_curve = SubResource("Curve_ec6rr")
 rotation_curve = SubResource("Curve_0hlkx")
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1708214605 node_paths=PackedStringArray("target_map")]
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1708214605 node_paths=PackedStringArray("target_map", "map_manager")]
 position = Vector2(2877, 1619)
 zoom = Vector2(0.305, 0.305)
 script = ExtResource("5_7nanj")
 target_map = NodePath("../MapGround")
+map_manager = NodePath("../MapManager")
 
 [connection signal="pressed" from="UICanvas/Button" to="UICanvas/Button" method="_on_pressed"]
