@@ -1,15 +1,23 @@
 FROM debian:bookworm-slim AS base
 
+ARG TARGETARCH
+
 ENV GODOT_VERSION "4.7.1"
 ENV GODOT_EXPORT_TEMPLATES_DIR "/root/.local/share/godot/export_templates/${GODOT_VERSION}.stable"
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates wget unzip git xz-utils libfontconfig1 && update-ca-certificates
 
-RUN wget -O godot.zip "https://downloads.godotengine.org/?version=${GODOT_VERSION}&flavor=stable&slug=linux.x86_64.zip&platform=linux.64"
-RUN unzip godot.zip && \
-	mv Godot_v${GODOT_VERSION}-stable_linux.x86_64 /bin/godot && \
-	rm -f godot.zip
+RUN if [ "$TARGETARCH" = "arm64" ]; then \
+        GODOT_ARCH="arm64"; \
+    else \
+        GODOT_ARCH="x86_64"; \
+    fi && \
+    # Using the standard GitHub release URL ensures deterministic downloads across architectures
+    wget -O godot.zip "https://github.com/godotengine/godot/releases/download/${GODOT_VERSION}-stable/Godot_v${GODOT_VERSION}-stable_linux.${GODOT_ARCH}.zip" && \
+    unzip godot.zip && \
+    mv Godot_v${GODOT_VERSION}-stable_linux.${GODOT_ARCH} /bin/godot && \
+    rm -f godot.zip
 
  RUN mkdir ~/.cache && \
 	mkdir -p ~/.config/godot && \
