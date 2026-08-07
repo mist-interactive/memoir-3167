@@ -1,52 +1,7 @@
 [gd_scene format=3 uid="uid://br53t6qvsase5"]
 
+[ext_resource type="Script" uid="uid://gitlphxxoobq" path="res://client/units/unit.gd" id="1_thmd4"]
 [ext_resource type="Texture2D" uid="uid://b36rlwjyo7k5n" path="res://icon.svg" id="2_gyfl6"]
-
-[sub_resource type="GDScript" id="GDScript_u5oyg"]
-script/source = "extends Node2D
-
-
-@onready var sprite: Sprite2D = $Sprite2D
-@onready var anim_player: AnimationPlayer = $AnimationPlayer
-@export var owner_id: int = 1
-@export var hex_coord: Vector2i = Vector2i.ZERO:
-	set(new_coord):
-		if hex_coord == new_coord:
-			return
-		hex_coord = new_coord
-		if is_inside_tree():
-			_animate_to_hex(new_coord)
-		else:
-			position = HexGrid.offset_to_pixel(new_coord) + visual_offset
-
-var uuid: int = -1
-var type: String = \"\"
-var is_selected: bool = false
-var visual_offset: Vector2:
-	get:
-		return Vector2(HexMetrics.half_width, HexMetrics.half_height)
-
-func _ready() -> void:
-	pass
-
-func _animate_to_hex(target_coord: Vector2i) -> void:
-	# Calculate where this hex actually is on the screen
-	# (Assuming you have a HexGrid autoload with your math)
-	var target_pixel_pos = HexGrid.offset_to_pixel(target_coord) + visual_offset
-	
-	# Smoothly slide the unit over 0.5 seconds
-	var tween = create_tween()
-	tween.tween_property(self, \"position\", target_pixel_pos, 0.5).set_trans(Tween.TRANS_SINE)
-
-func sync_with_snapshot(snapshot: Dictionary) -> void:
-	self.uuid = snapshot.uuid
-	self.hex_coord = snapshot.hex_coord
-	self.type = snapshot.type
-	self.owner_id = snapshot.owner_id
-
-func _exit_tree() -> void:
-	pass
-"
 
 [sub_resource type="Animation" id="Animation_o1qvf"]
 resource_name = "idle"
@@ -61,7 +16,7 @@ _data = {
 }
 
 [node name="Unit" type="Node2D" unique_id=829278407]
-script = SubResource("GDScript_u5oyg")
+script = ExtResource("1_thmd4")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=500315773]
 texture = ExtResource("2_gyfl6")
