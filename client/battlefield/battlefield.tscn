@@ -72,12 +72,14 @@ point_count = 3
 [node name="Battlefield" type="Node2D" unique_id=1534648312]
 script = ExtResource("1_u0eng")
 
-[node name="MapManager" type="Node" parent="." unique_id=225508304 node_paths=PackedStringArray("map_ground_layer", "map_features_layer", "unit_container")]
+[node name="MapManager" type="Node" parent="." unique_id=225508304 node_paths=PackedStringArray("map_ground_layer", "map_features_layer", "unit_container", "left_sector_divider", "right_sector_divider")]
 script = ExtResource("2_ynl45")
 map_ground_layer = NodePath("../MapGround")
 map_features_layer = NodePath("../MapFeature")
 unit_container = NodePath("../UnitContainer")
 unit_scene = ExtResource("3_0hlkx")
+left_sector_divider = NodePath("../LeftSectorDivider")
+right_sector_divider = NodePath("../RightSectorDivider")
 
 [node name="MapGround" type="TileMapLayer" parent="." unique_id=1769591625 node_paths=PackedStringArray("highlight_layer")]
 tile_set = SubResource("TileSet_o6wfx")
@@ -96,6 +98,14 @@ modulate = Color(1, 1, 1, 0.5019608)
 tile_set = SubResource("TileSet_ql7mu")
 script = ExtResource("13_upguu")
 metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
+
+[node name="LeftSectorDivider" type="Line2D" parent="." unique_id=1538020218]
+width = 20.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="RightSectorDivider" type="Line2D" parent="." unique_id=479535643]
+width = 20.0
+default_color = Color(1, 0, 0, 1)
 
 [node name="UnitContainer" type="Node2D" parent="." unique_id=1804487023]
 
