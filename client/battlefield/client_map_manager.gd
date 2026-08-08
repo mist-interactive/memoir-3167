@@ -6,6 +6,8 @@ extends Node
 @export var map_features_layer: HexagonTileMapLayer
 @export var unit_container: Node
 @export var unit_scene: PackedScene
+@export var left_sector_divider: Line2D
+@export var right_sector_divider: Line2D
 @onready var battlefield_state: BattlefieldState = $"../../BattlefieldState"
 @onready var hand_ui: PlayerHandUI = $"../UICanvas/MarginContainer/PlayerHandUI"
 @onready var enemy_hand_ui: EnemyHandUI = $"../UICanvas/MarginContainer2/EnemyHandUI"
@@ -48,6 +50,7 @@ func load_map(map_name: String) -> void:
 	map_features_layer.clear()
 	_parse_hex_data(map_data)
 	_parse_unit_data(map_data)
+	_draw_sector_dividers(map_data)
 	print("Map reconstruction complete!")
 	map_loaded.emit()
 	pass
@@ -86,3 +89,43 @@ func _parse_unit_data(map_data: Dictionary) -> void:
 		unit_instance.hex_coord = grid_coord
 		unit_instance.position = map_ground_layer.map_to_local(grid_coord)
 	pass
+
+func _draw_sector_dividers(map_data: Dictionary) -> void:
+	var sectors: Dictionary = map_data.get("sectors")
+	if not sectors:
+		push_warning("Map JSON is missing 'sectors' data.")
+		return
+	if not left_sector_divider or not right_sector_divider:
+		push_error("Divider Line2D nodes are not assigned in the Inspector")
+		return
+	var line_width: float = 15.0
+	var left_max: int = sectors.get("left_sector_max", 0)
+	var right_min: int = sectors.get("right_sector_min", 0)
+	
+	# 1. Determine the vertical bounds of the map in grid coordinates
+	var used_rect: Rect2i = map_ground_layer.get_used_rect()
+	var top_row: int = used_rect.position.y
+	var bottom_row: int = used_rect.end.y - 1
+	
+	# Convert grid rows to pixel Y coordinates. 
+	# We add/subtract an arbitrary pixel amount (e.g., 100) so the lines extend slightly past the grid.
+	var line_top_y: float = map_ground_layer.map_to_local(Vector2i(0, top_row)).y - (HexMetrics.half_height)
+	var line_bottom_y: float = map_ground_layer.map_to_local(Vector2i(0, bottom_row)).y + (HexMetrics.half_height)
+	
+	# 2. Calculate the Left and Right Divider X Coordinate
+	var left_pure_hex_pos := map_ground_layer.map_to_local(Vector2i(left_max, 0))
+	var left_center_adj_hex_pos := map_ground_layer.map_to_local(Vector2i(left_max + 1, 0))
+	var left_line_x: float = (left_pure_hex_pos.x + left_center_adj_hex_pos.x) / 2.0
+	
+	var right_pure_hex_pos := map_ground_layer.map_to_local(Vector2i(right_min, 0))
+	var right_center_adj_hex_pos := map_ground_layer.map_to_local(Vector2i(right_min - 1, 0))
+	var right_line_x: float = (right_pure_hex_pos.x + right_center_adj_hex_pos.x) / 2.0
+	
+	# 4. Apply the coordinates to the Line2D nodes
+	left_sector_divider.clear_points()
+	left_sector_divider.add_point(Vector2(left_line_x, line_top_y))
+	left_sector_divider.add_point(Vector2(left_line_x, line_bottom_y))
+	
+	right_sector_divider.clear_points()
+	right_sector_divider.add_point(Vector2(right_line_x, line_top_y))
+	right_sector_divider.add_point(Vector2(right_line_x, line_bottom_y))
