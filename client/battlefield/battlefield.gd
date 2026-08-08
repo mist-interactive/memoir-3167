@@ -3,10 +3,10 @@ extends Node2D
 
 @onready var map_manager: ClientMapManager = $MapManager # Update path if needed
 @export var unit_container: Node
-var unit_manager: UnitManager
-
+var unit_manager: ClientUnitManager
+@onready var battlefieldState: BattlefieldState = $"../BattlefieldState"
 func _ready() -> void:
-	unit_manager = UnitManager.new()
+	unit_manager = ClientUnitManager.new(battlefieldState)
 	unit_manager.active_container = unit_container
 	add_child(unit_manager)
 

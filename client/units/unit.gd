@@ -33,10 +33,16 @@ func _animate_to_hex(target_coord: Vector2i) -> void:
 	# Calculate where this hex actually is on the screen
 	# (Assuming you have a HexGrid autoload with your math)
 	var target_pixel_pos = _map_layer.map_to_local(target_coord)
-	
+
 	# Smoothly slide the unit over 0.5 seconds
 	var tween = create_tween()
 	tween.tween_property(self, "position", target_pixel_pos, 0.5).set_trans(Tween.TRANS_SINE)
+
+func sync_with_snapshot(snapshot: Dictionary) -> void:
+	self.uuid = snapshot.uuid
+	self.hex_coord = snapshot.hex_coord
+	self.type = snapshot.type
+	self.owner_id = snapshot.owner_id
 
 func _exit_tree() -> void:
 	pass

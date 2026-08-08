@@ -4,6 +4,7 @@ extends Node
 @export var Client: ClientNetwork
 @export var Hand: HandNetwork
 @export var Card: CardNetwork
+@export var Units: UnitsNetwork
 
 signal join_queue_requested(peer_id: int)
 

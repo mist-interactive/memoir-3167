@@ -3,19 +3,24 @@ extends Node
 
 # The Unit Grid:
 # Key = Vector2i (hex coord), Value = Unit
-var unit_grid: Dictionary = {}
-var units_by_id: Dictionary = {}
-var active_container: Node
-var _unit_id_counter: int = 0
+var unit_grid: Dictionary[Vector2i, int] = {} # hex_coords --> id
+var units_by_id: Dictionary[int, Variant] = {} # id --> unit
+var grid: Dictionary[Vector2i, HexCell]
+var battlefield: BattlefieldState
+
+func _init(initialState: BattlefieldState) -> void:
+	name = "UnitManager"
+	battlefield = initialState
+	grid = battlefield.map
 
 func add_unit(unit: Variant, coord: Vector2i) -> void:
-	if unit_grid.has(coord):
+	if !grid.has(coord) || unit_grid.has(coord):
 		return
-	unit_grid[coord] = unit
+	unit_grid[coord] = unit.uuid
 	units_by_id[unit.uuid] = unit
 	if multiplayer.is_server():
 		print("Unit registered at ", coord, " | Total units: ", unit_grid.size())
-	
+		
 func remove_unit(coord: Vector2i) -> void:
 	if unit_grid.has(coord):
 		var unit_to_remove = unit_grid[coord]
@@ -23,18 +28,17 @@ func remove_unit(coord: Vector2i) -> void:
 		unit_grid.erase(coord)
 
 func move_unit(unit: Variant, old_coord: Vector2i, new_coord: Vector2i) -> void:
-		remove_unit(old_coord)
-		add_unit(unit, new_coord)
+	if !unit_grid.has(old_coord) || unit_grid.has(new_coord) || !grid.has(new_coord):
+		return
+	var uuid: int = unit_grid[old_coord]
+	if unit.uuid != uuid:
+		return
+	unit_grid[new_coord] = unit.uuid
+	units_by_id[uuid].hex_coord = new_coord
 
 func get_unit_at(coord: Vector2i) -> Variant:
-	return unit_grid.get(coord)
+	var uuid: int = unit_grid[coord]
+	return units_by_id[uuid]
 	
 func get_unit_by_id(id: int) -> Variant:
 	return units_by_id.get(id)
-	
-func generate_server_unit_id() -> int:
-	if not multiplayer.is_server():
-		push_error("Client tried to generate a unit ID.")
-		return -1
-	_unit_id_counter += 1
-	return _unit_id_counter
