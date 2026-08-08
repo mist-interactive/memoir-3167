@@ -105,16 +105,16 @@ position = Vector2(2431, 1792)
 texture = ExtResource("11_kvb7t")
 hframes = 6
 frame = 0
-owner_id = 1
 unit_type = 2
+owner_id = 1
 
 [node name="Player1_Artillery_2" parent="UnitContainer" unique_id=903142194 instance=ExtResource("10_rxatx")]
 position = Vector2(3094, 1408)
 texture = ExtResource("11_kvb7t")
 hframes = 6
 frame = 0
-owner_id = 1
 unit_type = 2
+owner_id = 1
 
 [node name="Player2_Infantry_1" parent="UnitContainer" unique_id=1738471653 instance=ExtResource("10_rxatx")]
 position = Vector2(2210, 2944)
