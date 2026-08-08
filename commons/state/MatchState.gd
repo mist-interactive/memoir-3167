@@ -17,8 +17,8 @@ var player_turn_index: int:
 		player_turn_index = newIndex
 		should_sync = true
 var should_sync: bool = true
-enum STATE {INITIALIZING, READY, IN_PROGRESS, PAUSED, ENDED}
-enum TURN_PHASE {DRAW_HAND, PLAY_CARD, ISSUE_ORDERS, EXECUTE_ORDERS, DRAW_CARD}
+enum STATE {INITIALIZING, READY, INITIALIZE_BOARD, IN_PROGRESS, PAUSED, ENDED}
+enum TURN_PHASE {SPAWN_UNITS, DRAW_HAND, PLAY_CARD, ISSUE_ORDERS, EXECUTE_ORDERS, DRAW_CARD}
 
 func _init() -> void:
 	name = "matchState"

@@ -9,7 +9,7 @@ var _next_instance_id: int = 1000
 var initial_hand_size: int = 6
 
 func _init(peer_id1: int, peer_id2: int) -> void: # peer_id should be unique
-	name = "deckmanager"
+	name = "DeckManager"
 	player_hands[peer_id1] = HandState.new()
 	player_hands[peer_id2] = HandState.new()
 	initialize_match_deck()
