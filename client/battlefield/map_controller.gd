@@ -3,8 +3,6 @@ extends HexagonTileMapLayer
 @export var highlight_layer: TileMapLayer
 var player_hex := {}
 
-var map_limits
-
 func _ready() -> void:
 	assert(highlight_layer)
 	assert(Network)
