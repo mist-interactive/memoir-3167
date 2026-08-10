@@ -24,6 +24,6 @@ func _on_spawn_unit_requested(owner_id: int, uuid: int, coord: Vector2i, type: e
 	#print("Unit spawned uuid:", uuid,", type: ", type,", owner: ", owner_id, ",coord: ",coord)
 	var new_unit = UNIT_SCENE.instantiate() as Unit
 	active_container.add_child(new_unit)
-	add_unit(new_unit, coord)
 	new_unit.setup(owner_id, type, uuid, coord)
+	add_unit(new_unit, coord)
 	pass
