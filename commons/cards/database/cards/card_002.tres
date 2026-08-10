@@ -7,7 +7,9 @@
 script = ExtResource("1_5arxm")
 id = "002"
 title_label = "card 002"
-description_label = "this is card 002"
+description_label = "this is card 002
+target right"
+card_target = 4
 quantity = 10
 card_art = ExtResource("1_u6fa0")
 metadata/_custom_type_script = "uid://brv7b2q4f6ws5"
