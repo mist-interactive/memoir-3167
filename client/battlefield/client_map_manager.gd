@@ -81,7 +81,7 @@ func _parse_unit_data(map_data: Dictionary) -> void:
 	for unit_dict in unit_array:
 		var coord_data: Array = unit_dict.get("coord", [0, 0])
 		var grid_coord := Vector2i(coord_data[0], coord_data[1])
-		var unit_type := int(unit_dict.get("type", 0)) as GameEnums.UnitType
+		var unit_type := int(unit_dict.get("type", 0)) as enums.UnitType
 		var unit_owner := int(unit_dict.get("owner_id", 1))
 		var unit_instance := unit_scene.instantiate() as Unit
 		unit_container.add_child(unit_instance)
