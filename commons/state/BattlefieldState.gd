@@ -7,6 +7,34 @@ var left_sector_max: int
 var right_sector_min: int
 var loaded: bool
 var mapName: String
+## Dictionary mapping each Sector enum to an Array[Vector2i] of coordinates.
+var sector_index: Dictionary[enums.Sector, Array] = {
+	enums.Sector.LEFT: [] as Array[Vector2i],
+	enums.Sector.CENTER: [] as Array[Vector2i],
+	enums.Sector.RIGHT: [] as Array[Vector2i]
+}
+
+## Rebuilds the sector lookup table from the current map state.
+func build_sector_index() -> void:
+	# 1. Clear existing coordinates without breaking inner array typing
+	for sector_key: enums.Sector in sector_index:
+		(sector_index[sector_key] as Array).clear()
+
+	# 2. Iterate through all key-value pairs in the map
+	for coords: Vector2i in map:
+		var cell: HexCell = map[coords]
+		if not cell or cell.sector == enums.Sector.NONE:
+			continue
+
+		# 3. Check bit flags using bitwise AND
+		if cell.sector & enums.Sector.LEFT != 0:
+			(sector_index[enums.Sector.LEFT] as Array).append(coords)
+			
+		if cell.sector & enums.Sector.CENTER != 0:
+			(sector_index[enums.Sector.CENTER] as Array).append(coords)
+			
+		if cell.sector & enums.Sector.RIGHT != 0:
+			(sector_index[enums.Sector.RIGHT] as Array).append(coords)
 
 func _init(mapName: String) -> void:
 	name = "BattlefieldState"
