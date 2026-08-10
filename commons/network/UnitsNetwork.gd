@@ -14,9 +14,9 @@ func sync_all(snapshot: Dictionary) -> void:
 		return
 	sync_all_requested.emit(snapshot)
 
-signal spawn_unit_requested(owner_id: int, uuid: int, coord: Vector2i, type: enums.UnitType)
+signal spawn_unit_requested(unit: Dictionary)
 @rpc("authority", "call_remote")
 func spawn_unit(unit: Dictionary) -> void:
 	if multiplayer.is_server():
 		return
-	spawn_unit_requested.emit(unit.owner_id, unit.uuid, unit.coord, unit.type)
+	spawn_unit_requested.emit(unit)
