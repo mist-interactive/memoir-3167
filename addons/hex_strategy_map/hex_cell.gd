@@ -42,7 +42,7 @@ enum Terrain {
 ## Offset coordinate (x = column, y = row) of the cell in the HexGrid.
 var coord: Vector2i = Vector2i.ZERO
 ## Sector that the tile belongs to
-var sector: enums.Sector = enums.Sector.NONE
+var sector: enums.MapSector = enums.MapSector.NONE
 ## Active terrain ground type. One of Ground.* or a custom integer constant.
 var ground: int = Ground.FIELDS
 ## Active terrain feature type. One of Feature.* or a custom integer constant.
@@ -63,7 +63,7 @@ var elevation: float = 0.0
 
 ## Creates the cell at [param cell_coord] with [param cell_terrain].
 ## HexGrid calls this method internally during generate_cells().
-func _init(cell_coord: Vector2i = Vector2i.ZERO, cell_ground: int = Ground.FIELDS, cell_feature: int = Feature.PLAINS, cell_sector: GameEnums.Sector = GameEnums.Sector.NONE) -> void:
+func _init(cell_coord: Vector2i = Vector2i.ZERO, cell_ground: int = Ground.FIELDS, cell_feature: int = Feature.PLAINS, cell_sector: enums.MapSector = enums.MapSector.NONE) -> void:
 	coord = cell_coord
 	sector = cell_sector
 	ground = cell_ground
