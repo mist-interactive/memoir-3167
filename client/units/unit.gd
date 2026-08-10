@@ -18,7 +18,7 @@ extends Node2D
 
 var is_initialized: bool = false
 var uuid: int = -1
-var type: GameEnums.UnitType = GameEnums.UnitType.INFANTRY
+var type: enums.UnitType = enums.UnitType.INFANTRY
 var is_selected: bool = false
 var visual_offset: Vector2:
 	get:
