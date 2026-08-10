@@ -19,6 +19,4 @@ signal spawn_unit_requested(owner_id: int, uuid: int, coord: Vector2i, type: enu
 func spawn_unit(unit: Dictionary) -> void:
 	if multiplayer.is_server():
 		return
-	var coord: Vector2i = Vector2i(unit.coord[0], unit.coord[1])
-	var unit_type: enums.UnitType = unit.type
-	spawn_unit_requested.emit(unit.owner_id, unit.uuid, coord, unit_type)
+	spawn_unit_requested.emit(unit.owner_id, unit.uuid, unit.coord, unit.type)

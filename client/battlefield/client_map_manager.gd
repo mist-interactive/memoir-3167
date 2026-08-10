@@ -49,7 +49,7 @@ func load_map(map_name: String) -> void:
 	map_ground_layer.clear()
 	map_features_layer.clear()
 	_parse_hex_data(map_data)
-	_parse_unit_data(map_data)
+#	_parse_unit_data(map_data)
 	_draw_sector_dividers(map_data)
 	print("Map reconstruction complete!")
 	map_loaded.emit()
@@ -85,7 +85,7 @@ func _parse_unit_data(map_data: Dictionary) -> void:
 		var unit_owner := int(unit_dict.get("owner_id", 1))
 		var unit_instance := unit_scene.instantiate() as Unit
 		unit_container.add_child(unit_instance)
-		unit_instance.setup(unit_owner, unit_type, map_ground_layer)
+		unit_instance.setup(unit_owner, unit_type, 1, grid_coord)
 		unit_instance.hex_coord = grid_coord
 		unit_instance.position = map_ground_layer.map_to_local(grid_coord)
 	pass
