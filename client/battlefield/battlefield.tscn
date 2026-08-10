@@ -82,10 +82,11 @@ unit_scene = ExtResource("3_0hlkx")
 left_sector_divider = NodePath("../LeftSectorDivider")
 right_sector_divider = NodePath("../RightSectorDivider")
 
-[node name="MapGround" type="TileMapLayer" parent="." unique_id=1769591625 node_paths=PackedStringArray("highlight_layer")]
+[node name="MapGround" type="TileMapLayer" parent="." unique_id=1769591625 node_paths=PackedStringArray("highlight_layer", "sector_highlight_layer")]
 tile_set = SubResource("TileSet_o6wfx")
 script = ExtResource("3_stskl")
 highlight_layer = NodePath("../MapHighlight")
+sector_highlight_layer = NodePath("../SectorHighlight")
 debug_mode = 1
 metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
 
@@ -96,6 +97,13 @@ metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
 
 [node name="MapHighlight" type="TileMapLayer" parent="." unique_id=1870725227]
 modulate = Color(1, 1, 1, 0.5019608)
+tile_set = SubResource("TileSet_ql7mu")
+script = ExtResource("13_upguu")
+metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
+
+[node name="SectorHighlight" type="TileMapLayer" parent="." unique_id=2070973290]
+modulate = Color(0.8501193, 0.69538933, 0.14475939, 0.5019608)
+self_modulate = Color(1, 1, 0.14509805, 1)
 tile_set = SubResource("TileSet_ql7mu")
 script = ExtResource("13_upguu")
 metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
@@ -135,13 +143,14 @@ grow_horizontal = 2
 grow_vertical = 0
 script = ExtResource("10_f3lu3")
 
-[node name="PlayerHandUI" type="Control" parent="UICanvas/MarginContainer" unique_id=1348647858]
+[node name="PlayerHandUI" type="Control" parent="UICanvas/MarginContainer" unique_id=1348647858 node_paths=PackedStringArray("map_controller")]
 custom_minimum_size = Vector2(267, 358)
 layout_mode = 2
 script = ExtResource("9_cuxbe")
 card_ui_scene = ExtResource("12_f3lu3")
 hand_curve = SubResource("Curve_u0eng")
 rotation_curve = SubResource("Curve_f3lu3")
+map_controller = NodePath("../../../MapGround")
 
 [node name="MarginContainer2" type="MarginContainer" parent="UICanvas" unique_id=491818102]
 anchors_preset = 5
