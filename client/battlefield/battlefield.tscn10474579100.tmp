@@ -128,6 +128,11 @@ offset_bottom = 1355.0
 theme_override_font_sizes/font_size = 54
 text = "Draw card"
 script = ExtResource("9_cuxbe")
+base_card_size = null
+max_rotation_degrees = null
+y_min = null
+y_max = null
+default_separation = null
 
 [node name="MarginContainer" type="MarginContainer" parent="UICanvas" unique_id=2042215150]
 anchors_preset = 7
@@ -143,14 +148,18 @@ grow_horizontal = 2
 grow_vertical = 0
 script = ExtResource("10_f3lu3")
 
-[node name="PlayerHandUI" type="Control" parent="UICanvas/MarginContainer" unique_id=1348647858 node_paths=PackedStringArray("map_controller")]
+[node name="PlayerHandUI" type="Control" parent="UICanvas/MarginContainer" unique_id=1348647858]
 custom_minimum_size = Vector2(267, 358)
 layout_mode = 2
 script = ExtResource("9_cuxbe")
 card_ui_scene = ExtResource("12_f3lu3")
 hand_curve = SubResource("Curve_u0eng")
 rotation_curve = SubResource("Curve_f3lu3")
-map_controller = NodePath("../../../MapGround")
+base_card_size = null
+max_rotation_degrees = null
+y_min = null
+y_max = null
+default_separation = null
 
 [node name="MarginContainer2" type="MarginContainer" parent="UICanvas" unique_id=491818102]
 anchors_preset = 5
