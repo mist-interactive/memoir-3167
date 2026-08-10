@@ -1,6 +1,9 @@
 extends HexagonTileMapLayer
 
 @export var highlight_layer: TileMapLayer
+@export var sector_highlight_layer: TileMapLayer
+@onready var battlefieldState: BattlefieldState = $"../../BattlefieldState"
+
 var player_hex := {}
 
 func _ready() -> void:
@@ -28,3 +31,20 @@ func _on_hex_broadcast(peer_id: int, hex: Vector2i) -> void:
 	player_hex[peer_id] = hex
 	for id in player_hex.keys():
 		highlight_layer.set_cell(player_hex[id], 0, Vector2i(0, 0))
+
+func _on_card_hovered(card_target: enums.Sector) -> void:
+	var hexes_to_highlight: Array[Vector2i] = []
+	for sector_key: enums.Sector in battlefieldState.sector_index:
+		print(sector_key, " & ", card_target)
+		if (sector_key & card_target) != 0:
+			var coords_in_sector: Array = battlefieldState.sector_index[sector_key]
+			for pos: Vector2i in coords_in_sector:
+				hexes_to_highlight.append(pos)
+	_apply_sector_highlights(hexes_to_highlight)
+
+func _apply_sector_highlights(hexes: Array[Vector2i]) -> void:
+	for hex in hexes:
+		sector_highlight_layer.set_cell(hex, 0, Vector2i(0, 0))
+
+func _on_card_unhovered() -> void:
+	sector_highlight_layer.clear()
