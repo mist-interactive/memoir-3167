@@ -21,7 +21,7 @@ func _on_sync_all_requested(snapshot: Dictionary):
 	pass
 
 func _on_spawn_unit_requested(owner_id: int, uuid: int, coord: Vector2i, type: enums.UnitType) -> void:
-	print("Unit spawned uuid:", uuid,", type: ", type,", owner: ", owner_id, ",coord: ",coord)
+	#print("Unit spawned uuid:", uuid,", type: ", type,", owner: ", owner_id, ",coord: ",coord)
 	var new_unit = UNIT_SCENE.instantiate() as Unit
 	active_container.add_child(new_unit)
 	add_unit(new_unit, coord)

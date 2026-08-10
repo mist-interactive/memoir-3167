@@ -24,18 +24,30 @@ func spawn_units(peer_id1: int, peer_id2: int) -> void:
 		var coord: Vector2i = Vector2i(elem.coord[0], elem.coord[1])
 		var unit: UnitData = UnitData.new(peer_id1, elem.type, generate_server_unit_id(),coord)
 		add_unit(unit, coord)
-		elem.owner_id = 1
 		#elem.owner_id = unit.owner_id
-		print(elem)
+		elem.owner_id = 1
 		elem.uuid = unit.uuid
-		Network.Units.spawn_unit.rpc_id(peer_id1, elem)
-		Network.Units.spawn_unit.rpc_id(peer_id2, elem)
+		var new_unit: Dictionary = {
+			"owner_id": elem.owner_id,
+			"uuid": elem.uuid,
+			"type": elem.type,
+			"coord": coord
+		}
+		Network.Units.spawn_unit.rpc_id(peer_id1, new_unit)
+		Network.Units.spawn_unit.rpc_id(peer_id2, new_unit)
 
 	for elem in battlefield.units_to_spawn_player_2:
 		var coord: Vector2i = Vector2i(elem.coord[0], elem.coord[1])
 		var unit: UnitData = UnitData.new(peer_id2, elem.type, generate_server_unit_id(), coord)
 		add_unit(unit, coord)
-		elem.owner_id = unit.owner_id
+		#elem.owner_id = unit.owner_id
+		elem.owner_id = 2
 		elem.uuid = unit.uuid
-		Network.Units.spawn_unit.rpc_id(peer_id1, elem)
-		Network.Units.spawn_unit.rpc_id(peer_id2, elem)
+		var new_unit: Dictionary = {
+			"owner_id": elem.owner_id,
+			"uuid": elem.uuid,
+			"type": elem.type,
+			"coord": coord
+		}
+		Network.Units.spawn_unit.rpc_id(peer_id1, new_unit)
+		Network.Units.spawn_unit.rpc_id(peer_id2, new_unit)
