@@ -10,12 +10,13 @@ extends Node2D
 		if hex_coord == new_coord:
 			return
 		hex_coord = new_coord
-		if is_inside_tree():
+		if is_initialized:
 			_animate_to_hex(new_coord)
 		else:
+			is_initialized = true
 			position = HexGrid.offset_to_pixel(new_coord) + visual_offset
 
-var _map_layer: TileMapLayer = null
+var is_initialized: bool = false
 var uuid: int = -1
 var type: GameEnums.UnitType = GameEnums.UnitType.INFANTRY
 var is_selected: bool = false
@@ -23,16 +24,20 @@ var visual_offset: Vector2:
 	get:
 		return Vector2(HexMetrics.half_width, HexMetrics.half_height)
 
-func setup(new_owner: int, new_type: GameEnums.UnitType, map_layer: TileMapLayer) -> void:
-	type = new_type
+func _ready() -> void:
+	UnitVisuals.apply_unit_visuals(sprite, owner_id, type)
+
+func setup(new_owner: int, new_type: GameEnums.UnitType, new_uuid:int, new_hex_coord: Vector2i) -> void:
 	owner_id = new_owner
-	_map_layer = map_layer
+	type = new_type
+	uuid = new_uuid
+	hex_coord = new_hex_coord
 	UnitVisuals.apply_unit_visuals(sprite, owner_id, type)
 
 func _animate_to_hex(target_coord: Vector2i) -> void:
 	# Calculate where this hex actually is on the screen
 	# (Assuming you have a HexGrid autoload with your math)
-	var target_pixel_pos = _map_layer.map_to_local(target_coord)
+	var target_pixel_pos = HexGrid.offset_to_pixel(target_coord) + visual_offset
 
 	# Smoothly slide the unit over 0.5 seconds
 	var tween = create_tween()
