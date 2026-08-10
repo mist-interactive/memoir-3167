@@ -42,7 +42,7 @@ enum Terrain {
 ## Offset coordinate (x = column, y = row) of the cell in the HexGrid.
 var coord: Vector2i = Vector2i.ZERO
 ## Sector that the tile belongs to
-var sector: GameEnums.Sector = GameEnums.Sector.NONE
+var sector: enums.Sector = enums.Sector.NONE
 ## Active terrain ground type. One of Ground.* or a custom integer constant.
 var ground: int = Ground.FIELDS
 ## Active terrain feature type. One of Feature.* or a custom integer constant.
