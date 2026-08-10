@@ -187,7 +187,7 @@ static func _parse_coord(data: Dictionary, key: String, default: Vector2i = Vect
 static func deserialize(data: Dictionary) -> HexCell:
 	var cell_coord := _parse_coord(data, "coord")
 	var cell := HexCell.new(cell_coord, data.get("ground", Ground.FIELDS), data.get("feature", Feature.PLAINS))
-	cell.sector = data.get("sector", GameEnums.Sector.NONE)
+	cell.sector = data.get("sector", enums.MapSector.NONE)
 	cell.location_type = data.get("location_type", 0)
 	cell.location_data = data.get("location_data", {})
 	var explored_raw: Dictionary = data.get("explored_by", {})
