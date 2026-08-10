@@ -20,9 +20,7 @@ var original_position: Vector2 = Vector2.ZERO
 var _instance_id: int
 var _card_id: String
 
-@onready var handState: HandState = $"../../../../../HandState"
-
-signal card_hovered(target_sector: enums.Sector)
+signal card_hovered(target_sector: enums.MapSector)
 signal card_unhovered
 
 func _ready() -> void:

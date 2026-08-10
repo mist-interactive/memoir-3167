@@ -32,10 +32,9 @@ func _on_hex_broadcast(peer_id: int, hex: Vector2i) -> void:
 	for id in player_hex.keys():
 		highlight_layer.set_cell(player_hex[id], 0, Vector2i(0, 0))
 
-func _on_card_hovered(card_target: enums.Sector) -> void:
+func _on_card_hovered(card_target: enums.MapSector) -> void:
 	var hexes_to_highlight: Array[Vector2i] = []
-	for sector_key: enums.Sector in battlefieldState.sector_index:
-		print(sector_key, " & ", card_target)
+	for sector_key: enums.MapSector in battlefieldState.sector_index:
 		if (sector_key & card_target) != 0:
 			var coords_in_sector: Array = battlefieldState.sector_index[sector_key]
 			for pos: Vector2i in coords_in_sector:
