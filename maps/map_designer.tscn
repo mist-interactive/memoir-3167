@@ -88,16 +88,19 @@ metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
 [node name="Player1_Infantry_1" parent="UnitContainer" unique_id=2064396777 instance=ExtResource("10_rxatx")]
 position = Vector2(3757, 3328)
 frame = 0
+unit_type = 0
 owner_id = 1
 
 [node name="Player1_Infantry_2" parent="UnitContainer" unique_id=276452804 instance=ExtResource("10_rxatx")]
 position = Vector2(3094, 2176)
 frame = 0
+unit_type = 0
 owner_id = 1
 
 [node name="Player1_Infantry_3" parent="UnitContainer" unique_id=1119667285 instance=ExtResource("10_rxatx")]
 position = Vector2(2873, 3328)
 frame = 0
+unit_type = 0
 owner_id = 1
 
 [node name="Player1_Artillery_1" parent="UnitContainer" unique_id=831944555 instance=ExtResource("10_rxatx")]
@@ -118,18 +121,23 @@ owner_id = 1
 
 [node name="Player2_Infantry_1" parent="UnitContainer" unique_id=1738471653 instance=ExtResource("10_rxatx")]
 position = Vector2(2210, 2944)
+unit_type = 0
 
 [node name="Player2_Infantry_2" parent="UnitContainer" unique_id=827465877 instance=ExtResource("10_rxatx")]
 position = Vector2(3315, 3328)
+unit_type = 0
 
 [node name="Player2_Infantry_3" parent="UnitContainer" unique_id=1741222158 instance=ExtResource("10_rxatx")]
 position = Vector2(1989, 2560)
+unit_type = 0
 
 [node name="Player2_Infantry_4" parent="UnitContainer" unique_id=2055441510 instance=ExtResource("10_rxatx")]
 position = Vector2(2431, 2560)
+unit_type = 0
 
 [node name="Player2_Infantry_5" parent="UnitContainer" unique_id=49311449 instance=ExtResource("10_rxatx")]
 position = Vector2(2652, 2944)
+unit_type = 0
 
 [node name="Player2_Tank_1" parent="UnitContainer" unique_id=92435159 instance=ExtResource("10_rxatx")]
 position = Vector2(4641, 1792)
