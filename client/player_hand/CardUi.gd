@@ -20,6 +20,9 @@ var original_position: Vector2 = Vector2.ZERO
 var _instance_id: int
 var _card_id: String
 
+signal card_hovered(target_sector: enums.MapSector)
+signal card_unhovered
+
 func _ready() -> void:
 	get_child(1).expand_mode = TextureRect.EXPAND_IGNORE_SIZE
 
@@ -45,12 +48,16 @@ func _on_mouse_exited() -> void:
 	scale = BASE_SCALE
 	position.y += SIZE.y / 3
 	get_child(0).visible = false
+	card_unhovered.emit()
 
 func _on_mouse_entered() -> void:
 	z_index = 10
 	scale = scale * 1.5
 	position.y -= SIZE.y / 3
 	get_child(0).visible = true
+	var card_data: CommandCard = CardDatabase.get_card(_card_id)
+	if card_data:
+		card_hovered.emit(card_data.card_target)
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
