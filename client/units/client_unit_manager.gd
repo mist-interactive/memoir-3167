@@ -3,11 +3,13 @@ class_name ClientUnitManager
 
 var active_container: Node
 
+var UNIT_SCENE = preload("res://client/units/Unit.tscn")
+
 func _init(initialState: BattlefieldState) -> void:
 	super(initialState)
 	Network.Units.sync_unit_requested.connect(_on_sync_unit_requested)
 	Network.Units.sync_all_requested.connect(_on_sync_all_requested)
-	Network.Units.spawn_unit_requested.connect(_on_unit_spawn_requested)
+	Network.Units.spawn_unit_requested.connect(_on_spawn_unit_requested)
 
 func _on_sync_unit_requested(snapshot: Dictionary) -> void:
 	var uuid: int = snapshot.uuid
@@ -18,6 +20,9 @@ func _on_sync_unit_requested(snapshot: Dictionary) -> void:
 func _on_sync_all_requested(snapshot: Dictionary):
 	pass
 
-func _on_unit_spawn_requested(owner_id: int, uuid: int, coord: Vector2i, type: enums.UnitType) -> void:
-	print("Unit spawned uuid:", uuid,", type: ", type,", owner: ", owner_id, ",coord: ",coord)
+func _on_spawn_unit_requested(unit: Dictionary) -> void:
+	var new_unit = UNIT_SCENE.instantiate() as Unit
+	active_container.add_child(new_unit)
+	new_unit.setup(unit.owner_id, unit.type, unit.uuid, unit.coord)
+	add_unit(new_unit, unit.coord)
 	pass
