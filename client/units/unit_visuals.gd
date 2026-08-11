@@ -6,14 +6,14 @@ extends RefCounted
 
 static var TEXTURE_MAP: Dictionary = {
 	1: {
-		GameEnums.UnitType.INFANTRY: preload("res://assets/sprites/units/infantry_sprite_sheet.png"),	
-		GameEnums.UnitType.TANK: preload("res://assets/sprites/units/tank_sprite_sheet.png"),	
-		GameEnums.UnitType.ARTILLERY: preload("res://assets/sprites/units/artillery_sprite_sheet.png")
+		enums.UnitType.INFANTRY: preload("res://assets/sprites/units/infantry_sprite_sheet.png"),	
+		enums.UnitType.TANK: preload("res://assets/sprites/units/tank_sprite_sheet.png"),	
+		enums.UnitType.ARTILLERY: preload("res://assets/sprites/units/artillery_sprite_sheet.png")
 	},
 	2: {
-		GameEnums.UnitType.INFANTRY: preload("res://assets/sprites/units/infantry_sprite_sheet.png"),	
-		GameEnums.UnitType.TANK: preload("res://assets/sprites/units/tank_sprite_sheet.png"),	
-		GameEnums.UnitType.ARTILLERY: preload("res://assets/sprites/units/artillery_sprite_sheet.png")
+		enums.UnitType.INFANTRY: preload("res://assets/sprites/units/infantry_sprite_sheet.png"),	
+		enums.UnitType.TANK: preload("res://assets/sprites/units/tank_sprite_sheet.png"),	
+		enums.UnitType.ARTILLERY: preload("res://assets/sprites/units/artillery_sprite_sheet.png")
 	}
 }
 static var scale: Vector2 = Vector2(6, 6)
@@ -27,21 +27,21 @@ static func apply_unit_visuals(sprite: Sprite2D, owner_id: int, unit_type: int) 
 		return
 	sprite.texture = TEXTURE_MAP[owner_id][unit_type]
 	sprite.scale = scale
-	if unit_type == GameEnums.UnitType.INFANTRY:
+	if unit_type == enums.UnitType.INFANTRY:
 		sprite.hframes = 4
 		sprite.vframes = 5
 		if owner_id == 1:
 			sprite.frame = 0
 		if owner_id == 2:
 			sprite.frame = 16
-	if unit_type == GameEnums.UnitType.TANK:
+	if unit_type == enums.UnitType.TANK:
 		sprite.hframes = 5
 		sprite.vframes = 5
 		if owner_id == 1:
 			sprite.frame = 0
 		if owner_id == 2:
 			sprite.frame = 20
-	if unit_type == GameEnums.UnitType.ARTILLERY:
+	if unit_type == enums.UnitType.ARTILLERY:
 		sprite.hframes = 6
 		sprite.vframes = 5
 		if owner_id == 1:
