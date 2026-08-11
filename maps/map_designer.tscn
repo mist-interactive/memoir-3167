@@ -120,20 +120,6 @@ default_color = Color(1, 0, 0, 1)
 
 [node name="UnitContainer" type="Node2D" parent="." unique_id=1804487023]
 
-[node name="Player1_Infantry_1" parent="UnitContainer" unique_id=2064396777 instance=ExtResource("10_rxatx")]
-position = Vector2(3757, 3328)
-frame = 0
-owner_id = 1
-
-[node name="Player1_Infantry_2" parent="UnitContainer" unique_id=276452804 instance=ExtResource("10_rxatx")]
-position = Vector2(3094, 2176)
-frame = 0
-owner_id = 1
-
-[node name="Player1_Infantry_3" parent="UnitContainer" unique_id=1119667285 instance=ExtResource("10_rxatx")]
-position = Vector2(2873, 3328)
-frame = 0
-owner_id = 1
 [node name="UICanvas" type="CanvasLayer" parent="." unique_id=1086948552]
 
 [node name="Button" type="Button" parent="UICanvas" unique_id=721084783]
@@ -143,7 +129,6 @@ offset_right = 5381.0
 offset_bottom = 1355.0
 theme_override_font_sizes/font_size = 54
 text = "Draw card"
-script = ExtResource("10_vxy4q")
 
 [node name="MarginContainer" type="MarginContainer" parent="UICanvas" unique_id=2042215150]
 anchors_preset = 7
@@ -178,36 +163,6 @@ offset_right = -576.0
 grow_horizontal = 2
 script = ExtResource("13_8ssrn")
 
-[node name="Player2_Infantry_1" parent="UnitContainer" unique_id=1738471653 instance=ExtResource("10_rxatx")]
-position = Vector2(2210, 2944)
-
-[node name="Player2_Infantry_2" parent="UnitContainer" unique_id=827465877 instance=ExtResource("10_rxatx")]
-position = Vector2(3315, 3328)
-
-[node name="Player2_Infantry_3" parent="UnitContainer" unique_id=1741222158 instance=ExtResource("10_rxatx")]
-position = Vector2(1989, 2560)
-
-[node name="Player2_Infantry_4" parent="UnitContainer" unique_id=2055441510 instance=ExtResource("10_rxatx")]
-position = Vector2(2431, 2560)
-
-[node name="Player2_Infantry_5" parent="UnitContainer" unique_id=49311449 instance=ExtResource("10_rxatx")]
-position = Vector2(2652, 2944)
-
-[node name="Player2_Tank_1" parent="UnitContainer" unique_id=92435159 instance=ExtResource("10_rxatx")]
-position = Vector2(4641, 1792)
-texture = ExtResource("11_rxatx")
-hframes = 5
-frame = 20
-unit_type = 1
-
-[node name="Player2_Artillery_1" parent="UnitContainer" unique_id=378053588 instance=ExtResource("10_rxatx")]
-position = Vector2(4199, 1024)
-texture = ExtResource("11_kvb7t")
-hframes = 6
-frame = 24
-unit_type = 2
-
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1708214605 node_paths=PackedStringArray("target_map")]
 [node name="EnemyHandUI" type="Control" parent="UICanvas/MarginContainer2" unique_id=1002495451]
 layout_mode = 2
 script = ExtResource("14_j3b3m")
@@ -240,5 +195,3 @@ zoom = Vector2(0.305, 0.305)
 script = ExtResource("13_pa0pi")
 target_map = NodePath("../MapGround")
 map_manager = NodePath("../MapManager")
-
-[connection signal="pressed" from="UICanvas/Button" to="UICanvas/Button" method="_on_pressed"]
