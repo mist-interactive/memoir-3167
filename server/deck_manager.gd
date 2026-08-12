@@ -67,11 +67,15 @@ func shuffle_deck() -> void:
 func play_card(peer_id: int, instance_id: int) -> bool:
 	if !hasCardInHand(peer_id, instance_id):
 		return false
+	var opponent_id: int = get_opponent_id(peer_id)
+	var card_id: String = player_hands[peer_id].card_ids[instance_id]
+	discard_pile.append(card_id)
+	player_hands[peer_id].discard_pile = discard_pile
+	player_hands[opponent_id].discard_pile = discard_pile
 	player_hands[peer_id].remove_card(instance_id)
 	for peer in player_hands:
-		Network.Actions.card_played.rpc_id(peer, peer_id, instance_id)
-	Network.Actions.receive_enemy_hand_update.rpc_id(get_opponent_id(peer_id), player_hands[peer_id].card_ids.size())
-	
+		Network.Actions.card_played.rpc_id(peer, peer_id, instance_id, card_id)
+	Network.Actions.receive_enemy_hand_update.rpc_id(opponent_id, player_hands[peer_id].card_ids.size())
 	return true
 
 func draw_hand(peer_id: int) -> void:

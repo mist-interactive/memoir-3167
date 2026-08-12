@@ -33,8 +33,10 @@ func _on_model_card_added(instance_id: int, card_id: String) -> void:
 	_instantiate_card_node(instance_id, card_id)
 	_recalculate_layout()
 
-func _on_model_card_removed(peer_id: int, instance_id: int) -> void:
+func _on_model_card_removed(peer_id: int, instance_id: int, card_id: String) -> void:
 	if multiplayer.get_unique_id() != peer_id:
+		print("openent has played card ", card_id)
+		# animate opponent played card, should  go to discard pile
 		return
 	var card_node := get_node_or_null(str(instance_id)) as CardUI
 	if not card_node:
