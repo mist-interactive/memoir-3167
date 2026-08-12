@@ -87,7 +87,6 @@ func _get_unit_data() -> Array[Dictionary]:
 		var pos := MapGroundLayer.local_to_map(child.position)
 		unit_data.append(child.serialize(pos))
 		count += 1
-	print(count, " units found")
 	return unit_data
 
 func _calculate_map_boundaries() -> void:
@@ -107,18 +106,18 @@ func _get_hex_sector(coord: Vector2i) -> int:
 	var is_odd_row: bool = (coord.y % 2 != 0)
 	var right_straddle_col: int = _right_min_x - 1
 	if coord.x < _left_max_x:
-		return GameEnums.Sector.LEFT
+		return enums.MapSector.LEFT
 	elif coord.x == _left_max_x:
 		if is_odd_row:
-			return GameEnums.Sector.LEFT | GameEnums.Sector.CENTER
+			return enums.MapSector.LEFT | enums.MapSector.CENTER
 		else:
-			return GameEnums.Sector.LEFT
+			return enums.MapSector.LEFT
 	elif coord.x < right_straddle_col:
-		return GameEnums.Sector.CENTER
+		return enums.MapSector.CENTER
 	elif coord.x == right_straddle_col:
 		if is_odd_row:
-			return GameEnums.Sector.CENTER | GameEnums.Sector.RIGHT
+			return enums.MapSector.CENTER | enums.MapSector.RIGHT
 		else:
-			return GameEnums.Sector.CENTER
+			return enums.MapSector.CENTER
 	else:
-		return GameEnums.Sector.RIGHT
+		return enums.MapSector.RIGHT

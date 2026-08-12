@@ -85,5 +85,12 @@ func sync_spawn_unit(owner_id: int, unit_type: String, unique_id: int, coord: Ve
 
 func process_hex_click(peer_id:int, hex: Vector2i) -> void:
 	spawn_unit_on_server(peer_id, GameEnums.UnitType.INFANTRY, hex)
+	var new_unit: Dictionary = {
+		"owner_id": 1,
+		"type": enums.UnitType.INFANTRY,
+		"uuid": 1,
+		"coord": hex
+	}
 	for player in matchState.player_ids:
+		Network.Units.spawn_unit.rpc_id(player, new_unit)
 		Network.Match.receive_hex_broadcast.rpc_id(player, peer_id, hex)

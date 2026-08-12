@@ -83,24 +83,7 @@ func parseAndLoadMap(map_name: String) -> bool:
 			
 			var coord_arr: Array = elem.get("coord", [0, 0])
 			var coord := Vector2i(int(coord_arr[0]), int(coord_arr[1]))
-			var cell := HexCell.new(coord, elem.get("ground", 0), elem.get("feature", 0))
-
-			# Assign sector enum based on boundary thresholds
-			# Initialize with no sector
-			cell.sector = enums.MapSector.NONE
-
-			# 1. Left Sector Check (Includes boundary column)
-			if coord.x <= left_sector_max:
-				cell.sector |= enums.MapSector.LEFT
-
-			# 2. Right Sector Check (Includes boundary column)
-			if coord.x >= right_sector_min:
-				cell.sector |= enums.MapSector.RIGHT
-
-			# 3. Center Sector Check (Spans between and including both boundaries)
-			if coord.x >= left_sector_max and coord.x <= right_sector_min - 1:
-				cell.sector |= enums.MapSector.CENTER
-
+			var cell := HexCell.new(coord, elem.get("ground", 0), elem.get("feature", 0), elem.get("sector", 0))
 			map[coord] = cell
 
 	# 3. Parse Starting Unit Deployments

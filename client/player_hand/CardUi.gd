@@ -19,6 +19,7 @@ var original_position: Vector2 = Vector2.ZERO
 
 var _instance_id: int
 var _card_id: String
+var is_interactive: bool = true
 
 signal card_hovered(target_sector: enums.MapSector)
 signal card_unhovered
@@ -43,7 +44,49 @@ func setup_enemy_visuals() -> void:
 	var card_data: CommandCard = CardDatabase.get_card("001")
 	get_child(1).texture = card_data.card_art
 
+func animate_to_discard(target_global_pos: Vector2, on_complete_callback: Callable) -> void:
+	is_interactive = false
+	if is_dragging:
+		_end_drag()
+	_reset_hover_state()
+	
+	# 1. Store the exact screen coordinates before detaching from parent layout
+	var start_global_pos: Vector2 = global_position
+	
+	# 2. Detach from parent coordinate space
+	top_level = true
+	
+	# 3. Restore true screen coordinates so the card stays stationary
+	global_position = start_global_pos
+	
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	
+	# 4. Tween smoothly from start_global_pos to final_pos
+	var tween := create_tween().set_parallel(true)
+	var final_pos := target_global_pos - (size / 2.0)
+	
+	tween.tween_property(self, "global_position", final_pos, 0.4)\
+		.set_trans(Tween.TRANS_CUBIC)\
+		.set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(self, "scale", Vector2(0.5, 0.5), 0.4)\
+		.set_trans(Tween.TRANS_CUBIC)
+	tween.tween_property(self, "rotation_degrees", 0.0, 0.4)
+	
+	tween.chain().tween_callback(func():
+		if on_complete_callback.is_valid():
+			on_complete_callback.call()
+	)
+
+func _reset_hover_state() -> void:
+	z_index = 0
+	scale = BASE_SCALE
+	if get_child_count() > 0:
+		get_child(0).visible = false
+	card_unhovered.emit()
+
 func _on_mouse_exited() -> void:
+	if not is_interactive:
+		return
 	z_index = 0
 	scale = BASE_SCALE
 	position.y += SIZE.y / 3
@@ -51,6 +94,8 @@ func _on_mouse_exited() -> void:
 	card_unhovered.emit()
 
 func _on_mouse_entered() -> void:
+	if not is_interactive:
+		return
 	z_index = 10
 	scale = scale * 1.5
 	position.y -= SIZE.y / 3
@@ -71,6 +116,8 @@ func _drag_gui_input(event: InputEvent) -> void:
 			_start_drag()
 
 func _input(event: InputEvent) -> void:
+	if not is_interactive:
+		return
 	if not is_dragging:
 		return
 	if event is InputEventMouseMotion:

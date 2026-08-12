@@ -5,7 +5,7 @@ extends Resource
 @export var id: String = ""
 @export var title_label: String = ""
 @export_multiline var description_label: String = ""
-@export var card_target: GameEnums.CardTargetSector = GameEnums.CardTargetSector.ALL
+@export var card_target: enums.CardTargetSector = enums.CardTargetSector.ALL
 @export var quantity: int = 1
 @export_group("Visuals")
 @export var card_art: Texture2D

@@ -5,6 +5,7 @@ extends Control
 @export var hand_curve: Curve
 @export var rotation_curve: Curve
 @export var player_controller: Node
+@export var discard_pile_ui: DiscardPileUI
 
 @export var base_card_size: Vector2 = Vector2(267.0, 358.0)
 @export var max_rotation_degrees: float = 5.0
@@ -35,11 +36,17 @@ func _on_model_card_added(instance_id: int, card_id: String) -> void:
 func _on_model_card_removed(peer_id: int, instance_id: int) -> void:
 	if multiplayer.get_unique_id() != peer_id:
 		return
-	var card_node: Node = get_node_or_null(str(instance_id))
-	if card_node:
-		remove_child(card_node)
-		card_node.queue_free()
+	var card_node := get_node_or_null(str(instance_id)) as CardUI
+	if not card_node:
+		return
+	var target_pos: Vector2 = discard_pile_ui.get_discard_target_position() if discard_pile_ui else Vector2.ZERO
+	card_node.animate_to_discard(target_pos, func():
+		if discard_pile_ui:
+			discard_pile_ui.add_card_node(card_node)
+		if handState:
+			handState.remove_card(instance_id)
 		_recalculate_layout()
+	)
 
 func _instantiate_card_node(instance_id: int, card_id: String) -> void:
 	var new_card: CardUI = card_ui_scene.instantiate() as CardUI
