@@ -152,14 +152,14 @@ grow_horizontal = 2
 grow_vertical = 0
 script = ExtResource("10_f3lu3")
 
-[node name="PlayerHandUI" type="Control" parent="UICanvas/MarginContainer" unique_id=1348647858 node_paths=PackedStringArray("map_controller", "discard_pile_ui")]
+[node name="PlayerHandUI" type="Control" parent="UICanvas/MarginContainer" unique_id=1348647858 node_paths=PackedStringArray("player_controller", "discard_pile_ui")]
 custom_minimum_size = Vector2(267, 358)
 layout_mode = 2
 script = ExtResource("9_cuxbe")
 card_ui_scene = ExtResource("12_f3lu3")
 hand_curve = SubResource("Curve_u0eng")
 rotation_curve = SubResource("Curve_f3lu3")
-map_controller = NodePath("../../../MapGround")
+player_controller = NodePath("../../../PlayerController")
 discard_pile_ui = NodePath("../../DiscardPileUI")
 
 [node name="MarginContainer2" type="MarginContainer" parent="UICanvas" unique_id=491818102]
