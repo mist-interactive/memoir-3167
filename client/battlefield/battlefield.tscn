@@ -15,6 +15,8 @@
 [ext_resource type="Texture2D" uid="uid://l08uw4hx56l0" path="res://assets/sprites/hex/highlight.png" id="13_56ovr"]
 [ext_resource type="Script" uid="uid://ixegjorc6cco" path="res://client/battlefield/enemy_hand_ui.gd" id="13_ec6rr"]
 [ext_resource type="Script" uid="uid://birdmambhh8rf" path="res://client/battlefield/map_highlight.gd" id="13_upguu"]
+[ext_resource type="Script" uid="uid://cl0168wcrdlf1" path="res://client/battlefield/discard_pile_ui.gd" id="15_eq063"]
+[ext_resource type="Texture2D" uid="uid://bhmmuk70lftxd" path="res://assets/card_textures/texture003.png" id="16_okikj"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e5smb"]
 texture = ExtResource("2_4ok02")
@@ -143,7 +145,7 @@ grow_horizontal = 2
 grow_vertical = 0
 script = ExtResource("10_f3lu3")
 
-[node name="PlayerHandUI" type="Control" parent="UICanvas/MarginContainer" unique_id=1348647858 node_paths=PackedStringArray("map_controller")]
+[node name="PlayerHandUI" type="Control" parent="UICanvas/MarginContainer" unique_id=1348647858 node_paths=PackedStringArray("map_controller", "discard_pile_ui")]
 custom_minimum_size = Vector2(267, 358)
 layout_mode = 2
 script = ExtResource("9_cuxbe")
@@ -151,6 +153,7 @@ card_ui_scene = ExtResource("12_f3lu3")
 hand_curve = SubResource("Curve_u0eng")
 rotation_curve = SubResource("Curve_f3lu3")
 map_controller = NodePath("../../../MapGround")
+discard_pile_ui = NodePath("../../DiscardPileUI")
 
 [node name="MarginContainer2" type="MarginContainer" parent="UICanvas" unique_id=491818102]
 anchors_preset = 5
@@ -167,6 +170,32 @@ script = ExtResource("13_ec6rr")
 card_ui_scene = ExtResource("12_f3lu3")
 hand_curve = SubResource("Curve_ec6rr")
 rotation_curve = SubResource("Curve_0hlkx")
+
+[node name="DiscardPileUI" type="Control" parent="UICanvas" unique_id=1834357906 node_paths=PackedStringArray("top_card_texture")]
+layout_mode = 3
+anchor_left = 0.883
+anchor_top = 0.349
+anchor_right = 0.9990001
+anchor_bottom = 0.625
+offset_left = -0.21600342
+offset_top = -0.15200806
+offset_right = 133.15186
+offset_bottom = 179.0
+grow_horizontal = 0
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+script = ExtResource("15_eq063")
+top_card_texture = NodePath("TextureRect")
+
+[node name="TextureRect" type="TextureRect" parent="UICanvas/DiscardPileUI" unique_id=1732013749]
+modulate = Color(0.9882353, 0.9882353, 0.9882353, 0.15686275)
+self_modulate = Color(1, 1, 1, 0.20784314)
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+texture = ExtResource("16_okikj")
+expand_mode = 1
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1708214605 node_paths=PackedStringArray("target_map", "map_manager")]
 position = Vector2(2877, 1619)
