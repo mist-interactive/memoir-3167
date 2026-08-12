@@ -22,6 +22,7 @@ func _ready() -> void:
 		#Handle missing token
 		push_error("No JWT token was found.")
 		return
+	
 	await loader.stage("Initializing connection...", initialize_connection) \
 	.stage("Waiting to establish connection...", func(): await loader.wait_untill(func(): return connected == true)) \
 	.stage("Initializing client...", func(): client = ClientState.new(multiplayer.get_unique_id())) \
@@ -78,7 +79,8 @@ func reconnect_to_server():
 
 func get_jwt(jwt_path: String) -> String:
 	if not OS.has_feature("web"):
-		return "jwt_local_dummy_text"
+		# Test token for local testing
+		return "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6Im1oaXJ2YXNtIiwiaXNzIjoiZGJCYWNrZW5kIiwic3ViIjoiMSIsImV4cCI6MTc4NjAyMzYxMCwibmJmIjoxNzg2MDIzNTUwLCJpYXQiOjE3ODYwMjM1NTB9.NjT9v7ovY3mbh8YGM8bjgnVvwALeTk61D5qEMA5V-7AYQ4VKon0GzEgqXZXMU2m8Yc82_bBlsakHIgZ4bpDCQInfFco1RaK8BANajxIc1I9C6je8e7uUSbaVo-XPfkGH5ps8kPKdQgON5AgS_cwfhv3Ib4rvdhPNycYJbYhY78Yv4N-xXBVsRdfrByACsd-4UHCkexkYTu9qds8_UlnIPuP4UHfP1ZODCsgEFWhVhSh4fyTGnNsNolIsN7n84nOiGtNJaV3CjWW_295JM0VnLwx98uK2oqZmY6ELCLoWJlSrr-EZ8KjdoABPrQ6RyAlxgNtT0hdJsP9rvpHHEMcSbA"
 	# JavaScript to find a specific cookie by name
 	var token = JavaScriptBridge.eval(jwt_path)
 	print("JWT token: ", token)
