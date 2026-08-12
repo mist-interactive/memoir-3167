@@ -4,7 +4,7 @@ extends Control
 @export var card_ui_scene: PackedScene
 @export var hand_curve: Curve
 @export var rotation_curve: Curve
-@export var map_controller: HexagonTileMapLayer
+@export var player_controller: Node
 @export var discard_pile_ui: DiscardPileUI
 
 @export var base_card_size: Vector2 = Vector2(267.0, 358.0)
@@ -51,8 +51,8 @@ func _on_model_card_removed(peer_id: int, instance_id: int) -> void:
 func _instantiate_card_node(instance_id: int, card_id: String) -> void:
 	var new_card: CardUI = card_ui_scene.instantiate() as CardUI
 	new_card.name = str(instance_id)
-	new_card.card_hovered.connect(map_controller._on_card_hovered)
-	new_card.card_unhovered.connect(map_controller._on_card_unhovered)
+	new_card.card_hovered.connect(player_controller._on_card_hovered)
+	new_card.card_unhovered.connect(player_controller._on_card_unhovered)
 	add_child(new_card)
 	new_card.setup_visuals(instance_id, card_id)
 	new_card.card_clicked.connect(_on_card_clicked_by_player)
