@@ -12,12 +12,22 @@ extends Node
 @onready var hand_ui: PlayerHandUI = $"../UICanvas/MarginContainer/PlayerHandUI"
 @onready var enemy_hand_ui: EnemyHandUI = $"../UICanvas/MarginContainer2/EnemyHandUI"
 
+var sector_index: Dictionary[enums.MapSector, Array] = {
+	enums.MapSector.LEFT: [] as Array[Vector2i],
+	enums.MapSector.CENTER: [] as Array[Vector2i],
+	enums.MapSector.RIGHT: [] as Array[Vector2i]
+}
+
 func setup_hand_ui(player_ids: Array[int]) -> void:
 	hand_ui.initialize()
 	enemy_hand_ui.initialize(player_ids[0])
 
 var GROUND_TO_TILE: Dictionary = {}
 var FEATURE_TO_TILE: Dictionary = {}
+
+var map: Dictionary[Vector2i, HexCell]
+var left_sector_max: int = -1
+var right_sector_min: int = -1
 
 signal map_loaded
 
@@ -33,29 +43,81 @@ func _ready() -> void:
 	call_deferred("load_map", (battlefield_state.mapName))
 
 func load_map(map_name: String) -> void:
-	var filepath: String = "res://maps/" + map_name
-	print("Client loading map ", map_name)
-	if not FileAccess.file_exists(filepath):
-		push_error("No such map file: ", filepath)
-		return
-	var file := FileAccess.open(filepath, FileAccess.READ)
-	var json_string: String = file.get_as_text()
-	file.close()
-	var map_data = JSON.parse_string(json_string)
-	if typeof(map_data) != TYPE_DICTIONARY:
-		push_error("Map file is corruct or not formatted as a Dictionary")
-		return
-	print("Map file parsed succesfully. Reconstructing map...")
-	map_ground_layer.clear()
-	map_features_layer.clear()
-	_parse_hex_data(map_data)
-	_parse_unit_data(map_data)
-	_draw_sector_dividers(map_data)
-	print("Map reconstruction complete!")
+	parseAndLoadMap(map_name)
+	_load_map_data_to_tilemap_layers()
+	_draw_sector_dividers()
 	map_loaded.emit()
 	pass
-	
+
+func parseAndLoadMap(map_name: String) -> bool:
+	var src: String = "res://maps/%s" % map_name
+	if not FileAccess.file_exists(src):
+		push_error("Map file not found: " + src)
+		return false
+
+	var file := FileAccess.open(src, FileAccess.READ)
+	if not file:
+		push_error("Failed to open map file: " + src)
+		return false
+
+	var json_string: String = file.get_as_text()
+	file.close()
+
+	var parsed_data = JSON.parse_string(json_string)
+	if not parsed_data is Dictionary:
+		push_error("Invalid map format in '%s'. Expected root Dictionary." % map_name)
+		return false
+
+	# Clear previous map state
+	map.clear()
+
+	# 1. Parse Sector Boundaries
+	if "sectors" in parsed_data and parsed_data["sectors"] is Dictionary:
+		left_sector_max = int(parsed_data["sectors"].get("left_sector_max", 0))
+		right_sector_min = int(parsed_data["sectors"].get("right_sector_min", 0))
+
+	# 2. Parse Hexes & Determine Sector Bit Flags
+	if "hexes" in parsed_data and parsed_data["hexes"] is Array:
+		for elem in parsed_data["hexes"]:
+			if not elem is Dictionary:
+				continue
+			
+			var coord_arr: Array = elem.get("coord", [0, 0])
+			var coord := Vector2i(int(coord_arr[0]), int(coord_arr[1]))
+			var cell := HexCell.new(coord, elem.get("ground", 0), elem.get("feature", 0), elem.get("sector", 0))
+			map[coord] = cell
+
+	# 4. Rebuild Sector Lookup Table
+#	build_sector_index()
+
+	print("Successfully parsed and loaded map: %s (%d hexes indexed)." % [map_name, map.size()])
+	return true
+
+func _load_map_data_to_tilemap_layers() -> void:
+	map_ground_layer.clear()
+	map_features_layer.clear()
+	for coord in map:
+		var hex: HexCell = map[coord]
+		var ground_type: int = hex.get("ground")
+		if GROUND_TO_TILE.has(ground_type):
+			var tile_info: Array = GROUND_TO_TILE[ground_type]
+			var source_id: int = tile_info[0]
+			var atlas_coord: Vector2i = tile_info[1]
+			map_ground_layer.set_cell(coord, source_id, atlas_coord)
+		else:
+			push_warning("Client doesn't have visual data for the Ground enum: ", ground_type)
+		var feature_type: int = hex.get("feature")
+		if FEATURE_TO_TILE.has(feature_type):
+			var tile_info: Array = FEATURE_TO_TILE[feature_type]
+			var source_id: int = tile_info[0]
+			var atlas_coord: Vector2i = tile_info[1]
+			map_features_layer.set_cell(coord, source_id, atlas_coord)
+		else:
+			push_warning("Client doesn't have visual data for the Feature enum: ", feature_type)
+	pass
+
 func _parse_hex_data(map_data: Dictionary) -> void:
+	map.clear()
 	var hex_array: Array = map_data.get("hexes", [])
 	for cell_dict in hex_array:
 		var coord: Vector2i = HexCell._parse_coord(cell_dict, "coord")
@@ -76,32 +138,7 @@ func _parse_hex_data(map_data: Dictionary) -> void:
 		else:
 			push_warning("Client doesn't have visual data for the Feature enum: ", feature_type)
 
-func _parse_unit_data(map_data: Dictionary) -> void:
-	var unit_array: Array = map_data.get("units", [])
-	for unit_dict in unit_array:
-		var coord_data: Array = unit_dict.get("coord", [0, 0])
-		var grid_coord := Vector2i(coord_data[0], coord_data[1])
-		var unit_type := int(unit_dict.get("type", 0)) as enums.UnitType
-		var unit_owner := int(unit_dict.get("owner_id", 1))
-		var unit_instance := unit_scene.instantiate() as Unit
-		unit_container.add_child(unit_instance)
-		unit_instance.setup(unit_owner, unit_type, map_ground_layer)
-		unit_instance.hex_coord = grid_coord
-		unit_instance.position = map_ground_layer.map_to_local(grid_coord)
-	pass
-
-func _draw_sector_dividers(map_data: Dictionary) -> void:
-	var sectors: Dictionary = map_data.get("sectors")
-	if not sectors:
-		push_warning("Map JSON is missing 'sectors' data.")
-		return
-	if not left_sector_divider or not right_sector_divider:
-		push_error("Divider Line2D nodes are not assigned in the Inspector")
-		return
-	var line_width: float = 15.0
-	var left_max: int = sectors.get("left_sector_max", 0)
-	var right_min: int = sectors.get("right_sector_min", 0)
-	
+func _draw_sector_dividers() -> void:
 	# 1. Determine the vertical bounds of the map in grid coordinates
 	var used_rect: Rect2i = map_ground_layer.get_used_rect()
 	var top_row: int = used_rect.position.y
@@ -113,12 +150,12 @@ func _draw_sector_dividers(map_data: Dictionary) -> void:
 	var line_bottom_y: float = map_ground_layer.map_to_local(Vector2i(0, bottom_row)).y + (HexMetrics.half_height)
 	
 	# 2. Calculate the Left and Right Divider X Coordinate
-	var left_pure_hex_pos := map_ground_layer.map_to_local(Vector2i(left_max, 0))
-	var left_center_adj_hex_pos := map_ground_layer.map_to_local(Vector2i(left_max + 1, 0))
+	var left_pure_hex_pos := map_ground_layer.map_to_local(Vector2i(left_sector_max, 0))
+	var left_center_adj_hex_pos := map_ground_layer.map_to_local(Vector2i(left_sector_max + 1, 0))
 	var left_line_x: float = (left_pure_hex_pos.x + left_center_adj_hex_pos.x) / 2.0
 	
-	var right_pure_hex_pos := map_ground_layer.map_to_local(Vector2i(right_min, 0))
-	var right_center_adj_hex_pos := map_ground_layer.map_to_local(Vector2i(right_min - 1, 0))
+	var right_pure_hex_pos := map_ground_layer.map_to_local(Vector2i(right_sector_min, 0))
+	var right_center_adj_hex_pos := map_ground_layer.map_to_local(Vector2i(right_sector_min - 1, 0))
 	var right_line_x: float = (right_pure_hex_pos.x + right_center_adj_hex_pos.x) / 2.0
 	
 	# 4. Apply the coordinates to the Line2D nodes
@@ -129,3 +166,24 @@ func _draw_sector_dividers(map_data: Dictionary) -> void:
 	right_sector_divider.clear_points()
 	right_sector_divider.add_point(Vector2(right_line_x, line_top_y))
 	right_sector_divider.add_point(Vector2(right_line_x, line_bottom_y))
+
+func build_sector_index() -> void:
+	# 1. Clear existing coordinates without breaking inner array typing
+	for sector_key: enums.MapSector in sector_index:
+		(sector_index[sector_key] as Array).clear()
+
+	# 2. Iterate through all key-value pairs in the map
+	for coords: Vector2i in map:
+		var cell: HexCell = map[coords]
+		if not cell or cell.sector == enums.MapSector.NONE:
+			continue
+
+		# 3. Check bit flags using bitwise AND
+		if cell.sector & enums.MapSector.LEFT != 0:
+			(sector_index[enums.MapSector.LEFT] as Array).append(coords)
+			
+		if cell.sector & enums.MapSector.CENTER != 0:
+			(sector_index[enums.MapSector.CENTER] as Array).append(coords)
+			
+		if cell.sector & enums.MapSector.RIGHT != 0:
+			(sector_index[enums.MapSector.RIGHT] as Array).append(coords)

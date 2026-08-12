@@ -12,7 +12,7 @@ func _ready() -> void:
 	if Engine.is_editor_hint():
 		set_notify_local_transform(true)
 
-@export var unit_type: GameEnums.UnitType = GameEnums.UnitType.INFANTRY:
+@export var unit_type: enums.UnitType = enums.UnitType.INFANTRY:
 	set(value):
 		unit_type = value
 		_update_node_name()
@@ -90,7 +90,7 @@ func _reindex_group() -> void:
 		target.name = "Temp_%d" % target.get_instance_id()
 
 	var current_owner: int = -1
-	var current_type: GameEnums.UnitType = GameEnums.UnitType.INFANTRY
+	var current_type: enums.UnitType = enums.UnitType.INFANTRY
 	var current_type_str: String = ""
 	var count: int = 0
 	
@@ -99,7 +99,7 @@ func _reindex_group() -> void:
 		if target.owner_id != current_owner or target.unit_type != current_type:
 			current_owner = target.owner_id
 			current_type = target.unit_type
-			current_type_str = GameEnums.UnitType.keys()[target.unit_type].capitalize()
+			current_type_str = enums.UnitType.keys()[target.unit_type].capitalize()
 			count = 0
 		else:
 			count += 1
