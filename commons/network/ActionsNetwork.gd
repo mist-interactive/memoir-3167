@@ -13,13 +13,13 @@ signal play_card_requested(peer_id: int, instance_id: int)
 func play_card(instance_id: int) -> void:
 	play_card_requested.emit(multiplayer.get_remote_sender_id(), instance_id)
 
-signal card_played_received(peer_id: int, instance_id: int)
+signal card_played_received(peer_id: int, instance_id: int, card_id: String)
 @rpc("authority", "call_remote")
-func card_played(peer_id: int, instance_id: int) -> void:
+func card_played(peer_id: int, instance_id: int, card_id: String) -> void:
 	if multiplayer.is_server():
 		return
 	print("I played the card ", peer_id == multiplayer.get_unique_id())
-	card_played_received.emit(peer_id, instance_id)
+	card_played_received.emit(peer_id, instance_id, card_id)
 
 signal issue_order_requested(peer_id: int)
 @rpc("any_peer", "call_remote")
