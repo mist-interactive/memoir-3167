@@ -19,6 +19,7 @@
 [ext_resource type="Script" uid="uid://birdmambhh8rf" path="res://client/battlefield/map_highlight.gd" id="13_upguu"]
 [ext_resource type="Script" uid="uid://cl0168wcrdlf1" path="res://client/battlefield/discard_pile_ui.gd" id="15_eq063"]
 [ext_resource type="Texture2D" uid="uid://bhmmuk70lftxd" path="res://assets/card_textures/texture003.png" id="16_okikj"]
+[ext_resource type="PackedScene" uid="uid://c3nofdwjiv8vk" path="res://client/debug.tscn" id="19_3y24m"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e5smb"]
 texture = ExtResource("2_4ok02")
@@ -204,6 +205,9 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 texture = ExtResource("16_okikj")
 expand_mode = 1
+
+[node name="Debug" parent="UICanvas" unique_id=1503541458 instance=ExtResource("19_3y24m")]
+position = Vector2(54.092194, 200.49394)
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1708214605 node_paths=PackedStringArray("target_map", "map_manager")]
 position = Vector2(2877, 1619)
