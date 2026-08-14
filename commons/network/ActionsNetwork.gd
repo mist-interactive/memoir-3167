@@ -18,17 +18,25 @@ signal card_played_received(peer_id: int, instance_id: int, card_id: String)
 func card_played(peer_id: int, instance_id: int, card_id: String) -> void:
 	if multiplayer.is_server():
 		return
-	print("I played the card ", peer_id == multiplayer.get_unique_id())
 	card_played_received.emit(peer_id, instance_id, card_id)
 
-signal issue_order_requested(peer_id: int)
+signal move_unit_requested(peer_id: int, 	unit_id: int, destination: Vector2i)
 @rpc("any_peer", "call_remote")
-func issue_order() ->void:
-	pass
-	
-signal execute_orders_requested(peer_id: int)
+func move_unit(unit_id: int, destination: Vector2i) -> void:
+	if !multiplayer.is_server():
+		return
+	move_unit_requested.emit(multiplayer.get_remote_sender_id(), unit_id, destination)
+
+signal select_unit_requested(peer_id: int, unit_id: int)
 @rpc("any_peer", "call_remote")
-func execute_orders() ->void:
+func select_unit(unit_id: int) -> void:
+	if !multiplayer.is_server():
+		return
+	select_unit_requested.emit(multiplayer.get_remote_sender_id(), unit_id)
+
+signal attack_unit_requested(peer_id: int)
+@rpc("any_peer", "call_remote")
+func attack_unit() -> void:
 	pass
 
 signal draw_card_requested(peer_id: int)

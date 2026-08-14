@@ -4,6 +4,8 @@ extends Node
 
 @export var map_ground_layer: HexagonTileMapLayer
 @export var map_features_layer: HexagonTileMapLayer
+@export var map_highlight_layer: HexagonTileMapLayer
+@export var map_visuals_node: Node
 @export var unit_container: Node
 @export var unit_scene: PackedScene
 @export var left_sector_divider: Line2D
@@ -25,7 +27,8 @@ func setup_hand_ui(player_ids: Array[int]) -> void:
 var GROUND_TO_TILE: Dictionary = {}
 var FEATURE_TO_TILE: Dictionary = {}
 
-var map: Dictionary[Vector2i, HexCell]
+var map: HexGrid
+#var map: Dictionary[Vector2i, HexCell]
 var left_sector_max: int = -1
 var right_sector_min: int = -1
 
@@ -46,8 +49,15 @@ func load_map(map_name: String) -> void:
 	parseAndLoadMap(map_name)
 	_load_map_data_to_tilemap_layers()
 	_draw_sector_dividers()
+	_offset_map_to_hex_grid()
 	map_loaded.emit()
 	pass
+
+func _offset_map_to_hex_grid() -> void:
+	var visual_center = map_ground_layer.map_to_local(Vector2i.ZERO)
+	var math_center = HexGrid.offset_to_pixel(Vector2i.ZERO)
+	var offset = math_center - visual_center
+	map_visuals_node.position += offset
 
 func parseAndLoadMap(map_name: String) -> bool:
 	var src: String = "res://maps/%s" % map_name
@@ -69,7 +79,10 @@ func parseAndLoadMap(map_name: String) -> bool:
 		return false
 
 	# Clear previous map state
-	map.clear()
+	var map_width = int(parsed_data.get("width"))
+	var map_height = int(parsed_data.get("height"))
+	map = HexGrid.new(map_width, map_height)
+	map.cells.clear()
 
 	# 1. Parse Sector Boundaries
 	if "sectors" in parsed_data and parsed_data["sectors"] is Dictionary:
@@ -85,20 +98,20 @@ func parseAndLoadMap(map_name: String) -> bool:
 			var coord_arr: Array = elem.get("coord", [0, 0])
 			var coord := Vector2i(int(coord_arr[0]), int(coord_arr[1]))
 			var cell := HexCell.new(coord, elem.get("ground", 0), elem.get("feature", 0), elem.get("sector", 0))
-			map[coord] = cell
+			map.cells[coord] = cell
 
 	# 4. Rebuild Sector Lookup Table
-#	build_sector_index()
+	build_sector_index()
 
-	print("Successfully parsed and loaded map: %s (%d hexes indexed)." % [map_name, map.size()])
+	print("Successfully parsed and loaded map: %s (%d hexes indexed)." % [map_name, map.cells.size()])
 	return true
 
 func _load_map_data_to_tilemap_layers() -> void:
 	map_ground_layer.clear()
 	map_features_layer.clear()
-	for coord in map:
-		var hex: HexCell = map[coord]
-		var ground_type: int = hex.get("ground")
+	for coord in map.cells:
+		var hex: HexCell = map.cells[coord]
+		var ground_type: int = hex.ground
 		if GROUND_TO_TILE.has(ground_type):
 			var tile_info: Array = GROUND_TO_TILE[ground_type]
 			var source_id: int = tile_info[0]
@@ -106,7 +119,7 @@ func _load_map_data_to_tilemap_layers() -> void:
 			map_ground_layer.set_cell(coord, source_id, atlas_coord)
 		else:
 			push_warning("Client doesn't have visual data for the Ground enum: ", ground_type)
-		var feature_type: int = hex.get("feature")
+		var feature_type: int = hex.feature
 		if FEATURE_TO_TILE.has(feature_type):
 			var tile_info: Array = FEATURE_TO_TILE[feature_type]
 			var source_id: int = tile_info[0]
@@ -116,28 +129,6 @@ func _load_map_data_to_tilemap_layers() -> void:
 			push_warning("Client doesn't have visual data for the Feature enum: ", feature_type)
 	pass
 
-func _parse_hex_data(map_data: Dictionary) -> void:
-	map.clear()
-	var hex_array: Array = map_data.get("hexes", [])
-	for cell_dict in hex_array:
-		var coord: Vector2i = HexCell._parse_coord(cell_dict, "coord")
-		var ground_type: int = cell_dict.get("ground")
-		if GROUND_TO_TILE.has(ground_type):
-			var tile_info: Array = GROUND_TO_TILE[ground_type]
-			var source_id: int = tile_info[0]
-			var atlas_coord: Vector2i = tile_info[1]
-			map_ground_layer.set_cell(coord, source_id, atlas_coord)
-		else:
-			push_warning("Client doesn't have visual data for the Ground enum: ", ground_type)
-		var feature_type: int = cell_dict.get("feature")
-		if FEATURE_TO_TILE.has(feature_type):
-			var tile_info: Array = FEATURE_TO_TILE[feature_type]
-			var source_id: int = tile_info[0]
-			var atlas_coord: Vector2i = tile_info[1]
-			map_features_layer.set_cell(coord, source_id, atlas_coord)
-		else:
-			push_warning("Client doesn't have visual data for the Feature enum: ", feature_type)
-
 func _draw_sector_dividers() -> void:
 	# 1. Determine the vertical bounds of the map in grid coordinates
 	var used_rect: Rect2i = map_ground_layer.get_used_rect()
@@ -146,8 +137,8 @@ func _draw_sector_dividers() -> void:
 	
 	# Convert grid rows to pixel Y coordinates. 
 	# We add/subtract an arbitrary pixel amount (e.g., 100) so the lines extend slightly past the grid.
-	var line_top_y: float = map_ground_layer.map_to_local(Vector2i(0, top_row)).y - (HexMetrics.half_height)
-	var line_bottom_y: float = map_ground_layer.map_to_local(Vector2i(0, bottom_row)).y + (HexMetrics.half_height)
+	var line_top_y: float = map_ground_layer.map_to_local(Vector2i(0, top_row)).y - (map.tile_half_height)
+	var line_bottom_y: float = map_ground_layer.map_to_local(Vector2i(0, bottom_row)).y + (map.tile_half_height)
 	
 	# 2. Calculate the Left and Right Divider X Coordinate
 	var left_pure_hex_pos := map_ground_layer.map_to_local(Vector2i(left_sector_max, 0))
@@ -173,8 +164,8 @@ func build_sector_index() -> void:
 		(sector_index[sector_key] as Array).clear()
 
 	# 2. Iterate through all key-value pairs in the map
-	for coords: Vector2i in map:
-		var cell: HexCell = map[coords]
+	for coords: Vector2i in map.cells:
+		var cell: HexCell = map.cells[coords]
 		if not cell or cell.sector == enums.MapSector.NONE:
 			continue
 
