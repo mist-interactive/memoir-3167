@@ -10,23 +10,27 @@ static var reconnecting: bool = false
 var reconnectAttempts: int = 0
 const MAX_RECONNECT_ATTEMPS: int = 3
 
+var js_callback: JavaScriptObject
+
 signal connection_status_change()
 signal reconnection_attempt()
+signal react_data_received(token: String, match_id: int)
 
 func _ready() -> void:
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 	multiplayer.connection_failed.connect(_on_connection_failed)
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
-	var raw_jwt_token: String = get_jwt("window.gameJWT")
-	if raw_jwt_token.is_empty():
+	var auth_data: Dictionary = await _get_authentication_data()
+	if auth_data.is_empty():
 		#Handle missing token
-		push_error("No JWT token was found.")
+		push_error("No authentication data was received.")
 		return
+	print("Received authentication data: ", auth_data)
 	await loader.stage("Initializing connection...", initialize_connection) \
 	.stage("Waiting to establish connection...", func(): await loader.wait_untill(func(): return connected == true)) \
 	.stage("Initializing client...", func(): client = ClientState.new(multiplayer.get_unique_id())) \
 	.stage("Authenticating client...", func():
-		Network.Client.auth_check.rpc_id(1, raw_jwt_token)
+		Network.Client.auth_check.rpc_id(1, auth_data.get("token"))
 		await loader.wait_untill(func(): return client.authenticated)
 	) \
 	.run()
@@ -76,11 +80,52 @@ func reconnect_to_server():
 	multiplayer.multiplayer_peer = peer
 	connected = true
 
-func get_jwt(jwt_path: String) -> String:
+func _get_authentication_data() -> Dictionary:
 	if not OS.has_feature("web"):
-		return "jwt_local_dummy_text"
-	# JavaScript to find a specific cookie by name
-	var token = JavaScriptBridge.eval(jwt_path)
-	print("JWT token: ", token)
-	return str(token) if token else ""
+		return {
+		"token": "jwt_local_dummy_text",
+		"match_id": -1
+	}
+	js_callback = JavaScriptBridge.create_callback(_on_react_message)
+	JavaScriptBridge.get_interface("window")._godotReceiveMessage = js_callback
+	JavaScriptBridge.eval("""
+		console.log("Executing JavaScriptBridge");
+		window.addEventListener('message', function(event) {
+		console.log("Godot receive event message")
+		let data = event.data;
+		if (typeof data === 'string') {
+			try {
+				data = JSON.parse(data); 
+			} catch(e) {
+				console.log("Couldn't parse JSON data: ", e)
+			}
+		}
+		if (data && data.type === 'INIT_GAME') {
+			console.log("Event data matches")
+			window._godotReceiveMessage(JSON.stringify(event.data));
+			}
+		else {
+			console.log("Event data doesn't match")
+		}
+		});
+		console.log("Godot posting message: GODOT_READY")
+		window.parent.postMessage({ type: 'GODOT_READY' }, '*');
+		""")
+	var signal_args = await react_data_received
+	return {
+		"token": signal_args[0],
+		"match_id": signal_args[1]
+	}	
 	
+func _on_react_message(args) -> void:
+	var json_string = args[0]
+	if !json_string:
+		push_error("Browser sent empty message")
+		return
+	var parsed_data = JSON.parse_string(json_string)
+	if !parsed_data:
+		push_error("Failed to parse JSON data from React.")
+		return
+	var token = parsed_data.get("token", "")
+	var match_id = int(parsed_data.get("match_id", "-1"))
+	react_data_received.emit(token, match_id)
