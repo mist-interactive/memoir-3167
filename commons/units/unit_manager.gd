@@ -39,6 +39,7 @@ func move_unit(unit: Variant, old_coord: Vector2i, new_coord: Vector2i) -> bool:
 	unit_grid[new_coord] = unit.uuid
 	units_by_id[uuid].hex_coord = new_coord
 	unit.hex_coord = new_coord
+	unit_grid.erase(old_coord)
 	return true
 
 func get_unit_at(coord: Vector2i) -> Variant:
