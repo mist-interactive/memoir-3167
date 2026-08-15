@@ -29,14 +29,14 @@ func _handle_left_click() -> void:
 	if cell_source_id == -1:
 		return
 	var is_my_turn: bool = matchState.is_player_turn(multiplayer.get_unique_id())
-	if is_my_turn && matchState.phase == MatchState.TURN_PHASE.SELECT:
+	if matchState.is_my_turn() && matchState.is_phase(enums.TurnPhase.SELECT):
 		var unit: Unit = unit_manager.get_unit_at(hex)
 		var is_my_unit: bool = unit && unit.owner_id == multiplayer.get_unique_id()
 		if is_my_unit:
 			Network.Match.request_hex_selection.rpc_id(1, hex)
 			Network.Actions.select_unit.rpc_id(1, unit_manager.get_unit_at(hex).uuid)
-	elif is_my_turn && matchState.phase == MatchState.TURN_PHASE.MOVE:
-		if matchState.is_player_turn(multiplayer.get_unique_id()) && !unit_manager.unit_grid.has(hex):
+	elif matchState.is_my_turn() && matchState.is_phase(enums.TurnPhase.MOVE):
+		if !unit_manager.unit_grid.has(hex):
 			Network.Match.request_hex_selection.rpc_id(1, hex)
 			Network.Actions.move_unit.rpc_id(1, unit_manager.selected_unit_id, hex)
 	

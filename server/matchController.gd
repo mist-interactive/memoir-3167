@@ -51,9 +51,9 @@ func handle_client_state_change(player_id: int, state: MatchState.STATE) -> void
 	if matchState.state == MatchState.STATE.INITIALIZE_BOARD && ready_to_initialize_board():
 		matchState.state = MatchState.STATE.IN_PROGRESS
 		unit_manager.spawn_units(matchState.player_ids[0], matchState.player_ids[1])
-		matchState.phase = MatchState.TURN_PHASE.PLAY_CARD
+		matchState.phase = enums.TurnPhase.PLAY_CARD
 
-func isPhase(phase: MatchState.TURN_PHASE) -> bool:
+func isPhase(phase: enums.TurnPhase) -> bool:
 	return matchState.phase == phase
 	
 func isPlayerTurn(peer_id: int) -> bool:

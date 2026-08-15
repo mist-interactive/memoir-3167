@@ -30,3 +30,14 @@ enum CardTargetSector {
 	ANY          = LEFT | CENTER | RIGHT, # 7 (111)
 	ALL          = ANY                    # 7 (111)
 }
+
+enum TurnPhase
+{
+	SPAWN_UNITS,
+	DRAW_HAND,
+	PLAY_CARD,
+	SELECT,
+	MOVE,
+	ATTACK,
+	DRAW_CARD
+}
