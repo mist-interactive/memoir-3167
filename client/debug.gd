@@ -18,21 +18,21 @@ func _physics_process(delta: float) -> void:
 func player_id_text(id: int) -> String:
 	return str(id) + "(me)" if id == multiplayer.get_unique_id() else str(id)
 
-func get_turn_phase_txt(phase: MatchState.TURN_PHASE) -> String:
+func get_turn_phase_txt(phase: enums.TurnPhase) -> String:
 	match phase:
-		MatchState.TURN_PHASE.SPAWN_UNITS:
+		enums.TurnPhase.SPAWN_UNITS:
 			return "Spawn Units"
-		MatchState.TURN_PHASE.DRAW_HAND:
+		enums.TurnPhase.DRAW_HAND:
 			return "Draw Hand"
-		MatchState.TURN_PHASE.PLAY_CARD:
+		enums.TurnPhase.PLAY_CARD:
 			return "Play Card"
-		MatchState.TURN_PHASE.SELECT:
+		enums.TurnPhase.SELECT:
 			return "Select"
-		MatchState.TURN_PHASE.MOVE:
+		enums.TurnPhase.MOVE:
 			return "Move"
-		MatchState.TURN_PHASE.ATTACK:
+		enums.TurnPhase.ATTACK:
 			return "Attack"
-		MatchState.TURN_PHASE.DRAW_CARD:
+		enums.TurnPhase.DRAW_CARD:
 			return "Draw Card"
 	return "Unknown"
 	
