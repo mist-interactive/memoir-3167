@@ -3,7 +3,10 @@ extends RefCounted
 
 var owner_id: int # peer_id or uuid
 var uuid: int = -1
-var hex_coord: Vector2i
+var hex_coord: Vector2i:
+	set(new_coord):
+		hex_coord = new_coord
+		isDirty = true
 var type: enums.UnitType
 var isDirty: bool = false
 
@@ -21,8 +24,9 @@ func get_snapshot() -> Dictionary:
 		"owner_id": owner_id
 	}
 
-func sync() -> void:
+func sync(peer_ids: Array[int]) -> void:
 	if !isDirty:
 		return
-	Network.Units.sync_unit.rpc_id(owner_id, get_snapshot())
+	for peer_id in peer_ids:
+		Network.Units.sync_unit.rpc_id(peer_id, get_snapshot())
 	isDirty = false
