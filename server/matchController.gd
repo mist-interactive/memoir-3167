@@ -92,5 +92,5 @@ func process_hex_click(peer_id:int, hex: Vector2i) -> void:
 		"coord": hex
 	}
 	for player in matchState.player_ids:
-		Network.Units.spawn_unit.rpc_id(player, new_unit)
+		#Network.Units.spawn_unit.rpc_id(player, new_unit)
 		Network.Match.receive_hex_broadcast.rpc_id(player, peer_id, hex)

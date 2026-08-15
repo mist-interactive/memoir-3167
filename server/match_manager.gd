@@ -80,15 +80,19 @@ func _on_play_card(peer_id: int, instance_id: int) -> void:
 	if matchCtl.deckManager.play_card(peer_id, instance_id):
 		matchCtl.matchState.phase = MatchState.TURN_PHASE.SELECT
 
-func _on_select_unit(peer_id: int) -> void:
+func _on_select_unit(peer_id: int, unit_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
 	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(MatchState.TURN_PHASE.SELECT):
 		return
+	if matchCtl.unit_manager.select_unit(peer_id, unit_id):
+		matchCtl.matchState.phase = MatchState.TURN_PHASE.MOVE
 
-func _on_move_unit(peer_id: int) -> void:
+func _on_move_unit(peer_id: int, unit_id: int, destination: Vector2i) -> void:
 	var matchCtl: matchController = get_match(peer_id)
 	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(MatchState.TURN_PHASE.MOVE):
 		return
+	if matchCtl.unit_manager.move_unit_request(peer_id, unit_id, destination):
+		matchCtl.matchState.phase = MatchState.TURN_PHASE.ATTACK
 
 func _on_attack_unit(peer_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
