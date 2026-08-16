@@ -12,19 +12,10 @@ extends Control
 @onready var handState: HandState = $"../../../../HandState"
 
 func _ready() -> void:
-	Network.Actions.enemy_hand_size_changed.connect(_on_enemy_hand_size_changed)
+	handState.enemy_hand_drawn.connect(_on_enemy_draw_hand)
+	handState.enemy_card_played.connect(_on_enemy_played_card)
 
-func _on_enemy_hand_size_changed(new_size: int) -> void:
-	while new_size < get_child_count():
-		_remove_card_node()
-	while new_size > get_child_count():
-		_add_card_node()
-	_recalculate_layout()
-
-func initialize(peer_id: int) -> void:
-	_on_hand_synchronized(peer_id)
-
-func _on_hand_synchronized(peer_id: int) -> void:
+func _on_enemy_draw_hand() -> void:
 	for id in range(handState.opponent_hand_size):
 		_add_card_node()
 	_recalculate_layout()
@@ -34,11 +25,13 @@ func _add_card_node() -> void:
 	add_child(new_card)
 	new_card.setup_enemy_visuals()
 	new_card.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	_recalculate_layout()
 
-func _remove_card_node() -> void:
+func _on_enemy_played_card(instance_id: int, card_id: String) -> void:
 	var card = get_child(-1)
 	remove_child(card)
 	card.queue_free()
+	_recalculate_layout()
 
 # dont worry about it
 func _recalculate_layout() -> void:
