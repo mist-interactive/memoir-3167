@@ -1,6 +1,13 @@
 extends Node
 class_name enums
 
+enum Side
+{
+	GREEN = 1,
+	RED = 2,
+	NONE = 3
+}
+
 enum UnitType
 {
 	INFANTRY,
