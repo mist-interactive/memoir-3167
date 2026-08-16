@@ -18,10 +18,6 @@ var sector_index: Dictionary[enums.MapSector, Array] = {
 	enums.MapSector.RIGHT: [] as Array[Vector2i]
 }
 
-func setup_hand_ui(player_ids: Array[int]) -> void:
-	hand_ui.initialize()
-	enemy_hand_ui.initialize(player_ids[0])
-
 var GROUND_TO_TILE: Dictionary = {}
 var FEATURE_TO_TILE: Dictionary = {}
 
