@@ -2,21 +2,22 @@ extends Node
 class_name DeckManager
 
 var draw_pile: Array[String] = []
-var discard_pile: Array[String] = []
+var discard_pile: Array[CardInstance] = []
 var player_hands: Dictionary[int, HandState]
 
 var _next_instance_id: int = 1000 
 var initial_hand_size: int = 6
 
-func _init(peer_id1: int, peer_id2: int) -> void: # peer_id should be unique
+func _init() -> void:
 	name = "DeckManager"
-	player_hands[peer_id1] = HandState.new()
-	player_hands[peer_id2] = HandState.new()
+	player_hands[enums.Side.GREEN] = HandState.new()
+	player_hands[enums.Side.RED] = HandState.new()
 	initialize_match_deck()
 
-func _physics_process(delta: float) -> void:
-	for peer_id in player_hands.keys():
-		var hand: HandState = player_hands[peer_id]
+func _sync_hands(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
+	for side in player_hands.keys():
+		var peer_id: int = sides_peer_ids[side]
+		var hand: HandState = player_hands[side]
 		if not hand.should_sync:
 			continue
 		Network.Hand.sync.rpc_id(peer_id, hand.get_snapshot())
@@ -37,24 +38,24 @@ func initialize_match_deck() -> void:
 	shuffle_deck()
 	print("Server Deck Manager: Deck initialized with %d total cards." % draw_pile.size())
 
-func draw_card(peer_id: int) -> bool:
+func draw_card_from_pile() -> Dictionary:
 	if draw_pile.is_empty():
 		shuffle_deck()
-		if draw_pile.is_empty(): return false
-
-	var drawn_card_id: String = draw_pile.pop_back()
-	var assigned_id: int = _next_instance_id
-	_next_instance_id += 1
-
+		if draw_pile.is_empty(): return {}
+	
 	var card_instance = {
-		"instance_id": assigned_id,
-		"card_id": drawn_card_id
+		"instance_id":  _next_instance_id,
+		"card_id": draw_pile.pop_back()
 	}
-	
-	player_hands[peer_id].add_card(assigned_id, drawn_card_id)
-	player_hands[peer_id].opponent_hand_size = get_opponent_hand_size(peer_id)
-	
-	Network.Card.receive_card_from_server.rpc_id(peer_id, assigned_id, drawn_card_id)
+	_next_instance_id += 1
+	return card_instance
+
+func draw_card(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) -> bool:
+	var card_instance: Dictionary = draw_card_from_pile()
+	if card_instance.is_empty():
+		return false
+	player_hands[side].add_card(card_instance.instance_id, card_instance.card_id)
+	player_hands[side].opponent_hand_size = get_opponent_hand_size(side)
 	return true
 
 func shuffle_deck() -> void:
@@ -64,44 +65,39 @@ func shuffle_deck() -> void:
 	
 	draw_pile.shuffle()
 
-func play_card(peer_id: int, instance_id: int) -> bool:
-	if !hasCardInHand(peer_id, instance_id):
+func play_card(side: enums.Side, instance_id: int, sides_peer_ids: Dictionary[enums.Side, int]) -> bool:
+	if !hasCardInHand(side, instance_id):
 		return false
-	var opponent_id: int = get_opponent_id(peer_id)
-	var card_id: String = player_hands[peer_id].card_ids[instance_id]
-	discard_pile.append(card_id)
-	player_hands[peer_id].discard_pile = discard_pile
-	player_hands[opponent_id].discard_pile = discard_pile
-	player_hands[peer_id].remove_card(instance_id)
-	for peer in player_hands:
-		Network.Actions.card_played.rpc_id(peer, peer_id, instance_id, card_id)
-	Network.Actions.receive_enemy_hand_update.rpc_id(opponent_id, player_hands[peer_id].card_ids.size())
+	var other_side: enums.Side = get_other_side(side)
+	var card_id: String = player_hands[side].card_ids[instance_id]
+	discard_pile.append(CardInstance.new(instance_id, card_id))
+	player_hands[side].discard_pile = discard_pile
+	player_hands[other_side].discard_pile = discard_pile
+	player_hands[side].remove_card(instance_id)
 	return true
 
-func draw_hand(peer_id: int) -> void:
-	if not player_hands.has(peer_id): return
-	var hand: HandState = player_hands[peer_id]
+func draw_hand(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) -> void:
+	var cards: Dictionary[int, String]
 	for i in range(initial_hand_size):
-		draw_card(peer_id)
-	Network.Actions.hand_drawn.rpc_id(peer_id)
-	player_hands[peer_id].opponent_hand_size = get_opponent_hand_size(peer_id)
+		var card: Dictionary = draw_card_from_pile()
+		if card.is_empty():
+			break
+		cards[card.instance_id] = card.card_id
+	player_hands[get_other_side(side)].opponent_hand_size = cards.size()
+	player_hands[side].card_ids = cards
 
-func get_opponent_id(peer_id: int) -> int:
-	for key in player_hands:
-		if key != peer_id:
-			return key
-	return -1
+func get_other_side(side: enums.Side) -> enums.Side:
+	var other_side: enums.Side
+	for other in player_hands.keys():
+		if other != side:
+			other_side = other
+			break
+	return other_side
 
-func get_opponent_hand_size(peer_id: int) -> int:
-	for key in player_hands:
-		if key != peer_id:
-			return player_hands[key].card_ids.size()
-	return -1
-
-func initialize_opponents_hands() -> void:
-	for key in player_hands:
-		player_hands[key].opponent_hand_size = get_opponent_hand_size(key)
+func get_opponent_hand_size(side: enums.Side) -> int:
+	var other_side: enums.Side = get_other_side(side)
+	return player_hands[other_side].card_ids.size()
 
 # helper functions
-func hasCardInHand(peer_id: int, instance_id: int) -> bool:
-	return player_hands[peer_id].card_ids.has(instance_id)
+func hasCardInHand(side: enums.Side, instance_id: int) -> bool:
+	return player_hands[side].card_ids.has(instance_id)
