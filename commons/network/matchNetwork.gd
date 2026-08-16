@@ -2,7 +2,7 @@ extends Node
 class_name MatchNetwork
 
 signal server_hex_requested(peer_id: int, hex: Vector2i)
-signal hex_broadcast(peer_id: int, hex: Vector2i)
+signal hex_broadcast(side: enums.Side, hex: Vector2i)
 
 signal connect_match_requested
 @rpc("any_peer","call_remote")
@@ -18,13 +18,13 @@ func match_created() -> void:
 		return
 	Network.Match.connect_match.rpc()
 
-signal init_match_requested
+signal init_match_requested(snapshot: Dictionary)
 @rpc("authority","call_remote")
-func init(matchId: int, mapName: String, player_ids: Array[int]) -> void:
+func init(snapshot: Dictionary) -> void:
 	print("creating game")
 	if multiplayer.is_server():
 		return
-	init_match_requested.emit(matchId, mapName, player_ids)
+	init_match_requested.emit(snapshot)
 
 signal sync_requested(peer_id: int, snapshot: Dictionary)
 @rpc("authority", "call_remote")
@@ -49,8 +49,12 @@ func request_hex_selection(hex: Vector2i) -> void:
 	print("hex selection requested")
 	var sender := multiplayer.get_remote_sender_id()
 	server_hex_requested.emit(sender, hex)
-	
 
 @rpc("authority", "call_remote", "reliable")
-func receive_hex_broadcast(peer_id: int, hex: Vector2i) -> void:
-	hex_broadcast.emit(peer_id, hex)
+func receive_hex_broadcast(side: enums.Side, hex: Vector2i) -> void:
+	hex_broadcast.emit(side, hex)
+
+signal clear_hex_selections_requested
+@rpc("authority", "call_remote")
+func clear_hex_selections() -> void:
+	clear_hex_selections_requested.emit()
