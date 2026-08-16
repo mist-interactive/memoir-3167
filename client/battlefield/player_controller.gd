@@ -1,4 +1,5 @@
 extends Node
+class_name PlayerController
 
 @onready var battlefieldState: BattlefieldState = $"../../BattlefieldState"
 @onready var matchState: MatchState = $"../../matchState"
@@ -6,14 +7,11 @@ extends Node
 @export var map_feature_layer: TileMapLayer
 @export var map_highlight_layer: TileMapLayer
 @export var sector_highlight_layer: TileMapLayer
-@export var unit_container: Node
-var unit_manager: ClientUnitManager
+@onready var unit_manager: ClientUnitManager = $"../../UnitManager"
 var is_my_turn: bool = false
 
 func _ready() -> void:
-	unit_manager = ClientUnitManager.new(battlefieldState)
-	unit_manager.active_container = unit_container
-	get_parent().get_parent().add_child(unit_manager)
+	pass
 
 func _unhandled_input(event: InputEvent) -> void:
 	#if not is_my_turn:
@@ -28,10 +26,9 @@ func _handle_left_click() -> void:
 	var cell_source_id := map_ground_layer.get_cell_source_id(hex)
 	if cell_source_id == -1:
 		return
-	var is_my_turn: bool = matchState.is_player_turn(multiplayer.get_unique_id())
 	if matchState.is_my_turn() && matchState.is_phase(enums.TurnPhase.SELECT):
 		var unit: Unit = unit_manager.get_unit_at(hex)
-		var is_my_unit: bool = unit && unit.owner_id == multiplayer.get_unique_id()
+		var is_my_unit: bool = unit && unit.owner_id == matchState.mySide
 		if is_my_unit:
 			Network.Match.request_hex_selection.rpc_id(1, hex)
 			Network.Actions.select_unit.rpc_id(1, unit_manager.get_unit_at(hex).uuid)
@@ -39,7 +36,7 @@ func _handle_left_click() -> void:
 		if !unit_manager.unit_grid.has(hex):
 			Network.Match.request_hex_selection.rpc_id(1, hex)
 			Network.Actions.move_unit.rpc_id(1, unit_manager.selected_unit_id, hex)
-	
+
 func _on_card_hovered(card_target: enums.MapSector) -> void:
 	var hexes_to_highlight: Array[Vector2i] = []
 	for sector_key: enums.MapSector in battlefieldState.sector_index:
