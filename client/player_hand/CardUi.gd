@@ -5,6 +5,7 @@ signal card_clicked(instance_id: int)
 
 const SIZE := Vector2(267.0, 358.0)
 const BASE_SCALE := Vector2(0.5, 0.5)
+const DISCARD_BASE_SCALE := Vector2(1.0, 1.0)
 
 @export var title_label: Label
 @export var description_label: Label
@@ -20,6 +21,7 @@ var original_position: Vector2 = Vector2.ZERO
 var _instance_id: int
 var _card_id: String
 var is_interactive: bool = true
+var is_discarded: bool = false
 
 signal card_hovered(target_sector: enums.MapSector)
 signal card_unhovered
@@ -40,8 +42,9 @@ func setup_visuals(instance_id: int, id: String) -> void:
 	description_label.text = card_data.description_label
 	get_child(1).texture = card_data.card_art
 
-func setup_enemy_visuals() -> void:
+func setup_enemy_visuals(instance_id: int) -> void:
 	var card_data: CommandCard = CardDatabase.get_card("001")
+	_instance_id = instance_id
 	get_child(1).texture = card_data.card_art
 
 func animate_to_discard(target_global_pos: Vector2, on_complete_callback: Callable) -> void:
@@ -76,6 +79,8 @@ func animate_to_discard(target_global_pos: Vector2, on_complete_callback: Callab
 		if on_complete_callback.is_valid():
 			on_complete_callback.call()
 	)
+	is_interactive = true
+	mouse_filter = Control.MOUSE_FILTER_PASS
 
 func _reset_hover_state() -> void:
 	z_index = 0
@@ -87,6 +92,8 @@ func _reset_hover_state() -> void:
 func _on_mouse_exited() -> void:
 	if not is_interactive:
 		return
+	if is_discarded:
+		return _animate_discard_pile_hover(0)
 	z_index = 0
 	scale = BASE_SCALE
 	position.y += SIZE.y / 3
@@ -96,6 +103,8 @@ func _on_mouse_exited() -> void:
 func _on_mouse_entered() -> void:
 	if not is_interactive:
 		return
+	if is_discarded:
+		return _animate_discard_pile_hover(1)
 	z_index = 10
 	scale = scale * 1.5
 	position.y -= SIZE.y / 3
@@ -103,6 +112,12 @@ func _on_mouse_entered() -> void:
 	var card_data: CommandCard = CardDatabase.get_card(_card_id)
 	if card_data:
 		card_hovered.emit(card_data.card_target)
+
+func _animate_discard_pile_hover(state: int) -> void:
+	if state == 1:
+		scale = scale * 1.5
+	else:
+		scale = DISCARD_BASE_SCALE
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
