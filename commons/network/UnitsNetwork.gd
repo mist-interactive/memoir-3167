@@ -9,6 +9,7 @@ func sync_unit(snapshot: Dictionary) -> void:
 	sync_unit_requested.emit(snapshot)
 
 signal sync_all_requested(snapshot: Dictionary)
+@rpc("authority", "call_remote")
 func sync_all(snapshot: Dictionary) -> void:
 	if multiplayer.is_server():
 		return
