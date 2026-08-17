@@ -6,9 +6,7 @@ extends Node2D
 var unit_manager: ClientUnitManager
 @onready var battlefieldState: BattlefieldState = $"../BattlefieldState"
 func _ready() -> void:
-	unit_manager = ClientUnitManager.new(battlefieldState)
-	unit_manager.active_container = unit_container
-	add_child(unit_manager)
+	pass
 
 func setup_hand_ui(player_ids: Array[int]) -> void:
 	# Delegate the responsibility to the child that actually manages the UI/Map

@@ -74,33 +74,37 @@ func _on_client_match_state_change(peer_id: int, state: MatchState.STATE):
 # player actions
 func _on_play_card(peer_id: int, instance_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
-	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(MatchState.TURN_PHASE.PLAY_CARD):
+	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(enums.TurnPhase.PLAY_CARD):
 		return
 	print("Player requested to play a card ", peer_id, instance_id)
 	if matchCtl.deckManager.play_card(peer_id, instance_id):
-		matchCtl.matchState.phase = MatchState.TURN_PHASE.SELECT
+		matchCtl.matchState.phase = enums.TurnPhase.SELECT
 
-func _on_select_unit(peer_id: int) -> void:
+func _on_select_unit(peer_id: int, unit_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
-	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(MatchState.TURN_PHASE.SELECT):
+	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(enums.TurnPhase.SELECT):
 		return
+	if matchCtl.unit_manager.select_unit(peer_id, unit_id):
+		matchCtl.matchState.phase = enums.TurnPhase.MOVE
 
-func _on_move_unit(peer_id: int) -> void:
+func _on_move_unit(peer_id: int, unit_id: int, destination: Vector2i) -> void:
 	var matchCtl: matchController = get_match(peer_id)
-	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(MatchState.TURN_PHASE.MOVE):
+	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(enums.TurnPhase.MOVE):
 		return
+	if matchCtl.unit_manager.move_unit_request(peer_id, unit_id, destination):
+		matchCtl.matchState.phase = enums.TurnPhase.ATTACK
 
 func _on_attack_unit(peer_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
-	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(MatchState.TURN_PHASE.ATTACK):
+	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(enums.TurnPhase.ATTACK):
 		return
 
 func _on_draw_card(peer_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
-	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(MatchState.TURN_PHASE.DRAW_CARD):
+	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(enums.TurnPhase.DRAW_CARD):
 		return
 	if matchCtl.deckManager.draw_card(peer_id):
-		matchCtl.matchState.phase = MatchState.TURN_PHASE.PLAY_CARD
+		matchCtl.matchState.phase = enums.TurnPhase.PLAY_CARD
 	
 func _on_server_hex_requested(peer_id: int, hex: Vector2i) -> void:
 	print("server hex requested by ", peer_id, " at ", hex)

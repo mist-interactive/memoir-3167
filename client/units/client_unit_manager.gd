@@ -18,10 +18,12 @@ func _on_sync_unit_requested(snapshot: Dictionary) -> void:
 	unit_grid[unit_to_sync.hex_coord] = uuid
 
 func _on_sync_all_requested(snapshot: Dictionary):
-	pass
+	selected_unit_id = snapshot.selected_unit_id
+	selected_by_peer = snapshot.selected_by_peer
 
 func _on_spawn_unit_requested(unit: Dictionary) -> void:
 	var new_unit = UNIT_SCENE.instantiate() as Unit
+	new_unit.name = "unit_" + str(unit.uuid)
 	active_container.add_child(new_unit)
 	new_unit.setup(unit.owner_id, unit.type, unit.uuid, unit.coord)
 	add_unit(new_unit, unit.coord)

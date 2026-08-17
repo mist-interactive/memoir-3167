@@ -1,6 +1,8 @@
 extends UnitManager
 class_name ServerUnitManager
+@onready var matchState: MatchState = $"../matchState"
 var _unit_id_counter: int = 0
+var isDirty: bool = true
 
 func _init(initialState: BattlefieldState) -> void:
 	super(initialState)
@@ -8,9 +10,67 @@ func _init(initialState: BattlefieldState) -> void:
 func _physics_process(delta: float) -> void:
 	for uuid in units_by_id:
 		var unit: UnitData = units_by_id[uuid]
-		unit.sync()
-		unit.hex_coord = Vector2i(1,2)
+		unit.sync(matchState.player_ids)
+	if isDirty:
+		for peer_id in matchState.player_ids:
+			var snapshot: Dictionary = {
+				"selected_unit_id": selected_unit_id,
+				"selected_by_peer": selected_by_peer, 
+				}
+			Network.Units.sync_all.rpc_id(peer_id, snapshot)
+		isDirty = false
+
+func select_unit(peer_id: int, unit_id: int) -> bool:
+	var unit: UnitData = get_unit_by_id(unit_id)
 	
+	if unit == null:
+		return false
+
+	if unit.owner_id != peer_id:
+		return false
+
+	if selected_unit_id != -1:
+		return false
+	
+	selected_unit_id = unit_id
+	selected_by_peer = peer_id
+	
+	isDirty = true
+	return true
+	
+func deselect_unit(peer_id: int) -> bool:
+	if selected_unit_id == -1:
+		return false
+
+	if selected_by_peer != peer_id:
+		return false
+		
+	selected_unit_id = -1
+	selected_by_peer = -1
+	isDirty = true
+	return true
+	
+func move_unit_request( peer_id: int, unit_id: int, destination: Vector2i) -> bool:
+	var unit: UnitData = get_unit_by_id(unit_id)
+	if unit == null || unit.owner_id != peer_id:
+		return false
+	
+	if selected_unit_id != unit_id || selected_by_peer != peer_id:
+		return false
+
+	## Check movement rules.
+	#if !move_rules(unit, destination):
+		#return false
+
+	var old_coord := unit.hex_coord
+	if !move_unit(unit, old_coord, destination):
+		return false
+
+	selected_unit_id = -1
+	selected_by_peer = -1
+	isDirty = true
+	return true
+
 func generate_server_unit_id() -> int:
 	if not multiplayer.is_server():
 		push_error("Client tried to generate a unit ID.")
