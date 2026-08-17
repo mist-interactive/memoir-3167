@@ -1,6 +1,13 @@
 extends Node
 class_name enums
 
+enum Side
+{
+	GREEN = 1,
+	RED = 2,
+	NONE = 3
+}
+
 enum UnitType
 {
 	INFANTRY,
@@ -29,4 +36,15 @@ enum CardTargetSector {
 	RIGHT_CENTER = CENTER | RIGHT,  # 6 (010 | 100 = 110)
 	ANY          = LEFT | CENTER | RIGHT, # 7 (111)
 	ALL          = ANY                    # 7 (111)
+}
+
+enum TurnPhase
+{
+	SPAWN_UNITS,
+	DRAW_HAND,
+	PLAY_CARD,
+	SELECT,
+	MOVE,
+	ATTACK,
+	DRAW_CARD
 }

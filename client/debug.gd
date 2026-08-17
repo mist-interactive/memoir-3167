@@ -7,32 +7,37 @@ extends Node2D
 var debug_hidden: bool = false
 
 func _physics_process(delta: float) -> void:
-	peer_ids.text = "player_ids: " + player_id_text(matchState.player_ids[0]) + " | " + player_id_text(matchState.player_ids[1])
+	peer_ids.text = "Side: " + player_id_text(matchState.mySide)
 	phase.text = "turn phase: " + get_turn_phase_txt(matchState.phase)
 	state.text = "match state: " + get_game_state_txt(matchState.state)
-	turn.text = "player_turn: " + player_id_text(matchState.player_ids[matchState.player_turn_index])
+	turn.text = "player_turn: " + player_id_text(matchState.current_turn)
 	if Input.is_action_just_released("toggle_debug_overlay"):
 		show() if debug_hidden else hide()
 		debug_hidden = !debug_hidden
 
-func player_id_text(id: int) -> String:
-	return str(id) + "(me)" if id == multiplayer.get_unique_id() else str(id)
+func player_id_text(side: enums.Side) -> String:
+	if side == enums.Side.GREEN:
+		return "Green"
+	elif side == enums.Side.RED:
+		return "Red"
+	else:
+		return "None"
 
-func get_turn_phase_txt(phase: MatchState.TURN_PHASE) -> String:
+func get_turn_phase_txt(phase: enums.TurnPhase) -> String:
 	match phase:
-		MatchState.TURN_PHASE.SPAWN_UNITS:
+		enums.TurnPhase.SPAWN_UNITS:
 			return "Spawn Units"
-		MatchState.TURN_PHASE.DRAW_HAND:
+		enums.TurnPhase.DRAW_HAND:
 			return "Draw Hand"
-		MatchState.TURN_PHASE.PLAY_CARD:
+		enums.TurnPhase.PLAY_CARD:
 			return "Play Card"
-		MatchState.TURN_PHASE.SELECT:
+		enums.TurnPhase.SELECT:
 			return "Select"
-		MatchState.TURN_PHASE.MOVE:
+		enums.TurnPhase.MOVE:
 			return "Move"
-		MatchState.TURN_PHASE.ATTACK:
+		enums.TurnPhase.ATTACK:
 			return "Attack"
-		MatchState.TURN_PHASE.DRAW_CARD:
+		enums.TurnPhase.DRAW_CARD:
 			return "Draw Card"
 	return "Unknown"
 	

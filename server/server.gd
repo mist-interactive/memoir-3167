@@ -1,4 +1,5 @@
 extends Node
+class_name Server
 var peer: WebSocketMultiplayerPeer
 var port: int = 6669
 var clients: Dictionary[int, ClientState]

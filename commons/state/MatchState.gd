@@ -2,63 +2,64 @@ extends Node
 class_name MatchState
 
 var matchId: int
-var player_ids: Array[int]
-var scores: Dictionary[int, int]
+var mySide: enums.Side
+var scores: Dictionary[enums.Side, int]
 var state: STATE = STATE.INITIALIZING:
 	set(newState):
 		state = newState
 		should_sync = true
-var phase: TURN_PHASE = TURN_PHASE.DRAW_HAND:
+var phase: enums.TurnPhase = enums.TurnPhase.DRAW_HAND:
 	set(newPhase):
 		phase = newPhase
 		should_sync = true
-var player_turn_index: int:
-	set(newIndex):
-		player_turn_index = newIndex
+var current_turn: enums.Side:
+	set(new_turn):
+		current_turn = new_turn
 		should_sync = true
+
 var should_sync: bool = true
 enum STATE {INITIALIZING, READY, INITIALIZE_BOARD, IN_PROGRESS, PAUSED, ENDED}
-enum TURN_PHASE {SPAWN_UNITS, DRAW_HAND, PLAY_CARD, SELECT, MOVE, ATTACK, DRAW_CARD}
 
 func _init() -> void:
 	name = "matchState"
 	Network.Match.sync_requested.connect(_on_sync)
 
-func initialize(matchId: int, player_ids: Array[int]) -> void:
-	self.matchId = matchId
-	self.player_ids = player_ids
-	self.player_turn_index = randi_range(0,1)
-	self.scores[player_ids[0]] = 0
-	self.scores[player_ids[1]] = 0
-	self.phase = TURN_PHASE.DRAW_HAND
+func _initialize(match_id: int) -> void:
+	self.matchId = match_id
+	self.mySide = enums.Side.NONE
+	self.scores[enums.Side.GREEN] = 0
+	self.scores[enums.Side.RED] = 0
+	self.phase = enums.TurnPhase.DRAW_HAND
+	self.current_turn = randi_range(enums.Side.GREEN,enums.Side.RED)
 
 func get_snapshot() -> Dictionary:
 	return {
 		"matchId": self.matchId,
-		"player_ids": self.player_ids,
 		"scores": self.scores,
 		"state": self.state,
 		"phase": self.phase,
-		"player_turn_index": self.player_turn_index
+		"current_turn": self.current_turn
 	}
 
 func _on_sync(snapshot: Dictionary):
 	print("syncing with server")
 	matchId = snapshot.matchId
-	player_ids = snapshot.player_ids
 	scores = snapshot.scores
 	state = snapshot.state
 	phase = snapshot.phase
-	player_turn_index = snapshot.player_turn_index
+	current_turn = snapshot.current_turn
+	mySide = snapshot.side
 
-func sync() -> void:
+func sync(side_peer_ids: Dictionary[enums.Side, int]) -> void:
 	if should_sync:
-		Network.Match.sync.rpc_id(player_ids[0], get_snapshot())
-		Network.Match.sync.rpc_id(player_ids[1], get_snapshot())
+		for side in side_peer_ids:
+			var snapshot: Dictionary = get_snapshot()
+			snapshot.side = side
+			Network.Match.sync.rpc_id(side_peer_ids[side], snapshot)
 		should_sync = false
 
-func is_player_turn(player_id: int) -> bool:
-	var index: int = player_ids.find(player_id)
-	return index == player_turn_index
-	if player_ids.size() > 1:
-		self.scores[player_ids[1]] = 0
+func is_my_turn() -> bool:
+	return current_turn == mySide
+
+func is_phase(phase: enums.TurnPhase) -> bool:
+	return self.phase == phase

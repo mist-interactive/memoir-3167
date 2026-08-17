@@ -4,93 +4,85 @@ var matchState: MatchState
 var battlefield: BattlefieldState
 var deckManager: DeckManager
 var unit_manager: ServerUnitManager
-
-var connected: Dictionary[int, bool]
-var player_status: Dictionary[int, MatchState.STATE]
+var connected: Dictionary[enums.Side, bool]
+var player_status: Dictionary[enums.Side, MatchState.STATE]
 var UNIT_SCENE = preload("res://client/units/Unit.tscn")
+var sides_peer_ids: Dictionary[enums.Side, int]
 
-func _init(matchState: MatchState, battlefield: BattlefieldState, deckManager: DeckManager) -> void:
-	self.matchState = matchState
-	self.battlefield = battlefield
-	self.deckManager = deckManager
+func _init(matchId: int, peer_id1: int, peer_id2: int) -> void:
+	name = "Match_" + str(matchId)
+	matchState = MatchState.new()
+	matchState._initialize(matchId)
+	battlefield = BattlefieldState.new("map.json")
+	deckManager = DeckManager.new()
+	unit_manager = ServerUnitManager.new(battlefield)
+	sides_peer_ids = {enums.Side.GREEN: peer_id1, enums.Side.RED: peer_id2}
+	add_child(matchState)
+	add_child(battlefield)
+	add_child(deckManager)
+	add_child(unit_manager)
 
 func _physics_process(delta: float) -> void:
-	matchState.sync()
+	matchState.sync(sides_peer_ids)
+	deckManager._sync_hands(sides_peer_ids)
+	unit_manager._sync_units(sides_peer_ids)
 
-func clients_are_ready():
+func get_side(peer_id: int) -> enums.Side:
+	for side in sides_peer_ids:
+		if peer_id == sides_peer_ids[side]:
+			return side
+	return enums.Side.NONE
+
+func clients_are_ready() -> bool:
 	if player_status.size() != 2:
 		return false
-	var player_id1 = matchState.player_ids[0]
-	var player_id2 = matchState.player_ids[1]
-	return player_status[player_id1] == MatchState.STATE.READY && player_status[player_id2] == MatchState.STATE.READY
+	for status in player_status.values():
+		if status != matchState.STATE.READY:
+			return false
+	return true
 
-func ready_to_initialize_board():
+func ready_to_initialize_board() -> bool:
 	if player_status.size() != 2:
 		return false
-	var player_id1 = matchState.player_ids[0]
-	var player_id2 = matchState.player_ids[1]
-	return player_status[player_id1] == MatchState.STATE.INITIALIZE_BOARD && player_status[player_id2] == MatchState.STATE.INITIALIZE_BOARD
+	for status in player_status.values():
+		if status != matchState.STATE.INITIALIZE_BOARD:
+			return false
+	return true
 
 # signal handlers
-func handle_connect(player_id: int) -> void:
-	self.connected[player_id] = true
-	player_status[player_id] = MatchState.STATE.INITIALIZING
-	Network.Match.init.rpc_id(player_id, matchState.matchId, battlefield.mapName, matchState.player_ids)
+func handle_connect(peer_id: int) -> void:
+	self.connected[get_side(peer_id)] = true
+	player_status[get_side(peer_id)] = MatchState.STATE.INITIALIZING
+	#Network.Match.init.rpc_id(peer_id, matchState.matchId, battlefield.mapName)
 
-func handle_disconnect(player_id: int) -> void:
-	self.connected[player_id] = false
+func handle_disconnect(peer_id: int) -> void:
+	self.connected[get_side(peer_id)] = false
 
-func handle_client_state_change(player_id: int, state: MatchState.STATE) -> void:
-	player_status[player_id] = state
+func peer_reconnected(peer_id: int, old_peer_id: int) -> void:
+	var side: enums.Side = get_side(old_peer_id)
+	sides_peer_ids[side] = peer_id
+	connected[side] = false
+
+func handle_client_state_change(peer_id: int, state: MatchState.STATE) -> void:
+	player_status[get_side(peer_id)] = state
 	if matchState.state == MatchState.STATE.INITIALIZING && clients_are_ready():
 		matchState.state = MatchState.STATE.INITIALIZE_BOARD
-		deckManager.draw_hand(matchState.player_ids[0]) # shoud move to initialize_board stage
-		deckManager.draw_hand(matchState.player_ids[1])
-		deckManager.initialize_opponents_hands()
-
+	
 	if matchState.state == MatchState.STATE.INITIALIZE_BOARD && ready_to_initialize_board():
 		matchState.state = MatchState.STATE.IN_PROGRESS
-		unit_manager.spawn_units(matchState.player_ids[0], matchState.player_ids[1])
-		matchState.phase = MatchState.TURN_PHASE.PLAY_CARD
+		unit_manager.spawn_units(sides_peer_ids)
+		matchState.phase = enums.TurnPhase.PLAY_CARD
 
-func isPhase(phase: MatchState.TURN_PHASE) -> bool:
+func isPhase(phase: enums.TurnPhase) -> bool:
 	return matchState.phase == phase
 	
 func isPlayerTurn(peer_id: int) -> bool:
-	return matchState.player_ids[matchState.player_turn_index] == peer_id;
+	var side: enums.Side = get_side(peer_id)
+	return matchState.current_turn == side;
 
 func isInProgress() ->bool:
 	return matchState.state == MatchState.STATE.IN_PROGRESS
-	
-# Antti
-func spawn_unit_on_server(owner_id: int, unit_type: int, start_coord: Vector2i) -> void:
-	if not multiplayer.is_server():
-		return
-	#var unique_id: int = unit_manager.generate_server_unit_id()
-	#var new_unit_data = UnitData.new(owner_id, unit_type, unique_id, start_coord)
-	#unit_manager.add_unit(new_unit_data, start_coord)
-	#for peer in matchState.player_ids:
-		#sync_spawn_unit.rpc_id(peer, owner_id, unit_type, unique_id, start_coord)
-
-@rpc("authority", "call_remote", "reliable")
-func sync_spawn_unit(owner_id: int, unit_type: String, unique_id: int, coord: Vector2i) -> void:
-	var new_unit_node = UNIT_SCENE.instantiate()
-	new_unit_node.name = str(unique_id)
-	new_unit_node.uuid = str(unique_id)
-	new_unit_node.type = unit_type
-	new_unit_node.hex_coord = coord
-	new_unit_node.owner_id = owner_id
-	unit_manager.active_container.add_child(new_unit_node)
-	unit_manager.add_unit(new_unit_node, coord)
 
 func process_hex_click(peer_id:int, hex: Vector2i) -> void:
-	spawn_unit_on_server(peer_id, GameEnums.UnitType.INFANTRY, hex)
-	var new_unit: Dictionary = {
-		"owner_id": 1,
-		"type": enums.UnitType.INFANTRY,
-		"uuid": 1,
-		"coord": hex
-	}
-	for player in matchState.player_ids:
-		Network.Units.spawn_unit.rpc_id(player, new_unit)
-		Network.Match.receive_hex_broadcast.rpc_id(player, peer_id, hex)
+	for side in sides_peer_ids:
+		Network.Match.receive_hex_broadcast.rpc_id(sides_peer_ids[side], get_side(peer_id), hex)
