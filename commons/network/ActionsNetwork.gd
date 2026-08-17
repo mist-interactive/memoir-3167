@@ -27,10 +27,13 @@ func select_unit(unit_id: int) -> void:
 		return
 	select_unit_requested.emit(multiplayer.get_remote_sender_id(), unit_id)
 
-signal attack_unit_requested(peer_id: int)
+signal attack_unit_requested(peer_id: int, unit_id: int, target_unit_id: int)
 @rpc("any_peer", "call_remote")
-func attack_unit() -> void:
-	pass
+func attack_unit(unit_id: int, target_unit_id: int) -> void:
+	if multiplayer.is_server():
+		return
+	attack_unit_requested.emit(multiplayer.get_remote_sender_id(), unit_id, target_unit_id)
+
 
 signal draw_card_requested(peer_id: int)
 @rpc("any_peer", "call_remote")
