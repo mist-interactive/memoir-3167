@@ -22,7 +22,7 @@ func join_game(snapshot: Dictionary):
 			.stage("Waiting oponents to ready up...", func(): await loader.wait_untill(func(): return get_child(1).state == MatchState.STATE.INITIALIZE_BOARD))
 		MatchState.STATE.IN_PROGRESS, MatchState.STATE.PAUSED:
 			# [todo] shoud till match resumes back
-			loader.stage("Initializing units...", func(): unitManager = ClientUnitManager.new(battlefield, snapshot); add_child(unitManager))
+			loader.stage("Initializing units...", func(): unitManager = ClientUnitManager.new(battlefield); add_child(unitManager))
 	await loader.run()
 	add_child(battlefieldRenderer)
 	unitManager.initialize(battlefieldRenderer.unit_container, snapshot)

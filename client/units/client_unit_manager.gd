@@ -5,12 +5,12 @@ var active_container: Node
 
 var UNIT_SCENE = preload("res://client/units/Unit.tscn")
 
-func _init(initialState: BattlefieldState, snapshot: Dictionary = {}) -> void:
+func _init(initialState: BattlefieldState) -> void:
 	super(initialState)
 	Network.Units.sync_unit_requested.connect(_on_sync_unit_requested)
 	Network.Units.sync_all_requested.connect(_on_sync_all_requested)
 	Network.Units.spawn_unit_requested.connect(_on_spawn_unit_requested)
-
+# snapshot used for reconnection
 func initialize(active_container: Node, snapshot: Dictionary = {}) -> void:
 	self.active_container = active_container
 	if !snapshot.is_empty() && snapshot.has("units"):
