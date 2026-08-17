@@ -78,7 +78,7 @@ point_count = 3
 script = ExtResource("1_u0eng")
 unit_container = NodePath("UnitContainer")
 
-[node name="PlayerController" type="Node" parent="." unique_id=1795203478 node_paths=PackedStringArray("map_ground_layer", "map_feature_layer", "map_highlight_layer", "sector_highlight_layer", "unit_container")]
+[node name="PlayerController" type="Node" parent="." unique_id=1795203478 node_paths=PackedStringArray("map_ground_layer", "map_feature_layer", "map_highlight_layer", "sector_highlight_layer")]
 script = ExtResource("4_eq063")
 map_ground_layer = NodePath("../MapVisuals/MapGround")
 map_feature_layer = NodePath("../MapVisuals/MapFeature")
@@ -135,15 +135,6 @@ default_color = Color(1, 0, 0, 1)
 
 [node name="UICanvas" type="CanvasLayer" parent="." unique_id=1086948552]
 
-[node name="Button" type="Button" parent="UICanvas" unique_id=721084783]
-offset_left = 4737.0
-offset_top = 1005.0
-offset_right = 5381.0
-offset_bottom = 1355.0
-theme_override_font_sizes/font_size = 54
-text = "Draw card"
-script = ExtResource("9_cuxbe")
-
 [node name="MarginContainer" type="MarginContainer" parent="UICanvas" unique_id=2042215150]
 anchors_preset = 7
 anchor_left = 0.5
@@ -177,14 +168,17 @@ offset_right = -576.0
 grow_horizontal = 2
 script = ExtResource("13_0hlkx")
 
-[node name="EnemyHandUI" type="Control" parent="UICanvas/MarginContainer2" unique_id=1002495451]
+[node name="EnemyHandUI" type="Control" parent="UICanvas/MarginContainer2" unique_id=1002495451 node_paths=PackedStringArray("discard_pile_ui", "player_controller")]
 layout_mode = 2
 script = ExtResource("13_ec6rr")
 card_ui_scene = ExtResource("12_f3lu3")
 hand_curve = SubResource("Curve_ec6rr")
 rotation_curve = SubResource("Curve_0hlkx")
+discard_pile_ui = NodePath("../../DiscardPileUI")
+player_controller = NodePath("../../../PlayerController")
 
 [node name="DiscardPileUI" type="Control" parent="UICanvas" unique_id=1834357906 node_paths=PackedStringArray("top_card_texture")]
+propagate_maximum_size = true
 layout_mode = 3
 anchor_left = 0.883
 anchor_top = 0.349
@@ -219,5 +213,3 @@ zoom = Vector2(0.305, 0.305)
 script = ExtResource("5_7nanj")
 target_map = NodePath("../MapVisuals/MapGround")
 map_manager = NodePath("../MapManager")
-
-[connection signal="pressed" from="UICanvas/Button" to="UICanvas/Button" method="_on_pressed"]

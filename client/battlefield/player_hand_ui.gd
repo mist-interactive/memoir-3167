@@ -4,9 +4,8 @@ extends Control
 @export var card_ui_scene: PackedScene
 @export var hand_curve: Curve
 @export var rotation_curve: Curve
-@export var player_controller: Node
+@export var player_controller: PlayerController
 @export var discard_pile_ui: DiscardPileUI
-
 @export var base_card_size: Vector2 = Vector2(267.0, 358.0)
 @export var max_rotation_degrees: float = 5.0
 @export var y_min: float = 0.0
@@ -14,14 +13,14 @@ extends Control
 @export var default_separation: float = -5.0
 @onready var handState: HandState = $"../../../../HandState"
 
-func initialize() -> void:
+func _ready() -> void:
 	_clear_hand()
-	Network.Card.local_card_received.connect(_on_model_card_added)
-	Network.Actions.card_played_received.connect(_on_model_card_removed)
-	Network.Actions.hand_drawn_requested.connect(_on_hand_synchronized)
-	_on_hand_synchronized()
+	handState.hand_drawn.connect(_on_hand_drawn)
+	handState.card_played.connect(_on_card_played)
+	await get_tree().create_timer(0.1).timeout
+	Network.Actions.draw_hand.rpc_id(1)
 
-func _on_hand_synchronized() -> void:
+func _on_hand_drawn() -> void:
 	var hand_data: Dictionary = handState.card_ids
 	_clear_hand()
 	for instance_id: int in hand_data:
@@ -33,21 +32,21 @@ func _on_model_card_added(instance_id: int, card_id: String) -> void:
 	_instantiate_card_node(instance_id, card_id)
 	_recalculate_layout()
 
-func _on_model_card_removed(peer_id: int, instance_id: int, card_id: String) -> void:
-	if multiplayer.get_unique_id() != peer_id:
-		print("openent has played card ", card_id)
-		# animate opponent played card, should  go to discard pile
-		return
+func _on_card_played(instance_id: int, card_id: String) -> void:
 	var card_node := get_node_or_null(str(instance_id)) as CardUI
 	if not card_node:
 		return
+	card_node.is_discarded = true
+	_remove_card_node_and_animate(card_node, instance_id)
+	_recalculate_layout()
+
+func _remove_card_node_and_animate(card_node: CardUI, instance_id: int) -> void:
 	var target_pos: Vector2 = discard_pile_ui.get_discard_target_position() if discard_pile_ui else Vector2.ZERO
 	card_node.animate_to_discard(target_pos, func():
 		if discard_pile_ui:
 			discard_pile_ui.add_card_node(card_node)
 		if handState:
 			handState.remove_card(instance_id)
-		_recalculate_layout()
 	)
 
 func _instantiate_card_node(instance_id: int, card_id: String) -> void:
