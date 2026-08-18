@@ -14,7 +14,7 @@ extends Node2D
 			_animate_to_hex(new_coord)
 		else:
 			is_initialized = true
-			position = HexGrid.offset_to_pixel(new_coord) + visual_offset
+			position = HexGrid.offset_to_pixel(new_coord)
 
 var is_initialized: bool = false
 var uuid: int = -1
@@ -37,7 +37,7 @@ func setup(new_owner: int, new_type: GameEnums.UnitType, new_uuid:int, new_hex_c
 func _animate_to_hex(target_coord: Vector2i) -> void:
 	# Calculate where this hex actually is on the screen
 	# (Assuming you have a HexGrid autoload with your math)
-	var target_pixel_pos = HexGrid.offset_to_pixel(target_coord) + visual_offset
+	var target_pixel_pos = HexGrid.offset_to_pixel(target_coord)
 
 	# Smoothly slide the unit over 0.5 seconds
 	var tween = create_tween()
