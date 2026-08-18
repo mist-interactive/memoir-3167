@@ -28,8 +28,6 @@ var GROUND_TO_TILE: Dictionary = {}
 var FEATURE_TO_TILE: Dictionary = {}
 
 var map: HexGrid
-var map_width: int
-var map_height: int
 #var map: Dictionary[Vector2i, HexCell]
 var left_sector_max: int = -1
 var right_sector_min: int = -1
@@ -81,8 +79,8 @@ func parseAndLoadMap(map_name: String) -> bool:
 		return false
 
 	# Clear previous map state
-	map_width = int(parsed_data.get("width"))
-	map_height = int(parsed_data.get("height"))
+	var map_width = int(parsed_data.get("width"))
+	var map_height = int(parsed_data.get("height"))
 	map = HexGrid.new(map_width, map_height)
 	map.cells.clear()
 
