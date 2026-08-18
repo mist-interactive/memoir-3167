@@ -77,7 +77,8 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 		return false
 	if unit.uuid != selected_unit_id || side != selected_by_peer:
 		return false
-	var rolled_dices: Array[enums.RolledDice] = Dice.roll(5)
+	var num_of_dice: int = 5
+	var rolled_dices: Array[enums.RolledDice] = Dice.roll(num_of_dice)
 	var combat_result: CombatResult = CombatResult.new()
 	combat_result.initialize(unit, target, rolled_dices)
 	resolve_combat(combat_result)
@@ -103,7 +104,6 @@ func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 		var unit: UnitData = UnitData.new(enums.Side.GREEN, elem.type,generate_server_unit_id(), coord)
 		add_unit(unit, coord)
 		elem.owner_id = unit.owner_id
-		#elem.owner_id = 1
 		elem.uuid = unit.uuid
 		var new_unit: Dictionary = {
 			"owner_id": elem.owner_id,
@@ -134,23 +134,14 @@ func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 func resolve_combat(result: CombatResult) -> void:
 	var target_id: int = result.unit_ids[result.target]
 	var target: UnitData = units_by_id[target_id]
-	var should_retreat: bool = false
+	var should_retreat: int = 0
 	for rolled_dice in result.rolled_dices:
-		match rolled_dice:
-			enums.RolledDice.INFANTRY:
-				if target.type != enums.UnitType.INFANTRY:
-					continue
-				result.dmg += 1
-			enums.RolledDice.ARMOR:
-				if target.type != enums.UnitType.TANK || target.type != enums.UnitType.ARTILLERY:
-					continue
-				result.dmg += 1
-			enums.RolledDice.All:
-				result.dmg += 1
-			enums.RolledDice.Retreat:
-				should_retreat = true
-			enums.RolledDice.MISS:
-				pass
+		if target.type == rolled_dice || rolled_dice == enums.RolledDice.ALL:
+			result.dmg += 1
+		elif rolled_dice == enums.RolledDice.ARMOR && (target.type == enums.UnitType.TANK || target.type == enums.UnitType.ARTILLERY):
+			result.dmg += 1
+		elif rolled_dice == enums.RolledDice.RETREAT:
+			result.retreat += 1
 	if should_retreat:
 		pass #retreat to prev pos
 	target.hit_point -= result.dmg

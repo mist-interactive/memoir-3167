@@ -4,6 +4,7 @@ var target: enums.Side
 var unit_ids: Dictionary[enums.Side, int]
 var rolled_dices: Array[enums.RolledDice] = []
 var dmg: int = 0
+var retreat: int = 0
 
 func _init() -> void:
 	pass
@@ -19,7 +20,8 @@ func to_dict() -> Dictionary:
 		"target": target,
 		"unit_ids": unit_ids,
 		"rolled_dices": rolled_dices,
-		"dmg": dmg
+		"dmg": dmg,
+		"retreat": retreat
 	}
 
 static func from_dict(result_dict: Dictionary) -> CombatResult:
@@ -28,4 +30,5 @@ static func from_dict(result_dict: Dictionary) -> CombatResult:
 	result.unit_ids = result_dict.unit_ids
 	result.rolled_dices = result_dict.rolled_dices
 	result.dmg = result_dict.dmg
+	result.retreat = result_dict.retreat
 	return result
