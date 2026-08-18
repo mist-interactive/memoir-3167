@@ -19,8 +19,8 @@ config/icon="res://icon.svg"
 
 Network="*uid://dkddnxw2gwyjf"
 CardDatabase="*uid://qg84syo3goe7"
-HexMetrics="*uid://b5k33exfq62ot"
 GameEnums="*uid://bwb4mntb7mnux"
+HexMetrics="*uid://dk4my8foeyvi3"
 
 [display]
 

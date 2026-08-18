@@ -35,10 +35,16 @@ const EDGE_COST: Dictionary = {
 	EdgeType.ROAD: -0.5,
 }
 
-## Hex size in pixels (circumscribed radius, pointy-top odd-r).
+# The circumscribed radius (half the width of a pointy-top tile).
+# Set this to match the Y dimension of your TileSet divided by 2.
 const HEX_SIZE: float = 512 / 2
-## Precalculated sqrt(3) for the offset↔pixel conversion formula (pointy-top hexes).
 const HEX_SQRT3: float = 1.7320508075688772
+
+var tile_width: float
+var tile_height: float
+var tile_half_width: float
+var tile_half_height: float
+
 
 var width: int = 0
 var height: int = 0
@@ -54,6 +60,14 @@ var hex_size: float = 32.0
 # admissible but loose — exactly what find_path_astar wants to avoid.
 var _min_passable_terrain_cost_cache: float = -1.0
 
+func _ready() -> void:
+	_calculate_dimensions()
+	
+func _calculate_dimensions() -> void:
+	tile_width = HEX_SIZE * HEX_SQRT3
+	tile_height = HEX_SIZE * 2.0
+	tile_half_width = tile_width / 2.0
+	tile_half_height = HEX_SIZE
 
 ## Creates the grid with the indicated dimensions and cost tables.
 ## [param cost_table]: int → float with the cost of each terrain. -1.0 = impassable.
