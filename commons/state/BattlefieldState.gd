@@ -1,7 +1,7 @@
 extends Node
 class_name BattlefieldState
 
-var map: Dictionary[Vector2i, HexCell]
+var map: HexGrid
 var units_to_spawn_player_1: Array[Dictionary]
 var units_to_spawn_player_2: Array[Dictionary]
 var left_sector_max: int
@@ -23,8 +23,8 @@ func build_sector_index() -> void:
 		(sector_index[sector_key] as Array).clear()
 
 	# 2. Iterate through all key-value pairs in the map
-	for coords: Vector2i in map:
-		var cell: HexCell = map[coords]
+	for coords: Vector2i in map.cells:
+		var cell: HexCell = map.cells[coords]
 		if not cell or cell.sector == enums.MapSector.NONE:
 			continue
 
@@ -66,7 +66,10 @@ func parseAndLoadMap(map_name: String) -> bool:
 		return false
 
 	# Clear previous map state
-	map.clear()
+	var map_width = int(parsed_data.get("width"))
+	var map_height = int(parsed_data.get("height"))
+	map = HexGrid.new(map_width, map_height)
+	map.cells.clear()
 	units_to_spawn_player_1.clear()
 	units_to_spawn_player_2.clear()
 
@@ -84,7 +87,7 @@ func parseAndLoadMap(map_name: String) -> bool:
 			var coord_arr: Array = elem.get("coord", [0, 0])
 			var coord := Vector2i(int(coord_arr[0]), int(coord_arr[1]))
 			var cell := HexCell.new(coord, elem.get("ground", 0), elem.get("feature", 0), elem.get("sector", 0))
-			map[coord] = cell
+			map.cells[coord] = cell
 
 	# 3. Parse Starting Unit Deployments
 	if "units" in parsed_data and parsed_data["units"] is Array:
@@ -100,5 +103,5 @@ func parseAndLoadMap(map_name: String) -> bool:
 	# 4. Rebuild Sector Lookup Table
 	build_sector_index()
 
-	print("Successfully parsed and loaded map: %s (%d hexes indexed)." % [map_name, map.size()])
+	print("Successfully parsed and loaded map: %s (%d hexes indexed)." % [map_name, map.cells.size()])
 	return true

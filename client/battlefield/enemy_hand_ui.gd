@@ -10,35 +10,41 @@ extends Control
 @export var y_max: float = -15.0
 @export var default_separation: float = -5.0
 @onready var handState: HandState = $"../../../../HandState"
+@export var discard_pile_ui: DiscardPileUI
+@export var player_controller: PlayerController
 
 func _ready() -> void:
-	Network.Actions.enemy_hand_size_changed.connect(_on_enemy_hand_size_changed)
+	handState.enemy_hand_drawn.connect(_on_enemy_draw_hand)
+	handState.enemy_card_played.connect(_on_enemy_played_card)
 
-func _on_enemy_hand_size_changed(new_size: int) -> void:
-	while new_size < get_child_count():
-		_remove_card_node()
-	while new_size > get_child_count():
-		_add_card_node()
-	_recalculate_layout()
-
-func initialize(peer_id: int) -> void:
-	_on_hand_synchronized(peer_id)
-
-func _on_hand_synchronized(peer_id: int) -> void:
+func _on_enemy_draw_hand() -> void:
 	for id in range(handState.opponent_hand_size):
 		_add_card_node()
 	_recalculate_layout()
 
 func _add_card_node() -> void:
 	var new_card: CardUI = card_ui_scene.instantiate() as CardUI
-	add_child(new_card)
-	new_card.setup_enemy_visuals()
+	var instance_id: int = 1000
+	new_card.name = str(instance_id)
+	new_card.setup_enemy_visuals(instance_id)
 	new_card.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	add_child(new_card)
+	_recalculate_layout()
 
-func _remove_card_node() -> void:
-	var card = get_child(-1)
-	remove_child(card)
-	card.queue_free()
+func _on_enemy_played_card(instance_id: int, card_id: String) -> void:
+	var card_node = get_child(1) as CardUI
+	card_node.is_discarded = true
+	card_node.setup_visuals(instance_id, card_id)
+	_remove_card_node_and_animate(card_node, instance_id)
+	_recalculate_layout()
+	return
+
+func _remove_card_node_and_animate(card_node: CardUI, instance_id: int) -> void:
+	var target_pos: Vector2 = discard_pile_ui.get_discard_target_position() if discard_pile_ui else Vector2.ZERO
+	card_node.animate_to_discard(target_pos, func():
+		if discard_pile_ui:
+			discard_pile_ui.add_card_node(card_node)
+	)
 
 # dont worry about it
 func _recalculate_layout() -> void:
