@@ -36,13 +36,17 @@ func _on_card_played(instance_id: int, card_id: String) -> void:
 	var card_node := get_node_or_null(str(instance_id)) as CardUI
 	if not card_node:
 		return
+	card_node.is_discarded = true
+	_remove_card_node_and_animate(card_node, instance_id)
+	_recalculate_layout()
+
+func _remove_card_node_and_animate(card_node: CardUI, instance_id: int) -> void:
 	var target_pos: Vector2 = discard_pile_ui.get_discard_target_position() if discard_pile_ui else Vector2.ZERO
 	card_node.animate_to_discard(target_pos, func():
 		if discard_pile_ui:
 			discard_pile_ui.add_card_node(card_node)
 		if handState:
 			handState.remove_card(instance_id)
-		_recalculate_layout()
 	)
 
 func _instantiate_card_node(instance_id: int, card_id: String) -> void:

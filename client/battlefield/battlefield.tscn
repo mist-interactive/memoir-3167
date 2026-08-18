@@ -167,14 +167,17 @@ offset_right = -576.0
 grow_horizontal = 2
 script = ExtResource("13_0hlkx")
 
-[node name="EnemyHandUI" type="Control" parent="UICanvas/MarginContainer2" unique_id=1002495451]
+[node name="EnemyHandUI" type="Control" parent="UICanvas/MarginContainer2" unique_id=1002495451 node_paths=PackedStringArray("discard_pile_ui", "player_controller")]
 layout_mode = 2
 script = ExtResource("13_ec6rr")
 card_ui_scene = ExtResource("12_f3lu3")
 hand_curve = SubResource("Curve_ec6rr")
 rotation_curve = SubResource("Curve_0hlkx")
+discard_pile_ui = NodePath("../../DiscardPileUI")
+player_controller = NodePath("../../../PlayerController")
 
 [node name="DiscardPileUI" type="Control" parent="UICanvas" unique_id=1834357906 node_paths=PackedStringArray("top_card_texture")]
+propagate_maximum_size = true
 layout_mode = 3
 anchor_left = 0.883
 anchor_top = 0.349
