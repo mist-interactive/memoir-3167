@@ -24,18 +24,29 @@ func _handle_left_click() -> void:
 	var hex: Vector2i = map_ground_layer.local_to_map(map_ground_layer.to_local(click_position))
 	# Check if selected hex is actually on the gameboard
 	var cell_source_id := map_ground_layer.get_cell_source_id(hex)
-	if cell_source_id == -1:
+	if cell_source_id == -1 || !matchState.is_my_turn():
 		return
-	if matchState.is_my_turn() && matchState.is_phase(enums.TurnPhase.SELECT):
-		var unit: Unit = unit_manager.get_unit_at(hex)
-		var is_my_unit: bool = unit && unit.owner_id == matchState.mySide
-		if is_my_unit:
+	match matchState.phase:
+		enums.TurnPhase.MOVE:
+			var unit: Unit = unit_manager.get_unit_at(hex)
+			var is_my_unit: bool = unit && unit.owner_id == matchState.mySide
+			if !is_my_unit && unit:
+				return
 			Network.Match.request_hex_selection.rpc_id(1, hex)
-			Network.Actions.select_unit.rpc_id(1, unit_manager.get_unit_at(hex).uuid)
-	elif matchState.is_my_turn() && matchState.is_phase(enums.TurnPhase.MOVE):
-		if !unit_manager.unit_grid.has(hex):
+			if is_my_unit:
+				Network.Actions.select_unit.rpc_id(1, unit_manager.get_unit_at(hex).uuid)
+			else:
+				Network.Actions.move_unit.rpc_id(1, unit_manager.selected_unit_id, hex)
+		enums.TurnPhase.ATTACK:
+			var unit: Unit = unit_manager.get_unit_at(hex)
+			if !unit:
+				return
+			var is_my_unit: bool = unit && unit.owner_id == matchState.mySide
 			Network.Match.request_hex_selection.rpc_id(1, hex)
-			Network.Actions.move_unit.rpc_id(1, unit_manager.selected_unit_id, hex)
+			if is_my_unit:
+				Network.Actions.select_unit.rpc_id(1, unit_manager.get_unit_at(hex).uuid)
+			else:
+				Network.Actions.attack_unit.rpc_id(1, unit_manager.selected_unit_id, unit.uuid)
 
 func _on_card_hovered(card_target: enums.MapSector) -> void:
 	var hexes_to_highlight: Array[Vector2i] = []
