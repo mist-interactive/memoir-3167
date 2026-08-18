@@ -126,7 +126,7 @@ func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 			"uuid": elem.uuid,
 			"type": elem.type,
 			"coord": coord,
-			"hit_point": elem.hit_point
+			"hit_point": unit.hit_point
 		}
 		for peer_id in sides_peer_ids.values():
 			Network.Units.spawn_unit.rpc_id(peer_id, new_unit)
