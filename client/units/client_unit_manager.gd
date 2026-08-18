@@ -2,6 +2,7 @@ extends UnitManager
 class_name ClientUnitManager
 
 var active_container: Node
+var map: HexGrid
 
 var UNIT_SCENE = preload("res://client/units/Unit.tscn")
 
