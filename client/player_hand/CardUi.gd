@@ -102,7 +102,7 @@ func _on_mouse_entered() -> void:
 	get_child(0).visible = true
 	var card_data: CommandCard = CardDatabase.get_card(_card_id)
 	if card_data:
-		card_hovered.emit(card_data.card_target)
+		card_hovered.emit(card_data.target_sector)
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
