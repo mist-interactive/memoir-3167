@@ -1,8 +1,12 @@
 class_name UnitData
 extends RefCounted
 
-var owner_id: int # peer_id or uuid
+var owner_id: enums.Side
 var uuid: int = -1
+var hit_point: int:
+	set(new_hp):
+		hit_point = new_hp
+		isDirty = true
 var hex_coord: Vector2i:
 	set(new_coord):
 		hex_coord = new_coord
@@ -10,18 +14,26 @@ var hex_coord: Vector2i:
 var type: enums.UnitType
 var isDirty: bool = false
 
-func _init(owner_id: int, type: int, id: int, coord: Vector2i) -> void:
+func _init(owner_id: enums.Side, type: int, id: int, coord: Vector2i) -> void:
 	self.uuid = id
 	self.hex_coord = coord
 	self.type = type
 	self.owner_id = owner_id
+	match self.type:
+		enums.UnitType.INFANTRY:
+			self.hit_point = enums.UnitHitPoint.INFANTRY
+		enums.UnitType.TANK:
+			self.hit_point = enums.UnitHitPoint.TANK
+		enums.UnitType.ARTILLERY:
+			self.hit_point = enums.UnitHitPoint.ARTILLERY
 
 func get_snapshot() -> Dictionary:
 	return {
 		"uuid": uuid,
 		"hex_coord": hex_coord,
 		"type": type,
-		"owner_id": owner_id
+		"owner_id": owner_id,
+		"hit_point": hit_point
 	}
 
 func sync(peer_ids: Array[int]) -> void:
@@ -30,3 +42,6 @@ func sync(peer_ids: Array[int]) -> void:
 	for peer_id in peer_ids:
 		Network.Units.sync_unit.rpc_id(peer_id, get_snapshot())
 	isDirty = false
+
+func is_my_unit(side: enums.Side) -> bool:
+	return owner_id == side
