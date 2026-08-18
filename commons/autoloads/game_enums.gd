@@ -26,8 +26,8 @@ enum RolledDice
 {
 	INFANTRY,
 	ARMOR,
-	All,
-	Retreat,
+	ALL,
+	RETREAT,
 	MISS,
 }
 
