@@ -31,7 +31,7 @@ func initialize_match_deck() -> void:
 		if not card_data:
 			continue
 			
-		for i in range(card_data.quantity):
+		for i in range(card_data.deck_quantity):
 			draw_pile.append(card_id)
 		
 	shuffle_deck()
