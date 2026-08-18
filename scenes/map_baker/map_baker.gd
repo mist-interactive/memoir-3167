@@ -7,6 +7,8 @@ extends Node
 @export var UnitContainer: Node2D
 @export var MapName: String
 
+var _map_width: int
+var _map_height: int
 var _left_max_x: int
 var _right_min_x: int
 
@@ -34,11 +36,15 @@ func _bake_map() -> void:
 		push_error("MapGroundLayer is not assigned!")
 		return
 	var map_data: Dictionary = {
+		"width": -1,
+		"height": -1,
 		"hexes": [],
 		"units": [],
 		"sectors": [],
 	}
 	_calculate_map_boundaries()
+	map_data["width"] = _map_width
+	map_data["height"] = _map_height
 	map_data["hexes"] = _get_hex_data()
 	map_data["units"] = _get_unit_data()
 	map_data["sectors"] = _get_map_boundaries()
@@ -91,8 +97,9 @@ func _get_unit_data() -> Array[Dictionary]:
 
 func _calculate_map_boundaries() -> void:
 	var used_rect: Rect2i = MapGroundLayer.get_used_rect()
-	var map_width: int = used_rect.size.x
-	var sector_width: int = map_width / 3
+	_map_width = used_rect.size.x
+	_map_height = used_rect.size.y
+	var sector_width: int = _map_width / 3
 	_left_max_x = used_rect.position.x + sector_width - 1
 	_right_min_x = used_rect.end.x - sector_width
 

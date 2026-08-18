@@ -33,7 +33,7 @@ func get_side(peer_id: int) -> enums.Side:
 			return side
 	return enums.Side.NONE
 
-func clients_are_ready():
+func clients_are_ready() -> bool:
 	if player_status.size() != 2:
 		return false
 	for status in player_status.values():
@@ -41,7 +41,7 @@ func clients_are_ready():
 			return false
 	return true
 
-func ready_to_initialize_board():
+func ready_to_initialize_board() -> bool:
 	if player_status.size() != 2:
 		return false
 	for status in player_status.values():
