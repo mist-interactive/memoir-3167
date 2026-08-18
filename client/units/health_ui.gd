@@ -15,6 +15,7 @@ func _ready() -> void:
 	#EventController.connect("on_health_changed", on_event_health_changed)
 	#EventController.connect("on_max_health_changed", on_event_max_health_changed)
 	#EventController.on_health_ui_ready.emit(player)
+	
 	on_event_health_change(unit, 100)
 	on_event_max_health_change(unit, 100)
 

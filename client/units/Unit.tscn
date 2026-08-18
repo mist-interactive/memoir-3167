@@ -4,6 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://b36rlwjyo7k5n" path="res://icon.svg" id="2_gyfl6"]
 [ext_resource type="Script" uid="uid://bknkysec4fvlc" path="res://client/units/health_ui.gd" id="3_c54a7"]
 [ext_resource type="Texture2D" uid="uid://dfpb758o4w53e" path="res://assets/sprites/healthbar/health meter-45.png" id="4_wkcbc"]
+[ext_resource type="Script" uid="uid://cc2twr2qag70o" path="res://client/units/health_bar.gd" id="5_wkcbc"]
 
 [sub_resource type="Animation" id="Animation_o1qvf"]
 resource_name = "idle"
@@ -26,21 +27,26 @@ texture = ExtResource("2_gyfl6")
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1786416269]
 libraries/ = SubResource("AnimationLibrary_v8lna")
 
-[node name="HealthUI" type="Control" parent="." unique_id=1426508232]
+[node name="HealthUI" type="Control" parent="." unique_id=1426508232 node_paths=PackedStringArray("unit")]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("3_c54a7")
+unit = NodePath("..")
 
-[node name="HealthBar" type="TextureProgressBar" parent="HealthUI" unique_id=182869395]
+[node name="HealthBar" type="TextureProgressBar" parent="HealthUI" unique_id=182869395 node_paths=PackedStringArray("unit")]
 layout_mode = 0
-offset_left = -197.0
-offset_top = -148.0
-offset_right = 591.0
-offset_bottom = -114.0
+offset_right = 788.0
+offset_bottom = 34.0
 scale = Vector2(0.5, 1)
 texture_progress = ExtResource("4_wkcbc")
+script = ExtResource("5_wkcbc")
+unit = NodePath("../..")
 
 [node name="MaxHealth" type="Label" parent="HealthUI/HealthBar" unique_id=1933451987]
 layout_mode = 0
