@@ -5,7 +5,7 @@ extends Node
 # Key = Vector2i (hex coord), Value = Unit
 var unit_grid: Dictionary[Vector2i, int] = {} # hex_coords --> id
 var units_by_id: Dictionary[int, Variant] = {} # id --> unit
-var grid: Dictionary[Vector2i, HexCell]
+var map: HexGrid
 var battlefield: BattlefieldState
 var selected_unit_id: int = -1
 var selected_by_peer: int = -1
@@ -13,10 +13,10 @@ var selected_by_peer: int = -1
 func _init(initialState: BattlefieldState) -> void:
 	name = "UnitManager"
 	battlefield = initialState
-	grid = battlefield.map
+	map = battlefield.map
 
 func add_unit(unit: Variant, coord: Vector2i) -> void:
-	if !grid.has(coord) || unit_grid.has(coord):
+	if !map.cells.has(coord) || unit_grid.has(coord):
 		return
 	unit.hex_coord = coord
 	unit_grid[coord] = unit.uuid
@@ -31,7 +31,7 @@ func remove_unit(coord: Vector2i) -> void:
 		unit_grid.erase(coord)
 
 func move_unit(unit: Variant, old_coord: Vector2i, new_coord: Vector2i) -> bool:
-	if !unit_grid.has(old_coord) || !grid.has(new_coord) || unit_grid.has(new_coord) :
+	if !unit_grid.has(old_coord) || !map.cells.has(new_coord) || unit_grid.has(new_coord) :
 		return false
 	var uuid: int = unit_grid[old_coord]
 	if unit.uuid != uuid:
