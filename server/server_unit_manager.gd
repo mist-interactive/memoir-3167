@@ -28,9 +28,6 @@ func select_unit(owner: enums.Side, unit_id: int) -> bool:
 
 	if unit.owner_id != owner:
 		return false
-
-	if selected_unit_id != -1:
-		return false
 	
 	selected_unit_id = unit_id
 	selected_by_peer = owner
@@ -67,7 +64,27 @@ func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i) 
 		return false
 
 	selected_unit_id = -1
-	selected_by_peer = -1
+	selected_by_peer = enums.Side.NONE
+	isDirty = true
+	return true
+
+func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer_ids: Dictionary[enums.Side, int]) -> bool:
+	if !units_by_id.has(unit_id) || !units_by_id.has(target_unit_id):
+		return false
+	var unit: UnitData = units_by_id[unit_id]
+	var target: UnitData = units_by_id[target_unit_id]
+	if !unit.is_my_unit(side) || target.is_my_unit(side):
+		return false
+	if unit.uuid != selected_unit_id || side != selected_by_peer:
+		return false
+	var rolled_dices: Array[enums.RolledDice] = Dice.roll(5)
+	var combat_result: CombatResult = CombatResult.new()
+	combat_result.initialize(unit, target, rolled_dices)
+	resolve_combat(combat_result)
+	for peer_id in sides_peer_ids.values():
+		Network.Actions.resolve_combat_result.rpc_id(peer_id, combat_result.to_dict())
+	selected_unit_id = -1
+	selected_by_peer = enums.Side.NONE
 	isDirty = true
 	return true
 
@@ -83,7 +100,7 @@ func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 	
 	for elem in battlefield.units_to_spawn_player_1:
 		var coord: Vector2i = Vector2i(elem.coord[0], elem.coord[1])
-		var unit: UnitData = UnitData.new(enums.Side.GREEN, elem.type, generate_server_unit_id(),coord)
+		var unit: UnitData = UnitData.new(enums.Side.GREEN, elem.type,generate_server_unit_id(), coord)
 		add_unit(unit, coord)
 		elem.owner_id = unit.owner_id
 		#elem.owner_id = 1
@@ -92,7 +109,8 @@ func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 			"owner_id": elem.owner_id,
 			"uuid": elem.uuid,
 			"type": elem.type,
-			"coord": coord
+			"coord": coord,
+			"hit_point": unit.hit_point
 		}
 		for peer_id in sides_peer_ids.values():
 			Network.Units.spawn_unit.rpc_id(peer_id, new_unit)
@@ -107,7 +125,32 @@ func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 			"owner_id": elem.owner_id,
 			"uuid": elem.uuid,
 			"type": elem.type,
-			"coord": coord
+			"coord": coord,
+			"hit_point": elem.hit_point
 		}
 		for peer_id in sides_peer_ids.values():
 			Network.Units.spawn_unit.rpc_id(peer_id, new_unit)
+
+func resolve_combat(result: CombatResult) -> void:
+	var target_id: int = result.unit_ids[result.target]
+	var target: UnitData = units_by_id[target_id]
+	var should_retreat: bool = false
+	for rolled_dice in result.rolled_dices:
+		match rolled_dice:
+			enums.RolledDice.INFANTRY:
+				if target.type != enums.UnitType.INFANTRY:
+					continue
+				result.dmg += 1
+			enums.RolledDice.ARMOR:
+				if target.type != enums.UnitType.TANK || target.type != enums.UnitType.ARTILLERY:
+					continue
+				result.dmg += 1
+			enums.RolledDice.All:
+				result.dmg += 1
+			enums.RolledDice.Retreat:
+				should_retreat = true
+			enums.RolledDice.MISS:
+				pass
+	if should_retreat:
+		pass #retreat to prev pos
+	target.hit_point -= result.dmg
