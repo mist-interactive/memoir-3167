@@ -20,9 +20,6 @@ var is_initialized: bool = false
 var uuid: int = -1
 var type: enums.UnitType = enums.UnitType.INFANTRY
 var is_selected: bool = false
-var visual_offset: Vector2:
-	get:
-		return Vector2(HexMetrics.half_width, HexMetrics.half_height)
 
 func _ready() -> void:
 	UnitVisuals.apply_unit_visuals(sprite, owner_id, type)
