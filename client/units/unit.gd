@@ -4,7 +4,7 @@ extends Node2D
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
 
-@export var owner_id: int = 1
+@export var owner_id: enums.Side = enums.Side.NONE
 @export var hex_coord: Vector2i = Vector2i.ZERO:
 	set(new_coord):
 		if hex_coord == new_coord:
@@ -19,12 +19,13 @@ extends Node2D
 var is_initialized: bool = false
 var uuid: int = -1
 var type: enums.UnitType = enums.UnitType.INFANTRY
+var hit_point: int = -1
 var is_selected: bool = false
 
 func _ready() -> void:
 	UnitVisuals.apply_unit_visuals(sprite, owner_id, type)
 
-func setup(new_owner: int, new_type: GameEnums.UnitType, new_uuid:int, new_hex_coord: Vector2i) -> void:
+func setup(new_owner: enums.Side, new_type: GameEnums.UnitType, new_uuid:int, new_hex_coord: Vector2i) -> void:
 	owner_id = new_owner
 	type = new_type
 	uuid = new_uuid
@@ -40,11 +41,15 @@ func _animate_to_hex(target_coord: Vector2i) -> void:
 	var tween = create_tween()
 	tween.tween_property(self, "position", target_pixel_pos, 0.5).set_trans(Tween.TRANS_SINE)
 
+func is_my_unit(side: enums.Side) -> bool:
+	return owner_id == side
+
 func sync_with_snapshot(snapshot: Dictionary) -> void:
 	self.uuid = snapshot.uuid
 	self.hex_coord = snapshot.hex_coord
 	self.type = snapshot.type
 	self.owner_id = snapshot.owner_id
+	self.hit_point = snapshot.hit_point
 
 func _exit_tree() -> void:
 	pass
