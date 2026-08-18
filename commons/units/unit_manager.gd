@@ -8,7 +8,7 @@ var units_by_id: Dictionary[int, Variant] = {} # id --> unit
 var map: HexGrid
 var battlefield: BattlefieldState
 var selected_unit_id: int = -1
-var selected_by_peer: int = -1
+var selected_by_peer: enums.Side = enums.Side.NONE
 
 func _init(initialState: BattlefieldState) -> void:
 	name = "UnitManager"
