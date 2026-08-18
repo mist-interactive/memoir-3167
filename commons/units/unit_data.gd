@@ -3,6 +3,7 @@ extends RefCounted
 
 var owner_id: int # peer_id or uuid
 var uuid: int = -1
+var health: int = 100
 var hex_coord: Vector2i:
 	set(new_coord):
 		hex_coord = new_coord
