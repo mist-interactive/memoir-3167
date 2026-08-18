@@ -9,7 +9,6 @@ id = "003"
 title_label = "card 003"
 description_label = "this is card 003
 Center"
-card_target = 2
-quantity = 10
+target_sector = 2
 card_art = ExtResource("1_yo210")
 metadata/_custom_type_script = "uid://brv7b2q4f6ws5"
