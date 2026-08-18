@@ -15,6 +15,22 @@ enum UnitType
 	ARTILLERY,
 }
 
+enum UnitHitPoint
+{
+	INFANTRY = 5,
+	TANK = 10,
+	ARTILLERY = 8,
+}
+
+enum RolledDice
+{
+	INFANTRY,
+	ARMOR,
+	All,
+	Retreat,
+	MISS,
+}
+
 enum MapSector
 {
 	NONE = 0,
