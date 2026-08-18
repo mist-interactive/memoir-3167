@@ -1,5 +1,5 @@
 extends HexagonTileMapLayer
-@onready var matchState: MatchState = $"../../matchState"
+@onready var matchState: MatchState = $"../../../matchState"
 
 var player_hex := {}
 
