@@ -135,15 +135,6 @@ default_color = Color(1, 0, 0, 1)
 
 [node name="UICanvas" type="CanvasLayer" parent="." unique_id=1086948552]
 
-[node name="Button" type="Button" parent="UICanvas" unique_id=721084783]
-offset_left = 4737.0
-offset_top = 1005.0
-offset_right = 5381.0
-offset_bottom = 1355.0
-theme_override_font_sizes/font_size = 54
-text = "Draw card"
-script = ExtResource("9_cuxbe")
-
 [node name="MarginContainer" type="MarginContainer" parent="UICanvas" unique_id=2042215150]
 anchors_preset = 7
 anchor_left = 0.5
@@ -219,5 +210,3 @@ zoom = Vector2(0.305, 0.305)
 script = ExtResource("5_7nanj")
 target_map = NodePath("../MapVisuals/MapGround")
 map_manager = NodePath("../MapManager")
-
-[connection signal="pressed" from="UICanvas/Button" to="UICanvas/Button" method="_on_pressed"]

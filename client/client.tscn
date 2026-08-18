@@ -14,17 +14,31 @@ menu = NodePath("UI/Play")
 
 [node name="Loader" parent="UI" unique_id=1067640567 instance=ExtResource("2_7kp2r")]
 
-[node name="Play" type="Node2D" parent="UI" unique_id=466461632 node_paths=PackedStringArray("webClient", "findGameBtn")]
+[node name="Play" type="Node2D" parent="UI" unique_id=466461632 node_paths=PackedStringArray("webClient", "findGameBtn", "uuid")]
 script = ExtResource("4_sjp5b")
 webClient = NodePath("../..")
 findGameBtn = NodePath("Button")
+uuid = NodePath("TextEdit")
 
 [node name="Button" type="Button" parent="UI/Play" unique_id=980421509]
-offset_left = 482.0
-offset_top = 301.0
-offset_right = 568.0
-offset_bottom = 332.0
+offset_left = 484.0
+offset_top = 340.0
+offset_right = 570.0
+offset_bottom = 371.0
 text = "find game"
+
+[node name="TextEdit" type="TextEdit" parent="UI/Play" unique_id=401139946]
+offset_left = 484.0
+offset_top = 300.0
+offset_right = 569.0
+offset_bottom = 334.0
+
+[node name="Label" type="Label" parent="UI/Play" unique_id=1090720565]
+offset_left = 441.0
+offset_top = 308.0
+offset_right = 479.0
+offset_bottom = 335.0
+text = "uuid"
 
 [node name="Game" type="Node" parent="." unique_id=291744170 node_paths=PackedStringArray("loader", "menu")]
 script = ExtResource("3_mgmel")
