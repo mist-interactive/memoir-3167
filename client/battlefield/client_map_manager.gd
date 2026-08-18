@@ -4,6 +4,8 @@ extends Node
 
 @export var map_ground_layer: HexagonTileMapLayer
 @export var map_features_layer: HexagonTileMapLayer
+@export var map_highlight_layer: HexagonTileMapLayer
+@export var map_visuals_node: Node
 @export var unit_container: Node
 @export var unit_scene: PackedScene
 @export var left_sector_divider: Line2D
@@ -57,8 +59,7 @@ func _offset_map_to_hex_grid() -> void:
 	var visual_center = map_ground_layer.map_to_local(Vector2i.ZERO)
 	var math_center = HexGrid.offset_to_pixel(Vector2i.ZERO)
 	var offset = math_center - visual_center
-	map_ground_layer.position += offset
-	map_features_layer.position += offset
+	map_visuals_node.position += offset
 
 func parseAndLoadMap(map_name: String) -> bool:
 	var src: String = "res://maps/%s" % map_name
@@ -138,8 +139,8 @@ func _draw_sector_dividers() -> void:
 	
 	# Convert grid rows to pixel Y coordinates. 
 	# We add/subtract an arbitrary pixel amount (e.g., 100) so the lines extend slightly past the grid.
-	var line_top_y: float = map_ground_layer.map_to_local(Vector2i(0, top_row)).y - (HexMetrics.half_height)
-	var line_bottom_y: float = map_ground_layer.map_to_local(Vector2i(0, bottom_row)).y + (HexMetrics.half_height)
+	var line_top_y: float = map_ground_layer.map_to_local(Vector2i(0, top_row)).y - (map.tile_half_height)
+	var line_bottom_y: float = map_ground_layer.map_to_local(Vector2i(0, bottom_row)).y + (map.tile_half_height)
 	
 	# 2. Calculate the Left and Right Divider X Coordinate
 	var left_pure_hex_pos := map_ground_layer.map_to_local(Vector2i(left_sector_max, 0))
