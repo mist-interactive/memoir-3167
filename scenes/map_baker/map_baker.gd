@@ -77,6 +77,8 @@ func _get_hex_data() -> Array[Dictionary]:
 		var final_feature: int
 		if MapData.FEATURE_ATLAS.has(feature_key):
 			final_feature = MapData.FEATURE_ATLAS[feature_key]
+		elif final_ground == HexCell.Ground.WATER:
+			final_feature = HexCell.Feature.WATER
 		else:
 			final_feature = HexCell.Feature.NONE
 		var sector = _get_hex_sector(coord)
