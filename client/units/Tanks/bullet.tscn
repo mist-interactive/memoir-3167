@@ -1,0 +1,88 @@
+[gd_scene format=3 uid="uid://b0v1vsxs5s5kl"]
+
+[ext_resource type="Texture2D" uid="uid://bm45lpk17bycc" path="res://assets/sprites/units/kenney_top-down-tanks-remastered/PNG/Default size/shotThin.png" id="1_adre2"]
+[ext_resource type="Texture2D" uid="uid://es0c0oe7yxdp" path="res://assets/sprites/units/kenney_top-down-tanks-remastered/PNG/Default size/explosion1.png" id="2_lqd50"]
+[ext_resource type="Texture2D" uid="uid://dsj08e3ssweg3" path="res://assets/sprites/units/kenney_top-down-tanks-remastered/PNG/Default size/explosion2.png" id="3_awt2c"]
+[ext_resource type="Texture2D" uid="uid://bvo0p10u1iuy2" path="res://assets/sprites/units/kenney_top-down-tanks-remastered/PNG/Default size/explosion3.png" id="4_asacc"]
+[ext_resource type="Texture2D" uid="uid://bnfr7263wk8a0" path="res://assets/sprites/units/kenney_top-down-tanks-remastered/PNG/Default size/explosion4.png" id="5_klw53"]
+[ext_resource type="Texture2D" uid="uid://c0gis0c7bjvom" path="res://assets/sprites/units/kenney_top-down-tanks-remastered/PNG/Default size/explosion5.png" id="6_m45dw"]
+[ext_resource type="Texture2D" uid="uid://wikt6deh0a88" path="res://assets/sprites/units/kenney_top-down-tanks-remastered/PNG/Default size/explosionSmoke1.png" id="7_n66wa"]
+[ext_resource type="Texture2D" uid="uid://c1b7vgwbwpvwy" path="res://assets/sprites/units/kenney_top-down-tanks-remastered/PNG/Default size/explosionSmoke2.png" id="8_x677q"]
+[ext_resource type="Texture2D" uid="uid://b3rhfryxj0tfg" path="res://assets/sprites/units/kenney_top-down-tanks-remastered/PNG/Default size/explosionSmoke3.png" id="9_d15lk"]
+[ext_resource type="Texture2D" uid="uid://euxytsh3i3l7" path="res://assets/sprites/units/kenney_top-down-tanks-remastered/PNG/Default size/explosionSmoke4.png" id="10_nelc2"]
+[ext_resource type="Texture2D" uid="uid://cs7dg5fflycwj" path="res://assets/sprites/units/kenney_top-down-tanks-remastered/PNG/Default size/explosionSmoke5.png" id="11_m32pq"]
+
+[sub_resource type="GDScript" id="GDScript_3e7fv"]
+script/source = "extends Sprite2D
+var s: int = 800
+var d: int = 1000
+@onready var anni: AnimatedSprite2D = $AnimatedSprite2D
+# v = s/t
+func _process(delta: float) -> void:
+	if d > 0:
+		position +=  Vector2.UP.rotated(rotation ) * s * delta
+		d -= s * delta
+	else:
+		if !anni.is_playing():
+			anni.play(\"explosion\")
+			anni.animation_finished.connect(func(): print(\"finished\"); queue_free())
+"
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_1ta78"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_adre2")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("2_lqd50")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_awt2c")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_asacc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_klw53")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_m45dw")
+}],
+"loop": 0,
+"name": &"explosion",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_n66wa")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_x677q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_d15lk")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_nelc2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_m32pq")
+}],
+"loop": 1,
+"name": &"explosion_smoke",
+"speed": 5.0
+}]
+
+[node name="Bullet" type="Sprite2D" unique_id=1890624473]
+scale = Vector2(3, 3)
+texture = ExtResource("1_adre2")
+script = SubResource("GDScript_3e7fv")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=2009663245]
+sprite_frames = SubResource("SpriteFrames_1ta78")

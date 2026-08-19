@@ -1,0 +1,206 @@
+[gd_scene format=3 uid="uid://c4rhfsytks6ra"]
+
+[ext_resource type="Script" uid="uid://bxxx7xj483ykw" path="res://client/units/Tanks/assault_tanks.gd" id="1_5x0qe"]
+[ext_resource type="Script" uid="uid://dmdn75qujtp1g" path="res://client/units/Tanks/tank.gd" id="2_wqkn6"]
+[ext_resource type="Texture2D" uid="uid://c2oio6m3o6rei" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw.png" id="3_86sg4"]
+[ext_resource type="Texture2D" uid="uid://dr2nxoowpt2p1" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0001.png" id="4_4omk8"]
+[ext_resource type="Texture2D" uid="uid://bh6dui5pq6adf" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0002.png" id="5_h5qte"]
+[ext_resource type="Texture2D" uid="uid://c6hhit3ar5tpi" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0003.png" id="6_sklsc"]
+[ext_resource type="Texture2D" uid="uid://vq6riyw2nif8" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0004.png" id="7_17xbh"]
+[ext_resource type="Texture2D" uid="uid://drohg8ip5s0yt" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0005.png" id="8_dvk07"]
+[ext_resource type="Texture2D" uid="uid://s6q7ht2dqpu1" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0006.png" id="9_nd2o0"]
+[ext_resource type="Texture2D" uid="uid://2wgfq5x0xpih" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0007.png" id="10_e4pgq"]
+[ext_resource type="Texture2D" uid="uid://dtnek0jqq261f" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0008.png" id="11_liiv5"]
+[ext_resource type="Texture2D" uid="uid://di3awlifc47gs" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0009.png" id="12_2i3my"]
+[ext_resource type="Texture2D" uid="uid://beld0tc2c7gj6" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0010.png" id="13_4amae"]
+[ext_resource type="Texture2D" uid="uid://dyndylhcl8gxy" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0011.png" id="14_wspdp"]
+[ext_resource type="Texture2D" uid="uid://cyupvstxgnihm" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0012.png" id="15_biqcp"]
+[ext_resource type="Texture2D" uid="uid://13mivpxyxbtu" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0013.png" id="16_5kct2"]
+[ext_resource type="Texture2D" uid="uid://cujdcqk575t1p" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0014.png" id="17_fvk35"]
+[ext_resource type="Texture2D" uid="uid://bmbgui1t5r03f" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0015.png" id="18_loar0"]
+[ext_resource type="Texture2D" uid="uid://bctoftrdvkm6" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0016.png" id="19_8fpnc"]
+[ext_resource type="Texture2D" uid="uid://bulce08nck2rj" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0017.png" id="20_0wrnb"]
+[ext_resource type="Texture2D" uid="uid://ch155a6jqqy22" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0018.png" id="21_elcdm"]
+[ext_resource type="Texture2D" uid="uid://bu74g73ncjf1k" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0019.png" id="22_x1dba"]
+[ext_resource type="Texture2D" uid="uid://cekxyt88m87pp" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0020.png" id="23_na4nh"]
+[ext_resource type="Texture2D" uid="uid://cqs42a7nkt7db" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0021.png" id="24_mbroq"]
+[ext_resource type="Texture2D" uid="uid://dfclanv75mppq" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0022.png" id="25_onnsh"]
+[ext_resource type="Texture2D" uid="uid://dej1avop5gtrj" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0023.png" id="26_vejdu"]
+[ext_resource type="Texture2D" uid="uid://c578e8knw2oum" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0024.png" id="27_jvbhb"]
+[ext_resource type="Texture2D" uid="uid://crrhampuvqkc2" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0025.png" id="28_esf44"]
+[ext_resource type="Texture2D" uid="uid://cjmh28emnwjw6" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0026.png" id="29_8pesc"]
+[ext_resource type="Texture2D" uid="uid://j25nhrn8r2oe" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0027.png" id="30_76e0i"]
+[ext_resource type="Texture2D" uid="uid://d0rer2i042f7m" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0028.png" id="31_sabjd"]
+[ext_resource type="Texture2D" uid="uid://dev06c284qi1g" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0029.png" id="32_kryok"]
+[ext_resource type="Texture2D" uid="uid://bxta3t22e553t" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_scan_0030.png" id="33_qetio"]
+[ext_resource type="Texture2D" uid="uid://cfci0wjrwt2t5" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_shoot_0001.png" id="34_lelb1"]
+[ext_resource type="Texture2D" uid="uid://bth3yiekl6kua" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_shoot_0002.png" id="35_pat1h"]
+[ext_resource type="Texture2D" uid="uid://c8g0d7lodwlig" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_shoot_0003.png" id="36_f26cq"]
+[ext_resource type="Texture2D" uid="uid://c6ewasc7aytxa" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_shoot_0004.png" id="37_m0r3e"]
+[ext_resource type="Texture2D" uid="uid://dpmudc6vl8wd8" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_shoot_0005.png" id="38_d5jly"]
+[ext_resource type="Texture2D" uid="uid://odb1wun22l51" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_shoot_0006.png" id="39_1q7pu"]
+[ext_resource type="Texture2D" uid="uid://dyunv6yo78ywe" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_shoot_0007.png" id="40_q7j1w"]
+[ext_resource type="Texture2D" uid="uid://c7fc0xrxpscwx" path="res://assets/sprites/units/Fictional Isometric Tanks 1 Free/Medium/medium_sw/medium_sw_shoot_0008.png" id="41_78ast"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_86sg4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_86sg4")
+}],
+"loop": 1,
+"name": &"default",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_4omk8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_h5qte")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_sklsc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_17xbh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_dvk07")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_nd2o0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_e4pgq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("11_liiv5")
+}, {
+"duration": 1.0,
+"texture": ExtResource("12_2i3my")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_4amae")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_wspdp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_biqcp")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_5kct2")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_fvk35")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_loar0")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_8fpnc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("20_0wrnb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_elcdm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_x1dba")
+}, {
+"duration": 1.0,
+"texture": ExtResource("23_na4nh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("24_mbroq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("25_onnsh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("26_vejdu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("27_jvbhb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("28_esf44")
+}, {
+"duration": 1.0,
+"texture": ExtResource("29_8pesc")
+}, {
+"duration": 1.0,
+"texture": ExtResource("30_76e0i")
+}, {
+"duration": 1.0,
+"texture": ExtResource("31_sabjd")
+}, {
+"duration": 1.0,
+"texture": ExtResource("32_kryok")
+}, {
+"duration": 1.0,
+"texture": ExtResource("33_qetio")
+}],
+"loop": 1,
+"name": &"scan",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("34_lelb1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("35_pat1h")
+}, {
+"duration": 1.0,
+"texture": ExtResource("36_f26cq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("37_m0r3e")
+}, {
+"duration": 1.0,
+"texture": ExtResource("38_d5jly")
+}, {
+"duration": 1.0,
+"texture": ExtResource("39_1q7pu")
+}, {
+"duration": 1.0,
+"texture": ExtResource("40_q7j1w")
+}, {
+"duration": 1.0,
+"texture": ExtResource("41_78ast")
+}],
+"loop": 1,
+"name": &"shoot",
+"speed": 5.0
+}]
+
+[node name="Tank" type="Node2D" unique_id=466864026]
+script = ExtResource("1_5x0qe")
+
+[node name="left" type="Node2D" parent="." unique_id=1439270848]
+position = Vector2(-272, -238)
+script = ExtResource("2_wqkn6")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="left" unique_id=2029125564]
+position = Vector2(158, 207)
+sprite_frames = SubResource("SpriteFrames_86sg4")
+
+[node name="mid" type="Node2D" parent="." unique_id=102612812]
+position = Vector2(-272, -238)
+script = ExtResource("2_wqkn6")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="mid" unique_id=1597152356]
+position = Vector2(183, 51)
+scale = Vector2(1, 1.0019531)
+sprite_frames = SubResource("SpriteFrames_86sg4")
+
+[node name="right" type="Node2D" parent="." unique_id=119583214]
+position = Vector2(-272, -238)
+script = ExtResource("2_wqkn6")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="right" unique_id=1289892048]
+position = Vector2(367, 135)
+sprite_frames = SubResource("SpriteFrames_86sg4")
