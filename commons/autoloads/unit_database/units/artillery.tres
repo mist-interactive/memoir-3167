@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="UnitStats" format=3 uid="uid://yk4e8ekslax4"]
+
+[ext_resource type="Script" uid="uid://n6bb1idnjqqn" path="res://commons/autoloads/unit_database/units/unit_stats.gd" id="1_p0bpc"]
+
+[resource]
+script = ExtResource("1_p0bpc")
+type = 2
+max_movement = 1
+max_movement_and_attack = 0
+can_move_and_attack = false
+health = 2
+max_attack_range = 6
+attack_dice_by_distance = Array[int]([3, 3, 2, 2, 1, 1])
+attacks_ignore_terrain = true
+metadata/_custom_type_script = "uid://n6bb1idnjqqn"
