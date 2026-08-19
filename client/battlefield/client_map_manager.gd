@@ -121,3 +121,8 @@ func build_sector_index() -> void:
 			
 		if cell.sector & enums.MapSector.RIGHT != 0:
 			(sector_index[enums.MapSector.RIGHT] as Array).append(coords)
+
+func get_unit_world_pos(hex_pos: Vector2i) -> Vector2:
+	var local_pos: Vector2 = map_ground_layer.map_to_local(hex_pos)
+	var world_pos: Vector2 = map_ground_layer.to_global(local_pos)
+	return world_pos
