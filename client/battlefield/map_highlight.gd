@@ -19,6 +19,9 @@ func _on_hex_broadcast(side: enums.Side, hex: Vector2i) -> void:
 	for id in player_hex.keys():
 		set_cell(player_hex[id], 0, Vector2i(0, 0))
 
+func highlight_cell(coord: Vector2i) -> void:
+	set_cell(coord, 0, Vector2i(0, 0))
+
 func _on_clear_hex_selections() -> void:
 	clear()
 	player_hex.clear()

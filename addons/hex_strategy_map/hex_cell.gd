@@ -30,14 +30,6 @@ enum Feature {
 	WATER,     ## Water — impassable by default (cost -1.0).
 }
 
-enum Terrain {
-	ROAD,      ## Road (default cost 1.0).
-	PLAINS,    ## Plains (default cost 1.5).
-	FOREST,    ## Forest (default cost 2.0).
-	MOUNTAIN,  ## Mountain (default cost 3.0).
-	MINOR_COVER,
-	WATER,     ## Water — impassable by default (cost -1.0).
-}
 
 ## Offset coordinate (x = column, y = row) of the cell in the HexGrid.
 var coord: Vector2i = Vector2i.ZERO
