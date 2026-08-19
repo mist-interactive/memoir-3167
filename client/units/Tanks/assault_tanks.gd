@@ -14,6 +14,8 @@ func attack(pos: Vector2, num: int) -> void:
 			await timer.timeout
 			tanks[i].idle()
 		else:
+			var timer = get_tree().create_timer(cooldown)
+			await timer.timeout
 			tanks[i].idle()
 		i += 1
 
