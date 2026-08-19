@@ -50,3 +50,10 @@ func get_unit_at(coord: Vector2i) -> Variant:
 	
 func get_unit_by_id(id: int) -> Variant:
 	return units_by_id.get(id)
+
+func get_occupied_coords() -> Dictionary:
+	var occupied_coords: Dictionary = {}
+	for coord in unit_grid.keys():
+		occupied_coords[coord] = true
+	return occupied_coords
+			
