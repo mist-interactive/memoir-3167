@@ -2,7 +2,7 @@ extends UnitManager
 class_name ClientUnitManager
 
 var active_container: Node
-
+@onready var match_state: MatchState = $"../matchState"
 var UNIT_SCENE = preload("res://client/units/Unit.tscn")
 
 func _init(initialState: BattlefieldState) -> void:
@@ -11,6 +11,7 @@ func _init(initialState: BattlefieldState) -> void:
 	Network.Units.sync_all_requested.connect(_on_sync_all_requested)
 	Network.Units.spawn_unit_requested.connect(_on_spawn_unit_requested)
 	Network.Actions.resolve_combat_result_requested.connect(_on_resolve_combat_result_requested)
+	unit_selected.connect(_on_unit_selected)
 	
 # snapshot used for reconnection
 func initialize(active_container: Node, snapshot: Dictionary = {}) -> void:
@@ -42,4 +43,11 @@ func _on_spawn_unit_requested(unit: Dictionary) -> void:
 	pass
 
 func _on_resolve_combat_result_requested(result: CombatResult) -> void:
-	print("Combat result: ", result.to_dict())
+	var uuid: int = result.unit_ids[enums.Side.RED] if enums.Side.GREEN == result.target else result.unit_ids[enums.Side.GREEN]
+	var assault_unit: Unit = units_by_id[uuid]
+	if assault_unit.type == enums.UnitType.TANK:
+		assault_unit.get_node("./Tank").attack(result.dmg)
+
+func _on_unit_selected(unit_id: int, prev_unit_id: int) -> void:
+	if match_state.phase == enums.TurnPhase.ATTACK && unit_id != -1 && units_by_id[unit_id].type == enums.UnitType.TANK:
+		units_by_id[unit_id].get_node("./Tank").scan()
