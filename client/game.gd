@@ -25,5 +25,5 @@ func join_game(snapshot: Dictionary):
 			loader.stage("Initializing units...", func(): unitManager = ClientUnitManager.new(battlefield); add_child(unitManager))
 	await loader.run()
 	add_child(battlefieldRenderer)
-	unitManager.initialize(battlefieldRenderer.unit_container, snapshot)
+	unitManager.initialize(battlefieldRenderer.unit_container, battlefieldRenderer.get_node("./MapManager"), snapshot)
 	Network.Match.update_client_match_state.rpc_id(1, MatchState.STATE.INITIALIZE_BOARD)
