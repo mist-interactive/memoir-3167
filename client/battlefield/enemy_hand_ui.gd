@@ -32,7 +32,7 @@ func _add_card_node() -> void:
 	_recalculate_layout()
 
 func _on_enemy_played_card(instance_id: int, card_id: String) -> void:
-	var card_node = get_child(1) as CardUI
+	var card_node = get_child(randi_range(0, get_child_count() - 1)) as CardUI
 	card_node.is_discarded = true
 	card_node.setup_visuals(instance_id, card_id)
 	_remove_card_node_and_animate(card_node, instance_id)
@@ -46,13 +46,17 @@ func _remove_card_node_and_animate(card_node: CardUI, instance_id: int) -> void:
 			discard_pile_ui.add_card_node(card_node)
 	)
 
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_RESIZED:
+		_recalculate_layout()
+
 # dont worry about it
 func _recalculate_layout() -> void:
 	var card_count: int = get_child_count()
 	if card_count == 0:
 		return
 		
-	var viewport_width: float = get_viewport_rect().size.x
+	var viewport_width: float = size.x
 	var available_hand_width: float = viewport_width / 1.5
 	
 	var separation: float = default_separation
@@ -60,7 +64,6 @@ func _recalculate_layout() -> void:
 	var start_x: float = 0.0
 	
 	if total_unscaled_width > available_hand_width and card_count > 1:
-		# Overlap required: distribute remaining width across gaps
 		separation = (available_hand_width - base_card_size.x) / float(card_count - 1) - base_card_size.x
 		start_x = (viewport_width - available_hand_width) / 2.0
 	else:

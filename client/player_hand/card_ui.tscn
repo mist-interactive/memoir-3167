@@ -13,19 +13,9 @@ shadow_size = 1
 shadow_offset = Vector2(-4, 24.36)
 
 [node name="CardUI" type="MarginContainer" unique_id=1384061792 node_paths=PackedStringArray("title_label", "description_label", "description_label_bottom")]
-custom_minimum_size = Vector2(210, 325)
-custom_maximum_size = Vector2(210, 325)
-anchors_preset = 12
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = -648.0
-offset_right = -1032.0
-offset_bottom = -428.0
-grow_horizontal = 2
-grow_vertical = 0
+offset_right = 210.0
+offset_bottom = 325.0
 scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(133, 179)
 script = ExtResource("1_ii6mt")
 title_label = NodePath("title_label")
 description_label = NodePath("description_label")
@@ -40,8 +30,6 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_ii6mt")
 texture_filter = 4
 texture_repeat = 2
 layout_mode = 2
-expand_mode = 1
-stretch_mode = 5
 
 [node name="title_label" type="Label" parent="." unique_id=174640353]
 visible = false

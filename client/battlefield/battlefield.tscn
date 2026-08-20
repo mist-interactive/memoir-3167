@@ -11,13 +11,11 @@
 [ext_resource type="Texture2D" uid="uid://bbk0bb2k6twkd" path="res://assets/sprites/hex/fields_feature_sprite_sheet.png" id="7_yttjq"]
 [ext_resource type="Script" uid="uid://cpytl0qe8h6u5" path="res://client/battlefield/player_hand_ui.gd" id="9_cuxbe"]
 [ext_resource type="Script" uid="uid://bq54bqhfhjf5o" path="res://client/battlefield/unit_selection_highlight.gd" id="10_cvs13"]
-[ext_resource type="Script" uid="uid://5n1dlvt3tw4s" path="res://client/battlefield/margin_container.gd" id="10_f3lu3"]
 [ext_resource type="Script" uid="uid://bovs46if0cf51" path="res://client/battlefield/unit_path_highlight.gd" id="11_2w58j"]
 [ext_resource type="Script" uid="uid://c2p4e1nrocigq" path="res://client/battlefield/hover_highlight.gd" id="11_cvs13"]
 [ext_resource type="Script" uid="uid://cviqoy1ixqq6j" path="res://client/battlefield/sector_highlight.gd" id="11_tjobt"]
 [ext_resource type="PackedScene" uid="uid://bs3n3ysl7e5vc" path="res://client/player_hand/card_ui.tscn" id="12_f3lu3"]
 [ext_resource type="Script" uid="uid://dsajes703tyny" path="res://client/battlefield/roll_dice.gd" id="12_wygn3"]
-[ext_resource type="Script" uid="uid://pu2komq7negi" path="res://client/battlefield/margin_container_2.gd" id="13_0hlkx"]
 [ext_resource type="Texture2D" uid="uid://l08uw4hx56l0" path="res://assets/sprites/hex/highlight.png" id="13_56ovr"]
 [ext_resource type="Script" uid="uid://ixegjorc6cco" path="res://client/battlefield/enemy_hand_ui.gd" id="13_ec6rr"]
 [ext_resource type="Script" uid="uid://bx150801txbve" path="res://client/battlefield/action_highlight.gd" id="13_fpqqf"]
@@ -255,18 +253,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.1883903, 0, 0)
 mesh = SubResource("ArrayMesh_vln62")
 
 [node name="MarginContainer" type="MarginContainer" parent="UICanvas" unique_id=2042215150]
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
+anchors_preset = 15
+anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -576.0
-offset_top = -648.0
-offset_right = -309.0
-offset_bottom = -290.0
 grow_horizontal = 2
-grow_vertical = 0
-script = ExtResource("10_f3lu3")
+grow_vertical = 2
 
 [node name="PlayerHandUI" type="Control" parent="UICanvas/MarginContainer" unique_id=1348647858 node_paths=PackedStringArray("player_controller", "discard_pile_ui")]
 custom_minimum_size = Vector2(267, 358)
@@ -277,15 +268,16 @@ hand_curve = SubResource("Curve_u0eng")
 rotation_curve = SubResource("Curve_f3lu3")
 player_controller = NodePath("../../../PlayerController")
 discard_pile_ui = NodePath("../../DiscardPileUI")
+base_card_size = null
+max_rotation_degrees = null
+y_min = null
+y_max = null
+default_separation = null
 
 [node name="MarginContainer2" type="MarginContainer" parent="UICanvas" unique_id=491818102]
-anchors_preset = 5
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -576.0
-offset_right = -576.0
+anchors_preset = 10
+anchor_right = 1.0
 grow_horizontal = 2
-script = ExtResource("13_0hlkx")
 
 [node name="EnemyHandUI" type="Control" parent="UICanvas/MarginContainer2" unique_id=1002495451 node_paths=PackedStringArray("discard_pile_ui", "player_controller")]
 layout_mode = 2
