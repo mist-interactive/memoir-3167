@@ -8,32 +8,51 @@ class_name PlayerController
 @export var map_highlight_layer: TileMapLayer
 @export var sector_highlight_layer: TileMapLayer
 @onready var unit_manager: ClientUnitManager = $"../../UnitManager"
+
 var is_my_turn: bool = false
+var _active_came_from: Dictionary = {}
+var _selected_hex: Vector2i = Vector2i(-1, -1)
+var _selected_unit: Unit = null
 
 func _ready() -> void:
 	pass
 
 func _unhandled_input(event: InputEvent) -> void:
-	#if not is_my_turn:
-		#return
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
 		_handle_left_click()
+	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
+		_handle_right_click()
 
 func _handle_left_click() -> void:
 	var click_position: Vector2 = map_ground_layer.get_global_mouse_position()
 	var hex: Vector2i = map_ground_layer.local_to_map(map_ground_layer.to_local(click_position))
 	# Check if selected hex is actually on the gameboard
 	var cell_source_id := map_ground_layer.get_cell_source_id(hex)
-	
-	##NOTE: Testing for UnitDatabase and pathfinding. Can be removed later! vvv
-	#var unit_clicked: Unit = unit_manager.get_unit_at(hex)
-	#if unit_clicked:
-		#var unit_stats: UnitStats = UnitDatabase.get_stats(unit_clicked.type)
-		#_print_unit_stats(unit_stats)
-		#_highlight_unit_reachable_hexes(unit_stats, hex)
-	##NOTE: Testing for UnitDatabase and pathfinding. Can be removed later! vvv
-	#
-	if cell_source_id == -1 || !matchState.is_my_turn():
+	if cell_source_id == -1:
+		return
+	var unit: Unit = unit_manager.get_unit_at(hex)
+	if unit:
+		_selected_hex = hex
+		_selected_unit = unit
+		var unit_stats: UnitStats = UnitDatabase.get_stats(_selected_unit.type)
+		var path_data = BoardPathfinding.get_reachable_hexes(unit_stats.type, _selected_hex, battlefieldState.map, unit_manager.get_occupied_coords())
+		_active_came_from = path_data.get("came_from", {})
+		_highlight_unit_reachable_hexes(path_data, _selected_hex)
+		if matchState.is_my_turn():
+			var is_my_unit: bool = unit.owner_id == matchState.mySide
+			if is_my_unit:
+				Network.Actions.select_unit.rpc_id(1, unit_manager.get_unit_at(_selected_hex).uuid)
+	else:
+		_clear_selection()
+
+func _handle_right_click() -> void:
+	if _selected_hex == Vector2i(-1, -1) or not matchState.is_my_turn():
+		return
+	var click_position: Vector2 = map_ground_layer.get_global_mouse_position()
+	var target_hex: Vector2i = map_ground_layer.local_to_map(map_ground_layer.to_local(click_position))
+	# Check if selected hex is actually on the gameboard
+	var cell_source_id := map_ground_layer.get_cell_source_id(target_hex)
+	if cell_source_id == -1:
 		return
 	match matchState.phase:
 		enums.TurnPhase.SELECT:
@@ -42,23 +61,42 @@ func _handle_left_click() -> void:
 			if is_my_unit:
 				Network.Actions.select_unit.rpc_id(1, unit_manager.get_unit_at(hex).uuid)
 		enums.TurnPhase.MOVE:
-			var unit: Unit = unit_manager.get_unit_at(hex)
-			var is_my_unit: bool = unit && unit.owner_id == matchState.mySide
-			if !is_my_unit && unit:
+			if not _selected_unit:
+				print("No unit selected")
 				return
-			if is_my_unit:
-				Network.Actions.select_unit.rpc_id(1, unit_manager.get_unit_at(hex).uuid)
-			else:
-				Network.Actions.move_unit.rpc_id(1, unit_manager.selected_unit_id, hex)
+			var is_my_unit: bool = _selected_unit && _selected_unit.owner_id == matchState.mySide
+			if !is_my_unit:
+				print("Not my unit selected")
+				return
+			if not _active_came_from.has(target_hex):
+				print("Can't reach hex: ", target_hex)
+				return
+			var path: Array[Vector2i] = _reconstruct_path(_selected_hex, target_hex, _active_came_from)
+			Network.Actions.move_unit.rpc_id(1, unit_manager.selected_unit_id, target_hex)
+			_clear_selection()
 		enums.TurnPhase.ATTACK:
-			var unit: Unit = unit_manager.get_unit_at(hex)
-			if !unit:
+			if not _selected_unit:
+				print("No unit selected")
 				return
-			var is_my_unit: bool = unit && unit.owner_id == matchState.mySide
-			if is_my_unit:
-				Network.Actions.select_unit.rpc_id(1, unit_manager.get_unit_at(hex).uuid)
-			else:
-				Network.Actions.attack_unit.rpc_id(1, unit_manager.selected_unit_id, unit.uuid)
+			var is_my_unit: bool = _selected_unit && _selected_unit.owner_id == matchState.mySide
+			if not is_my_unit:
+				return
+			var target_unit: Unit = unit_manager.get_unit_at(target_hex)
+			if target_unit and target_unit.owner_id != matchState.mySide:
+				Network.Actions.attack_unit.rpc_id(1, unit_manager.selected_unit_id, target_unit.uuid)
+				_clear_selection()
+
+func _reconstruct_path(start: Vector2i, target: Vector2i, came_from: Dictionary) -> Array[Vector2i]:
+	var path: Array[Vector2i] = []
+	var current: Vector2i = target
+	while current != start:
+		path.append(current)
+		if not came_from.has(current):
+			push_error("Path broken. Hex not found in came_from.")
+			return []
+		current = came_from[current]
+	path.reverse()
+	return path
 
 func _on_card_hovered(card_target: enums.MapSector) -> void:
 	var hexes_to_highlight: Array[Vector2i] = []
@@ -89,10 +127,15 @@ func _print_unit_stats(unit_stats: UnitStats) -> void:
 	print("Unit can overrun: ", unit_stats.can_overrun)
 	print("Unit can take ground: ", unit_stats.can_take_ground)
 	
-func _highlight_unit_reachable_hexes(unit_stats: UnitStats, hex: Vector2i) -> void:
-	var path_data = BoardPathfinding.get_reachable_hexes(unit_stats.type, hex, battlefieldState.map, unit_manager.get_occupied_coords())
+
+func _clear_selection() -> void:
+	_selected_hex = Vector2i(-1, -1)
+	_selected_unit = null
+	_active_came_from.clear()
+	map_highlight_layer.clear()
+
+func _highlight_unit_reachable_hexes(path_data: Dictionary, hex: Vector2i) -> void:
 	map_highlight_layer.clear()
 	var reachable_costs: Dictionary = path_data.get("costs", {})
 	for coord in reachable_costs.keys():
 		map_highlight_layer.highlight_cell(coord)
-#NOTE: Testing for UnitDatabase. Can be removed later! ^^^
