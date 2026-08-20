@@ -25,12 +25,13 @@ func _handle_left_click() -> void:
 	# Check if selected hex is actually on the gameboard
 	var cell_source_id := map_ground_layer.get_cell_source_id(hex)
 	
-	#NOTE: Testing for UnitDatabase. Can be removed later! vvv
+	#NOTE: Testing for UnitDatabase and pathfinding. Can be removed later! vvv
 	var unit_clicked: Unit = unit_manager.get_unit_at(hex)
 	if unit_clicked:
 		var unit_stats: UnitStats = UnitDatabase.get_stats(unit_clicked.type)
 		_print_unit_stats(unit_stats)
-	#NOTE: Testing for UnitDatabase. Can be removed later! ^^^
+		_highlight_unit_reachable_hexes(unit_stats, hex)
+	#NOTE: Testing for UnitDatabase and pathfinding. Can be removed later! vvv
 	
 	if cell_source_id == -1 || !matchState.is_my_turn():
 		return
@@ -84,4 +85,11 @@ func _print_unit_stats(unit_stats: UnitStats) -> void:
 		print("Unit's attack dice to distance %s is %s" % [i + 1, unit_stats.attack_dice_by_distance[i]])
 	print("Unit can overrun: ", unit_stats.can_overrun)
 	print("Unit can take ground: ", unit_stats.can_take_ground)
+	
+func _highlight_unit_reachable_hexes(unit_stats: UnitStats, hex: Vector2i) -> void:
+	var path_data = BoardPathfinding.get_reachable_hexes(unit_stats.type, hex, battlefieldState.map, unit_manager.get_occupied_coords())
+	map_highlight_layer.clear()
+	var reachable_costs: Dictionary = path_data.get("costs", {})
+	for coord in reachable_costs.keys():
+		map_highlight_layer.highlight_cell(coord)
 #NOTE: Testing for UnitDatabase. Can be removed later! ^^^
