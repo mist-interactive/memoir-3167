@@ -2,10 +2,10 @@
 
 extends Node
 
-@export var MapGroundLayer: HexagonTileMapLayer
-@export var MapFeatureLayer: HexagonTileMapLayer
-@export var UnitContainer: Node2D
-@export var MapName: String
+@export var map_ground_layer: HexagonTileMapLayer
+@export var map_feature_layer: HexagonTileMapLayer
+@export var unit_container: Node2D
+@export var map_name: String
 
 var _map_width: int
 var _map_height: int
@@ -21,7 +21,7 @@ var _right_min_x: int
 		bake_map = false
 
 func save_to_file(content: String) -> void:
-	var file_name = "res://maps/" + MapName + ".json"
+	var file_name = "res://maps/" + map_name + ".json"
 	var file = FileAccess.open(file_name, FileAccess.WRITE)
 	if file:
 		print("Saving map to a file")
@@ -32,37 +32,30 @@ func save_to_file(content: String) -> void:
 
 func _bake_map() -> void:
 	print("Start baking the map")
-	if MapGroundLayer == null:
-		push_error("MapGroundLayer is not assigned!")
+	if map_ground_layer == null:
+		push_error("map_ground_layer is not assigned!")
 		return
-	var map_data: Dictionary = {
-		"width": -1,
-		"height": -1,
-		"hexes": [],
-		"units": [],
-		"sectors": [],
-	}
 	_calculate_map_boundaries()
-	map_data["width"] = _map_width
-	map_data["height"] = _map_height
-	map_data["hexes"] = _get_hex_data()
+	var map_data: Dictionary = {}
+	map_data["hex_grid"] = _get_hex_data()
 	map_data["units"] = _get_unit_data()
 	map_data["sectors"] = _get_map_boundaries()
 	var map_json_string: String = JSON.stringify(map_data, "\t")
 	save_to_file(map_json_string)
 	pass
 
-func _get_hex_data() -> Array[Dictionary]:
-	var hex_data: Array[Dictionary]
-	var used_cells: Array[Vector2i] = MapGroundLayer.get_used_cells()
+func _get_hex_data() -> String:
+	var used_cells: Array[Vector2i] = map_ground_layer.get_used_cells()
 	if used_cells.is_empty():
 		print("The map is empty. Nothing to bake.")
-		return []
+		return ""
 	print("Found ", used_cells.size(), " tiles. Baking...")
+	var hex_grid = HexGrid.new(_map_width, _map_height)
+	hex_grid.cells.clear()
 	for coord in used_cells:
 		# Get the ground type
-		var ground_source_id: int = MapGroundLayer.get_cell_source_id(coord)
-		var ground_atlas_coords: Vector2i = MapGroundLayer.get_cell_atlas_coords(coord)
+		var ground_source_id: int = map_ground_layer.get_cell_source_id(coord)
+		var ground_atlas_coords: Vector2i = map_ground_layer.get_cell_atlas_coords(coord)
 		var ground_key: Array = [ground_source_id, ground_atlas_coords]
 		var final_ground: int
 		if MapData.GROUND_ATLAS.has(ground_key):
@@ -71,8 +64,8 @@ func _get_hex_data() -> Array[Dictionary]:
 			push_warning("Found an unknown ground tile at ", coord)
 
 		# Get the feature type (if any)
-		var feature_source_id: int = MapFeatureLayer.get_cell_source_id(coord)
-		var feature_atlas_coords: Vector2i = MapFeatureLayer.get_cell_atlas_coords(coord)
+		var feature_source_id: int = map_feature_layer.get_cell_source_id(coord)
+		var feature_atlas_coords: Vector2i = map_feature_layer.get_cell_atlas_coords(coord)
 		var feature_key: Array = [feature_source_id, feature_atlas_coords]
 		var final_feature: int
 		if MapData.FEATURE_ATLAS.has(feature_key):
@@ -86,21 +79,21 @@ func _get_hex_data() -> Array[Dictionary]:
 		if temp_hex.feature == HexCell.Feature.HILL:
 			temp_hex.elevation = 2.0
 		hex_data.append(temp_hex.serialize())
-	return hex_data
+	return hex_grid
 
 func _get_unit_data() -> Array[Dictionary]:
 	var unit_data: Array[Dictionary]
 	var count: int = 0
-	for child in UnitContainer.get_children():
+	for child in unit_container.get_children():
 		if not child is UnitSpawnMarker:
 			continue
-		var pos := MapGroundLayer.local_to_map(child.position)
+		var pos := map_ground_layer.local_to_map(child.position)
 		unit_data.append(child.serialize(pos))
 		count += 1
 	return unit_data
 
 func _calculate_map_boundaries() -> void:
-	var used_rect: Rect2i = MapGroundLayer.get_used_rect()
+	var used_rect: Rect2i = map_ground_layer.get_used_rect()
 	_map_width = used_rect.size.x
 	_map_height = used_rect.size.y
 	var sector_width: int = _map_width / 3
