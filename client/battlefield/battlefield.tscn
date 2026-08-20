@@ -84,7 +84,6 @@ map_ground_layer = NodePath("../MapVisuals/MapGround")
 map_feature_layer = NodePath("../MapVisuals/MapFeature")
 map_highlight_layer = NodePath("../MapVisuals/MapHighlight")
 sector_highlight_layer = NodePath("../MapVisuals/SectorHighlight")
-unit_container = NodePath("../UnitContainer")
 
 [node name="MapManager" type="Node" parent="." unique_id=225508304 node_paths=PackedStringArray("map_ground_layer", "map_features_layer", "map_highlight_layer", "map_visuals_node", "unit_container", "left_sector_divider", "right_sector_divider")]
 script = ExtResource("2_ynl45")
