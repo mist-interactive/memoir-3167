@@ -8,7 +8,7 @@ extends Node
 @export var map_name: String
 
 const hex_elevation: Dictionary[HexCell.Feature, float] = {
-	HexCell.Feature.NONE: -1.0,
+	HexCell.Feature.NONE: 1.0,
 	HexCell.Feature.ROAD: 1.0,
 	HexCell.Feature.PLAINS: 1.0,
 	HexCell.Feature.FOREST: 2.0,
@@ -48,18 +48,18 @@ func _bake_map() -> void:
 		return
 	_calculate_map_boundaries()
 	var map_data: Dictionary = {}
-	map_data["hex_grid"] = _get_hex_data()
+	map_data["hex_grid"] = _get_hex_grid()
 	map_data["units"] = _get_unit_data()
 	map_data["sectors"] = _get_map_boundaries()
 	var map_json_string: String = JSON.stringify(map_data, "\t")
 	save_to_file(map_json_string)
 	pass
 
-func _get_hex_data() -> String:
+func _get_hex_grid() -> Dictionary:
 	var used_cells: Array[Vector2i] = map_ground_layer.get_used_cells()
 	if used_cells.is_empty():
 		print("The map is empty. Nothing to bake.")
-		return ""
+		return {}
 	print("Found ", used_cells.size(), " tiles. Baking...")
 	var hex_grid = HexGrid.new(_map_width, _map_height)
 	hex_grid.cells.clear()
@@ -88,18 +88,16 @@ func _get_hex_data() -> String:
 		var sector = _get_hex_sector(coord)
 		var temp_hex = HexCell.new(coord, final_ground, final_feature, sector)
 		temp_hex.elevation = hex_elevation[temp_hex.feature]
-		hex_data.append(temp_hex.serialize())
-	return hex_grid
+		hex_grid.cells[coord] = temp_hex
+	return hex_grid.serialize()
 
 func _get_unit_data() -> Array[Dictionary]:
 	var unit_data: Array[Dictionary]
-	var count: int = 0
 	for child in unit_container.get_children():
 		if not child is UnitSpawnMarker:
 			continue
 		var pos := map_ground_layer.local_to_map(child.position)
 		unit_data.append(child.serialize(pos))
-		count += 1
 	return unit_data
 
 func _calculate_map_boundaries() -> void:
