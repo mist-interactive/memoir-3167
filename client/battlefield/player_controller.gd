@@ -35,9 +35,6 @@ func _handle_left_click() -> void:
 	
 	if cell_source_id == -1 || !matchState.is_my_turn():
 		return
-	var clicked_hex = battlefieldState.map.get_cell(hex)
-	print(clicked_hex.feature)
-	print(clicked_hex.elevation)
 	match matchState.phase:
 		enums.TurnPhase.MOVE:
 			var unit: Unit = unit_manager.get_unit_at(hex)
