@@ -22,7 +22,6 @@ func _unhandled_input(event: InputEvent) -> void:
 		print("Handling left click")
 		_handle_left_click()
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
-		print("Handling right click")
 		_handle_right_click()
 
 func _handle_left_click() -> void:
@@ -32,6 +31,30 @@ func _handle_left_click() -> void:
 	var cell_source_id := map_ground_layer.get_cell_source_id(hex)
 	if cell_source_id == -1:
 		_clear_selection()
+		return
+	var unit: Unit = unit_manager.get_unit_at(hex)
+	if unit:
+		_selected_hex = hex
+		_selected_unit = unit
+		var unit_stats: UnitStats = UnitDatabase.get_stats(_selected_unit.type)
+		var path_data = BoardPathfinding.get_reachable_hexes(unit_stats.type, _selected_hex, battlefieldState.map, unit_manager.get_occupied_coords())
+		_active_came_from = path_data.get("came_from", {})
+		_highlight_unit_reachable_hexes(path_data, _selected_hex)
+		if matchState.is_my_turn():
+			var is_my_unit: bool = unit.owner_id == matchState.mySide
+			if is_my_unit:
+				Network.Actions.select_unit.rpc_id(1, unit_manager.get_unit_at(_selected_hex).uuid)
+	else:
+		_clear_selection()
+
+func _handle_right_click() -> void:
+	if _selected_hex == Vector2i(-1, -1) or not matchState.is_my_turn():
+		return
+	var click_position: Vector2 = map_ground_layer.get_global_mouse_position()
+	var target_hex: Vector2i = map_ground_layer.local_to_map(map_ground_layer.to_local(click_position))
+	# Check if selected hex is actually on the gameboard
+	var cell_source_id := map_ground_layer.get_cell_source_id(target_hex)
+	if cell_source_id == -1:
 		return
 	var unit: Unit = unit_manager.get_unit_at(hex)
 	if unit:
