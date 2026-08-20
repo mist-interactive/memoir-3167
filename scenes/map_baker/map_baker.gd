@@ -7,6 +7,17 @@ extends Node
 @export var UnitContainer: Node2D
 @export var MapName: String
 
+const hex_elevation: Dictionary[HexCell.Feature, float] = {
+	HexCell.Feature.NONE: -1.0,
+	HexCell.Feature.ROAD: 1.0,
+	HexCell.Feature.PLAINS: 1.0,
+	HexCell.Feature.FOREST: 2.0,
+	HexCell.Feature.HILL: 3.0,
+	HexCell.Feature.MOUNTAIN: 4.0,
+	HexCell.Feature.ROCKS: 1.5,
+	HexCell.Feature.WATER: 0,
+}
+
 var _map_width: int
 var _map_height: int
 var _left_max_x: int
@@ -83,8 +94,7 @@ func _get_hex_data() -> Array[Dictionary]:
 			final_feature = HexCell.Feature.NONE
 		var sector = _get_hex_sector(coord)
 		var temp_hex = HexCell.new(coord, final_ground, final_feature, sector)
-		if temp_hex.feature == HexCell.Feature.HILL:
-			temp_hex.elevation = 2.0
+		temp_hex.elevation = hex_elevation[temp_hex.feature]
 		hex_data.append(temp_hex.serialize())
 	return hex_data
 
