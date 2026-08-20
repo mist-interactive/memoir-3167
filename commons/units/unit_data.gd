@@ -19,13 +19,7 @@ func _init(owner_id: enums.Side, type: int, id: int, coord: Vector2i) -> void:
 	self.hex_coord = coord
 	self.type = type
 	self.owner_id = owner_id
-	match self.type:
-		enums.UnitType.INFANTRY:
-			self.hit_point = enums.UnitHitPoint.INFANTRY
-		enums.UnitType.TANK:
-			self.hit_point = enums.UnitHitPoint.TANK
-		enums.UnitType.ARTILLERY:
-			self.hit_point = enums.UnitHitPoint.ARTILLERY
+	self.hit_point = UnitDatabase.get_stats(type).max_health
 
 func get_snapshot() -> Dictionary:
 	return {
