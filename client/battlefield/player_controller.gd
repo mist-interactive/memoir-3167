@@ -29,6 +29,7 @@ func _handle_left_click() -> void:
 	# Check if selected hex is actually on the gameboard
 	var cell_source_id := map_ground_layer.get_cell_source_id(hex)
 	if cell_source_id == -1:
+		_clear_selection()
 		return
 	var unit: Unit = unit_manager.get_unit_at(hex)
 	if unit:
