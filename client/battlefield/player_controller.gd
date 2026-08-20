@@ -78,7 +78,7 @@ func _print_unit_stats(unit_stats: UnitStats) -> void:
 	print("Unit max movement: ", unit_stats.max_movement)
 	print("Unit max movement and attack: ", unit_stats.max_movement_and_attack)
 	print("Unit can move and attack: ", unit_stats.can_move_and_attack)
-	print("Unit health: ", unit_stats.health)
+	print("Unit health: ", unit_stats.max_health)
 	print("Unit max attack range: ", unit_stats.max_attack_range)
 	for i in range(0, unit_stats.attack_dice_by_distance.size()):
 		print("Unit's attack dice to distance %s is %s" % [i + 1, unit_stats.attack_dice_by_distance[i]])

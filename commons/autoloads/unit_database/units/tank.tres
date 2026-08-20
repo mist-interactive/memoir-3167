@@ -7,7 +7,6 @@ script = ExtResource("1_hmtpo")
 type = 1
 max_movement = 3
 max_movement_and_attack = 3
-health = 3
 attack_dice_by_distance = Array[int]([3, 3, 3])
 can_overrun = true
 metadata/_custom_type_script = "uid://n6bb1idnjqqn"
