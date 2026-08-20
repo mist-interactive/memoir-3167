@@ -24,6 +24,14 @@ func _handle_left_click() -> void:
 	var hex: Vector2i = map_ground_layer.local_to_map(map_ground_layer.to_local(click_position))
 	# Check if selected hex is actually on the gameboard
 	var cell_source_id := map_ground_layer.get_cell_source_id(hex)
+	
+	#NOTE: Testing for UnitDatabase. Can be removed later! vvv
+	var unit_clicked: Unit = unit_manager.get_unit_at(hex)
+	if unit_clicked:
+		var unit_stats: UnitStats = UnitDatabase.get_stats(unit_clicked.type)
+		_print_unit_stats(unit_stats)
+	#NOTE: Testing for UnitDatabase. Can be removed later! ^^^
+	
 	if cell_source_id == -1 || !matchState.is_my_turn():
 		return
 	match matchState.phase:
@@ -63,3 +71,17 @@ func _apply_sector_highlights(hexes: Array[Vector2i]) -> void:
 
 func _on_card_unhovered() -> void:
 	sector_highlight_layer.clear()
+
+#NOTE: Testing for UnitDatabase. Can be removed later! vvv
+func _print_unit_stats(unit_stats: UnitStats) -> void:
+	print("Unit type: ", enums.UnitType.find_key(unit_stats.type))
+	print("Unit max movement: ", unit_stats.max_movement)
+	print("Unit max movement and attack: ", unit_stats.max_movement_and_attack)
+	print("Unit can move and attack: ", unit_stats.can_move_and_attack)
+	print("Unit health: ", unit_stats.health)
+	print("Unit max attack range: ", unit_stats.max_attack_range)
+	for i in range(0, unit_stats.attack_dice_by_distance.size()):
+		print("Unit's attack dice to distance %s is %s" % [i + 1, unit_stats.attack_dice_by_distance[i]])
+	print("Unit can overrun: ", unit_stats.can_overrun)
+	print("Unit can take ground: ", unit_stats.can_take_ground)
+#NOTE: Testing for UnitDatabase. Can be removed later! ^^^
