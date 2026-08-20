@@ -9,7 +9,7 @@ extends Resource
 @export var can_move_and_attack: bool = true
 
 @export_group("Combat")
-@export var health: int = 4
+@export var max_health: int = 3
 @export var max_attack_range: int = 3
 ## Represents dice rolled at specific distances. 
 ## Index 0 = Range 1, Index 1 = Range 2, etc.
