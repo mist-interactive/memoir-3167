@@ -2,8 +2,7 @@ class_name CardUI
 extends Control
 
 signal card_clicked(instance_id: int)
-
-const SIZE := Vector2(267.0, 358.0)
+const SIZE := Vector2(210.0, 325.0)
 const BASE_SCALE := Vector2(0.5, 0.5)
 const DISCARD_BASE_SCALE := Vector2(1.0, 1.0)
 
@@ -99,8 +98,7 @@ func _on_mouse_exited() -> void:
 		return _animate_discard_pile_hover(0)
 	z_index = 0
 	scale = BASE_SCALE
-	position.y += SIZE.y / 3
-	get_child(0).visible = false
+	position.y = position.y + SIZE.y / 10 
 	card_unhovered.emit()
 
 func _on_mouse_entered() -> void:
@@ -109,9 +107,8 @@ func _on_mouse_entered() -> void:
 	if is_discarded:
 		return _animate_discard_pile_hover(1)
 	z_index = 10
-	scale = scale * 1.5
-	position.y -= SIZE.y / 3
-	#get_child(0).visible = true
+	scale = BASE_SCALE * 1.35 
+	position.y = position.y - SIZE.y / 10 
 	var card_data: CommandCard = CardDatabase.get_card(_card_id)
 	if card_data:
 		card_hovered.emit(card_data.target_sector)
@@ -170,4 +167,5 @@ func _end_drag() -> void:
 				card.mouse_filter = Control.MOUSE_FILTER_STOP
 		if hand.has_method("_recalculate_layout"):
 			hand._recalculate_layout()
+	Network.Actions.play_card.rpc(_instance_id)
 	card_drag_ended.emit(self)
