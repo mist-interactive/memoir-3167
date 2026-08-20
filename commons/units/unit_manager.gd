@@ -7,9 +7,12 @@ var unit_grid: Dictionary[Vector2i, int] = {} # hex_coords --> id
 var units_by_id: Dictionary[int, Variant] = {} # id --> unit
 var map: HexGrid
 var battlefield: BattlefieldState
-var selected_unit_id: int = -1
+var selected_unit_id: int = -1:
+	set(unit_id):
+		unit_selected.emit(unit_id, selected_unit_id)
+		selected_unit_id = unit_id
 var selected_by_peer: enums.Side = enums.Side.NONE
-
+signal unit_selected(unit_id: int)
 func _init(initialState: BattlefieldState) -> void:
 	name = "UnitManager"
 	battlefield = initialState
