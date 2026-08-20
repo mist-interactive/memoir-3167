@@ -9,6 +9,9 @@ var map: HexGrid
 var battlefield: BattlefieldState
 var selected_unit_id: int = -1
 var selected_by_peer: enums.Side = enums.Side.NONE
+var selected_units_ids: Array[int]
+var moved_units_ids: Array[int]
+var attacked_units_ids: Array[int]
 
 func _init(initialState: BattlefieldState) -> void:
 	name = "UnitManager"

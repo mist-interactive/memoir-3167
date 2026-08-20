@@ -1,9 +1,6 @@
 extends Node
 class_name MatchNetwork
 
-signal server_hex_requested(peer_id: int, hex: Vector2i)
-signal hex_broadcast(side: enums.Side, hex: Vector2i)
-
 signal connect_match_requested
 @rpc("any_peer","call_remote")
 func connect_match() -> void:
@@ -41,20 +38,3 @@ func update_client_match_state(state: MatchState.STATE):
 	if !multiplayer.is_server():
 		return
 	update_client_match_change_requested.emit(multiplayer.get_remote_sender_id(), state)
-
-@rpc("any_peer", "call_remote", "reliable")
-func request_hex_selection(hex: Vector2i) -> void:
-	if !multiplayer.is_server():
-		return
-	print("hex selection requested")
-	var sender := multiplayer.get_remote_sender_id()
-	server_hex_requested.emit(sender, hex)
-
-@rpc("authority", "call_remote", "reliable")
-func receive_hex_broadcast(side: enums.Side, hex: Vector2i) -> void:
-	hex_broadcast.emit(side, hex)
-
-signal clear_hex_selections_requested
-@rpc("authority", "call_remote")
-func clear_hex_selections() -> void:
-	clear_hex_selections_requested.emit()
