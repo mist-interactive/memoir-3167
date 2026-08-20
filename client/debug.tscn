@@ -61,3 +61,12 @@ offset_top = 118.0
 offset_right = 367.0
 offset_bottom = 141.0
 text = "crt+d to toggle"
+
+[node name="Button" type="Button" parent="." unique_id=1001220325]
+offset_left = 32.0
+offset_top = 162.0
+offset_right = 103.0
+offset_bottom = 193.0
+text = "Confirm"
+
+[connection signal="button_down" from="Button" to="." method="_on_confirm"]

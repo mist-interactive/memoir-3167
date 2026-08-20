@@ -80,9 +80,48 @@ func isPlayerTurn(peer_id: int) -> bool:
 	var side: enums.Side = get_side(peer_id)
 	return matchState.current_turn == side;
 
+func validate_unit_selection(unit_id: int) -> bool:
+	var card_sector: enums.CardTargetSector = deckManager.get_card_target_sector()
+	match matchState.phase:
+		enums.TurnPhase.SELECT:
+			return false if !can_card_target_unit(card_sector, unit_id) else true
+		enums.TurnPhase.MOVE:
+			return false if !unit_manager.is_unit_selected(unit_id) || unit_manager.has_unit_moved(unit_id) else true
+		enums.TurnPhase.ATTACK:
+			return false  if !unit_manager.is_unit_selected(unit_id) || unit_manager.has_unit_attacked(unit_id) else true
+	return false
+
+func can_card_target_unit(card_sector, unit_id) -> bool:
+	var unit: UnitData = unit_manager.units_by_id[unit_id]
+	var hex_coord: Vector2i = unit.hex_coord
+	match card_sector:
+		enums.CardTargetSector.LEFT:
+			return battlefield.is_hex_in_map_sector(hex_coord, enums.MapSector.LEFT)
+		enums.CardTargetSector.CENTER:
+			return battlefield.is_hex_in_map_sector(hex_coord, enums.MapSector.CENTER)
+		enums.CardTargetSector.RIGHT:
+			return battlefield.is_hex_in_map_sector(hex_coord, enums.MapSector.RIGHT)
+		enums.CardTargetSector.LEFT_CENTER:
+			return battlefield.is_hex_in_map_sector(hex_coord, enums.MapSector.LEFT) || battlefield.is_hex_in_map_sector(hex_coord, enums.MapSector.CENTER)
+		enums.CardTargetSector.RIGHT_CENTER:
+			return battlefield.is_hex_in_map_sector(hex_coord, enums.MapSector.RIGHT) || battlefield.is_hex_in_map_sector(hex_coord, enums.MapSector.CENTER)
+		enums.CardTargetSector.ANY:
+			return true
+		enums.CardTargetSector.ALL:
+			return true
+	return false
+
 func isInProgress() ->bool:
 	return matchState.state == MatchState.STATE.IN_PROGRESS
 
-func process_hex_click(peer_id:int, hex: Vector2i) -> void:
-	for side in sides_peer_ids:
-		Network.Match.receive_hex_broadcast.rpc_id(sides_peer_ids[side], get_side(peer_id), hex)
+func go_next_phase(side: enums.Side) -> void:
+	if isPhase(enums.TurnPhase.ATTACK) || (isPhase(enums.TurnPhase.SELECT) && unit_manager.selected_units_ids.is_empty()):
+		matchState.phase = enums.TurnPhase.PLAY_CARD
+		matchState.current_turn = enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
+		unit_manager.selected_unit_id = -1
+	elif isPhase(enums.TurnPhase.SELECT):
+		matchState.phase = enums.TurnPhase.MOVE
+		unit_manager.selected_unit_id = -1
+	elif isPhase(enums.TurnPhase.MOVE):
+		matchState.phase = enums.TurnPhase.ATTACK
+		unit_manager.selected_unit_id = -1

@@ -25,23 +25,27 @@ func _handle_left_click() -> void:
 	# Check if selected hex is actually on the gameboard
 	var cell_source_id := map_ground_layer.get_cell_source_id(hex)
 	
-	#NOTE: Testing for UnitDatabase and pathfinding. Can be removed later! vvv
-	var unit_clicked: Unit = unit_manager.get_unit_at(hex)
-	if unit_clicked:
-		var unit_stats: UnitStats = UnitDatabase.get_stats(unit_clicked.type)
-		_print_unit_stats(unit_stats)
-		_highlight_unit_reachable_hexes(unit_stats, hex)
-	#NOTE: Testing for UnitDatabase and pathfinding. Can be removed later! vvv
-	
+	##NOTE: Testing for UnitDatabase and pathfinding. Can be removed later! vvv
+	#var unit_clicked: Unit = unit_manager.get_unit_at(hex)
+	#if unit_clicked:
+		#var unit_stats: UnitStats = UnitDatabase.get_stats(unit_clicked.type)
+		#_print_unit_stats(unit_stats)
+		#_highlight_unit_reachable_hexes(unit_stats, hex)
+	##NOTE: Testing for UnitDatabase and pathfinding. Can be removed later! vvv
+	#
 	if cell_source_id == -1 || !matchState.is_my_turn():
 		return
 	match matchState.phase:
+		enums.TurnPhase.SELECT:
+			var unit: Unit = unit_manager.get_unit_at(hex)
+			var is_my_unit: bool = unit && unit.owner_id == matchState.mySide
+			if is_my_unit:
+				Network.Actions.select_unit.rpc_id(1, unit_manager.get_unit_at(hex).uuid)
 		enums.TurnPhase.MOVE:
 			var unit: Unit = unit_manager.get_unit_at(hex)
 			var is_my_unit: bool = unit && unit.owner_id == matchState.mySide
 			if !is_my_unit && unit:
 				return
-			Network.Match.request_hex_selection.rpc_id(1, hex)
 			if is_my_unit:
 				Network.Actions.select_unit.rpc_id(1, unit_manager.get_unit_at(hex).uuid)
 			else:
@@ -51,7 +55,6 @@ func _handle_left_click() -> void:
 			if !unit:
 				return
 			var is_my_unit: bool = unit && unit.owner_id == matchState.mySide
-			Network.Match.request_hex_selection.rpc_id(1, hex)
 			if is_my_unit:
 				Network.Actions.select_unit.rpc_id(1, unit_manager.get_unit_at(hex).uuid)
 			else:

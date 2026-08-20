@@ -17,9 +17,7 @@ func _ready() -> void:
 	Network.Actions.move_unit_requested.connect(_on_move_unit)
 	Network.Actions.attack_unit_requested.connect(_on_attack_unit)
 	Network.Actions.draw_card_requested.connect(_on_draw_card)
-
-	#Network.Card.play_card_requested.connect(_on_play_card_requested)
-	Network.Match.server_hex_requested.connect(_on_server_hex_requested)
+	Network.Actions.continue_to_next_phase_requested.connect(_on_continue_to_next_phase_requested)
 
 func create_new_match(peerId1: int, peerId2: int, uuid1: int, uuid2: int) -> void:
 	print("Call to create new match")
@@ -99,6 +97,12 @@ func _on_client_match_state_change(peer_id: int, state: MatchState.STATE):
 	matchCtl.handle_client_state_change(peer_id, state)
 
 # player actions
+func _on_continue_to_next_phase_requested(peer_id: int) -> void:
+	var matchCtl: matchController = get_match(peer_id)
+	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id):
+		return
+	var side: enums.Side = matchCtl.get_side(peer_id)
+	matchCtl.go_next_phase(side)
 func _on_draw_hand(peer_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
 	#if !matchCtl.isInProgress() || !matchCtl.isPhase(enums.TurnPhase.DRAW_HAND):
@@ -118,13 +122,13 @@ func _on_play_card(peer_id: int, instance_id: int) -> void:
 	var side: enums.Side = matchCtl.get_side(peer_id)
 	print("Player requested to play a card ", peer_id, instance_id)
 	if matchCtl.deckManager.play_card(side, instance_id, matchCtl.sides_peer_ids):
-		matchCtl.matchState.phase = enums.TurnPhase.MOVE
+		matchCtl.matchState.phase = enums.TurnPhase.SELECT
 
 func _on_select_unit(peer_id: int, unit_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
 	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id):
 		return
-	if !matchCtl.isPhase(enums.TurnPhase.MOVE) && !matchCtl.isPhase(enums.TurnPhase.ATTACK):
+	if !matchCtl.validate_unit_selection(unit_id):
 		return
 	var side: enums.Side = matchCtl.get_side(peer_id)
 	matchCtl.unit_manager.select_unit(side, unit_id)
@@ -135,9 +139,8 @@ func _on_move_unit(peer_id: int, unit_id: int, destination: Vector2i) -> void:
 		return
 	var side: enums.Side = matchCtl.get_side(peer_id)
 	if matchCtl.unit_manager.move_unit_request(side, unit_id, destination):
-		matchCtl.matchState.phase = enums.TurnPhase.ATTACK
-		for peer in matchCtl.sides_peer_ids.values():
-			Network.Match.clear_hex_selections.rpc_id(peer)
+		if matchCtl.unit_manager.moved_units_ids.size() == matchCtl.unit_manager.selected_units_ids.size():
+			matchCtl.matchState.phase = enums.TurnPhase.ATTACK
 
 func _on_attack_unit(peer_id: int, unit_id: int, target_unit_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
@@ -145,10 +148,12 @@ func _on_attack_unit(peer_id: int, unit_id: int, target_unit_id: int) -> void:
 		return
 	var side: enums.Side = matchCtl.get_side(peer_id)
 	if matchCtl.unit_manager.attack_unit(side, unit_id, target_unit_id, matchCtl.sides_peer_ids):
-		matchCtl.matchState.phase = enums.TurnPhase.PLAY_CARD
-		matchCtl.matchState.current_turn = enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
-		for peer in matchCtl.sides_peer_ids.values():
-			Network.Match.clear_hex_selections.rpc_id(peer)
+		if matchCtl.unit_manager.attacked_units_ids.size() == matchCtl.unit_manager.selected_units_ids.size():
+			matchCtl.unit_manager.selected_units_ids.clear()
+			matchCtl.unit_manager.moved_units_ids.clear()
+			matchCtl.unit_manager.attacked_units_ids.clear()
+			matchCtl.matchState.phase = enums.TurnPhase.PLAY_CARD
+			matchCtl.matchState.current_turn = enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
 
 func _on_draw_card(peer_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
@@ -157,11 +162,3 @@ func _on_draw_card(peer_id: int) -> void:
 	var side: enums.Side = matchCtl.get_side(peer_id)
 	if matchCtl.deckManager.draw_card(side, matchCtl.sides_peer_ids):
 		matchCtl.matchState.phase = enums.TurnPhase.PLAY_CARD
-	
-func _on_server_hex_requested(peer_id: int, hex: Vector2i) -> void:
-	print("server hex requested by ", peer_id, " at ", hex)
-	if not peer_to_match.has(peer_id):
-		return
-	var matchId: int = peer_to_match[peer_id]
-	var match_controller = matches[matchId]
-	match_controller.process_hex_click(peer_id, hex)

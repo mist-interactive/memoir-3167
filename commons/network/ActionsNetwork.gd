@@ -47,3 +47,10 @@ func draw_card() ->void:
 	if !multiplayer.is_server():
 		return
 	draw_card_requested.emit(multiplayer.get_remote_sender_id())
+
+signal continue_to_next_phase_requested(peer_id: int)
+@rpc("any_peer", 'call_remote')
+func continue_to_next_phase() -> void:
+	if !multiplayer.is_server():
+		return
+	continue_to_next_phase_requested.emit(multiplayer.get_remote_sender_id())
