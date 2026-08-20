@@ -87,6 +87,8 @@ func parseAndLoadMap(map_name: String) -> bool:
 			var coord_arr: Array = elem.get("coord", [0, 0])
 			var coord := Vector2i(int(coord_arr[0]), int(coord_arr[1]))
 			var cell := HexCell.new(coord, elem.get("ground", 0), elem.get("feature", 0), elem.get("sector", 0))
+			print("Feature: ", HexCell.Feature.find_key(cell.feature))
+			print("Elevation: ", cell.elevation)
 			map.cells[coord] = cell
 
 	# 3. Parse Starting Unit Deployments
