@@ -30,6 +30,7 @@ func setup(new_owner: enums.Side, new_type: GameEnums.UnitType, new_uuid:int, ne
 	type = new_type
 	uuid = new_uuid
 	hex_coord = new_hex_coord
+	hit_point = UnitDatabase.get_stats(type).max_health
 	UnitVisuals.apply_unit_visuals(sprite, owner_id, type)
 
 func _animate_to_hex(target_coord: Vector2i) -> void:
