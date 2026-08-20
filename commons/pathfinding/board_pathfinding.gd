@@ -21,6 +21,23 @@ static func get_reachable_hexes(unit_type: enums.UnitType, start_coord: Vector2i
 		"came_from": came_from
 	}
 
+static func reconstruct_path(start: Vector2i, target: Vector2i, came_from: Dictionary) -> Array[Vector2i]:
+	var path: Array[Vector2i] = []
+	var current: Vector2i = target
+	while current != start:
+		path.append(current)
+		if not came_from.has(current):
+			push_error("Path broken. Hex not found in came_from.")
+			return []
+		current = came_from[current]
+	path.reverse()
+	return path
+
+static func get_unit_path(unit: Variant, start: Vector2i, destination: Vector2i, map: HexGrid, occupied_coords: Dictionary) -> Array[Vector2i]:
+	var reachable_data: Dictionary = get_reachable_hexes(unit.type, start, map, occupied_coords)
+	var path = reconstruct_path(start, destination, reachable_data.get("came_from", {}))
+	return path
+
 static func _neighbor_filter(current_hex: Vector2i, neighbor_hex: Vector2i, unit_type: enums.UnitType, map: HexGrid, occupied_coords: Dictionary) -> bool:
 	if not map.is_valid(neighbor_hex):
 		return false

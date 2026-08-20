@@ -96,7 +96,6 @@ func _handle_right_click() -> void:
 			if not _active_came_from.has(target_hex):
 				print("Can't reach hex: ", target_hex)
 				return
-			var path: Array[Vector2i] = _reconstruct_path(_selected_hex, target_hex, _active_came_from)
 			Network.Actions.move_unit.rpc_id(1, unit_manager.selected_unit_id, target_hex)
 			_clear_selection()
 		enums.TurnPhase.ATTACK:
@@ -110,18 +109,6 @@ func _handle_right_click() -> void:
 			if target_unit and target_unit.owner_id != matchState.mySide:
 				Network.Actions.attack_unit.rpc_id(1, unit_manager.selected_unit_id, target_unit.uuid)
 				_clear_selection()
-
-func _reconstruct_path(start: Vector2i, target: Vector2i, came_from: Dictionary) -> Array[Vector2i]:
-	var path: Array[Vector2i] = []
-	var current: Vector2i = target
-	while current != start:
-		path.append(current)
-		if not came_from.has(current):
-			push_error("Path broken. Hex not found in came_from.")
-			return []
-		current = came_from[current]
-	path.reverse()
-	return path
 
 func _on_card_hovered(card_target: enums.MapSector) -> void:
 	var hexes_to_highlight: Array[Vector2i] = []

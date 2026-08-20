@@ -54,3 +54,11 @@ func continue_to_next_phase() -> void:
 	if !multiplayer.is_server():
 		return
 	continue_to_next_phase_requested.emit(multiplayer.get_remote_sender_id())
+signal sync_unit_path_received()
+@rpc("authority", "call_remote", "reliable")
+func sync_unit_path(unit_id: int, path: Array[Vector2i]) -> void:
+	if multiplayer.is_server():
+		return
+	print(unit_id)
+	print(path)
+	sync_unit_path_received.emit(unit_id, path)
