@@ -33,7 +33,6 @@ static func _neighbor_filter(current_hex: Vector2i, neighbor_hex: Vector2i, unit
 static func _cost_fn(current_hex: Vector2i, neighbor_hex: Vector2i, unit_type: enums.UnitType, map: HexGrid, max_cost: float) -> float:
 	var terrain_type: int = map.get_cell(neighbor_hex).feature
 	if terrain_type == HexCell.Feature.NONE:
-		print("No terrain found on hex")
 		return 1.0
 	var movement_cost: float = map.TERRAIN_COST.get(terrain_type, 1.0)
 	if movement_cost < 0.0:
