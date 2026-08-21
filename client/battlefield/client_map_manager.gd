@@ -23,6 +23,8 @@ var sector_index: Dictionary[enums.MapSector, Array] = {
 var GROUND_TO_TILE: Dictionary = {}
 var FEATURE_TO_TILE: Dictionary = {}
 
+var map_offset: Vector2
+
 signal map_loaded
 
 func _ready() -> void:
@@ -46,8 +48,8 @@ func load_map(map_name: String) -> void:
 func _offset_map_to_hex_grid() -> void:
 	var visual_center = map_ground_layer.map_to_local(Vector2i.ZERO)
 	var math_center = HexGrid.offset_to_pixel(Vector2i.ZERO)
-	var offset = math_center - visual_center
-	map_visuals_node.position += offset
+	map_offset = math_center - visual_center
+	map_visuals_node.position += map_offset
 
 func _load_map_data_to_tilemap_layers() -> void:
 	map_ground_layer.clear()
