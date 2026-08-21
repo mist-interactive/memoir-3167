@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="CommandCard" format=3 uid="uid://cd1ufwi17ld33"]
+
+[ext_resource type="Texture2D" uid="uid://bu6dtbkxjbx8l" path="res://assets/card_textures/sector-orders/a2_recon_left.png" id="1_3hjf6"]
+[ext_resource type="Script" uid="uid://brv7b2q4f6ws5" path="res://commons/cards/command_card/CommandCard.gd" id="2_33u5v"]
+
+[resource]
+script = ExtResource("2_33u5v")
+id = "007"
+title_label = "RECON"
+description_label = "Issue an order to 1 unit
+on the Left Flank"
+description_label_bottom = "Order 1 Unit
+When drawing a new Command card, draw
+two, choose one and discard the other."
+target_sector = 1
+deck_quantity = 20
+card_art = ExtResource("1_3hjf6")
+metadata/_custom_type_script = "uid://brv7b2q4f6ws5"
