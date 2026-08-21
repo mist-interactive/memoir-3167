@@ -1,14 +1,18 @@
-[gd_resource type="Resource" script_class="CommandCard" format=3 uid="uid://c310vbve580s6"]
+[gd_resource type="Resource" script_class="CommandCard" format=3 uid="uid://d2jhch5pla0nn"]
 
-[ext_resource type="Script" uid="uid://brv7b2q4f6ws5" path="res://commons/cards/command_card/CommandCard.gd" id="1_5arxm"]
-[ext_resource type="Texture2D" uid="uid://bhmmuk70lftxd" path="res://assets/card_textures/texture003.png" id="1_u6fa0"]
+[ext_resource type="Texture2D" uid="uid://k0ytxe6cvixe" path="res://assets/card_textures/sector-orders/a1_pincer.png" id="1_yo210"]
+[ext_resource type="Script" uid="uid://brv7b2q4f6ws5" path="res://commons/cards/command_card/CommandCard.gd" id="2_mjfqd"]
 
 [resource]
-script = ExtResource("1_5arxm")
+script = ExtResource("2_mjfqd")
 id = "002"
-title_label = "card 002"
-description_label = "this is card 002
-target right"
-target_sector = 4
-card_art = ExtResource("1_u6fa0")
+title_label = "PINCER MOVE"
+description_label = "Issue an order to 2 units on the Left
+Flank and 2 units on the Right Flank	"
+description_label_bottom = "Order 2 Units
+on each flank"
+target_sector = 5
+deck_quantity = 20
+target_unit_limit = 2
+card_art = ExtResource("1_yo210")
 metadata/_custom_type_script = "uid://brv7b2q4f6ws5"

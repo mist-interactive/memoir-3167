@@ -1,14 +1,17 @@
-[gd_resource type="Resource" script_class="CommandCard" format=3 uid="uid://d2jhch5pla0nn"]
+[gd_resource type="Resource" script_class="CommandCard" format=3 uid="uid://c310vbve580s6"]
 
-[ext_resource type="Script" uid="uid://brv7b2q4f6ws5" path="res://commons/cards/command_card/CommandCard.gd" id="1_to8c2"]
-[ext_resource type="Texture2D" uid="uid://bhmmuk70lftxd" path="res://assets/card_textures/texture003.png" id="1_yo210"]
+[ext_resource type="Texture2D" uid="uid://c50dmmtg1gel3" path="res://assets/card_textures/sector-orders/a2_assault_center.png" id="1_yo210"]
+[ext_resource type="Script" uid="uid://brv7b2q4f6ws5" path="res://commons/cards/command_card/CommandCard.gd" id="2_mjfqd"]
 
 [resource]
-script = ExtResource("1_to8c2")
+script = ExtResource("2_mjfqd")
 id = "003"
-title_label = "card 003"
-description_label = "this is card 003
-Center"
+title_label = "ASSAULT"
+description_label = "Issue an order to all unit
+in the Center"
+description_label_bottom = "Order ALL Units"
 target_sector = 2
+deck_quantity = 20
+target_unit_limit = 999
 card_art = ExtResource("1_yo210")
 metadata/_custom_type_script = "uid://brv7b2q4f6ws5"
