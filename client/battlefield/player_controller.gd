@@ -19,8 +19,10 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		print("Handling left click")
 		_handle_left_click()
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
+		print("Handling right click")
 		_handle_right_click()
 
 func _handle_left_click() -> void:
@@ -39,27 +41,31 @@ func _handle_left_click() -> void:
 		var path_data = BoardPathfinding.get_reachable_hexes(unit_stats.type, _selected_hex, battlefieldState.map, unit_manager.get_occupied_coords())
 		_active_came_from = path_data.get("came_from", {})
 		_highlight_unit_reachable_hexes(path_data, _selected_hex)
-		if matchState.is_my_turn():
+		# This will be fixed in the future. Now this is here to fix merge conflicts.
+		if matchState.is_my_turn() && matchState.phase == enums.TurnPhase.SELECT || matchState.phase == enums.TurnPhase.MOVE || matchState.phase == enums.TurnPhase.ATTACK:
 			var is_my_unit: bool = unit.owner_id == matchState.mySide
 			if is_my_unit:
 				Network.Actions.select_unit.rpc_id(1, unit_manager.get_unit_at(_selected_hex).uuid)
+		
 	else:
 		_clear_selection()
 
 func _handle_right_click() -> void:
-	if _selected_hex == Vector2i(-1, -1) or not matchState.is_my_turn():
+	if _selected_unit == null or not matchState.is_my_turn():
+		print("No unit selected or not my turn")
 		return
 	var click_position: Vector2 = map_ground_layer.get_global_mouse_position()
 	var target_hex: Vector2i = map_ground_layer.local_to_map(map_ground_layer.to_local(click_position))
 	# Check if selected hex is actually on the gameboard
 	var cell_source_id := map_ground_layer.get_cell_source_id(target_hex)
 	if cell_source_id == -1:
+		print("Wrong cell")
 		return
+	print("Phase: ", matchState.phase)
+	print("Move phase: ", enums.TurnPhase.MOVE)
 	match matchState.phase:
 		enums.TurnPhase.MOVE:
-			if not _selected_unit:
-				print("No unit selected")
-				return
+			print("Move phase")
 			var is_my_unit: bool = _selected_unit && _selected_unit.owner_id == matchState.mySide
 			if !is_my_unit:
 				print("Not my unit selected")
