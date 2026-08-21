@@ -10,6 +10,7 @@ enum Side
 
 enum UnitType
 {
+	ANY,
 	INFANTRY,
 	TANK,
 	ARTILLERY,
@@ -43,8 +44,9 @@ enum CardTargetSector {
 	# Composite Card Target Sectors (Combined Bits)
 	LEFT_CENTER  = LEFT | CENTER,   # 3 (001 | 010 = 011)
 	RIGHT_CENTER = CENTER | RIGHT,  # 6 (010 | 100 = 110)
+	LEFT_RIGHT = LEFT | RIGHT,      # 5 (101)
 	ANY          = LEFT | CENTER | RIGHT, # 7 (111)
-	ALL          = ANY                    # 7 (111)
+	ALL          = 8
 }
 
 enum TurnPhase
