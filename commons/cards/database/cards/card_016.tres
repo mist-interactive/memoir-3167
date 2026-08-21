@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CommandCard" format=3 uid="uid://dwws2w08mefvr"]
+
+[ext_resource type="Texture2D" uid="uid://bvp8scfqi1i8b" path="res://assets/card_textures/sector-orders/a5_probe_center.png" id="1_52rum"]
+[ext_resource type="Script" uid="uid://brv7b2q4f6ws5" path="res://commons/cards/command_card/CommandCard.gd" id="2_st681"]
+
+[resource]
+script = ExtResource("2_st681")
+id = "016"
+title_label = "PROBE"
+description_label = "Issue an order to 2 units
+in the Center"
+description_label_bottom = "Order 2 Units"
+target_sector = 2
+deck_quantity = 20
+target_unit_limit = 2
+card_art = ExtResource("1_52rum")
+metadata/_custom_type_script = "uid://brv7b2q4f6ws5"

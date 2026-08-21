@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CommandCard" format=3 uid="uid://ueu0pvn2mpwd"]
+
+[ext_resource type="Texture2D" uid="uid://vgleurc45wyk" path="res://assets/card_textures/aAAA_card_back.png" id="1_24gkk"]
+[ext_resource type="Script" uid="uid://brv7b2q4f6ws5" path="res://commons/cards/command_card/CommandCard.gd" id="2_8f161"]
+
+[resource]
+script = ExtResource("2_8f161")
+id = "000"
+title_label = "flipside"
+deck_quantity = 0
+target_unit_limit = 0
+card_art = ExtResource("1_24gkk")
+metadata/_custom_type_script = "uid://brv7b2q4f6ws5"
