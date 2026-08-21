@@ -56,3 +56,13 @@ func get_game_state_txt(state: MatchState.STATE) -> String:
 		MatchState.STATE.ENDED:
 			return "Ended"
 	return "Unknown"
+
+
+func _on_confirm() -> void:
+	match matchState.phase:
+		enums.TurnPhase.SELECT:
+			Network.Actions.continue_to_next_phase.rpc_id(1)
+		enums.TurnPhase.MOVE:
+			Network.Actions.continue_to_next_phase.rpc_id(1)
+		enums.TurnPhase.ATTACK:
+			Network.Actions.continue_to_next_phase.rpc_id(1)

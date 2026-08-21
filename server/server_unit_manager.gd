@@ -7,6 +7,15 @@ var isDirty: bool = true
 func _init(initialState: BattlefieldState) -> void:
 	super(initialState)
 
+func is_unit_selected(unit_id: int) -> bool:
+	return selected_units_ids.has(unit_id)
+	
+func has_unit_moved(unit_id: int) -> bool:
+	return moved_units_ids.has(unit_id)
+
+func has_unit_attacked(unit_id: int) -> bool:
+	return attacked_units_ids.has(unit_id)
+
 func _sync_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 	for uuid in units_by_id:
 		var unit: UnitData = units_by_id[uuid]
@@ -16,6 +25,9 @@ func _sync_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 			var snapshot: Dictionary = {
 				"selected_unit_id": selected_unit_id,
 				"selected_by_peer": selected_by_peer, 
+				"selected_units_ids" : selected_units_ids,
+				"moved_units_ids": moved_units_ids,
+				"attacked_units_ids": attacked_units_ids
 				}
 			Network.Units.sync_all.rpc_id(peer_id, snapshot)
 		isDirty = false
@@ -31,7 +43,8 @@ func select_unit(owner: enums.Side, unit_id: int) -> bool:
 	
 	selected_unit_id = unit_id
 	selected_by_peer = owner
-	
+	if !selected_units_ids.has(unit_id):
+		selected_units_ids.append(unit_id)
 	isDirty = true
 	return true
 	
@@ -66,6 +79,7 @@ func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i) 
 	selected_unit_id = -1
 	selected_by_peer = enums.Side.NONE
 	isDirty = true
+	moved_units_ids.append(unit_id)
 	return true
 
 func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer_ids: Dictionary[enums.Side, int]) -> bool:
@@ -87,6 +101,7 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	selected_unit_id = -1
 	selected_by_peer = enums.Side.NONE
 	isDirty = true
+	attacked_units_ids.append(unit_id)
 	return true
 
 func generate_server_unit_id() -> int:
