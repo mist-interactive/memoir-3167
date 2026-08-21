@@ -1,6 +1,37 @@
 class_name BoardPathfinding
 extends RefCounted
 
+const BLOCKING_TERRAINS: Array[int] = [
+	HexCell.Feature.FOREST,
+	HexCell.Feature.HILL,
+	HexCell.Feature.MOUNTAIN,
+	HexCell.Feature.ROCKS,
+]
+
+static func get_line_of_sight(from_hex: Vector2i, to_hex: Vector2i, map: HexGrid, occupied_coords: Dictionary) -> bool:
+	if from_hex == to_hex:
+		return true
+	var line: Array[Vector2i] = HexGrid._hex_line(from_hex, to_hex)
+	for coord in line:
+		if coord == from_hex:
+			continue
+		if coord == to_hex:
+			return true
+		if occupied_coords.has(coord):
+			return false
+		var cell = map.get_cell(coord)
+		if !cell:
+			return false
+		if BLOCKING_TERRAINS.has(cell.feature):
+			return false
+	return true
+
+static func get_distance_between_hexes(from_hex: Vector2i, to_hex: Vector2i, map: HexGrid) -> int:
+	if from_hex == to_hex:
+		return 0
+	var distance = map.distance(from_hex, to_hex)
+	return distance
+
 static func get_reachable_hexes(unit_type: enums.UnitType, start_coord: Vector2i, map: HexGrid, occupied_coords: Dictionary) -> Dictionary:
 	var stats: UnitStats = UnitDatabase.get_stats(unit_type)
 	if !stats:
