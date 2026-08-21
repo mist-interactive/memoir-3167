@@ -13,6 +13,8 @@ extends Node2D
 		if not _is_initialized:
 			position = HexGrid.offset_to_pixel(new_coord)
 			_is_initialized = true
+		elif not _move_tween or not _move_tween.is_running():
+			position = HexGrid.offset_to_pixel(new_coord)
 
 var uuid: int = -1
 var type: enums.UnitType = enums.UnitType.INFANTRY
@@ -54,8 +56,7 @@ func sync_with_snapshot(snapshot: Dictionary) -> void:
 	self.type = snapshot.type
 	self.owner_id = snapshot.owner_id
 	self.hit_point = snapshot.hit_point
-	if not _move_tween or not _move_tween.is_running():
-		self.hex_coord = snapshot.hex_coord
+	self.hex_coord = snapshot.hex_coord
 
 
 func _exit_tree() -> void:

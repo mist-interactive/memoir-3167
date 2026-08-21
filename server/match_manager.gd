@@ -139,8 +139,6 @@ func _on_move_unit(peer_id: int, unit_id: int, destination: Vector2i) -> void:
 		return
 	var side: enums.Side = matchCtl.get_side(peer_id)
 	if matchCtl.unit_manager.move_unit_request(side, unit_id, destination, matchCtl.sides_peer_ids):
-		for peer in matchCtl.sides_peer_ids.values():
-			Network.Match.clear_hex_selections.rpc_id(peer)
 		if matchCtl.unit_manager.moved_units_ids.size() == matchCtl.unit_manager.selected_units_ids.size():
 			matchCtl.matchState.phase = enums.TurnPhase.ATTACK
 
