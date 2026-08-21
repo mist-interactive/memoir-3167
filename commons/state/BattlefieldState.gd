@@ -66,10 +66,6 @@ func parseAndLoadMap(map_name: String) -> bool:
 		return false
 
 	# Clear previous map state
-	var map_width = int(parsed_data.get("width"))
-	var map_height = int(parsed_data.get("height"))
-	map = HexGrid.new(map_width, map_height)
-	map.cells.clear()
 	units_to_spawn_player_1.clear()
 	units_to_spawn_player_2.clear()
 
@@ -79,15 +75,8 @@ func parseAndLoadMap(map_name: String) -> bool:
 		right_sector_min = int(parsed_data["sectors"].get("right_sector_min", 0))
 
 	# 2. Parse Hexes & Determine Sector Bit Flags
-	if "hexes" in parsed_data and parsed_data["hexes"] is Array:
-		for elem in parsed_data["hexes"]:
-			if not elem is Dictionary:
-				continue
-			
-			var coord_arr: Array = elem.get("coord", [0, 0])
-			var coord := Vector2i(int(coord_arr[0]), int(coord_arr[1]))
-			var cell := HexCell.new(coord, elem.get("ground", 0), elem.get("feature", 0), elem.get("sector", 0))
-			map.cells[coord] = cell
+	if "hex_grid" in parsed_data and parsed_data["hex_grid"] is Dictionary:
+		map = HexGrid.deserialize(parsed_data["hex_grid"])
 
 	# 3. Parse Starting Unit Deployments
 	if "units" in parsed_data and parsed_data["units"] is Array:
