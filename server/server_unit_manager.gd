@@ -60,7 +60,7 @@ func deselect_unit(owner: enums.Side) -> bool:
 	isDirty = true
 	return true
 	
-func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i) -> bool:
+func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, sides_peer_ids: Dictionary[enums.Side, int]) -> bool:
 	var unit: UnitData = get_unit_by_id(unit_id)
 	if unit == null || unit.owner_id != owner:
 		return false
@@ -71,11 +71,13 @@ func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i) 
 	## Check movement rules.
 	#if !move_rules(unit, destination):
 		#return false
-
+	
+	var unit_path = BoardPathfinding.get_unit_path(unit, unit.hex_coord, destination, battlefield.map, get_occupied_coords())
 	var old_coord := unit.hex_coord
 	if !move_unit(unit, old_coord, destination):
 		return false
-
+	for peer_id in sides_peer_ids.values():
+		Network.Actions.sync_unit_path.rpc_id(peer_id, unit_id, unit_path)
 	selected_unit_id = -1
 	selected_by_peer = enums.Side.NONE
 	isDirty = true
