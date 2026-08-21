@@ -56,11 +56,11 @@ sources/0 = SubResource("TileSetAtlasSource_upguu")
 script = ExtResource("1_87gq2")
 unit_container = NodePath("UnitContainer")
 
-[node name="MapBaker" parent="." unique_id=621948442 node_paths=PackedStringArray("MapGroundLayer", "MapFeatureLayer", "UnitContainer") instance=ExtResource("2_lchce")]
-MapGroundLayer = NodePath("../MapGround")
-MapFeatureLayer = NodePath("../MapFeature")
-UnitContainer = NodePath("../UnitContainer")
-MapName = "map"
+[node name="MapBaker" parent="." unique_id=621948442 node_paths=PackedStringArray("map_ground_layer", "map_feature_layer", "unit_container") instance=ExtResource("2_lchce")]
+map_ground_layer = NodePath("../MapGround")
+map_feature_layer = NodePath("../MapFeature")
+unit_container = NodePath("../UnitContainer")
+map_name = "map"
 
 [node name="MapManager" type="Node" parent="." unique_id=225508304 node_paths=PackedStringArray("map_ground_layer", "map_features_layer", "unit_container", "left_sector_divider", "right_sector_divider")]
 script = ExtResource("3_4xhwn")
