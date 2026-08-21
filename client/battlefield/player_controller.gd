@@ -56,11 +56,6 @@ func _handle_right_click() -> void:
 	if cell_source_id == -1:
 		return
 	match matchState.phase:
-		enums.TurnPhase.SELECT:
-			var unit: Unit = unit_manager.get_unit_at(hex)
-			var is_my_unit: bool = unit && unit.owner_id == matchState.mySide
-			if is_my_unit:
-				Network.Actions.select_unit.rpc_id(1, unit_manager.get_unit_at(hex).uuid)
 		enums.TurnPhase.MOVE:
 			if not _selected_unit:
 				print("No unit selected")
