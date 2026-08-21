@@ -5,7 +5,8 @@ class_name PlayerController
 @onready var matchState: MatchState = $"../../matchState"
 @export var map_ground_layer: TileMapLayer
 @export var map_feature_layer: TileMapLayer
-@export var map_highlight_layer: TileMapLayer
+@export var unit_selection_highlight_layer: TileMapLayer
+@export var unit_path_highlight_layer: TileMapLayer
 @export var sector_highlight_layer: TileMapLayer
 @onready var unit_manager: ClientUnitManager = $"../../UnitManager"
 
@@ -118,10 +119,10 @@ func _clear_selection() -> void:
 	_selected_hex = Vector2i(-1, -1)
 	_selected_unit = null
 	_active_came_from.clear()
-	map_highlight_layer.clear()
+	unit_path_highlight_layer.clear()
 
 func _highlight_unit_reachable_hexes(path_data: Dictionary, hex: Vector2i) -> void:
-	map_highlight_layer.clear()
+	unit_path_highlight_layer.clear()
 	var reachable_costs: Dictionary = path_data.get("costs", {})
 	for coord in reachable_costs.keys():
-		map_highlight_layer.highlight_cell(coord)
+		unit_path_highlight_layer.highlight_cell(coord)
