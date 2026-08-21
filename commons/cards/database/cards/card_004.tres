@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="CommandCard" format=3 uid="uid://cgp2lr8ennlss"]
+
+[ext_resource type="Texture2D" uid="uid://covfhopsajgfm" path="res://assets/card_textures/sector-orders/a2_assault_left.png" id="1_du5ka"]
+[ext_resource type="Script" uid="uid://brv7b2q4f6ws5" path="res://commons/cards/command_card/CommandCard.gd" id="2_ttq3h"]
+
+[resource]
+script = ExtResource("2_ttq3h")
+id = "004"
+title_label = "ASSAULT"
+description_label = "Issue an order to all units
+on the Left Flank"
+description_label_bottom = "Order ALL Units"
+target_sector = 1
+deck_quantity = 20
+target_unit_limit = 999
+card_art = ExtResource("1_du5ka")
+metadata/_custom_type_script = "uid://brv7b2q4f6ws5"

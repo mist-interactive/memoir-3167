@@ -9,6 +9,7 @@ const DISCARD_BASE_SCALE := Vector2(1.0, 1.0)
 
 @export var title_label: Label
 @export var description_label: Label
+@export var description_label_bottom: Label
 @onready var background_texture: TextureRect
 
 signal card_drag_started(card: CardUI)
@@ -32,6 +33,7 @@ func _ready() -> void:
 func setup_visuals(instance_id: int, id: String) -> void:
 	_instance_id = instance_id
 	_card_id = id
+	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 	
 	var card_data: CommandCard = CardDatabase.get_card(id)
 	if not card_data:
@@ -40,10 +42,11 @@ func setup_visuals(instance_id: int, id: String) -> void:
 
 	title_label.text = card_data.title_label
 	description_label.text = card_data.description_label
+	description_label_bottom.text = card_data.description_label_bottom
 	get_child(1).texture = card_data.card_art
 
 func setup_enemy_visuals(instance_id: int) -> void:
-	var card_data: CommandCard = CardDatabase.get_card("001")
+	var card_data: CommandCard = CardDatabase.get_card("000")
 	_instance_id = instance_id
 	get_child(1).texture = card_data.card_art
 
@@ -108,7 +111,7 @@ func _on_mouse_entered() -> void:
 	z_index = 10
 	scale = scale * 1.5
 	position.y -= SIZE.y / 3
-	get_child(0).visible = true
+	#get_child(0).visible = true
 	var card_data: CommandCard = CardDatabase.get_card(_card_id)
 	if card_data:
 		card_hovered.emit(card_data.target_sector)

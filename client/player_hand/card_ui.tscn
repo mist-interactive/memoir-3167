@@ -12,9 +12,9 @@ shadow_color = Color(0.0627451, 0.0627451, 0.0627451, 0.42352942)
 shadow_size = 1
 shadow_offset = Vector2(-4, 24.36)
 
-[node name="CardUI" type="MarginContainer" unique_id=1384061792 node_paths=PackedStringArray("title_label", "description_label")]
-custom_minimum_size = Vector2(267, 358)
-custom_maximum_size = Vector2(267, 358)
+[node name="CardUI" type="MarginContainer" unique_id=1384061792 node_paths=PackedStringArray("title_label", "description_label", "description_label_bottom")]
+custom_minimum_size = Vector2(210, 325)
+custom_maximum_size = Vector2(210, 325)
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -29,6 +29,7 @@ pivot_offset = Vector2(133, 179)
 script = ExtResource("1_ii6mt")
 title_label = NodePath("title_label")
 description_label = NodePath("description_label")
+description_label_bottom = NodePath("description_label_bottom")
 
 [node name="ReferenceRect" type="Panel" parent="." unique_id=1347091456]
 visible = false
@@ -36,17 +37,30 @@ layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ii6mt")
 
 [node name="background_texture" type="TextureRect" parent="." unique_id=1947103247]
+texture_filter = 4
+texture_repeat = 2
 layout_mode = 2
 expand_mode = 1
 stretch_mode = 5
 
 [node name="title_label" type="Label" parent="." unique_id=174640353]
+visible = false
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(0, 165)
 layout_mode = 2
 autowrap_mode = 3
 
 [node name="description_label" type="Label" parent="." unique_id=248198948]
+visible = false
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(0, 87.975)
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 2
+autowrap_mode = 3
+
+[node name="description_label_bottom" type="Label" parent="." unique_id=1097639137]
+visible = false
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(0, 87.975)
 layout_mode = 2
