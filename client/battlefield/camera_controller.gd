@@ -10,7 +10,10 @@ extends Camera2D
 
 @export var map_manager: ClientMapManager
 
-var IS_MIDDLEMOUSE_DOWN: bool = false
+@export var horizontal_padding_tiles: int = 2
+@export var vertical_padding_tiles: int = 3
+
+var is_middlemouse_down: bool = false
 
 func _ready():
 	set_process_unhandled_input(false)
@@ -20,7 +23,8 @@ func _ready():
 		push_error("ClientMapManager reference missing from Camera2D")
 
 func _on_map_loaded() -> void:
-	setup_camera_limits()
+	_setup_camera_limits()
+	_set_zoom_and_center_camera_on_map()
 	set_process_unhandled_input(true)
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -37,10 +41,10 @@ func _unhandled_input(event: InputEvent) -> void:
 		# Handle middle mouse button pressed state
 		if event.button_index == MouseButton.MOUSE_BUTTON_MIDDLE:
 			if event.is_pressed():
-				IS_MIDDLEMOUSE_DOWN = true
+				is_middlemouse_down = true
 			if event.is_released():
-				IS_MIDDLEMOUSE_DOWN = false
-	if event is InputEventMouseMotion and IS_MIDDLEMOUSE_DOWN:
+				is_middlemouse_down = false
+	if event is InputEventMouseMotion and is_middlemouse_down:
 		position -= event.relative / zoom
 	pass
 		
@@ -55,8 +59,8 @@ func _process(delta: float) -> void:
 		position.x = clamp(position.x, limit_left + half_width, limit_right - half_width)
 		position.y = clamp(position.y, limit_top + half_height, limit_bottom - half_height)
 	pass	
-		
-func setup_camera_limits() -> void:
+
+func _setup_camera_limits() -> void:
 	if target_map == null:
 		push_error("Camera target_map is not assigned")
 		return
@@ -64,9 +68,24 @@ func setup_camera_limits() -> void:
 	var tile_size: Vector2i = target_map.tile_set.tile_size
 	var top_left_center := target_map.map_to_local(map_rect.position)
 	var bottom_right_center := target_map.map_to_local(map_rect.end - Vector2i(1, 1))
-	
-	limit_left = int(top_left_center.x - (tile_size.x / 2))
-	limit_right = int(bottom_right_center.x + (tile_size.x / 2))
-	limit_top = int(top_left_center.y - (tile_size.y / 2))
-	limit_bottom = int(bottom_right_center.y + (tile_size.y / 2))
+
+	limit_left = int(top_left_center.x - (tile_size.x * horizontal_padding_tiles)) + map_manager.map_offset.x
+	limit_right = int(bottom_right_center.x + (tile_size.x * horizontal_padding_tiles)) + map_manager.map_offset.x
+	limit_top = int(top_left_center.y - (tile_size.y * vertical_padding_tiles)) + map_manager.map_offset.y
+	limit_bottom = int(bottom_right_center.y + (tile_size.y * vertical_padding_tiles)) + map_manager.map_offset.y
+	pass
+
+func _set_zoom_and_center_camera_on_map() -> void:
+	var tile_size: Vector2i = target_map.tile_set.tile_size
+	var map_width_px = limit_right - limit_left
+	var map_height_px = limit_bottom - limit_top
+	var viewport_size := get_viewport_rect().size
+	var x_ratio = viewport_size.x / map_width_px
+	var y_ratio = viewport_size.y / map_height_px
+	var fit_ratio = min(x_ratio, y_ratio)
+	min_zoom = fit_ratio
+	zoom.x = min_zoom
+	zoom.y = min_zoom
+	position.x = (limit_left + limit_right) / 2
+	position.y = (limit_top + limit_bottom) / 2
 	pass
