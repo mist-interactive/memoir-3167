@@ -5,24 +5,30 @@ class_name PlayerController
 @onready var matchState: MatchState = $"../../matchState"
 @export var map_ground_layer: TileMapLayer
 @export var map_feature_layer: TileMapLayer
-@export var map_highlight_layer: TileMapLayer
+@export var unit_selection_highlight_layer: TileMapLayer
+@export var unit_path_highlight_layer: TileMapLayer
+@export var hover_highlight_layer: TileMapLayer
+@export var action_highlight_layer: TileMapLayer
 @export var sector_highlight_layer: TileMapLayer
 @onready var unit_manager: ClientUnitManager = $"../../UnitManager"
 
 var is_my_turn: bool = false
 var _active_came_from: Dictionary = {}
-var _selected_hex: Vector2i = Vector2i(-1, -1)
-var _selected_unit: Unit = null
+var _clicked_hex: Vector2i = Vector2i(INT32_MAX, INT32_MAX)
+var _clicked_unit: Unit = null
+var _hovered_hex: Vector2i = Vector2i(INT32_MAX, INT32_MAX)
+var _hovered_unit: Unit = null
 
 func _ready() -> void:
 	pass
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		print("Handling left click")
 		_handle_left_click()
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_RIGHT:
 		_handle_right_click()
+	elif event is InputEventMouseMotion:
+		_handle_mouse_motion()
 
 func _handle_left_click() -> void:
 	var click_position: Vector2 = map_ground_layer.get_global_mouse_position()
@@ -32,40 +38,39 @@ func _handle_left_click() -> void:
 	if cell_source_id == -1:
 		_clear_selection()
 		return
+	_clicked_hex = hex
 	var unit: Unit = unit_manager.get_unit_at(hex)
 	if unit:
-		_selected_hex = hex
-		_selected_unit = unit
-		var unit_stats: UnitStats = UnitDatabase.get_stats(_selected_unit.type)
-		var path_data = BoardPathfinding.get_reachable_hexes(unit_stats.type, _selected_hex, battlefieldState.map, unit_manager.get_occupied_coords())
-		_active_came_from = path_data.get("came_from", {})
-		_highlight_unit_reachable_hexes(path_data, _selected_hex)
+		_clicked_unit = unit
+		if matchState.phase == enums.TurnPhase.MOVE || matchState.phase == enums.TurnPhase.PLAY_CARD:
+			var unit_stats: UnitStats = UnitDatabase.get_stats(_clicked_unit.type)
+			var path_data = BoardPathfinding.get_reachable_hexes(unit_stats.type, _clicked_hex, battlefieldState.map, unit_manager.get_occupied_coords())
+			_active_came_from = path_data.get("came_from", {})
+			if _hovered_unit && _clicked_unit.uuid == _hovered_unit.uuid:
+				hover_highlight_layer.clear()
+			_highlight_unit_reachable_hexes(path_data, _clicked_hex)
 		if matchState.is_my_turn() && (matchState.phase == enums.TurnPhase.SELECT || matchState.phase == enums.TurnPhase.MOVE || matchState.phase == enums.TurnPhase.ATTACK):
 			var is_my_unit: bool = unit.owner_id == matchState.mySide
 			if is_my_unit:
-				Network.Actions.select_unit.rpc_id(1, unit_manager.get_unit_at(_selected_hex).uuid)
+				Network.Actions.select_unit.rpc_id(1, unit_manager.get_unit_at(_clicked_hex).uuid)
 	else:
 		_clear_selection()
 
 func _handle_right_click() -> void:
-	if _selected_unit == null or not matchState.is_my_turn():
-		print("No unit selected or not my turn")
+	if _clicked_unit == null or not matchState.is_my_turn():
+		print("No unit clicked or not my turn")
 		return
 	var click_position: Vector2 = map_ground_layer.get_global_mouse_position()
 	var target_hex: Vector2i = map_ground_layer.local_to_map(map_ground_layer.to_local(click_position))
 	# Check if selected hex is actually on the gameboard
 	var cell_source_id := map_ground_layer.get_cell_source_id(target_hex)
 	if cell_source_id == -1:
-		print("Wrong cell")
 		return
-	print("Phase: ", matchState.phase)
-	print("Move phase: ", enums.TurnPhase.MOVE)
 	match matchState.phase:
 		enums.TurnPhase.MOVE:
-			print("Move phase")
-			var is_my_unit: bool = _selected_unit && _selected_unit.owner_id == matchState.mySide
+			var is_my_unit: bool = _clicked_unit && _clicked_unit.owner_id == matchState.mySide
 			if !is_my_unit:
-				print("Not my unit selected")
+				print("Not my unit clicked")
 				return
 			if not _active_came_from.has(target_hex):
 				print("Can't reach hex: ", target_hex)
@@ -73,16 +78,36 @@ func _handle_right_click() -> void:
 			Network.Actions.move_unit.rpc_id(1, unit_manager.selected_unit_id, target_hex)
 			_clear_selection()
 		enums.TurnPhase.ATTACK:
-			if not _selected_unit:
+			if not _clicked_unit:
 				print("No unit selected")
 				return
-			var is_my_unit: bool = _selected_unit && _selected_unit.owner_id == matchState.mySide
+			var is_my_unit: bool = _clicked_unit && _clicked_unit.owner_id == matchState.mySide
 			if not is_my_unit:
 				return
 			var target_unit: Unit = unit_manager.get_unit_at(target_hex)
 			if target_unit and target_unit.owner_id != matchState.mySide:
 				Network.Actions.attack_unit.rpc_id(1, unit_manager.selected_unit_id, target_unit.uuid)
 				_clear_selection()
+
+func _handle_mouse_motion() -> void:
+	var mouse_position: Vector2 = map_ground_layer.get_global_mouse_position()
+	_hovered_hex = map_ground_layer.local_to_map(map_ground_layer.to_local(mouse_position))
+	if not battlefieldState.map.get_cell(_hovered_hex):
+		_hovered_hex = Vector2i(INT32_MAX, INT32_MAX)
+		hover_highlight_layer.clear()
+	var unit: Unit = unit_manager.get_unit_at(_hovered_hex)
+	if !unit:
+		_hovered_unit = null
+		hover_highlight_layer.clear()
+		hover_highlight_layer.modulate.a = 0.20
+		hover_highlight_layer.highlight_cell(_hovered_hex)
+		return
+	_hovered_unit = unit
+	if _clicked_unit && _clicked_unit.uuid == unit.uuid:
+		hover_highlight_layer.clear()
+		return
+	hover_highlight_layer.modulate.a = 0.50
+	_highlight_hovered_unit_reachable_hexes(unit)
 
 func _on_card_hovered(card_target: enums.MapSector) -> void:
 	var hexes_to_highlight: Array[Vector2i] = []
@@ -115,13 +140,22 @@ func _print_unit_stats(unit_stats: UnitStats) -> void:
 	
 
 func _clear_selection() -> void:
-	_selected_hex = Vector2i(-1, -1)
-	_selected_unit = null
+	_clicked_hex = Vector2i(-1, -1)
+	_clicked_unit = null
 	_active_came_from.clear()
-	map_highlight_layer.clear()
+	unit_path_highlight_layer.clear()
 
 func _highlight_unit_reachable_hexes(path_data: Dictionary, hex: Vector2i) -> void:
-	map_highlight_layer.clear()
+	unit_path_highlight_layer.clear()
 	var reachable_costs: Dictionary = path_data.get("costs", {})
 	for coord in reachable_costs.keys():
-		map_highlight_layer.highlight_cell(coord)
+		unit_path_highlight_layer.highlight_cell(coord)
+
+func _highlight_hovered_unit_reachable_hexes(unit: Unit) -> void:
+	var unit_stats: UnitStats = UnitDatabase.get_stats(unit.type)
+	var path_data = BoardPathfinding.get_reachable_hexes(unit_stats.type, unit.hex_coord, battlefieldState.map, unit_manager.get_occupied_coords())
+	var came_from: Dictionary = path_data.get("came_from", {})
+	hover_highlight_layer.clear()
+	var reachable_costs: Dictionary = path_data.get("costs", {})
+	for coord in reachable_costs.keys():
+		hover_highlight_layer.highlight_cell(coord)

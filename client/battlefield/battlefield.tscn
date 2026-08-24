@@ -10,13 +10,16 @@
 [ext_resource type="Script" uid="uid://7tdnt2pcipdq" path="res://client/battlefield/camera_controller.gd" id="5_7nanj"]
 [ext_resource type="Texture2D" uid="uid://bbk0bb2k6twkd" path="res://assets/sprites/hex/fields_feature_sprite_sheet.png" id="7_yttjq"]
 [ext_resource type="Script" uid="uid://cpytl0qe8h6u5" path="res://client/battlefield/player_hand_ui.gd" id="9_cuxbe"]
+[ext_resource type="Script" uid="uid://bq54bqhfhjf5o" path="res://client/battlefield/unit_selection_highlight.gd" id="10_cvs13"]
 [ext_resource type="Script" uid="uid://5n1dlvt3tw4s" path="res://client/battlefield/margin_container.gd" id="10_f3lu3"]
+[ext_resource type="Script" uid="uid://bovs46if0cf51" path="res://client/battlefield/unit_path_highlight.gd" id="11_2w58j"]
+[ext_resource type="Script" uid="uid://c2p4e1nrocigq" path="res://client/battlefield/hover_highlight.gd" id="11_cvs13"]
 [ext_resource type="Script" uid="uid://cviqoy1ixqq6j" path="res://client/battlefield/sector_highlight.gd" id="11_tjobt"]
 [ext_resource type="PackedScene" uid="uid://bs3n3ysl7e5vc" path="res://client/player_hand/card_ui.tscn" id="12_f3lu3"]
 [ext_resource type="Script" uid="uid://pu2komq7negi" path="res://client/battlefield/margin_container_2.gd" id="13_0hlkx"]
 [ext_resource type="Texture2D" uid="uid://l08uw4hx56l0" path="res://assets/sprites/hex/highlight.png" id="13_56ovr"]
 [ext_resource type="Script" uid="uid://ixegjorc6cco" path="res://client/battlefield/enemy_hand_ui.gd" id="13_ec6rr"]
-[ext_resource type="Script" uid="uid://birdmambhh8rf" path="res://client/battlefield/map_highlight.gd" id="13_upguu"]
+[ext_resource type="Script" uid="uid://bx150801txbve" path="res://client/battlefield/action_highlight.gd" id="13_wygn3"]
 [ext_resource type="Script" uid="uid://cl0168wcrdlf1" path="res://client/battlefield/discard_pile_ui.gd" id="15_eq063"]
 [ext_resource type="Texture2D" uid="uid://bhmmuk70lftxd" path="res://assets/card_textures/texture003.png" id="16_okikj"]
 [ext_resource type="PackedScene" uid="uid://c3nofdwjiv8vk" path="res://client/debug.tscn" id="19_3y24m"]
@@ -78,18 +81,21 @@ point_count = 3
 script = ExtResource("1_u0eng")
 unit_container = NodePath("UnitContainer")
 
-[node name="PlayerController" type="Node" parent="." unique_id=1795203478 node_paths=PackedStringArray("map_ground_layer", "map_feature_layer", "map_highlight_layer", "sector_highlight_layer")]
+[node name="PlayerController" type="Node" parent="." unique_id=1795203478 node_paths=PackedStringArray("map_ground_layer", "map_feature_layer", "unit_selection_highlight_layer", "unit_path_highlight_layer", "hover_highlight_layer", "action_highlight_layer", "sector_highlight_layer")]
 script = ExtResource("4_eq063")
 map_ground_layer = NodePath("../MapVisuals/MapGround")
 map_feature_layer = NodePath("../MapVisuals/MapFeature")
-map_highlight_layer = NodePath("../MapVisuals/MapHighlight")
+unit_selection_highlight_layer = NodePath("../MapVisuals/UnitSelectionHighlight")
+unit_path_highlight_layer = NodePath("../MapVisuals/UnitPathHighlight")
+hover_highlight_layer = NodePath("../MapVisuals/HoverHighlight")
+action_highlight_layer = NodePath("../MapVisuals/ActionHighlight")
 sector_highlight_layer = NodePath("../MapVisuals/SectorHighlight")
 
 [node name="MapManager" type="Node" parent="." unique_id=225508304 node_paths=PackedStringArray("map_ground_layer", "map_features_layer", "map_highlight_layer", "map_visuals_node", "unit_container", "left_sector_divider", "right_sector_divider")]
 script = ExtResource("2_ynl45")
 map_ground_layer = NodePath("../MapVisuals/MapGround")
 map_features_layer = NodePath("../MapVisuals/MapFeature")
-map_highlight_layer = NodePath("../MapVisuals/MapHighlight")
+map_highlight_layer = NodePath("../MapVisuals/UnitPathHighlight")
 map_visuals_node = NodePath("../MapVisuals")
 unit_container = NodePath("../UnitContainer")
 unit_scene = ExtResource("3_0hlkx")
@@ -109,10 +115,28 @@ tile_set = SubResource("TileSet_jqkp6")
 script = ExtResource("4_4ok02")
 metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
 
-[node name="MapHighlight" type="TileMapLayer" parent="MapVisuals" unique_id=1870725227]
+[node name="UnitSelectionHighlight" type="TileMapLayer" parent="MapVisuals" unique_id=443869420]
 modulate = Color(1, 1, 1, 0.5019608)
 tile_set = SubResource("TileSet_ql7mu")
-script = ExtResource("13_upguu")
+script = ExtResource("10_cvs13")
+metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
+
+[node name="UnitPathHighlight" type="TileMapLayer" parent="MapVisuals" unique_id=1870725227]
+modulate = Color(1, 1, 1, 0.5019608)
+tile_set = SubResource("TileSet_ql7mu")
+script = ExtResource("11_2w58j")
+metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
+
+[node name="HoverHighlight" type="TileMapLayer" parent="MapVisuals" unique_id=1369633911]
+modulate = Color(1, 1, 1, 0.5019608)
+tile_set = SubResource("TileSet_ql7mu")
+script = ExtResource("11_cvs13")
+metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
+
+[node name="ActionHighlight" type="TileMapLayer" parent="MapVisuals" unique_id=502959064]
+modulate = Color(1, 1, 1, 0.5019608)
+tile_set = SubResource("TileSet_ql7mu")
+script = ExtResource("13_wygn3")
 metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
 
 [node name="SectorHighlight" type="TileMapLayer" parent="MapVisuals" unique_id=2070973290]
