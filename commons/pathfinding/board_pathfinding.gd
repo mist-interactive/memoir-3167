@@ -4,18 +4,17 @@ extends RefCounted
 static func get_line_of_sight(from_hex: Vector2i, to_hex: Vector2i, map: HexGrid, occupied_coords: Dictionary) -> bool:
 	if from_hex == to_hex:
 		return true
+		
 	var from_elevation: float = _get_hex_elevation(from_hex, map)
 	var to_elevation: float = _get_hex_elevation(to_hex, map)
 	var max_sight_elevation: float = maxf(from_elevation, to_elevation)
 	
-	# Apply a microscopic nudge to force floating-point rounding to both sides of an edge
 	var epsilon := Vector3(1e-5, 2e-5, -3e-5)
 	var line_a: Array[Vector2i] = _hex_line_epsilon(from_hex, to_hex, epsilon)
+	if _is_line_clear(line_a, from_hex, to_hex, max_sight_elevation, map, occupied_coords):
+		return true
 	var line_b: Array[Vector2i] = _hex_line_epsilon(from_hex, to_hex, -epsilon)
-	
-	var path_a_clear: bool = _is_line_clear(line_a, from_hex, to_hex, max_sight_elevation, map, occupied_coords)
-	var path_b_clear: bool = _is_line_clear(line_b, from_hex, to_hex, max_sight_elevation, map, occupied_coords)
-	return path_a_clear or path_b_clear
+	return _is_line_clear(line_b, from_hex, to_hex, max_sight_elevation, map, occupied_coords)
 
 static func get_distance_between_hexes(from_hex: Vector2i, to_hex: Vector2i, map: HexGrid) -> int:
 	if from_hex == to_hex:
