@@ -25,9 +25,13 @@ var result_to_face := {
 }
 
 func _ready() -> void:
+	Network.Actions.resolve_combat_result_requested.connect(_on_resolve_combat_result)
 	randomize()
 
-func roll_to(results: Array[enums.RolledDice]) -> void:
+func _on_resolve_combat_result(result: CombatResult) -> void:
+	roll_dice(result.rolled_dices)
+
+func roll_dice(results: Array[enums.RolledDice]) -> void:
 	if rolling:
 		return
 
