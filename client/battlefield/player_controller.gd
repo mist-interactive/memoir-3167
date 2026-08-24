@@ -8,6 +8,7 @@ class_name PlayerController
 @export var unit_selection_highlight_layer: TileMapLayer
 @export var unit_path_highlight_layer: TileMapLayer
 @export var hover_highlight_layer: TileMapLayer
+@export var action_highlight_layer: TileMapLayer
 @export var sector_highlight_layer: TileMapLayer
 @onready var unit_manager: ClientUnitManager = $"../../UnitManager"
 
