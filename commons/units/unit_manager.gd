@@ -60,3 +60,28 @@ func get_occupied_coords() -> Dictionary:
 		occupied_coords[coord] = true
 	return occupied_coords
 			
+
+func get_enemies_within_range_and_los(unit: Variant) -> Dictionary:
+	# unit uuid, coord
+	var valid_targets: Dictionary[int, Vector2i] = {}
+	var unit_stats: UnitStats = UnitDatabase.get_stats(unit.type)
+	var unit_max_range: int = unit_stats.max_attack_range
+	var occupied_coords: Dictionary = get_occupied_coords()
+	for coord in occupied_coords:
+		if coord == unit.hex_coord:
+			continue
+		var other_unit = get_unit_at(coord)
+		if !other_unit:
+			push_error("Unit occupied coords and unit_grid don't match!")
+			continue
+		if other_unit.owner_id == unit.owner_id:
+			continue
+		if map.distance(unit.hex_coord, other_unit.hex_coord) > unit_max_range:
+			continue
+		if unit_stats.attacks_ignore_los:
+			valid_targets[other_unit.uuid] = coord
+			continue
+		elif BoardPathfinding.get_line_of_sight(unit.hex_coord, other_unit.hex_coord, map, occupied_coords):
+			valid_targets[other_unit.uuid] = coord
+			continue
+	return valid_targets

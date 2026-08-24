@@ -11,18 +11,27 @@ const BLOCKING_TERRAINS: Array[int] = [
 static func get_line_of_sight(from_hex: Vector2i, to_hex: Vector2i, map: HexGrid, occupied_coords: Dictionary) -> bool:
 	if from_hex == to_hex:
 		return true
+	var from_elevation: float = _get_hex_elevation(from_hex, map)
+	var to_elevation: float = _get_hex_elevation(to_hex, map)
+	var max_sight_elevation: float = maxf(from_elevation, to_elevation)
+	var previous_highest_elevation: float = INT8_MIN
+	var test_coord
+	var test_cell
 	var line: Array[Vector2i] = HexGrid._hex_line(from_hex, to_hex)
 	for coord in line:
 		if coord == from_hex:
 			continue
-		if coord == to_hex:
-			return true
-		if occupied_coords.has(coord):
-			return false
 		var cell = map.get_cell(coord)
 		if !cell:
 			return false
-		if BLOCKING_TERRAINS.has(cell.feature):
+		var current_elevation: float = cell.elevation
+		if coord == to_hex && previous_highest_elevation < current_elevation:
+			return true
+		if previous_highest_elevation > current_elevation:
+			return false
+		else:
+			previous_highest_elevation = current_elevation 
+		if occupied_coords.has(coord) && coord != to_hex:
 			return false
 	return true
 
@@ -97,3 +106,9 @@ static func _priority_fn(current: Vector2i, g: float) -> float:
 
 static func _on_better_path(neighbor: Vector2i, current: Vector2i, cost: float, came_from_dict: Dictionary) -> void:
 	came_from_dict[neighbor] = current
+	
+static func _get_hex_elevation(coord: Vector2i, map: HexGrid) -> int:
+	var cell = map.get_cell(coord)
+	if !cell:
+		return INT8_MAX
+	return cell.elevation
