@@ -7,20 +7,20 @@ extends Node3D
 var rolling := false
 
 var face_rotations := {
-	2: Vector3(0, 0, 0),
-	4: Vector3(deg_to_rad(90), 0, 0),
-	5: Vector3(deg_to_rad(180), 0, 0),
-	6: Vector3(0, deg_to_rad(-90), 0),
-	1: Vector3(deg_to_rad(-90), deg_to_rad(90), 0),
-	3: Vector3(deg_to_rad(-90), 0, 0)
+	1: Vector3(0, 0, 0), # FLAG
+	2: Vector3(deg_to_rad(90), 0, 0), # INFANTRY
+	3: Vector3(deg_to_rad(180), 0, 0), # TANK
+	4: Vector3(0, deg_to_rad(-90), 0), # INFANTRY
+	5: Vector3(deg_to_rad(-90), deg_to_rad(90), 0), # ALL
+	6: Vector3(deg_to_rad(-90), 0, 0) # MISS
 }
 
 var result_to_face := {
-	enums.RolledDice.INFANTRY_1: 1,
-	enums.RolledDice.INFANTRY_2: 2,
-	enums.RolledDice.ALL: 3,
-	enums.RolledDice.ARMOR: 4,
-	enums.RolledDice.RETREAT: 5,
+	enums.RolledDice.INFANTRY_1: 2,
+	enums.RolledDice.INFANTRY_2: 4,
+	enums.RolledDice.ALL: 5,
+	enums.RolledDice.ARMOR: 3,
+	enums.RolledDice.RETREAT: 1,
 	enums.RolledDice.MISS: 6,
 }
 
@@ -44,11 +44,11 @@ func roll_dice(results: Array[enums.RolledDice]) -> void:
 
 	var dice: Array[Node] = []
 	var result_index := 0
+	var dies = $Dies
+	
+	print("roll results: ", results)
 
-	for die in get_children():
-
-		if not die is MeshInstance3D:
-			continue
+	for die in dies.get_children():
 
 		if result_index >= results.size():
 			break
