@@ -102,6 +102,6 @@ func get_opponent_hand_size(side: enums.Side) -> int:
 func hasCardInHand(side: enums.Side, instance_id: int) -> bool:
 	return player_hands[side].card_ids.has(instance_id)
 
-func get_card_target_sector() -> enums.CardTargetSector:
+func get_card() -> CommandCard:
 	var card: CommandCard = CardDatabase.get_card(discard_pile.back().card_id)
-	return card.target_sector
+	return card

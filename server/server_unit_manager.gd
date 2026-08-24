@@ -11,7 +11,7 @@ func _init(initialState: BattlefieldState) -> void:
 
 func is_unit_selected(unit_id: int) -> bool:
 	return selected_units_ids.has(unit_id)
-	
+
 func has_unit_moved(unit_id: int) -> bool:
 	return moved_units_ids.has(unit_id)
 
@@ -34,7 +34,7 @@ func _sync_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 		for peer_id in sides_peer_ids.values():
 			var snapshot: Dictionary = {
 				"selected_unit_id": selected_unit_id,
-				"selected_by_peer": selected_by_peer, 
+				"selected_by_peer": selected_by_peer,
 				"selected_units_ids" : selected_units_ids,
 				"moved_units_ids": moved_units_ids,
 				"attacked_units_ids": attacked_units_ids
@@ -45,48 +45,50 @@ func _sync_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 
 func select_unit(owner: enums.Side, unit_id: int) -> bool:
 	var unit: UnitData = get_unit_by_id(unit_id)
-	
+
 	if unit == null:
 		return false
 
 	if unit.owner_id != owner:
 		return false
-	
+
 	selected_unit_id = unit_id
 	selected_by_peer = owner
+	var sector_unit_at: enums.MapSector = battlefieldState.get_map_sector_by_hex(unit.hex_coord)
 	if !selected_units_ids.has(unit_id):
 		selected_units_ids.append(unit_id)
+		selected_units.append(SelectedUnit.new(unit_id, sector_unit_at))
 	isDirty = true
 	return true
-	
+
 func deselect_unit(owner: enums.Side) -> bool:
 	if selected_unit_id == -1:
 		return false
 
 	if selected_by_peer != owner:
 		return false
-		
+
 	selected_unit_id = -1
 	selected_by_peer = -1
 	isDirty = true
 	return true
-	
+
 func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, sides_peer_ids: Dictionary[enums.Side, int]) -> bool:
 	var unit: UnitData = get_unit_by_id(unit_id)
 	if unit == null || unit.owner_id != owner:
 		return false
-	
+
 	if selected_unit_id != unit_id || selected_by_peer != owner:
 		return false
-	
+
 	if !BoardPathfinding.get_reachable_hexes(unit.type, unit.hex_coord, battlefieldState.map, get_occupied_coords())["costs"].has(destination):
 		return false
-		
+
 	var unit_path = BoardPathfinding.get_unit_path(unit, unit.hex_coord, destination, battlefield.map, get_occupied_coords())
 	var old_coord := unit.hex_coord
 	if !move_unit(unit, old_coord, destination):
 		return false
-		
+
 	for peer_id in sides_peer_ids.values():
 		Network.Actions.sync_unit_path.rpc_id(peer_id, unit_id, unit_path)
 	selected_unit_id = -1
@@ -130,7 +132,7 @@ func generate_server_unit_id() -> int:
 
 func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 	#tmp GREEN_SIDE --> owner_id=1, RED_SIDE --> owner_id=2
-	
+
 	for elem in battlefield.units_to_spawn_player_1:
 		var coord: Vector2i = Vector2i(elem.coord[0], elem.coord[1])
 		var unit: UnitData = UnitData.new(enums.Side.GREEN, elem.type,generate_server_unit_id(), coord)
@@ -189,3 +191,33 @@ func next_phase(phase: enums.TurnPhase) -> void:
 		attacked_units_ids.clear()
 	selected_unit_id = -1
 	isDirty = true
+
+func get_num_selected_units_by_sector(sector: enums.MapSector) -> int:
+	var count: int = 0
+	for selected in selected_units:
+		if selected.sector == sector:
+			count += 1
+	return count
+
+func is_unit_targetable_by_sector(target_sector: enums.CardTargetSector, unit_hex_coord: Vector2i) -> bool:
+	match target_sector:
+		enums.CardTargetSector.LEFT:
+			return battlefield.is_hex_in_map_sector(unit_hex_coord, enums.MapSector.LEFT)
+		enums.CardTargetSector.CENTER:
+			return battlefield.is_hex_in_map_sector(unit_hex_coord, enums.MapSector.CENTER)
+		enums.CardTargetSector.RIGHT:
+			return battlefield.is_hex_in_map_sector(unit_hex_coord, enums.MapSector.RIGHT)
+		enums.CardTargetSector.LEFT_CENTER:
+			return battlefield.is_hex_in_map_sector(unit_hex_coord, enums.MapSector.LEFT) || battlefield.is_hex_in_map_sector(unit_hex_coord, enums.MapSector.CENTER)
+		enums.CardTargetSector.RIGHT_CENTER:
+			return battlefield.is_hex_in_map_sector(unit_hex_coord, enums.MapSector.RIGHT) || battlefield.is_hex_in_map_sector(unit_hex_coord, enums.MapSector.CENTER)
+		enums.CardTargetSector.ANY:
+			return true
+		enums.CardTargetSector.ALL:
+			return true
+		_:
+			return false
+
+func is_target_limit_reached(target_sector: enums.CardTargetSector, target_unit_limit: int, unit_hex_coord: Vector2i) -> bool:
+	var unit_sector: enums.MapSector = battlefield.get_map_sector_by_hex(unit_hex_coord)
+	return target_unit_limit == get_num_selected_units_by_sector(unit_sector)

@@ -88,7 +88,6 @@ func _on_connect_match_requested(peer_id: int) -> void:
 		"match_id": matchCtl.matchState.matchId,
 		"map_name": matchCtl.battlefield.mapName
 	}
-	print("----->hereeee")
 	Network.Match.init.rpc_id(peer_id, snapshot)
 
 func _on_client_match_state_change(peer_id: int, state: MatchState.STATE):
