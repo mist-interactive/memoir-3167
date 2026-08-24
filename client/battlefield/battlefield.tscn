@@ -16,13 +16,17 @@
 [ext_resource type="Script" uid="uid://c2p4e1nrocigq" path="res://client/battlefield/hover_highlight.gd" id="11_cvs13"]
 [ext_resource type="Script" uid="uid://cviqoy1ixqq6j" path="res://client/battlefield/sector_highlight.gd" id="11_tjobt"]
 [ext_resource type="PackedScene" uid="uid://bs3n3ysl7e5vc" path="res://client/player_hand/card_ui.tscn" id="12_f3lu3"]
+[ext_resource type="Script" uid="uid://dsajes703tyny" path="res://client/battlefield/roll_dice.gd" id="12_wygn3"]
 [ext_resource type="Script" uid="uid://pu2komq7negi" path="res://client/battlefield/margin_container_2.gd" id="13_0hlkx"]
 [ext_resource type="Texture2D" uid="uid://l08uw4hx56l0" path="res://assets/sprites/hex/highlight.png" id="13_56ovr"]
 [ext_resource type="Script" uid="uid://ixegjorc6cco" path="res://client/battlefield/enemy_hand_ui.gd" id="13_ec6rr"]
 [ext_resource type="Script" uid="uid://bx150801txbve" path="res://client/battlefield/action_highlight.gd" id="13_wygn3"]
+[ext_resource type="Script" uid="uid://birdmambhh8rf" path="res://client/battlefield/map_highlight.gd" id="13_upguu"]
+[ext_resource type="ArrayMesh" uid="uid://bi2sc1w7rb2do" path="res://assets/sprites/dice/dice_black.obj" id="14_wygn3"]
 [ext_resource type="Script" uid="uid://cl0168wcrdlf1" path="res://client/battlefield/discard_pile_ui.gd" id="15_eq063"]
 [ext_resource type="Texture2D" uid="uid://bhmmuk70lftxd" path="res://assets/card_textures/texture003.png" id="16_okikj"]
 [ext_resource type="PackedScene" uid="uid://c3nofdwjiv8vk" path="res://client/debug.tscn" id="19_3y24m"]
+[ext_resource type="Script" uid="uid://cb2s47cjmvmt" path="res://client/battlefield/diceroll_button.gd" id="22_2w58j"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e5smb"]
 texture = ExtResource("2_4ok02")
@@ -158,6 +162,69 @@ default_color = Color(1, 0, 0, 1)
 
 [node name="UICanvas" type="CanvasLayer" parent="." unique_id=1086948552]
 
+[node name="Button" type="Button" parent="UICanvas" unique_id=721084783]
+offset_left = 4737.0
+offset_top = 1005.0
+offset_right = 5381.0
+offset_bottom = 1355.0
+theme_override_font_sizes/font_size = 54
+text = "Draw card"
+
+[node name="DiceView" type="SubViewportContainer" parent="UICanvas" unique_id=94270845]
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -256.0
+offset_bottom = 256.0
+grow_horizontal = 0
+
+[node name="SubViewport" type="SubViewport" parent="UICanvas/DiceView" unique_id=443539317]
+transparent_bg = true
+handle_input_locally = false
+size = Vector2i(256, 256)
+render_target_update_mode = 4
+
+[node name="Node3D" type="Node3D" parent="UICanvas/DiceView/SubViewport" unique_id=731957518]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+script = ExtResource("12_wygn3")
+
+[node name="Camera3D" type="Camera3D" parent="UICanvas/DiceView/SubViewport/Node3D" unique_id=69600790]
+transform = Transform3D(5, 0, 0, 0, 5, 0, 0, 0, 5, 256, 128, 1024)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="UICanvas/DiceView/SubViewport/Node3D" unique_id=964542631]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 256, 128, 1280)
+
+[node name="Die1" type="MeshInstance3D" parent="UICanvas/DiceView/SubViewport/Node3D" unique_id=1869979170]
+transform = Transform3D(0.5, 0, 0, 0, -2.1855694e-08, -0.5, 0, 0.5, -2.1855694e-08, 0, 0, 0)
+mesh = ExtResource("14_wygn3")
+
+[node name="Die2" type="MeshInstance3D" parent="UICanvas/DiceView/SubViewport/Node3D" unique_id=280660795]
+transform = Transform3D(0.5, 0, 0, 0, -2.1855694e-08, -0.5, 0, 0.5, -2.1855694e-08, 256, 0, 0)
+mesh = ExtResource("14_wygn3")
+
+[node name="Die3" type="MeshInstance3D" parent="UICanvas/DiceView/SubViewport/Node3D" unique_id=609287000]
+transform = Transform3D(0.5, 0, 0, 0, -2.1855694e-08, -0.5, 0, 0.5, -2.1855694e-08, 512, 0, 0)
+mesh = ExtResource("14_wygn3")
+
+[node name="Die4" type="MeshInstance3D" parent="UICanvas/DiceView/SubViewport/Node3D" unique_id=560928963]
+transform = Transform3D(0.5, 0, 0, 0, -2.1855694e-08, -0.5, 0, 0.5, -2.1855694e-08, 0, 256, 0)
+mesh = ExtResource("14_wygn3")
+
+[node name="Die5" type="MeshInstance3D" parent="UICanvas/DiceView/SubViewport/Node3D" unique_id=1607867104]
+transform = Transform3D(0.5, 0, 0, 0, -2.1855694e-08, -0.5, 0, 0.5, -2.1855694e-08, 256, 256, 0)
+mesh = ExtResource("14_wygn3")
+
+[node name="Die6" type="MeshInstance3D" parent="UICanvas/DiceView/SubViewport/Node3D" unique_id=1933027108]
+transform = Transform3D(0.5, 0, 0, 0, -2.1855694e-08, -0.5, 0, 0.5, -2.1855694e-08, 512, 256, 0)
+mesh = ExtResource("14_wygn3")
+
+[node name="Button" type="Button" parent="UICanvas/DiceView" unique_id=501351857]
+custom_minimum_size = Vector2(256, 64)
+layout_mode = 2
+text = "roll
+"
+script = ExtResource("22_2w58j")
+
 [node name="MarginContainer" type="MarginContainer" parent="UICanvas" unique_id=2042215150]
 anchors_preset = 7
 anchor_left = 0.5
@@ -236,3 +303,6 @@ zoom = Vector2(0.305, 0.305)
 script = ExtResource("5_7nanj")
 target_map = NodePath("../MapVisuals/MapGround")
 map_manager = NodePath("../MapManager")
+
+[connection signal="pressed" from="UICanvas/Button" to="UICanvas/Button" method="_on_pressed"]
+[connection signal="pressed" from="UICanvas/DiceView/Button" to="UICanvas/DiceView/Button" method="_on_pressed"]
