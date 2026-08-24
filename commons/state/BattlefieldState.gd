@@ -97,3 +97,9 @@ func parseAndLoadMap(map_name: String) -> bool:
 
 func is_hex_in_map_sector(hex: Vector2i, sector: enums.MapSector) -> bool:
 	return sector_index[sector].find(hex) > 0
+
+func get_map_sector_by_hex(hex: Vector2i) -> enums.MapSector:
+	for sector in sector_index:
+		if sector_index[sector].find(hex) != -1:
+			return sector
+	return enums.MapSector.NONE
