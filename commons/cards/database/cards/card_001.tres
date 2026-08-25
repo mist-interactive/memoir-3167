@@ -10,7 +10,7 @@ title_label = "GENERAL ADVANCE"
 description_label = "Issue an order to 2 units
 in each sector"
 description_label_bottom = "Order 2 Units in each section"
-target_sector = 8
+target_sector = 7
 deck_quantity = 20
 target_unit_limit = 2
 card_art = ExtResource("1_nhxbv")
