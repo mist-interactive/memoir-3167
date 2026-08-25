@@ -22,7 +22,7 @@
 [ext_resource type="Script" uid="uid://ixegjorc6cco" path="res://client/battlefield/enemy_hand_ui.gd" id="13_ec6rr"]
 [ext_resource type="Script" uid="uid://bx150801txbve" path="res://client/battlefield/action_highlight.gd" id="13_wygn3"]
 [ext_resource type="Script" uid="uid://birdmambhh8rf" path="res://client/battlefield/map_highlight.gd" id="13_upguu"]
-[ext_resource type="Texture2D" uid="uid://wd8gerj4bli1" path="res://assets/sprites/dice/textures/dice-sides.png" id="13_wygn3"]
+[ext_resource type="Texture2D" uid="uid://wd8gerj4bli1" path="res://assets/sprites/dice/textures/dice-sides.png" id="14_wygn3"]
 [ext_resource type="Script" uid="uid://cl0168wcrdlf1" path="res://client/battlefield/discard_pile_ui.gd" id="15_eq063"]
 [ext_resource type="Texture2D" uid="uid://bhmmuk70lftxd" path="res://assets/card_textures/texture003.png" id="16_okikj"]
 [ext_resource type="PackedScene" uid="uid://c3nofdwjiv8vk" path="res://client/debug.tscn" id="19_3y24m"]
