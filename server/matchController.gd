@@ -84,21 +84,12 @@ func validate_unit_selection(unit_id: int) -> bool:
 	var card: CommandCard = deckManager.get_card()
 	match matchState.phase:
 		enums.TurnPhase.SELECT:
-			return false if !can_card_target_unit(card, unit_id) else true
+			return false if !unit_manager.can_card_target_unit(card, unit_id) else true
 		enums.TurnPhase.MOVE:
 			return false if !unit_manager.is_unit_selected(unit_id) || unit_manager.has_unit_moved(unit_id) else true
 		enums.TurnPhase.ATTACK:
 			return false if !unit_manager.is_unit_selected(unit_id) || unit_manager.has_unit_attacked(unit_id) else true
 	return false
-
-func can_card_target_unit(card: CommandCard, unit_id: int) -> bool:
-	var unit: UnitData = unit_manager.units_by_id[unit_id]
-	var hex_coord: Vector2i = unit.hex_coord
-	if card.target_unit != unit.type && card.target_unit != enums.UnitType.ANY:
-		return false
-	if !unit_manager.is_unit_targetable_by_sector(card.target_sector, hex_coord):
-		return false
-	return !unit_manager.is_target_limit_reached(card.target_sector, card.target_unit_limit, hex_coord)
 
 func isInProgress() ->bool:
 	return matchState.state == MatchState.STATE.IN_PROGRESS
