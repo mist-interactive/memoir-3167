@@ -86,19 +86,27 @@ func _handle_right_click() -> void:
 				return
 			var target_unit: Unit = unit_manager.get_unit_at(target_hex)
 			if target_unit and target_unit.owner_id != matchState.mySide:
-				Network.Actions.attack_unit.rpc_id(1, unit_manager.selected_unit_id, target_unit.uuid)
-				_clear_selection()
+				print("trying to pew pew")
+				if unit_manager.get_enemies_within_range_and_los(_clicked_unit).has(target_unit.uuid):
+					print("actual pew pew")
+					Network.Actions.attack_unit.rpc_id(1, unit_manager.selected_unit_id, target_unit.uuid)
+					_clear_selection()
 
 func _handle_mouse_motion() -> void:
 	var mouse_position: Vector2 = map_ground_layer.get_global_mouse_position()
+	var current_hovered_hex = map_ground_layer.local_to_map(map_ground_layer.to_local(mouse_position))
+	if current_hovered_hex == _hovered_hex:
+		return
 	_hovered_hex = map_ground_layer.local_to_map(map_ground_layer.to_local(mouse_position))
 	if not battlefieldState.map.get_cell(_hovered_hex):
 		_hovered_hex = Vector2i(INT32_MAX, INT32_MAX)
 		hover_highlight_layer.clear()
+		action_highlight_layer.clear()
 	var unit: Unit = unit_manager.get_unit_at(_hovered_hex)
 	if !unit:
 		_hovered_unit = null
 		hover_highlight_layer.clear()
+		action_highlight_layer.clear()
 		hover_highlight_layer.modulate.a = 0.20
 		hover_highlight_layer.highlight_cell(_hovered_hex)
 		return
@@ -107,7 +115,8 @@ func _handle_mouse_motion() -> void:
 		hover_highlight_layer.clear()
 		return
 	hover_highlight_layer.modulate.a = 0.50
-	_highlight_hovered_unit_reachable_hexes(unit)
+	_highlight_hovered_unit_reachable_hexes(_hovered_unit)
+	_highlight_enemies_within_range_and_los(_hovered_unit)
 
 func _on_card_hovered(card_target: enums.MapSector) -> void:
 	var hexes_to_highlight: Array[Vector2i] = []
@@ -159,3 +168,8 @@ func _highlight_hovered_unit_reachable_hexes(unit: Unit) -> void:
 	var reachable_costs: Dictionary = path_data.get("costs", {})
 	for coord in reachable_costs.keys():
 		hover_highlight_layer.highlight_cell(coord)
+
+func _highlight_enemies_within_range_and_los(unit: Unit) -> void:
+	action_highlight_layer.clear()
+	for enemy_hex in unit_manager.get_enemies_within_range_and_los(unit).values():
+		action_highlight_layer.highlight_cell(enemy_hex)

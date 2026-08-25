@@ -178,7 +178,7 @@ script = ExtResource("11_cvs13")
 metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
 
 [node name="ActionHighlight" type="TileMapLayer" parent="MapVisuals" unique_id=502959064]
-modulate = Color(1, 1, 1, 0.5019608)
+modulate = Color(1, 0, 0, 0.5019608)
 tile_set = SubResource("TileSet_ql7mu")
 script = ExtResource("13_wygn3")
 metadata/_custom_type_script = "uid://buj6ft1vvdf2f"

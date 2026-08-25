@@ -11,5 +11,6 @@ can_move_and_attack = false
 max_health = 2
 max_attack_range = 6
 attack_dice_by_distance = Array[int]([3, 3, 2, 2, 1, 1])
+attacks_ignore_los = true
 attacks_ignore_terrain = true
 metadata/_custom_type_script = "uid://n6bb1idnjqqn"

@@ -1,6 +1,27 @@
 class_name BoardPathfinding
 extends RefCounted
 
+static func get_line_of_sight(from_hex: Vector2i, to_hex: Vector2i, map: HexGrid, occupied_coords: Dictionary) -> bool:
+	if from_hex == to_hex:
+		return true
+		
+	var from_elevation: float = _get_hex_elevation(from_hex, map)
+	var to_elevation: float = _get_hex_elevation(to_hex, map)
+	var max_sight_elevation: float = maxf(from_elevation, to_elevation)
+	
+	var epsilon := Vector3(1e-5, 2e-5, -3e-5)
+	var line_a: Array[Vector2i] = _hex_line_epsilon(from_hex, to_hex, epsilon)
+	if _is_line_clear(line_a, from_hex, to_hex, max_sight_elevation, map, occupied_coords):
+		return true
+	var line_b: Array[Vector2i] = _hex_line_epsilon(from_hex, to_hex, -epsilon)
+	return _is_line_clear(line_b, from_hex, to_hex, max_sight_elevation, map, occupied_coords)
+
+static func get_distance_between_hexes(from_hex: Vector2i, to_hex: Vector2i, map: HexGrid) -> int:
+	if from_hex == to_hex:
+		return 0
+	var distance = map.distance(from_hex, to_hex)
+	return distance
+
 static func get_reachable_hexes(unit_type: enums.UnitType, start_coord: Vector2i, map: HexGrid, occupied_coords: Dictionary) -> Dictionary:
 	var stats: UnitStats = UnitDatabase.get_stats(unit_type)
 	if !stats:
@@ -66,3 +87,41 @@ static func _priority_fn(current: Vector2i, g: float) -> float:
 
 static func _on_better_path(neighbor: Vector2i, current: Vector2i, cost: float, came_from_dict: Dictionary) -> void:
 	came_from_dict[neighbor] = current
+	
+static func _get_hex_elevation(coord: Vector2i, map: HexGrid) -> int:
+	var cell = map.get_cell(coord)
+	if !cell:
+		return INT8_MAX
+	return cell.elevation
+
+static func _hex_line_epsilon(a: Vector2i, b: Vector2i, epsilon: Vector3) -> Array[Vector2i]:
+	var n: int = HexGrid.distance(a, b)
+	var result: Array[Vector2i] = []
+	if n == 0:
+		result.append(a)
+		return result
+	var ca: Vector3 = HexGrid._cube_to_float(HexGrid.offset_to_cube(a)) + epsilon
+	var cb: Vector3 = HexGrid._cube_to_float(HexGrid.offset_to_cube(b)) + epsilon
+	for i in range(n + 1):
+		var t: float = float(i) / float(n)
+		var lerped := Vector3(
+			ca.x + (cb.x - ca.x) * t,
+			ca.y + (cb.y - ca.y) * t,
+			ca.z + (cb.z - ca.z) * t
+		)
+		result.append(HexGrid._cube_to_offset(HexGrid.cube_round(lerped.x, lerped.z)))
+	return result
+
+static func _is_line_clear(line: Array[Vector2i], from_hex: Vector2i, to_hex: Vector2i, max_sight_elevation: float, map: HexGrid, occupied_coords: Dictionary) -> bool:
+	for coord in line:
+		if coord == from_hex || coord == to_hex:
+			continue
+		if occupied_coords.has(coord):
+			return false
+		var cell = map.get_cell(coord)
+		if !cell:
+			return false
+		var current_elevation: float = cell.elevation
+		if current_elevation > max_sight_elevation:
+			return false
+	return true
