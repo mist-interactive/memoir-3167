@@ -130,7 +130,7 @@ func _on_select_unit(peer_id: int, unit_id: int) -> void:
 	if !matchCtl.validate_unit_selection(unit_id):
 		return
 	var side: enums.Side = matchCtl.get_side(peer_id)
-	matchCtl.unit_manager.select_unit(side, unit_id)
+	matchCtl.unit_manager.select_unit(side, unit_id, matchCtl.deckManager.get_card())
 
 func _on_move_unit(peer_id: int, unit_id: int, destination: Vector2i) -> void:
 	var matchCtl: matchController = get_match(peer_id)

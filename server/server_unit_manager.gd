@@ -42,8 +42,7 @@ func _sync_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 			Network.Units.sync_all.rpc_id(peer_id, snapshot)
 		isDirty = false
 
-
-func select_unit(owner: enums.Side, unit_id: int) -> bool:
+func select_unit(owner: enums.Side, unit_id: int, card: CommandCard) -> bool:
 	var unit: UnitData = get_unit_by_id(unit_id)
 
 	if unit == null:
@@ -51,13 +50,10 @@ func select_unit(owner: enums.Side, unit_id: int) -> bool:
 
 	if unit.owner_id != owner:
 		return false
-
 	selected_unit_id = unit_id
 	selected_by_peer = owner
-	var sector_unit_at: enums.MapSector = battlefieldState.get_map_sector_by_hex(unit.hex_coord)
-	if !selected_units_ids.has(unit_id):
+	if matchState.phase == enums.TurnPhase.SELECT && !selected_units_ids.has(unit_id):
 		selected_units_ids.append(unit_id)
-		selected_units.append(SelectedUnit.new(unit_id, sector_unit_at))
 	isDirty = true
 	return true
 
@@ -192,32 +188,53 @@ func next_phase(phase: enums.TurnPhase) -> void:
 	selected_unit_id = -1
 	isDirty = true
 
-func get_num_selected_units_by_sector(sector: enums.MapSector) -> int:
-	var count: int = 0
-	for selected in selected_units:
-		if selected.sector == sector:
-			count += 1
-	return count
+func can_card_target_unit(card: CommandCard, unit_id: int) -> bool:
+	var unit: UnitData = units_by_id[unit_id]
+	if card.target_unit != unit.type && card.target_unit != enums.UnitType.ANY:
+		return false
+	var allowed_sectors := card.get_map_sectors()
+	var hex_sectors := battlefield.get_map_sectors_by_hex(unit.hex_coord)
+	var is_targetable := false
+	for sector in hex_sectors:
+		if allowed_sectors.has(sector):
+			is_targetable = true
+			break
+	if not is_targetable:
+		return false
+	if selected_units_ids.has(unit_id):
+		return true
+	var trial_ids: Array[int] = selected_units_ids.duplicate()
+	trial_ids.append(unit_id)
+	return can_assign_all(trial_ids, allowed_sectors, card.target_unit_limit)
 
-func is_unit_targetable_by_sector(target_sector: enums.CardTargetSector, unit_hex_coord: Vector2i) -> bool:
-	match target_sector:
-		enums.CardTargetSector.LEFT:
-			return battlefield.is_hex_in_map_sector(unit_hex_coord, enums.MapSector.LEFT)
-		enums.CardTargetSector.CENTER:
-			return battlefield.is_hex_in_map_sector(unit_hex_coord, enums.MapSector.CENTER)
-		enums.CardTargetSector.RIGHT:
-			return battlefield.is_hex_in_map_sector(unit_hex_coord, enums.MapSector.RIGHT)
-		enums.CardTargetSector.LEFT_CENTER:
-			return battlefield.is_hex_in_map_sector(unit_hex_coord, enums.MapSector.LEFT) || battlefield.is_hex_in_map_sector(unit_hex_coord, enums.MapSector.CENTER)
-		enums.CardTargetSector.RIGHT_CENTER:
-			return battlefield.is_hex_in_map_sector(unit_hex_coord, enums.MapSector.RIGHT) || battlefield.is_hex_in_map_sector(unit_hex_coord, enums.MapSector.CENTER)
-		enums.CardTargetSector.ANY:
-			return true
-		enums.CardTargetSector.ALL:
-			return true
-		_:
+func can_assign_all(unit_ids: Array[int], allowed_sectors: Array[enums.MapSector], limit: int) -> bool:
+	var sector_occupants: Dictionary = {}  # sector -> Array[int] (unit_ids)
+	for s in allowed_sectors:
+		sector_occupants[s] = [] as Array[int]
+	for uid in unit_ids:
+		var visited: Dictionary = {}
+		if not try_assign(uid, allowed_sectors, limit, sector_occupants, visited):
 			return false
+	return true
 
-func is_target_limit_reached(target_sector: enums.CardTargetSector, target_unit_limit: int, unit_hex_coord: Vector2i) -> bool:
-	var unit_sector: enums.MapSector = battlefield.get_map_sector_by_hex(unit_hex_coord)
-	return target_unit_limit == get_num_selected_units_by_sector(unit_sector)
+func try_assign(uid: int, allowed_sectors: Array, limit: int,
+		sector_occupants: Dictionary, visited: Dictionary) -> bool:
+	var hex: Vector2i = units_by_id[uid].hex_coord
+	var sectors: Array[enums.MapSector] = battlefieldState.get_map_sectors_by_hex(hex)
+	for sector in sectors:
+		if not allowed_sectors.has(sector) or visited.has(sector):
+			continue
+		visited[sector] = true
+
+		var occupants: Array = sector_occupants[sector]
+		if occupants.size() < limit:
+			occupants.append(uid)
+			return true
+
+		for other_uid in occupants.duplicate():
+			occupants.erase(other_uid)
+			if try_assign(other_uid, allowed_sectors, limit, sector_occupants, visited):
+				occupants.append(uid)
+				return true
+			occupants.append(other_uid)
+	return false
