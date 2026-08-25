@@ -14,6 +14,7 @@ extends Resource
 ## Represents dice rolled at specific distances. 
 ## Index 0 = Range 1, Index 1 = Range 2, etc.
 @export var attack_dice_by_distance: Array[int] = []
+@export var attacks_ignore_los: bool = false
 @export var attacks_ignore_terrain: bool = false
 @export var can_overrun: bool = false
 @export var can_take_ground: bool = false
