@@ -18,9 +18,10 @@ enum UnitType
 
 enum RolledDice
 {
-	INFANTRY,
-	ARMOR,
+	INFANTRY_1,
+	INFANTRY_2,
 	ALL,
+	ARMOR,
 	RETREAT,
 	MISS,
 }
