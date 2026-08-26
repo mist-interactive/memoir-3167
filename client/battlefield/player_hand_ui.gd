@@ -6,7 +6,7 @@ extends Control
 @export var rotation_curve: Curve
 @export var player_controller: PlayerController
 @export var discard_pile_ui: DiscardPileUI
-@export var base_card_size: Vector2 = Vector2(200.0, 310.0)
+@export var base_card_size: Vector2 = HandUI.card_size
 @export var max_rotation_degrees: float = 5.0
 @export var y_min: float = 0.0
 @export var y_max: float = -15.0

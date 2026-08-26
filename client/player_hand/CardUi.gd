@@ -2,7 +2,7 @@ class_name CardUI
 extends Control
 
 signal card_clicked(instance_id: int)
-const SIZE := Vector2(210.0, 325.0)
+var SIZE := HandUI.card_size
 const BASE_SCALE := Vector2(0.5, 0.5)
 const DISCARD_BASE_SCALE := Vector2(1.0, 1.0)
 
