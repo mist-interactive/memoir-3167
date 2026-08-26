@@ -4,7 +4,7 @@ extends Control
 @export var card_ui_scene: PackedScene
 @export var hand_curve: Curve
 @export var rotation_curve: Curve
-@export var base_card_size: Vector2 = Vector2(200.0, 310.0)
+@export var base_card_size: Vector2 = HandUI.card_size
 @export var max_rotation_degrees: float = 5.0
 @export var y_min: float = 0.0
 @export var y_max: float = -15.0
@@ -55,8 +55,8 @@ func _recalculate_layout() -> void:
 	if card_count == 0:
 		return
 		
-	var viewport_width: float = size.x
-	var calculated_width: float = viewport_width / 3.0
+	var container_width: float = size.x
+	var calculated_width: float = container_width / 3.0
 	var min_hand_width: float = 600.0
 	var max_hand_width: float = 1000.0
 	var available_hand_width: float = clamp(calculated_width, min_hand_width, max_hand_width)
@@ -67,10 +67,10 @@ func _recalculate_layout() -> void:
 	
 	if total_unscaled_width > available_hand_width and card_count > 1:
 		separation = (available_hand_width - base_card_size.x) / float(card_count - 1) - base_card_size.x
-		start_x = (viewport_width - available_hand_width) / 2.0
+		start_x = (container_width - available_hand_width) / 2.0
 	else:
 		var total_footprint: float = (card_count * base_card_size.x) + ((card_count - 1) * separation)
-		start_x = (viewport_width - total_footprint) / 2.0
+		start_x = (container_width - total_footprint) / 2.0
 		
 	for i: int in range(card_count):
 		var card: Control = get_child(i) as Control
