@@ -141,6 +141,7 @@ func _on_move_unit(peer_id: int, unit_id: int, destination: Vector2i) -> void:
 	if matchCtl.unit_manager.move_unit_request(side, unit_id, destination, matchCtl.sides_peer_ids):
 		if matchCtl.unit_manager.moved_units_ids.size() == matchCtl.unit_manager.selected_units_ids.size():
 			matchCtl.matchState.phase = enums.TurnPhase.ATTACK
+			matchCtl.unit_manager.next_phase(enums.TurnPhase.ATTACK)
 
 func _on_attack_unit(peer_id: int, unit_id: int, target_unit_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
@@ -149,9 +150,7 @@ func _on_attack_unit(peer_id: int, unit_id: int, target_unit_id: int) -> void:
 	var side: enums.Side = matchCtl.get_side(peer_id)
 	if matchCtl.unit_manager.attack_unit(side, unit_id, target_unit_id, matchCtl.sides_peer_ids):
 		if matchCtl.unit_manager.attacked_units_ids.size() == matchCtl.unit_manager.selected_units_ids.size():
-			matchCtl.unit_manager.selected_units_ids.clear()
-			matchCtl.unit_manager.moved_units_ids.clear()
-			matchCtl.unit_manager.attacked_units_ids.clear()
+			matchCtl.unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)
 			matchCtl.matchState.phase = enums.TurnPhase.PLAY_CARD
 			matchCtl.matchState.current_turn = enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
 
@@ -162,3 +161,4 @@ func _on_draw_card(peer_id: int) -> void:
 	var side: enums.Side = matchCtl.get_side(peer_id)
 	if matchCtl.deckManager.draw_card(side, matchCtl.sides_peer_ids):
 		matchCtl.matchState.phase = enums.TurnPhase.PLAY_CARD
+		matchCtl.unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)
