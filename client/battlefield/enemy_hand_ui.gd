@@ -4,14 +4,14 @@ extends Control
 @export var card_ui_scene: PackedScene
 @export var hand_curve: Curve
 @export var rotation_curve: Curve
-@export var base_card_size: Vector2 = Vector2(267.0, 358.0)
+@export var base_card_size: Vector2 = Vector2(200.0, 310.0)
 @export var max_rotation_degrees: float = 5.0
 @export var y_min: float = 0.0
 @export var y_max: float = -15.0
 @export var default_separation: float = -5.0
 @onready var handState: HandState = $"../../../../HandState"
 @export var discard_pile_ui: DiscardPileUI
-@export var player_controller: PlayerController
+@export var player_controller: PlayerController 
 
 func _ready() -> void:
 	handState.enemy_hand_drawn.connect(_on_enemy_draw_hand)
@@ -57,6 +57,7 @@ func _recalculate_layout() -> void:
 		return
 		
 	var viewport_width: float = size.x
+	print("viewport_width: ", viewport_width)
 	var available_hand_width: float = viewport_width / 1.5
 	
 	var separation: float = default_separation

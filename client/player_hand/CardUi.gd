@@ -17,6 +17,7 @@ signal card_drag_ended(card: CardUI)
 var is_dragging: bool = false
 var drag_offset: Vector2 = Vector2.ZERO
 var original_position: Vector2 = Vector2.ZERO
+var base_position_x: float
 
 var _instance_id: int
 var _card_id: String
@@ -73,7 +74,7 @@ func animate_to_discard(target_global_pos: Vector2, on_complete_callback: Callab
 	tween.tween_property(self, "global_position", final_pos, 0.4)\
 		.set_trans(Tween.TRANS_CUBIC)\
 		.set_ease(Tween.EASE_IN_OUT)
-	tween.tween_property(self, "scale", Vector2(0.5, 0.5), 0.4)\
+	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.4)\
 		.set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property(self, "rotation_degrees", 0.0, 0.4)
 	
@@ -115,9 +116,12 @@ func _on_mouse_entered() -> void:
 
 func _animate_discard_pile_hover(state: int) -> void:
 	if state == 1:
-		scale = scale * 1.5
+		scale = DISCARD_BASE_SCALE * 1.5
+		base_position_x = position.x
+		position.x = position.x - (size.x * 0.25)
 	else:
 		scale = DISCARD_BASE_SCALE
+		position.x = base_position_x
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:

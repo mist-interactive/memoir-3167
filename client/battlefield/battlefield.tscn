@@ -21,8 +21,8 @@
 [ext_resource type="Script" uid="uid://bx150801txbve" path="res://client/battlefield/action_highlight.gd" id="13_fpqqf"]
 [ext_resource type="Texture2D" uid="uid://wd8gerj4bli1" path="res://assets/sprites/dice/textures/dice-sides.png" id="13_wygn3"]
 [ext_resource type="Script" uid="uid://cl0168wcrdlf1" path="res://client/battlefield/discard_pile_ui.gd" id="15_eq063"]
-[ext_resource type="Texture2D" uid="uid://bhmmuk70lftxd" path="res://assets/card_textures/texture003.png" id="16_okikj"]
 [ext_resource type="PackedScene" uid="uid://c3nofdwjiv8vk" path="res://client/debug.tscn" id="19_3y24m"]
+[ext_resource type="Texture2D" uid="uid://vgleurc45wyk" path="res://assets/card_textures/aAAA_card_back.png" id="21_wygn3"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e5smb"]
 texture = ExtResource("2_4ok02")
@@ -208,12 +208,16 @@ theme_override_font_sizes/font_size = 54
 text = "Draw card"
 
 [node name="DiceView" type="SubViewportContainer" parent="UICanvas" unique_id=94270845]
-anchors_preset = 1
+anchors_preset = 3
 anchor_left = 1.0
+anchor_top = 1.0
 anchor_right = 1.0
+anchor_bottom = 1.0
 offset_left = -256.0
-offset_bottom = 256.0
+offset_top = -184.965
+offset_bottom = 71.03662
 grow_horizontal = 0
+grow_vertical = 0
 
 [node name="SubViewport" type="SubViewport" parent="UICanvas/DiceView" unique_id=443539317]
 transparent_bg = true
@@ -226,7 +230,7 @@ transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 script = ExtResource("12_wygn3")
 
 [node name="Camera3D" type="Camera3D" parent="UICanvas/DiceView/SubViewport/Node3D" unique_id=69600790]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 2.032782, 0.13062632, 8)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 2.033, 0.131, 10.99)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="UICanvas/DiceView/SubViewport/Node3D" unique_id=964542631]
 
@@ -253,14 +257,16 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.1883903, 0, 0)
 mesh = SubResource("ArrayMesh_vln62")
 
 [node name="MarginContainer" type="MarginContainer" parent="UICanvas" unique_id=2042215150]
-anchors_preset = 15
+anchors_preset = 12
+anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="PlayerHandUI" type="Control" parent="UICanvas/MarginContainer" unique_id=1348647858 node_paths=PackedStringArray("player_controller", "discard_pile_ui")]
-custom_minimum_size = Vector2(267, 358)
 layout_mode = 2
 script = ExtResource("9_cuxbe")
 card_ui_scene = ExtResource("12_f3lu3")
@@ -268,16 +274,13 @@ hand_curve = SubResource("Curve_u0eng")
 rotation_curve = SubResource("Curve_f3lu3")
 player_controller = NodePath("../../../PlayerController")
 discard_pile_ui = NodePath("../../DiscardPileUI")
-base_card_size = null
-max_rotation_degrees = null
-y_min = null
-y_max = null
-default_separation = null
 
 [node name="MarginContainer2" type="MarginContainer" parent="UICanvas" unique_id=491818102]
 anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 
 [node name="EnemyHandUI" type="Control" parent="UICanvas/MarginContainer2" unique_id=1002495451 node_paths=PackedStringArray("discard_pile_ui", "player_controller")]
 layout_mode = 2
@@ -289,19 +292,14 @@ discard_pile_ui = NodePath("../../DiscardPileUI")
 player_controller = NodePath("../../../PlayerController")
 
 [node name="DiscardPileUI" type="Control" parent="UICanvas" unique_id=1834357906 node_paths=PackedStringArray("top_card_texture")]
-propagate_maximum_size = true
 layout_mode = 3
-anchor_left = 0.883
-anchor_top = 0.349
-anchor_right = 0.9990001
-anchor_bottom = 0.625
-offset_left = -0.21600342
-offset_top = -0.15200806
-offset_right = 133.15186
-offset_bottom = 179.0
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 2
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.8, 0.8)
 script = ExtResource("15_eq063")
 top_card_texture = NodePath("TextureRect")
 
@@ -309,11 +307,17 @@ top_card_texture = NodePath("TextureRect")
 modulate = Color(0.9882353, 0.9882353, 0.9882353, 0.15686275)
 self_modulate = Color(1, 1, 1, 0.20784314)
 layout_mode = 1
-anchors_preset = -1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 1.0
-texture = ExtResource("16_okikj")
-expand_mode = 1
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -155.0
+offset_bottom = 155.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = ExtResource("21_wygn3")
 
 [node name="Debug" parent="UICanvas" unique_id=1503541458 instance=ExtResource("19_3y24m")]
 position = Vector2(54.092194, 200.49394)
