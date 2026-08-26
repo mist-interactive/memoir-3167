@@ -20,8 +20,7 @@
 [ext_resource type="Script" uid="uid://pu2komq7negi" path="res://client/battlefield/margin_container_2.gd" id="13_0hlkx"]
 [ext_resource type="Texture2D" uid="uid://l08uw4hx56l0" path="res://assets/sprites/hex/highlight.png" id="13_56ovr"]
 [ext_resource type="Script" uid="uid://ixegjorc6cco" path="res://client/battlefield/enemy_hand_ui.gd" id="13_ec6rr"]
-[ext_resource type="Script" uid="uid://bx150801txbve" path="res://client/battlefield/action_highlight.gd" id="13_wygn3"]
-[ext_resource type="Script" uid="uid://birdmambhh8rf" path="res://client/battlefield/map_highlight.gd" id="13_upguu"]
+[ext_resource type="Script" uid="uid://bx150801txbve" path="res://client/battlefield/action_highlight.gd" id="13_fpqqf"]
 [ext_resource type="Texture2D" uid="uid://wd8gerj4bli1" path="res://assets/sprites/dice/textures/dice-sides.png" id="13_wygn3"]
 [ext_resource type="Script" uid="uid://cl0168wcrdlf1" path="res://client/battlefield/discard_pile_ui.gd" id="15_eq063"]
 [ext_resource type="Texture2D" uid="uid://bhmmuk70lftxd" path="res://assets/card_textures/texture003.png" id="16_okikj"]
@@ -180,7 +179,7 @@ metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
 [node name="ActionHighlight" type="TileMapLayer" parent="MapVisuals" unique_id=502959064]
 modulate = Color(1, 0, 0, 0.5019608)
 tile_set = SubResource("TileSet_ql7mu")
-script = ExtResource("13_wygn3")
+script = ExtResource("13_fpqqf")
 metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
 
 [node name="SectorHighlight" type="TileMapLayer" parent="MapVisuals" unique_id=2070973290]
