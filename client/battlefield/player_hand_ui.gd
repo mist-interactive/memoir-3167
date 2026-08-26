@@ -15,8 +15,6 @@ extends Control
 
 func _ready() -> void:
 	_clear_hand()
-	size_flags_horizontal = Control.SIZE_EXPAND_FILL
-	size_flags_vertical = Control.SIZE_EXPAND_FILL
 	handState.hand_drawn.connect(_on_hand_drawn)
 	handState.card_played.connect(_on_card_played)
 	await get_tree().create_timer(0.1).timeout
@@ -82,7 +80,11 @@ func _recalculate_layout() -> void:
 
 	var container_width: float = size.x
 	
-	var available_hand_width: float = container_width / 1.5
+	var calculated_width: float = container_width / 3.0
+	var min_hand_width: float = 600.0
+	var max_hand_width: float = 1000.0
+	var available_hand_width: float = clamp(calculated_width, min_hand_width, max_hand_width)
+	
 	var separation: float = default_separation
 	var total_unscaled_width: float = card_count * base_card_size.x
 	var start_x: float = 0.0
@@ -149,6 +151,8 @@ func _recalculate_layout() -> void:
 			target_rot,
 			0.2
 		).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+		
+		print("target_pos: ", target_pos)
 
 func _on_card_clicked_by_player(instance_id: int) -> void:
 	Network.Actions.play_card.rpc(instance_id)
