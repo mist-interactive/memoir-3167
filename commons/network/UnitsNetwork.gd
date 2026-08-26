@@ -21,3 +21,10 @@ func spawn_unit(unit: Dictionary) -> void:
 	if multiplayer.is_server():
 		return
 	spawn_unit_requested.emit(unit)
+
+signal unit_destroyed_requested(uuid: int)
+@rpc("authority", "call_remote")
+func destroy_unit(unit_id: int) -> void:
+	if multiplayer.is_server():
+		return
+	unit_destroyed_requested.emit(unit_id)

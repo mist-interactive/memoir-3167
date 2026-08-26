@@ -12,6 +12,7 @@ func _init(initialState: BattlefieldState) -> void:
 	Network.Units.spawn_unit_requested.connect(_on_spawn_unit_requested)
 	Network.Actions.resolve_combat_result_requested.connect(_on_resolve_combat_result_requested)
 	Network.Actions.sync_unit_path_received.connect(_on_sync_unit_path_received)
+	Network.Units.unit_destroyed_requested.connect(_on_unit_destroyed)
 	
 # snapshot used for reconnection
 func initialize(active_container: Node, snapshot: Dictionary = {}) -> void:
@@ -53,3 +54,9 @@ func _on_sync_unit_path_received(unit_id: int, path: Array[Vector2i]) -> void:
 	if !unit:
 		return
 	unit.move_along_path(path)
+	
+func _on_unit_destroyed(unit_id: int) -> void:
+	var unit: Unit = units_by_id[unit_id]
+	unit.queue_free()
+	unit_grid.erase(unit.hex_coord)
+	units_by_id.erase(unit_id)
