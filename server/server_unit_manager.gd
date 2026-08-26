@@ -179,8 +179,13 @@ func resolve_combat(result: CombatResult) -> void:
 	if should_retreat:
 		pass #retreat to prev pos
 	target.hit_point -= result.dmg
-	print("hp: ", target.hit_point)
 	if target.hit_point <= 0:
-		#isDirty = true
 		death_queue.append(target_id)
-		#print("server: target destroyed ", target.uuid)
+
+func next_phase(phase: enums.TurnPhase) -> void:
+	if phase == enums.TurnPhase.PLAY_CARD:
+		selected_units_ids.clear()
+		moved_units_ids.clear()
+		attacked_units_ids.clear()
+	selected_unit_id = -1
+	isDirty = true
