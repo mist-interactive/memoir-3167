@@ -50,15 +50,16 @@ func _notification(what: int) -> void:
 	if what == NOTIFICATION_RESIZED:
 		_recalculate_layout()
 
-# dont worry about it
 func _recalculate_layout() -> void:
 	var card_count: int = get_child_count()
 	if card_count == 0:
 		return
 		
 	var viewport_width: float = size.x
-	print("viewport_width: ", viewport_width)
-	var available_hand_width: float = viewport_width / 1.5
+	var calculated_width: float = viewport_width / 3.0
+	var min_hand_width: float = 600.0
+	var max_hand_width: float = 1000.0
+	var available_hand_width: float = clamp(calculated_width, min_hand_width, max_hand_width)
 	
 	var separation: float = default_separation
 	var total_unscaled_width: float = card_count * base_card_size.x
