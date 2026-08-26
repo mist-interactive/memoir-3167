@@ -6,7 +6,7 @@ extends Control
 @export var rotation_curve: Curve
 @export var player_controller: PlayerController
 @export var discard_pile_ui: DiscardPileUI
-@export var base_card_size: Vector2 = Vector2(210.0, 325.0)
+@export var base_card_size: Vector2 = Vector2(200.0, 310.0)
 @export var max_rotation_degrees: float = 5.0
 @export var y_min: float = 0.0
 @export var y_max: float = -15.0
@@ -72,7 +72,6 @@ func _recalculate_layout() -> void:
 	var cards: Array[CardUI] = []
 	for child in get_children():
 		if child is CardUI:
-			# FIX: Ignore cards that are currently flying away to the discard pile
 			if child.is_discarded:
 				continue
 			cards.append(child)
