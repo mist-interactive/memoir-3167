@@ -2,8 +2,7 @@ class_name CardUI
 extends Control
 
 signal card_clicked(instance_id: int)
-
-const SIZE := Vector2(267.0, 358.0)
+var SIZE := HandUI.card_size
 const BASE_SCALE := Vector2(0.5, 0.5)
 const DISCARD_BASE_SCALE := Vector2(1.0, 1.0)
 
@@ -18,6 +17,7 @@ signal card_drag_ended(card: CardUI)
 var is_dragging: bool = false
 var drag_offset: Vector2 = Vector2.ZERO
 var original_position: Vector2 = Vector2.ZERO
+var base_position_x: float
 
 var _instance_id: int
 var _card_id: String
@@ -74,7 +74,7 @@ func animate_to_discard(target_global_pos: Vector2, on_complete_callback: Callab
 	tween.tween_property(self, "global_position", final_pos, 0.4)\
 		.set_trans(Tween.TRANS_CUBIC)\
 		.set_ease(Tween.EASE_IN_OUT)
-	tween.tween_property(self, "scale", Vector2(0.5, 0.5), 0.4)\
+	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.4)\
 		.set_trans(Tween.TRANS_CUBIC)
 	tween.tween_property(self, "rotation_degrees", 0.0, 0.4)
 	
@@ -99,8 +99,7 @@ func _on_mouse_exited() -> void:
 		return _animate_discard_pile_hover(0)
 	z_index = 0
 	scale = BASE_SCALE
-	position.y += SIZE.y / 3
-	get_child(0).visible = false
+	position.y = position.y + SIZE.y / 10 
 	card_unhovered.emit()
 
 func _on_mouse_entered() -> void:
@@ -109,18 +108,20 @@ func _on_mouse_entered() -> void:
 	if is_discarded:
 		return _animate_discard_pile_hover(1)
 	z_index = 10
-	scale = scale * 1.5
-	position.y -= SIZE.y / 3
-	#get_child(0).visible = true
+	scale = BASE_SCALE * 1.35 
+	position.y = position.y - SIZE.y / 10 
 	var card_data: CommandCard = CardDatabase.get_card(_card_id)
 	if card_data:
 		card_hovered.emit(card_data.target_sector)
 
 func _animate_discard_pile_hover(state: int) -> void:
 	if state == 1:
-		scale = scale * 1.5
+		scale = DISCARD_BASE_SCALE * 1.5
+		base_position_x = position.x
+		position.x = position.x - (size.x * 0.25)
 	else:
 		scale = DISCARD_BASE_SCALE
+		position.x = base_position_x
 
 func _gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
@@ -170,4 +171,5 @@ func _end_drag() -> void:
 				card.mouse_filter = Control.MOUSE_FILTER_STOP
 		if hand.has_method("_recalculate_layout"):
 			hand._recalculate_layout()
+	Network.Actions.play_card.rpc(_instance_id)
 	card_drag_ended.emit(self)
