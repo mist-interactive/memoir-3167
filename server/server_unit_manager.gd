@@ -1,8 +1,10 @@
 extends UnitManager
 class_name ServerUnitManager
 @onready var matchState: MatchState = $"../matchState"
+@onready var battlefieldState: BattlefieldState = $"../BattlefieldState"
 var _unit_id_counter: int = 0
 var isDirty: bool = true
+var death_queue: Array[int]
 
 func _init(initialState: BattlefieldState) -> void:
 	super(initialState)
@@ -20,6 +22,14 @@ func _sync_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 	for uuid in units_by_id:
 		var unit: UnitData = units_by_id[uuid]
 		unit.sync(sides_peer_ids.values())
+	if !death_queue.is_empty():
+		isDirty = true
+		for uuid: int in death_queue:
+			for peer_id in sides_peer_ids.values():
+				Network.Units.destroy_unit.rpc_id(peer_id, uuid)
+			unit_grid.erase(units_by_id[uuid].hex_coord)
+			units_by_id.erase(uuid)
+		death_queue.clear()
 	if isDirty:
 		for peer_id in sides_peer_ids.values():
 			var snapshot: Dictionary = {
@@ -31,6 +41,7 @@ func _sync_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 				}
 			Network.Units.sync_all.rpc_id(peer_id, snapshot)
 		isDirty = false
+
 
 func select_unit(owner: enums.Side, unit_id: int) -> bool:
 	var unit: UnitData = get_unit_by_id(unit_id)
@@ -67,15 +78,15 @@ func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, 
 	
 	if selected_unit_id != unit_id || selected_by_peer != owner:
 		return false
-
-	## Check movement rules.
-	#if !move_rules(unit, destination):
-		#return false
 	
+	if !BoardPathfinding.get_reachable_hexes(unit.type, unit.hex_coord, battlefieldState.map, get_occupied_coords())["costs"].has(destination):
+		return false
+		
 	var unit_path = BoardPathfinding.get_unit_path(unit, unit.hex_coord, destination, battlefield.map, get_occupied_coords())
 	var old_coord := unit.hex_coord
 	if !move_unit(unit, old_coord, destination):
 		return false
+		
 	for peer_id in sides_peer_ids.values():
 		Network.Actions.sync_unit_path.rpc_id(peer_id, unit_id, unit_path)
 	selected_unit_id = -1
@@ -157,12 +168,24 @@ func resolve_combat(result: CombatResult) -> void:
 	var target: UnitData = units_by_id[target_id]
 	var should_retreat: int = 0
 	for rolled_dice in result.rolled_dices:
-		if target.type == rolled_dice || rolled_dice == enums.RolledDice.ALL:
-			result.dmg += 1
-		elif rolled_dice == enums.RolledDice.ARMOR && (target.type == enums.UnitType.TANK || target.type == enums.UnitType.ARTILLERY):
+		if rolled_dice == enums.RolledDice.ALL:
 			result.dmg += 1
 		elif rolled_dice == enums.RolledDice.RETREAT:
 			result.retreat += 1
+		elif target.type == enums.UnitType.INFANTRY && (rolled_dice == enums.RolledDice.INFANTRY_1 || rolled_dice == enums.RolledDice.INFANTRY_2):
+			result.dmg += 1
+		elif (target.type == enums.UnitType.TANK || target.type == enums.UnitType.ARTILLERY) && rolled_dice == enums.RolledDice.ARMOR:
+			result.dmg += 1
 	if should_retreat:
 		pass #retreat to prev pos
 	target.hit_point -= result.dmg
+	if target.hit_point <= 0:
+		death_queue.append(target_id)
+
+func next_phase(phase: enums.TurnPhase) -> void:
+	if phase == enums.TurnPhase.PLAY_CARD:
+		selected_units_ids.clear()
+		moved_units_ids.clear()
+		attacked_units_ids.clear()
+	selected_unit_id = -1
+	isDirty = true
