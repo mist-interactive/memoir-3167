@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="TerrainStats" format=3 uid="uid://cc4swsrftllpq"]
+
+[ext_resource type="Script" uid="uid://u76o6qpu8r0" path="res://commons/autoloads/terrain_database/terrains/terrain_stats.gd" id="1_nhwmn"]
+
+[resource]
+script = ExtResource("1_nhwmn")
+terrain_type = 2
+metadata/_custom_type_script = "uid://u76o6qpu8r0"
