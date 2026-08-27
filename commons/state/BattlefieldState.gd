@@ -95,5 +95,9 @@ func parseAndLoadMap(map_name: String) -> bool:
 	print("Successfully parsed and loaded map: %s (%d hexes indexed)." % [map_name, map.cells.size()])
 	return true
 
-func is_hex_in_map_sector(hex: Vector2i, sector: enums.MapSector) -> bool:
-	return sector_index[sector].find(hex) > 0
+func get_map_sectors_by_hex(hex: Vector2i) -> Array[enums.MapSector]:
+	var result: Array[enums.MapSector] = []
+	for sector in sector_index:
+		if sector_index[sector].has(hex):
+			result.append(sector)
+	return result

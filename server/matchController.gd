@@ -67,7 +67,7 @@ func handle_client_state_change(peer_id: int, state: MatchState.STATE) -> void:
 	player_status[get_side(peer_id)] = state
 	if matchState.state == MatchState.STATE.INITIALIZING && clients_are_ready():
 		matchState.state = MatchState.STATE.INITIALIZE_BOARD
-	
+
 	if matchState.state == MatchState.STATE.INITIALIZE_BOARD && ready_to_initialize_board():
 		matchState.state = MatchState.STATE.IN_PROGRESS
 		unit_manager.spawn_units(sides_peer_ids)
@@ -75,40 +75,20 @@ func handle_client_state_change(peer_id: int, state: MatchState.STATE) -> void:
 
 func isPhase(phase: enums.TurnPhase) -> bool:
 	return matchState.phase == phase
-	
+
 func isPlayerTurn(peer_id: int) -> bool:
 	var side: enums.Side = get_side(peer_id)
 	return matchState.current_turn == side;
 
 func validate_unit_selection(unit_id: int) -> bool:
-	var card_sector: enums.CardTargetSector = deckManager.get_card_target_sector()
+	var card: CommandCard = deckManager.get_card()
 	match matchState.phase:
 		enums.TurnPhase.SELECT:
-			return false if !can_card_target_unit(card_sector, unit_id) else true
+			return false if !unit_manager.can_card_target_unit(card, unit_id) else true
 		enums.TurnPhase.MOVE:
 			return false if !unit_manager.is_unit_selected(unit_id) || unit_manager.has_unit_moved(unit_id) else true
 		enums.TurnPhase.ATTACK:
-			return false  if !unit_manager.is_unit_selected(unit_id) || unit_manager.has_unit_attacked(unit_id) else true
-	return false
-
-func can_card_target_unit(card_sector, unit_id) -> bool:
-	var unit: UnitData = unit_manager.units_by_id[unit_id]
-	var hex_coord: Vector2i = unit.hex_coord
-	match card_sector:
-		enums.CardTargetSector.LEFT:
-			return battlefield.is_hex_in_map_sector(hex_coord, enums.MapSector.LEFT)
-		enums.CardTargetSector.CENTER:
-			return battlefield.is_hex_in_map_sector(hex_coord, enums.MapSector.CENTER)
-		enums.CardTargetSector.RIGHT:
-			return battlefield.is_hex_in_map_sector(hex_coord, enums.MapSector.RIGHT)
-		enums.CardTargetSector.LEFT_CENTER:
-			return battlefield.is_hex_in_map_sector(hex_coord, enums.MapSector.LEFT) || battlefield.is_hex_in_map_sector(hex_coord, enums.MapSector.CENTER)
-		enums.CardTargetSector.RIGHT_CENTER:
-			return battlefield.is_hex_in_map_sector(hex_coord, enums.MapSector.RIGHT) || battlefield.is_hex_in_map_sector(hex_coord, enums.MapSector.CENTER)
-		enums.CardTargetSector.ANY:
-			return true
-		enums.CardTargetSector.ALL:
-			return true
+			return false if !unit_manager.is_unit_selected(unit_id) || unit_manager.has_unit_attacked(unit_id) else true
 	return false
 
 func isInProgress() ->bool:

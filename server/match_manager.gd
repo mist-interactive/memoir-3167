@@ -88,7 +88,6 @@ func _on_connect_match_requested(peer_id: int) -> void:
 		"match_id": matchCtl.matchState.matchId,
 		"map_name": matchCtl.battlefield.mapName
 	}
-	print("----->hereeee")
 	Network.Match.init.rpc_id(peer_id, snapshot)
 
 func _on_client_match_state_change(peer_id: int, state: MatchState.STATE):
@@ -131,7 +130,7 @@ func _on_select_unit(peer_id: int, unit_id: int) -> void:
 	if !matchCtl.validate_unit_selection(unit_id):
 		return
 	var side: enums.Side = matchCtl.get_side(peer_id)
-	matchCtl.unit_manager.select_unit(side, unit_id)
+	matchCtl.unit_manager.select_unit(side, unit_id, matchCtl.deckManager.get_card())
 
 func _on_move_unit(peer_id: int, unit_id: int, destination: Vector2i) -> void:
 	var matchCtl: matchController = get_match(peer_id)
