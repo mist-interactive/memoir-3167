@@ -1,3 +1,9 @@
 [gd_scene format=3 uid="uid://dluam6lgh3i8n"]
 
+[ext_resource type="Script" uid="uid://cuoymnaoapqm2" path="res://commons/autoloads/terrain_database/terrain_database.gd" id="1_htcd5"]
+[ext_resource type="Script" uid="uid://u76o6qpu8r0" path="res://commons/autoloads/terrain_database/terrains/terrain_stats.gd" id="2_dedxx"]
+[ext_resource type="Resource" uid="uid://cc4swsrftllpq" path="res://commons/autoloads/terrain_database/terrains/plains.tres" id="3_hymdg"]
+
 [node name="TerrainDatabase" type="Node" unique_id=1773011494]
+script = ExtResource("1_htcd5")
+registered_terrain = Array[ExtResource("2_dedxx")]([ExtResource("3_hymdg")])
