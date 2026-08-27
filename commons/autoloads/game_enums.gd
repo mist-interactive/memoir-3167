@@ -46,7 +46,7 @@ enum CardTargetSector {
 	LEFT_CENTER  = LEFT | CENTER,   # 3 (001 | 010 = 011)
 	RIGHT_CENTER = CENTER | RIGHT,  # 6 (010 | 100 = 110)
 	LEFT_RIGHT = LEFT | RIGHT,      # 5 (101)
-	ANY          = LEFT | CENTER | RIGHT # 7 (111)
+	ALL          = LEFT | CENTER | RIGHT # 7 (111)
 }
 
 enum TurnPhase
