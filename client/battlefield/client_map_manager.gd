@@ -63,7 +63,7 @@ func _load_map_data_to_tilemap_layers() -> void:
 			var atlas_coord: Vector2i = tile_info[1]
 			map_ground_layer.set_cell(coord, source_id, atlas_coord)
 		else:
-			push_warning("Client doesn't have visual data for the Ground enum: ", ground_type)
+			push_error("Client doesn't have visual data for the Ground enum: ", ground_type)
 		var feature_type: int = hex.feature
 		if FEATURE_TO_TILE.has(feature_type):
 			var tile_info: Array = FEATURE_TO_TILE[feature_type]
@@ -71,7 +71,8 @@ func _load_map_data_to_tilemap_layers() -> void:
 			var atlas_coord: Vector2i = tile_info[1]
 			map_features_layer.set_cell(coord, source_id, atlas_coord)
 		else:
-			push_warning("Client doesn't have visual data for the Feature enum: ", feature_type)
+			if !(feature_type == HexCell.Feature.NONE || feature_type == HexCell.Feature.WATER):
+				push_error("Client doesn't have visual data for the Feature enum: ", feature_type)
 	pass
 
 func _draw_sector_dividers() -> void:
