@@ -8,4 +8,8 @@
 
 [node name="UnitDatabase" type="Node2D" unique_id=731442629]
 script = ExtResource("1_4b2gd")
-registered_units = Array[ExtResource("2_qnhdi")]([ExtResource("3_8tix6"), ExtResource("4_yvqcf"), ExtResource("5_6nf5f")])
+registered_units = Dictionary[int, ExtResource("2_qnhdi")]({
+1: ExtResource("3_8tix6"),
+2: ExtResource("4_yvqcf"),
+4: ExtResource("5_6nf5f")
+})

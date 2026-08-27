@@ -4,6 +4,7 @@
 
 [resource]
 script = ExtResource("1_yjyld")
+type = 1
 max_health = 4
 attack_dice_by_distance = Array[int]([3, 2, 1])
 can_take_ground = true
