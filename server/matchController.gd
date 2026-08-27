@@ -118,10 +118,10 @@ func go_next_phase(side: enums.Side) -> void:
 	if isPhase(enums.TurnPhase.ATTACK) || (isPhase(enums.TurnPhase.SELECT) && unit_manager.selected_units_ids.is_empty()):
 		matchState.phase = enums.TurnPhase.PLAY_CARD
 		matchState.current_turn = enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
-		unit_manager.selected_unit_id = -1
+		unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)
 	elif isPhase(enums.TurnPhase.SELECT):
 		matchState.phase = enums.TurnPhase.MOVE
-		unit_manager.selected_unit_id = -1
+		unit_manager.next_phase(enums.TurnPhase.MOVE)
 	elif isPhase(enums.TurnPhase.MOVE):
 		matchState.phase = enums.TurnPhase.ATTACK
-		unit_manager.selected_unit_id = -1
+		unit_manager.next_phase(enums.TurnPhase.ATTACK)
