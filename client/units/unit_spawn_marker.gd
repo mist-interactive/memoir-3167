@@ -99,7 +99,7 @@ func _reindex_group() -> void:
 		if target.owner_id != current_owner or target.unit_type != current_type:
 			current_owner = target.owner_id
 			current_type = target.unit_type
-			current_type_str = enums.UnitType.keys()[target.unit_type].capitalize()
+			current_type_str = enums.UnitType.find_key(target.unit_type).capitalize()
 			count = 0
 		else:
 			count += 1
