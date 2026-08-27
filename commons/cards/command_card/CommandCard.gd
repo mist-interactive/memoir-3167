@@ -12,3 +12,13 @@ extends Resource
 @export var target_unit_limit: int = 1
 @export_group("Visuals")
 @export var card_art: Texture2D
+
+func get_map_sectors() -> Array[enums.MapSector]:
+	var result: Array[enums.MapSector] = []
+	if target_sector & enums.MapSector.LEFT:
+		result.append(enums.MapSector.LEFT)
+	if target_sector & enums.MapSector.CENTER:
+		result.append(enums.MapSector.CENTER)
+	if target_sector & enums.MapSector.RIGHT:
+		result.append(enums.MapSector.RIGHT)
+	return result
