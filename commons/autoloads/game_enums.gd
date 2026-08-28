@@ -10,10 +10,11 @@ enum Side
 
 enum UnitType
 {
-	INFANTRY,
-	TANK,
-	ARTILLERY,
-	ANY,
+	NONE = 0,
+	INFANTRY = 1 << 0,
+	TANK = 1 << 1,
+	ARTILLERY = 1 << 2,
+	ANY = INFANTRY | TANK | ARTILLERY,
 }
 
 enum RolledDice

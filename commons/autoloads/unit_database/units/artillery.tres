@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_p0bpc")
-type = 2
+type = 4
 max_movement = 1
 max_movement_and_attack = 0
 can_move_and_attack = false

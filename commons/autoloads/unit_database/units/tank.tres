@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_hmtpo")
-type = 1
+type = 2
 max_movement = 3
 max_movement_and_attack = 3
 attack_dice_by_distance = Array[int]([3, 3, 3])
