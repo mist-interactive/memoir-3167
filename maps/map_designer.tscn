@@ -107,118 +107,116 @@ default_color = Color(1, 0, 0, 1)
 
 [node name="UnitContainer" type="Node2D" parent="." unique_id=1804487023]
 
-[node name="Player1_Infantry_1" parent="UnitContainer" unique_id=276452804 instance=ExtResource("11_173rr")]
-position = Vector2(663, 1024)
-frame = 0
-owner_id = 1
-
-[node name="Player1_Infantry_2" parent="UnitContainer" unique_id=1324794981 instance=ExtResource("11_173rr")]
+[node name="Player1_Infantry_1" parent="UnitContainer" unique_id=1324794981 instance=ExtResource("11_173rr")]
 position = Vector2(3094, 2944)
 frame = 0
 owner_id = 1
 
-[node name="Player1_Infantry_3" parent="UnitContainer" unique_id=1635616779 instance=ExtResource("11_173rr")]
+[node name="Player1_Infantry_2" parent="UnitContainer" unique_id=1635616779 instance=ExtResource("11_173rr")]
 position = Vector2(3536, 2944)
 frame = 0
 owner_id = 1
 
-[node name="Player1_Infantry_4" parent="UnitContainer" unique_id=2077526996 instance=ExtResource("11_173rr")]
+[node name="Player1_Infantry_3" parent="UnitContainer" unique_id=2077526996 instance=ExtResource("11_173rr")]
 position = Vector2(4862, 2944)
 frame = 0
 owner_id = 1
 
-[node name="Player1_Tank_1" parent="UnitContainer" unique_id=2106007384 instance=ExtResource("11_173rr")]
+[node name="Player1_Infantry_4" parent="UnitContainer" unique_id=2106007384 instance=ExtResource("11_173rr")]
 position = Vector2(1105, 2560)
-texture = ExtResource("12_qbn32")
-hframes = 5
 frame = 0
-unit_type = 1
 owner_id = 1
 
-[node name="Player1_Tank_2" parent="UnitContainer" unique_id=294968706 instance=ExtResource("11_173rr")]
+[node name="Player1_Infantry_5" parent="UnitContainer" unique_id=294968706 instance=ExtResource("11_173rr")]
 position = Vector2(1989, 2560)
-texture = ExtResource("12_qbn32")
-hframes = 5
 frame = 0
-unit_type = 1
 owner_id = 1
 
-[node name="Player1_Tank_3" parent="UnitContainer" unique_id=1699252334 instance=ExtResource("11_173rr")]
+[node name="Player1_Infantry_6" parent="UnitContainer" unique_id=1699252334 instance=ExtResource("11_173rr")]
 position = Vector2(7514, 3712)
+frame = 0
+owner_id = 1
+
+[node name="Player1_Tank_1" parent="UnitContainer" unique_id=710508746 instance=ExtResource("11_173rr")]
+position = Vector2(3315, 4096)
 texture = ExtResource("12_qbn32")
 hframes = 5
 frame = 0
-unit_type = 1
-owner_id = 1
-
-[node name="Player1_Artillery_1" parent="UnitContainer" unique_id=710508746 instance=ExtResource("11_173rr")]
-position = Vector2(3315, 4096)
-texture = ExtResource("13_vxy4q")
-hframes = 6
-frame = 0
 unit_type = 2
 owner_id = 1
 
-[node name="Player1_Artillery_2" parent="UnitContainer" unique_id=1661991245 instance=ExtResource("11_173rr")]
+[node name="Player1_Tank_2" parent="UnitContainer" unique_id=1661991245 instance=ExtResource("11_173rr")]
 position = Vector2(4641, 4096)
+texture = ExtResource("12_qbn32")
+hframes = 5
+frame = 0
+unit_type = 2
+owner_id = 1
+
+[node name="Player1_Tank_3" parent="UnitContainer" unique_id=666678424 instance=ExtResource("11_173rr")]
+position = Vector2(3978, 4480)
+texture = ExtResource("12_qbn32")
+hframes = 5
+frame = 0
+unit_type = 2
+owner_id = 1
+
+[node name="Player1_Artillery_1" parent="UnitContainer" unique_id=276452804 instance=ExtResource("11_173rr")]
+position = Vector2(663, 1024)
 texture = ExtResource("13_vxy4q")
 hframes = 6
 frame = 0
-unit_type = 2
+unit_type = 4
 owner_id = 1
 
 [node name="Player2_Infantry_1" parent="UnitContainer" unique_id=2036855746 instance=ExtResource("11_173rr")]
 position = Vector2(1105, 3328)
 
-[node name="Player2_Infantry_2" parent="UnitContainer" unique_id=2086597034 instance=ExtResource("11_173rr")]
-position = Vector2(4199, 2560)
-
-[node name="Player2_Infantry_3" parent="UnitContainer" unique_id=1457913778 instance=ExtResource("11_173rr")]
+[node name="Player2_Infantry_2" parent="UnitContainer" unique_id=1457913778 instance=ExtResource("11_173rr")]
 position = Vector2(5746, 2944)
 
-[node name="Player2_Infantry_4" parent="UnitContainer" unique_id=341804876 instance=ExtResource("11_173rr")]
+[node name="Player2_Infantry_3" parent="UnitContainer" unique_id=341804876 instance=ExtResource("11_173rr")]
 position = Vector2(3978, 3712)
 
-[node name="Player2_Infantry_5" parent="UnitContainer" unique_id=1271445771 instance=ExtResource("11_173rr")]
+[node name="Player2_Infantry_4" parent="UnitContainer" unique_id=1271445771 instance=ExtResource("11_173rr")]
 position = Vector2(1989, 3328)
 
-[node name="Player2_Infantry_6" parent="UnitContainer" unique_id=1099313226 instance=ExtResource("11_173rr")]
+[node name="Player2_Infantry_5" parent="UnitContainer" unique_id=1099313226 instance=ExtResource("11_173rr")]
 position = Vector2(4641, 1024)
 
-[node name="Player2_Tank_1" parent="UnitContainer" unique_id=828635556 instance=ExtResource("11_173rr")]
+[node name="Player2_Infantry_6" parent="UnitContainer" unique_id=237949741 instance=ExtResource("11_173rr")]
+position = Vector2(2431, 1024)
+
+[node name="Player2_Infantry_7" parent="UnitContainer" unique_id=1148785308 instance=ExtResource("11_173rr")]
+position = Vector2(5967, 1024)
+
+[node name="Player2_Tank_1" parent="UnitContainer" unique_id=2086597034 instance=ExtResource("11_173rr")]
+position = Vector2(4199, 2560)
+texture = ExtResource("12_qbn32")
+hframes = 5
+frame = 20
+unit_type = 2
+
+[node name="Player2_Tank_2" parent="UnitContainer" unique_id=828635556 instance=ExtResource("11_173rr")]
 position = Vector2(4862, 1408)
 texture = ExtResource("12_qbn32")
 hframes = 5
 frame = 20
-unit_type = 1
-
-[node name="Player2_Tank_2" parent="UnitContainer" unique_id=237949741 instance=ExtResource("11_173rr")]
-position = Vector2(2431, 1024)
-texture = ExtResource("12_qbn32")
-hframes = 5
-frame = 20
-unit_type = 1
-
-[node name="Player2_Tank_3" parent="UnitContainer" unique_id=1148785308 instance=ExtResource("11_173rr")]
-position = Vector2(5967, 1024)
-texture = ExtResource("12_qbn32")
-hframes = 5
-frame = 20
-unit_type = 1
+unit_type = 2
 
 [node name="Player2_Artillery_1" parent="UnitContainer" unique_id=667135779 instance=ExtResource("11_173rr")]
 position = Vector2(3094, 640)
 texture = ExtResource("13_vxy4q")
 hframes = 6
 frame = 24
-unit_type = 2
+unit_type = 4
 
-[node name="Player2_Artillery_2" parent="UnitContainer" unique_id=2046366883 instance=ExtResource("11_173rr")]
-position = Vector2(5304, 640)
+[node name="Player2_Artillery_2" parent="UnitContainer" unique_id=135672416 instance=ExtResource("11_173rr")]
+position = Vector2(6188, 640)
 texture = ExtResource("13_vxy4q")
 hframes = 6
 frame = 24
-unit_type = 2
+unit_type = 4
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1708214605 node_paths=PackedStringArray("target_map", "map_manager")]
 position = Vector2(2877, 1619)
