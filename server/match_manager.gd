@@ -37,6 +37,7 @@ func reconnect(peer_id: int, uuid: int) -> void:
 	var matchCtl: matchController = get_match(old_peer_id)
 	peer_to_match[peer_id] = matchCtl.matchState.matchId
 	matchCtl.peer_reconnected(peer_id, old_peer_id)
+	uuid_to_peer[uuid] = peer_id
 	var units: Array[Dictionary]
 	for unit: UnitData in matchCtl.unit_manager.units_by_id.values():
 		units.append({
@@ -100,64 +101,40 @@ func _on_continue_to_next_phase_requested(peer_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
 	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id):
 		return
-	var side: enums.Side = matchCtl.get_side(peer_id)
-	matchCtl.go_next_phase(side)
+	matchCtl.handle_continue_next_phase(matchCtl.get_side(peer_id))
+
 func _on_draw_hand(peer_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
 	#if !matchCtl.isInProgress() || !matchCtl.isPhase(enums.TurnPhase.DRAW_HAND):
 		#return
-	print("Hand draw ", peer_id)
-	var side: enums.Side = matchCtl.get_side(peer_id)
-	matchCtl.deckManager.draw_hand(side, matchCtl.sides_peer_ids)
-	for hand: HandState in matchCtl.deckManager.player_hands.values():
-		if hand.card_ids.size() == 0:
-			return
-	matchCtl.matchState.phase = enums.TurnPhase.PLAY_CARD
+	matchCtl.handle_draw_hand(matchCtl.get_side(peer_id))
 
 func _on_play_card(peer_id: int, instance_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
 	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(enums.TurnPhase.PLAY_CARD):
 		return
-	var side: enums.Side = matchCtl.get_side(peer_id)
-	print("Player requested to play a card ", peer_id, instance_id)
-	if matchCtl.deckManager.play_card(side, instance_id, matchCtl.sides_peer_ids):
-		matchCtl.matchState.phase = enums.TurnPhase.SELECT
+	matchCtl.handle_play_card(matchCtl.get_side(peer_id), instance_id)
 
 func _on_select_unit(peer_id: int, unit_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
 	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id):
 		return
-	if !matchCtl.validate_unit_selection(unit_id):
-		return
-	var side: enums.Side = matchCtl.get_side(peer_id)
-	matchCtl.unit_manager.select_unit(side, unit_id, matchCtl.deckManager.get_card())
+	matchCtl.handle_select_unit(matchCtl.get_side(peer_id), unit_id)
 
 func _on_move_unit(peer_id: int, unit_id: int, destination: Vector2i) -> void:
 	var matchCtl: matchController = get_match(peer_id)
 	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(enums.TurnPhase.MOVE):
 		return
-	var side: enums.Side = matchCtl.get_side(peer_id)
-	if matchCtl.unit_manager.move_unit_request(side, unit_id, destination, matchCtl.sides_peer_ids):
-		if matchCtl.unit_manager.moved_units_ids.size() == matchCtl.unit_manager.selected_units_ids.size():
-			matchCtl.matchState.phase = enums.TurnPhase.ATTACK
-			matchCtl.unit_manager.next_phase(enums.TurnPhase.ATTACK)
+	matchCtl.handle_move_unit(matchCtl.get_side(peer_id), unit_id, destination)
 
 func _on_attack_unit(peer_id: int, unit_id: int, target_unit_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
 	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(enums.TurnPhase.ATTACK):
 		return
-	var side: enums.Side = matchCtl.get_side(peer_id)
-	if matchCtl.unit_manager.attack_unit(side, unit_id, target_unit_id, matchCtl.sides_peer_ids):
-		if matchCtl.unit_manager.attacked_units_ids.size() == matchCtl.unit_manager.selected_units_ids.size():
-			matchCtl.unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)
-			matchCtl.matchState.phase = enums.TurnPhase.PLAY_CARD
-			matchCtl.matchState.current_turn = enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
+	matchCtl.handle_attack_unit(matchCtl.get_side(peer_id), unit_id, target_unit_id)
 
 func _on_draw_card(peer_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
 	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(enums.TurnPhase.DRAW_CARD):
 		return
-	var side: enums.Side = matchCtl.get_side(peer_id)
-	if matchCtl.deckManager.draw_card(side, matchCtl.sides_peer_ids):
-		matchCtl.matchState.phase = enums.TurnPhase.PLAY_CARD
-		matchCtl.unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)
+	matchCtl.handle_draw_card(matchCtl.get_side(peer_id))
