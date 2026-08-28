@@ -5,6 +5,7 @@ var peer_to_match: Dictionary[int, int] = {}
 var uuid_to_peer: Dictionary[int, int] = {}
 var matches: Dictionary[int, matchController] = {}
 @onready var card_database: Node = $"../CardDatabase"
+@onready var server: Server = $".."
 
 func _ready() -> void:
 	Network.Match.connect_match_requested.connect(_on_player_connect)
@@ -20,8 +21,7 @@ func _ready() -> void:
 	Network.Actions.continue_to_next_phase_requested.connect(_on_continue_to_next_phase_requested)
 
 func create_new_match(peerId1: int, peerId2: int, uuid1: int, uuid2: int) -> void:
-	print("Call to create new match")
-	var matchNode = matchController.new(_next_match_id, peerId1, peerId2)
+	var matchNode: matchController = matchController.new(_next_match_id, peerId1, peerId2)
 	get_parent().add_child(matchNode)
 	peer_to_match[peerId1] = _next_match_id
 	peer_to_match[peerId2] = _next_match_id
@@ -31,6 +31,8 @@ func create_new_match(peerId1: int, peerId2: int, uuid1: int, uuid2: int) -> voi
 	_next_match_id += 1
 	Network.Match.match_created.rpc_id(peerId1)
 	Network.Match.match_created.rpc_id(peerId2)
+	matchNode.logger = server.logger.with_context({"match": _next_match_id})
+	matchNode.logger.info("Created match")
 
 func reconnect(peer_id: int, uuid: int) -> void:
 	var old_peer_id: int = uuid_to_peer[uuid]

@@ -4,9 +4,9 @@ class_name DeckManager
 var draw_pile: Array[String] = []
 var discard_pile: Array[CardInstance] = []
 var player_hands: Dictionary[int, HandState]
-
 var _next_instance_id: int = 1000 
 var initial_hand_size: int = 6
+@onready var match_controller: matchController = $".."
 
 func _init() -> void:
 	name = "DeckManager"
@@ -66,6 +66,10 @@ func shuffle_deck() -> void:
 	draw_pile.shuffle()
 
 func play_card(side: enums.Side, instance_id: int, sides_peer_ids: Dictionary[enums.Side, int]) -> bool:
+	var player_logger := match_controller.logger.with_context({
+		"peer_id": sides_peer_ids[side],
+		"side": side
+	})
 	if !hasCardInHand(side, instance_id):
 		return false
 	var other_side: enums.Side = get_other_side(side)
@@ -74,9 +78,14 @@ func play_card(side: enums.Side, instance_id: int, sides_peer_ids: Dictionary[en
 	player_hands[side].discard_pile = discard_pile
 	player_hands[other_side].discard_pile = discard_pile
 	player_hands[side].remove_card(instance_id)
+	player_logger.info("Played card", {"instance_id":instance_id, "card_id": card_id})
 	return true
 
 func draw_hand(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) -> void:
+	var player_logger := match_controller.logger.with_context({
+		"peer_id": sides_peer_ids[side],
+		"side": side
+	})
 	var cards: Dictionary[int, String]
 	for i in range(initial_hand_size):
 		var card: Dictionary = draw_card_from_pile()
@@ -85,6 +94,7 @@ func draw_hand(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) ->
 		cards[card.instance_id] = card.card_id
 	player_hands[get_other_side(side)].opponent_hand_size = cards.size()
 	player_hands[side].card_ids = cards
+	player_logger.info("Draw hand", {"cards": cards.size()})
 
 func get_other_side(side: enums.Side) -> enums.Side:
 	var other_side: enums.Side

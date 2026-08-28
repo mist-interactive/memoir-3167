@@ -7,6 +7,7 @@ var unit_manager: ServerUnitManager
 var connected: Dictionary[enums.Side, bool]
 var player_status: Dictionary[enums.Side, MatchState.STATE]
 var sides_peer_ids: Dictionary[enums.Side, int]
+var logger: LogService
 
 func _init(matchId: int, peer_id1: int, peer_id2: int) -> void:
 	name = "Match_" + str(matchId)
