@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TerrainStats" format=3 uid="uid://co7srr1juf0v"]
+
+[ext_resource type="Script" uid="uid://u76o6qpu8r0" path="res://commons/autoloads/terrain_database/terrains/terrain_stats.gd" id="1_200av"]
+
+[resource]
+script = ExtResource("1_200av")
+terrain_type = 5
+elevation = 2
+blocks_line_of_sight = true
+infantry_max_movement_on_terrain = 1
+armor_max_movement_on_terrain = 0
+artillery_max_movement_on_terrain = 0
+can_move_in_and_fight = 1
+infantry_defense_modifier = -2
+metadata/_custom_type_script = "uid://u76o6qpu8r0"
