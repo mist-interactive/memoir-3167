@@ -26,7 +26,7 @@ func handle_left_click(hex: Vector2i) -> void:
 		controller.hover_action_highlight_layer.clear()
 		controller.set_selected_unit(unit)
 		controller.highlight_selected_unit_reachable_hexes(unit)
-		controller.highlight_selected_enemies_within_range_and_los(unit)
+		controller.highlight_selected_unit_enemies_within_range_and_los(unit)
 	else:
 		controller.clear_selection()
 	
@@ -44,7 +44,7 @@ func handle_mouse_motion(hex: Vector2i) -> void:
 			controller.hover_path_highlight_layer.modulate.a = 0.50
 			controller.hover_path_highlight_layer.highlight_cell(hex)
 			controller.highlight_hovered_unit_reachable_hexes(unit)
-			controller.highlight_hovered_enemies_within_range_and_los(unit)
+			controller.highlight_hovered_unit_enemies_within_range_and_los(unit)
 	else:
 		controller.hover_path_highlight_layer.modulate.a = 0.20
 		controller.hover_path_highlight_layer.highlight_cell(hex)

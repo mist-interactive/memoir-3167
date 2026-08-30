@@ -195,12 +195,12 @@ func highlight_hovered_unit_reachable_hexes(unit: Unit) -> void:
 	for coord in reachable_costs.keys():
 		hover_path_highlight_layer.highlight_cell(coord)
 
-func highlight_selected_enemies_within_range_and_los(unit: Unit) -> void:
+func highlight_selected_unit_enemies_within_range_and_los(unit: Unit) -> void:
 	selected_unit_action_highlight_layer.clear()
 	for enemy_hex in unit_manager.get_enemies_within_range_and_los(unit).values():
 		selected_unit_action_highlight_layer.highlight_cell(enemy_hex)
 
-func highlight_hovered_enemies_within_range_and_los(unit: Unit) -> void:
+func highlight_hovered_unit_enemies_within_range_and_los(unit: Unit) -> void:
 	hover_action_highlight_layer.clear()
 	for enemy_hex in unit_manager.get_enemies_within_range_and_los(unit).values():
 		hover_action_highlight_layer.highlight_cell(enemy_hex)
