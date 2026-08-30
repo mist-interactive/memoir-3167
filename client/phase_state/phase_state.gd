@@ -40,7 +40,7 @@ func handle_mouse_motion(hex: Vector2i) -> void:
 	controller.hover_action_highlight_layer.clear()
 	var unit: Unit = controller.unit_manager.get_unit_at(hex)
 	if unit:
-		if !controller._selected_unit || controller._selected_unit.hex_coord != hex:
+		if !controller.selected_unit || controller.selected_unit.hex_coord != hex:
 			controller.hover_path_highlight_layer.modulate.a = 0.50
 			controller.hover_path_highlight_layer.highlight_cell(hex)
 			controller.highlight_hovered_unit_reachable_hexes(unit)
