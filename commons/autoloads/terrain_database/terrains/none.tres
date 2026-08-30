@@ -5,7 +5,6 @@
 [resource]
 script = ExtResource("1_ooeod")
 blocks_line_of_sight = true
-can_move_in = 0
 infantry_max_movement_on_terrain = 0
 armor_max_movement_on_terrain = 0
 artillery_max_movement_on_terrain = 0

@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_c6p36")
-terrain_type = 3
+type = 3
 blocks_line_of_sight = true
 infantry_max_movement_on_terrain = 1
 armor_max_movement_on_terrain = 1
