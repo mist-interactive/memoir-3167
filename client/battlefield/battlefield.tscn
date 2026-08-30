@@ -20,6 +20,7 @@
 [ext_resource type="Script" uid="uid://ixegjorc6cco" path="res://client/battlefield/enemy_hand_ui.gd" id="13_ec6rr"]
 [ext_resource type="Script" uid="uid://bx150801txbve" path="res://client/battlefield/action_highlight.gd" id="13_fpqqf"]
 [ext_resource type="Texture2D" uid="uid://wd8gerj4bli1" path="res://assets/sprites/dice/textures/dice-sides.png" id="13_wygn3"]
+[ext_resource type="Script" uid="uid://cm4a8di22xvu3" path="res://client/battlefield/hover_action_highlight.gd" id="14_vln62"]
 [ext_resource type="Script" uid="uid://cl0168wcrdlf1" path="res://client/battlefield/discard_pile_ui.gd" id="15_eq063"]
 [ext_resource type="PackedScene" uid="uid://c3nofdwjiv8vk" path="res://client/debug.tscn" id="19_3y24m"]
 [ext_resource type="Texture2D" uid="uid://vgleurc45wyk" path="res://assets/card_textures/aAAA_card_back.png" id="21_wygn3"]
@@ -122,21 +123,22 @@ point_count = 3
 script = ExtResource("1_u0eng")
 unit_container = NodePath("UnitContainer")
 
-[node name="PlayerController" type="Node" parent="." unique_id=1795203478 node_paths=PackedStringArray("map_ground_layer", "map_feature_layer", "unit_selection_highlight_layer", "unit_path_highlight_layer", "hover_highlight_layer", "action_highlight_layer", "sector_highlight_layer")]
+[node name="PlayerController" type="Node" parent="." unique_id=1795203478 node_paths=PackedStringArray("map_ground_layer", "map_feature_layer", "unit_selection_highlight_layer", "selected_unit_path_highlight_layer", "selected_unit_action_highlight_layer", "hover_path_highlight_layer", "hover_action_highlight_layer", "sector_highlight_layer")]
 script = ExtResource("4_eq063")
 map_ground_layer = NodePath("../MapVisuals/MapGround")
 map_feature_layer = NodePath("../MapVisuals/MapFeature")
 unit_selection_highlight_layer = NodePath("../MapVisuals/UnitSelectionHighlight")
-unit_path_highlight_layer = NodePath("../MapVisuals/UnitPathHighlight")
-hover_highlight_layer = NodePath("../MapVisuals/HoverHighlight")
-action_highlight_layer = NodePath("../MapVisuals/ActionHighlight")
+selected_unit_path_highlight_layer = NodePath("../MapVisuals/SelectedUnitPathHighlight")
+selected_unit_action_highlight_layer = NodePath("../MapVisuals/SelectedUnitActionHighlight")
+hover_path_highlight_layer = NodePath("../MapVisuals/HoverPathHighlight")
+hover_action_highlight_layer = NodePath("../MapVisuals/HoverActionHighlight")
 sector_highlight_layer = NodePath("../MapVisuals/SectorHighlight")
 
 [node name="MapManager" type="Node" parent="." unique_id=225508304 node_paths=PackedStringArray("map_ground_layer", "map_features_layer", "map_highlight_layer", "map_visuals_node", "unit_container", "left_sector_divider", "right_sector_divider")]
 script = ExtResource("2_ynl45")
 map_ground_layer = NodePath("../MapVisuals/MapGround")
 map_features_layer = NodePath("../MapVisuals/MapFeature")
-map_highlight_layer = NodePath("../MapVisuals/UnitPathHighlight")
+map_highlight_layer = NodePath("../MapVisuals/SelectedUnitPathHighlight")
 map_visuals_node = NodePath("../MapVisuals")
 unit_container = NodePath("../UnitContainer")
 unit_scene = ExtResource("3_0hlkx")
@@ -162,22 +164,28 @@ tile_set = SubResource("TileSet_ql7mu")
 script = ExtResource("10_cvs13")
 metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
 
-[node name="UnitPathHighlight" type="TileMapLayer" parent="MapVisuals" unique_id=1870725227]
+[node name="SelectedUnitPathHighlight" type="TileMapLayer" parent="MapVisuals" unique_id=1870725227]
 modulate = Color(1, 1, 1, 0.5019608)
 tile_set = SubResource("TileSet_ql7mu")
 script = ExtResource("11_2w58j")
 metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
 
-[node name="HoverHighlight" type="TileMapLayer" parent="MapVisuals" unique_id=1369633911]
+[node name="SelectedUnitActionHighlight" type="TileMapLayer" parent="MapVisuals" unique_id=502959064]
+modulate = Color(1, 0, 0, 0.5019608)
+tile_set = SubResource("TileSet_ql7mu")
+script = ExtResource("13_fpqqf")
+metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
+
+[node name="HoverPathHighlight" type="TileMapLayer" parent="MapVisuals" unique_id=1369633911]
 modulate = Color(1, 1, 1, 0.5019608)
 tile_set = SubResource("TileSet_ql7mu")
 script = ExtResource("11_cvs13")
 metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
 
-[node name="ActionHighlight" type="TileMapLayer" parent="MapVisuals" unique_id=502959064]
+[node name="HoverActionHighlight" type="TileMapLayer" parent="MapVisuals" unique_id=1517728384]
 modulate = Color(1, 0, 0, 0.5019608)
 tile_set = SubResource("TileSet_ql7mu")
-script = ExtResource("13_fpqqf")
+script = ExtResource("14_vln62")
 metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
 
 [node name="SectorHighlight" type="TileMapLayer" parent="MapVisuals" unique_id=2070973290]

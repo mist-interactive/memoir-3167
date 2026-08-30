@@ -1,6 +1,8 @@
 extends Node
 class_name MatchState
 
+signal phase_changed(new_phase: enums.TurnPhase)
+
 var matchId: int
 var mySide: enums.Side
 var scores: Dictionary[enums.Side, int]
@@ -49,6 +51,7 @@ func _on_sync(snapshot: Dictionary):
 	phase = snapshot.phase
 	current_turn = snapshot.current_turn
 	mySide = snapshot.side
+	phase_changed.emit(phase)
 
 func sync(side_peer_ids: Dictionary[enums.Side, int]) -> void:
 	if should_sync:
