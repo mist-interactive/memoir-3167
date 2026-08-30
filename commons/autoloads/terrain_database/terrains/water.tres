@@ -4,7 +4,7 @@
 
 [resource]
 script = ExtResource("1_a8i72")
-terrain_type = 7
+type = 7
 infantry_max_movement_on_terrain = 0
 armor_max_movement_on_terrain = 0
 artillery_max_movement_on_terrain = 0

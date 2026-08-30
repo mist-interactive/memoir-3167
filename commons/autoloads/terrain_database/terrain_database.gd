@@ -12,5 +12,5 @@ func _ready() -> void:
 func get_stats(terrain_type: HexCell.Feature) -> TerrainStats:
 	if _db.has(terrain_type):
 		return _db[terrain_type]
-	push_error("TerrainDatabase: No stats found for UnitType %s " % terrain_type)
+	push_error("TerrainDatabase: No stats found for Terrain type %s " % terrain_type)
 	return null
