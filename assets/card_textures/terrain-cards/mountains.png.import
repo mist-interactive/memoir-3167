@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://fchbbn704dv6"
-path="res://.godot/imported/003_mm_compendium_terrain_3.png-89241fa1028bb7f4605584a180c13520.ctex"
+uid="uid://bw5l8qeq22m1p"
+path="res://.godot/imported/mountains.png-21d7f252bc264d4a4a62aa7e3b62b962.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/card_textures/terrain-cards/003_mm_compendium_terrain_3.png"
-dest_files=["res://.godot/imported/003_mm_compendium_terrain_3.png-89241fa1028bb7f4605584a180c13520.ctex"]
+source_file="res://assets/card_textures/terrain-cards/mountains.png"
+dest_files=["res://.godot/imported/mountains.png-21d7f252bc264d4a4a62aa7e3b62b962.ctex"]
 
 [params]
 

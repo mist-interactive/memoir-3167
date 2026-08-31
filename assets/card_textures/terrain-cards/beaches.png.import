@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cybf4dryxjmt6"
-path="res://.godot/imported/006_mm_compendium_terrain_6.png-88694e3093b1312d408e9a0e2a884ee6.ctex"
+uid="uid://bwo8kjxdx482x"
+path="res://.godot/imported/beaches.png-580e769c1df4f58da732b8b50487c780.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/card_textures/terrain-cards/006_mm_compendium_terrain_6.png"
-dest_files=["res://.godot/imported/006_mm_compendium_terrain_6.png-88694e3093b1312d408e9a0e2a884ee6.ctex"]
+source_file="res://assets/card_textures/terrain-cards/beaches.png"
+dest_files=["res://.godot/imported/beaches.png-580e769c1df4f58da732b8b50487c780.ctex"]
 
 [params]
 
