@@ -51,6 +51,7 @@ func handle_mouse_motion(hex: Vector2i) -> void:
 	if not unit:
 		controller.hover_path_highlight_layer.modulate.a = 0.20
 		controller.hover_path_highlight_layer.highlight_cell(hex)
+		controller.terrain_cards.display_terrain_card(hex)
 		return
 	else:
 		if !controller.selected_unit || controller.selected_unit.hex_coord != hex:
@@ -58,3 +59,4 @@ func handle_mouse_motion(hex: Vector2i) -> void:
 			controller.hover_path_highlight_layer.highlight_cell(hex)
 			controller.highlight_hovered_unit_reachable_hexes(unit)
 			controller.highlight_hovered_unit_enemies_within_range_and_los(unit)
+			controller.terrain_cards.display_terrain_card(hex)

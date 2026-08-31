@@ -124,10 +124,10 @@ point_count = 3
 script = ExtResource("1_u0eng")
 unit_container = NodePath("UnitContainer")
 
-[node name="PlayerController" type="Node" parent="." unique_id=1795203478 node_paths=PackedStringArray("map_ground_layer", "terrain_cards", "map_feature_layer", "unit_selection_highlight_layer", "selected_unit_path_highlight_layer", "selected_unit_action_highlight_layer", "hover_path_highlight_layer", "hover_action_highlight_layer", "sector_highlight_layer")]
+[node name="PlayerController" type="Node" parent="." unique_id=1795203478 node_paths=PackedStringArray("terrain_cards", "map_ground_layer", "map_feature_layer", "unit_selection_highlight_layer", "selected_unit_path_highlight_layer", "selected_unit_action_highlight_layer", "hover_path_highlight_layer", "hover_action_highlight_layer", "sector_highlight_layer")]
 script = ExtResource("4_eq063")
-map_ground_layer = NodePath("../MapVisuals/MapGround")
 terrain_cards = NodePath("../UICanvas/TerrainCards")
+map_ground_layer = NodePath("../MapVisuals/MapGround")
 map_feature_layer = NodePath("../MapVisuals/MapFeature")
 unit_selection_highlight_layer = NodePath("../MapVisuals/UnitSelectionHighlight")
 selected_unit_path_highlight_layer = NodePath("../MapVisuals/SelectedUnitPathHighlight")
