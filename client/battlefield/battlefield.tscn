@@ -24,6 +24,7 @@
 [ext_resource type="Script" uid="uid://cl0168wcrdlf1" path="res://client/battlefield/discard_pile_ui.gd" id="15_eq063"]
 [ext_resource type="PackedScene" uid="uid://c3nofdwjiv8vk" path="res://client/debug.tscn" id="19_3y24m"]
 [ext_resource type="Texture2D" uid="uid://vgleurc45wyk" path="res://assets/card_textures/aAAA_card_back.png" id="21_wygn3"]
+[ext_resource type="Script" uid="uid://cdtn8h0binfft" path="res://client/battlefield/terrain_cards.gd" id="23_vln62"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e5smb"]
 texture = ExtResource("2_4ok02")
@@ -123,9 +124,10 @@ point_count = 3
 script = ExtResource("1_u0eng")
 unit_container = NodePath("UnitContainer")
 
-[node name="PlayerController" type="Node" parent="." unique_id=1795203478 node_paths=PackedStringArray("map_ground_layer", "map_feature_layer", "unit_selection_highlight_layer", "selected_unit_path_highlight_layer", "selected_unit_action_highlight_layer", "hover_path_highlight_layer", "hover_action_highlight_layer", "sector_highlight_layer")]
+[node name="PlayerController" type="Node" parent="." unique_id=1795203478 node_paths=PackedStringArray("map_ground_layer", "terrain_cards", "map_feature_layer", "unit_selection_highlight_layer", "selected_unit_path_highlight_layer", "selected_unit_action_highlight_layer", "unit_path_highlight_layer", "hover_path_highlight_layer", "hover_action_highlight_layer", "hover_highlight_layer", "action_highlight_layer", "sector_highlight_layer")]
 script = ExtResource("4_eq063")
 map_ground_layer = NodePath("../MapVisuals/MapGround")
+terrain_cards = NodePath("../UICanvas/TerrainCards")
 map_feature_layer = NodePath("../MapVisuals/MapFeature")
 unit_selection_highlight_layer = NodePath("../MapVisuals/UnitSelectionHighlight")
 selected_unit_path_highlight_layer = NodePath("../MapVisuals/SelectedUnitPathHighlight")
@@ -329,6 +331,14 @@ texture = ExtResource("21_wygn3")
 
 [node name="Debug" parent="UICanvas" unique_id=1503541458 instance=ExtResource("19_3y24m")]
 position = Vector2(54.092194, 200.49394)
+
+[node name="TerrainCards" type="MarginContainer" parent="UICanvas" unique_id=549801023 node_paths=PackedStringArray("map_ground_layer")]
+script = ExtResource("23_vln62")
+card_ui_scene = ExtResource("12_f3lu3")
+map_ground_layer = NodePath("../../MapVisuals/MapGround")
+
+[node name="Control" type="Control" parent="UICanvas/TerrainCards" unique_id=622240117]
+layout_mode = 2
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1708214605 node_paths=PackedStringArray("target_map", "map_manager")]
 position = Vector2(2877, 1619)
