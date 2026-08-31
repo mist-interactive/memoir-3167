@@ -152,7 +152,6 @@ func _recalculate_layout() -> void:
 			0.2
 		).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		
-		print("target_pos: ", target_pos)
 
 func _on_card_clicked_by_player(instance_id: int) -> void:
 	Network.Actions.play_card.rpc(instance_id)
