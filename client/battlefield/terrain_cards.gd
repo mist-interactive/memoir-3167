@@ -9,11 +9,8 @@ var _current_terrain_card: CardUI = null
 func _ready() -> void:
 	size = Vector2(HandUI.card_size.y, HandUI.card_size.x)
 
-func display_terrain_card(mouse_position: Vector2) -> void:
-	var hex: Vector2i = map_ground_layer.local_to_map(map_ground_layer.to_local(mouse_position))
+func display_terrain_card(hex: Vector2) -> void:
 	var hex_cell = battlefieldState.map.get_cell(hex)
-	if hex_cell == null:
-		return
 	clear_terrain_card()
 	var new_card: CardUI = card_ui_scene.instantiate() as CardUI
 	new_card.name = "TerrainCard_" + str(hex)
