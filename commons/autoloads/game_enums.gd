@@ -1,0 +1,82 @@
+extends Node
+class_name enums
+
+enum Side
+{
+	GREEN = 1,
+	RED = 2,
+	NONE = 3
+}
+
+enum UnitType
+{
+	NONE = 0,
+	INFANTRY = 1 << 0,
+	TANK = 1 << 1,
+	ARTILLERY = 1 << 2,
+	ANY = INFANTRY | TANK | ARTILLERY,
+}
+
+enum RolledDice
+{
+	INFANTRY_1,
+	INFANTRY_2,
+	ALL,
+	ARMOR,
+	RETREAT,
+	MISS,
+}
+
+const CARD_ID_OFFSET: int = 100
+enum TerrainCardId
+{
+	BEACHES = 100,
+	FORESTS = 103,
+	HEDGEROWS = 106,
+	HILLS = 104,
+	MOUNTAINS = 105,
+	OCEANS = 107,
+}
+
+enum MapSector
+{
+	NONE = 0,
+	LEFT = 1 << 0,
+	CENTER = 1 << 1,
+	RIGHT = 1 << 2,
+}
+
+enum CardTargetSector {
+	NONE = 0,
+	
+	# Base Physical Sectors (Single Bits)
+	LEFT   = 1 << 0, # 1 
+	CENTER = 1 << 1, # 2
+	RIGHT  = 1 << 2, # 4 (or 1 << 2)
+
+	# Composite Card Target Sectors (Combined Bits)
+	LEFT_CENTER  = LEFT | CENTER,   # 3 (001 | 010 = 011)
+	RIGHT_CENTER = CENTER | RIGHT,  # 6 (010 | 100 = 110)
+	LEFT_RIGHT = LEFT | RIGHT,      # 5 (101)
+	ALL          = LEFT | CENTER | RIGHT # 7 (111)
+}
+
+enum TurnPhase
+{
+	SPAWN_UNITS,
+	DRAW_HAND,
+	PLAY_CARD,
+	SELECT,
+	MOVE,
+	ATTACK,
+	DRAW_CARD
+}
+
+enum ConnectionStatus
+{
+	Disconnected = 0,
+	Connected = 1 << 0,
+	Authenticated = 1 << 1,
+	Ready = 1 << 2,
+	Playing = 1 << 3,
+}
