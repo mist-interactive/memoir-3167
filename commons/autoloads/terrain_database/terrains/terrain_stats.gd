@@ -11,6 +11,7 @@ extends Resource
 @export var blocks_line_of_sight: bool = false
 
 @export_group("Unit max movement on terrain (0 to 5)")
+@export var unit_moving_in_must_stop: bool = false
 @export_range(0, 5) var infantry_max_movement_on_terrain: int = 3
 @export_range(0, 5) var armor_max_movement_on_terrain: int = 3
 @export_range(0, 5) var artillery_max_movement_on_terrain: int = 1
