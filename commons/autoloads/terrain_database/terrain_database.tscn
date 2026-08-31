@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://dluam6lgh3i8n"]
+
+[ext_resource type="Script" uid="uid://cuoymnaoapqm2" path="res://commons/autoloads/terrain_database/terrain_database.gd" id="1_htcd5"]
+[ext_resource type="Script" uid="uid://u76o6qpu8r0" path="res://commons/autoloads/terrain_database/terrains/terrain_stats.gd" id="2_dedxx"]
+[ext_resource type="Resource" uid="uid://cc4swsrftllpq" path="res://commons/autoloads/terrain_database/terrains/plains.tres" id="3_hymdg"]
+[ext_resource type="Resource" uid="uid://dq60cwggdy5gg" path="res://commons/autoloads/terrain_database/terrains/none.tres" id="3_n1ytx"]
+[ext_resource type="Resource" uid="uid://css0micfiqvm8" path="res://commons/autoloads/terrain_database/terrains/forest.tres" id="4_8ow02"]
+[ext_resource type="Resource" uid="uid://1hxj6e3gt3g0" path="res://commons/autoloads/terrain_database/terrains/hill.tres" id="5_v22fl"]
+[ext_resource type="Resource" uid="uid://co7srr1juf0v" path="res://commons/autoloads/terrain_database/terrains/mountain.tres" id="6_pa7vj"]
+[ext_resource type="Resource" uid="uid://cgbklfk3q6q5n" path="res://commons/autoloads/terrain_database/terrains/rocks.tres" id="8_c3km0"]
+
+[node name="TerrainDatabase" type="Node" unique_id=1773011494]
+script = ExtResource("1_htcd5")
+registered_terrain = Array[ExtResource("2_dedxx")]([ExtResource("3_n1ytx"), ExtResource("4_8ow02"), ExtResource("5_v22fl"), ExtResource("6_pa7vj"), ExtResource("3_hymdg"), ExtResource("8_c3km0")])

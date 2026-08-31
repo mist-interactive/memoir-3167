@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="TerrainStats" format=3 uid="uid://1hxj6e3gt3g0"]
+
+[ext_resource type="Script" uid="uid://u76o6qpu8r0" path="res://commons/autoloads/terrain_database/terrains/terrain_stats.gd" id="1_uyqh6"]
+
+[resource]
+script = ExtResource("1_uyqh6")
+type = 4
+elevation = 1
+blocks_line_of_sight = true
+infantry_defense_modifier = -1
+armor_defense_modifier = -1
+metadata/_custom_type_script = "uid://u76o6qpu8r0"
