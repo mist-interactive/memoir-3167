@@ -4,6 +4,7 @@ class_name PlayerController
 @onready var battlefieldState: BattlefieldState = $"../../BattlefieldState"
 @onready var matchState: MatchState = $"../../matchState"
 @export var map_ground_layer: TileMapLayer
+@export var terrain_cards: TerrainCards
 @export var map_feature_layer: TileMapLayer
 @export var unit_selection_highlight_layer: TileMapLayer
 @export var selected_unit_path_highlight_layer: TileMapLayer
@@ -27,7 +28,6 @@ func _ready() -> void:
 	_initialize_states()
 	matchState.phase_changed.connect(_on_phase_changed)
 	_transition_to_phase(matchState.phase)
-	pass
 
 func _unhandled_input(event: InputEvent) -> void:
 	if !current_state:
@@ -40,11 +40,47 @@ func _unhandled_input(event: InputEvent) -> void:
 		if event.button_index == MOUSE_BUTTON_RIGHT:
 			current_state.handle_right_click(hex)
 	elif event is InputEventMouseMotion:
-		var mouse_position: Vector2 = map_ground_layer.get_global_mouse_position()
-		var hex: Vector2i = map_ground_layer.local_to_map(map_ground_layer.to_local(mouse_position))
-		if hex != _hovered_hex:
-			_hovered_hex = hex
-			current_state.handle_mouse_motion(_hovered_hex)
+		_handle_mouse_motion()
+
+func _handle_mouse_motion() -> void:
+	var mouse_position: Vector2 = map_ground_layer.get_global_mouse_position()
+	var current_hovered_hex = map_ground_layer.local_to_map(map_ground_layer.to_local(mouse_position))
+	if current_hovered_hex == _hovered_hex:
+		return
+		
+	if terrain_cards:
+		terrain_cards.clear_terrain_card()
+		
+	_hovered_hex = current_hovered_hex
+	
+	if current_state:
+		current_state.handle_mouse_motion(_hovered_hex)
+		
+	if not battlefieldState.map.get_cell(_hovered_hex):
+		_hovered_hex = Vector2i(INT32_MAX, INT32_MAX)
+		hover_path_highlight_layer.clear()
+		hover_action_highlight_layer.clear()
+		return
+		
+	var unit: Unit = unit_manager.get_unit_at(_hovered_hex)
+	if !unit:
+		_hovered_unit = null
+		hover_path_highlight_layer.clear()
+		hover_action_highlight_layer.clear()
+		hover_path_highlight_layer.modulate.a = 0.20
+		hover_path_highlight_layer.highlight_cell(_hovered_hex)
+		if terrain_cards:
+			terrain_cards.display_terrain_card(mouse_position)
+		return
+		
+	_hovered_unit = unit
+	if selected_unit && selected_unit.uuid == unit.uuid:
+		hover_path_highlight_layer.clear()
+		return
+		
+	hover_path_highlight_layer.modulate.a = 0.50
+	highlight_hovered_unit_reachable_hexes(_hovered_unit)
+	highlight_hovered_unit_enemies_within_range_and_los(_hovered_unit)
 
 func _on_card_hovered(card_target: enums.MapSector) -> void:
 	var hexes_to_highlight: Array[Vector2i] = []
@@ -62,7 +98,6 @@ func apply_sector_highlights(hexes: Array[Vector2i]) -> void:
 func _on_card_unhovered() -> void:
 	sector_highlight_layer.clear()
 
-#NOTE: Testing for UnitDatabase. Can be removed later! vvv
 func _print_unit_stats(unit_stats: UnitStats) -> void:
 	print("Unit type: ", enums.UnitType.find_key(unit_stats.type))
 	print("Unit max movement: ", unit_stats.max_movement)
@@ -130,7 +165,6 @@ func _initialize_states() -> void:
 	add_child(state_container)
 	var play_card_state := PhaseStatePlayCard.new()
 	
-	#NOTE:Placeholder states
 	var spawn_units_state := PhaseStateWait.new()
 	var draw_hand_state := PhaseStateWait.new()
 	var select_state := PhaseStateSelect.new()
@@ -149,7 +183,7 @@ func _initialize_states() -> void:
 		state.name = enums.TurnPhase.find_key(state_key)
 		state_container.add_child(state)
 		state.setup(self)
-	
+
 func _on_phase_changed(new_phase: enums.TurnPhase) -> void:
 	print("Phase changed to: ", enums.TurnPhase.find_key(new_phase))
 	_transition_to_phase(new_phase)
