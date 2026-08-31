@@ -22,6 +22,7 @@ func _ready() -> void:
 
 func create_new_match(peerId1: int, peerId2: int, uuid1: int, uuid2: int) -> void:
 	var matchNode: matchController = matchController.new(_next_match_id, peerId1, peerId2)
+	matchNode.logger = server.logger.with_context({"match": _next_match_id})
 	get_parent().add_child(matchNode)
 	peer_to_match[peerId1] = _next_match_id
 	peer_to_match[peerId2] = _next_match_id
@@ -31,7 +32,6 @@ func create_new_match(peerId1: int, peerId2: int, uuid1: int, uuid2: int) -> voi
 	_next_match_id += 1
 	Network.Match.match_created.rpc_id(peerId1)
 	Network.Match.match_created.rpc_id(peerId2)
-	matchNode.logger = server.logger.with_context({"match": _next_match_id})
 	matchNode.logger.info("Created match")
 
 func reconnect(peer_id: int, uuid: int) -> void:
@@ -94,7 +94,6 @@ func _on_connect_match_requested(peer_id: int) -> void:
 	Network.Match.init.rpc_id(peer_id, snapshot)
 
 func _on_client_match_state_change(peer_id: int, state: MatchState.STATE):
-	print("Client state change")
 	var matchCtl: matchController = get_match(peer_id)
 	matchCtl.handle_client_state_change(peer_id, state)
 
