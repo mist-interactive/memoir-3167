@@ -13,5 +13,4 @@ signal sync_requested(snapshot: Dictionary)
 func sync(snapshot: Dictionary) -> void:
 	if multiplayer.is_server():
 		return
-	print("Client sync requested")
 	sync_requested.emit(snapshot)
