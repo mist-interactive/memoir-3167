@@ -6,7 +6,13 @@ var discard_pile: Array[CardInstance] = []
 var player_hands: Dictionary[int, HandState]
 var _next_instance_id: int = 1000 
 var initial_hand_size: int = 6
+var logger: LogService 
 @onready var match_controller: matchController = $".."
+
+func _ready() -> void:
+	logger = match_controller.logger.with_context({
+		"component": "deckManager"
+	})
 
 func _init() -> void:
 	name = "DeckManager"
@@ -56,6 +62,11 @@ func draw_card(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) ->
 		return false
 	player_hands[side].add_card(card_instance.instance_id, card_instance.card_id)
 	player_hands[side].opponent_hand_size = get_opponent_hand_size(side)
+	var player_logger := logger.with_context({
+		"peer_id": sides_peer_ids[side],
+		"side": side
+	})
+	player_logger.info("Draw a card", card_instance)
 	return true
 
 func shuffle_deck() -> void:
@@ -66,7 +77,7 @@ func shuffle_deck() -> void:
 	draw_pile.shuffle()
 
 func play_card(side: enums.Side, instance_id: int, sides_peer_ids: Dictionary[enums.Side, int]) -> bool:
-	var player_logger := match_controller.logger.with_context({
+	var player_logger := logger.with_context({
 		"peer_id": sides_peer_ids[side],
 		"side": side
 	})
@@ -82,7 +93,7 @@ func play_card(side: enums.Side, instance_id: int, sides_peer_ids: Dictionary[en
 	return true
 
 func draw_hand(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) -> void:
-	var player_logger := match_controller.logger.with_context({
+	var player_logger := logger.with_context({
 		"peer_id": sides_peer_ids[side],
 		"side": side
 	})

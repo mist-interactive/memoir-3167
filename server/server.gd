@@ -5,6 +5,7 @@ var port: int = 6669
 var clients: Dictionary[int, ClientState]
 var sessions: Dictionary[int, int] # uuid -> peer_id
 var logger: LogService
+
 func _ready() -> void:
 	name = "SERVER"
 	logger = LogService.new({"service": "server"})
