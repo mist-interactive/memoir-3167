@@ -26,7 +26,7 @@ func display_terrain_card(mouse_position: Vector2) -> void:
 	var local_hex_pos: Vector2 = map_ground_layer.map_to_local(hex)
 	new_card.global_position = Vector2(0.0, 0.0)
 	new_card.size = Vector2(HandUI.card_size.y, HandUI.card_size.x)
-	new_card.scale = Vector2(0.7, 0.7)
+	new_card.scale = Vector2(1.0, 1.0)
 
 func clear_terrain_card() -> void:
 	if is_instance_valid(_current_terrain_card):

@@ -333,6 +333,7 @@ texture = ExtResource("21_wygn3")
 position = Vector2(54.092194, 200.49394)
 
 [node name="TerrainCards" type="MarginContainer" parent="UICanvas" unique_id=549801023 node_paths=PackedStringArray("map_ground_layer")]
+scale = Vector2(0.7, 0.7)
 script = ExtResource("23_vln62")
 card_ui_scene = ExtResource("12_f3lu3")
 map_ground_layer = NodePath("../../MapVisuals/MapGround")
