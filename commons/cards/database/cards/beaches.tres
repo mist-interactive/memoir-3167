@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CommandCard" format=3 uid="uid://qvwso5l3sluc"]
+
+[ext_resource type="Texture2D" uid="uid://bwo8kjxdx482x" path="res://assets/card_textures/terrain-cards/beaches.png" id="1_gf8x0"]
+[ext_resource type="Script" uid="uid://brv7b2q4f6ws5" path="res://commons/cards/command_card/CommandCard.gd" id="2_y821m"]
+
+[resource]
+script = ExtResource("2_y821m")
+id = "100"
+title_label = "beaches"
+deck_quantity = 0
+target_unit_limit = 0
+card_art = ExtResource("1_gf8x0")
+metadata/_custom_type_script = "uid://brv7b2q4f6ws5"
