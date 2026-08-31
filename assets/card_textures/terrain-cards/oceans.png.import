@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://tmgx6klm55x1"
-path="res://.godot/imported/004_mm_compendium_terrain_4.png-b728033585e39ed708e3df6fb6624bb8.ctex"
+uid="uid://iyiii2ntj15x"
+path="res://.godot/imported/oceans.png-882d3bbcc0dadb6b4d4fee998c30ec79.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/card_textures/terrain-cards/004_mm_compendium_terrain_4.png"
-dest_files=["res://.godot/imported/004_mm_compendium_terrain_4.png-b728033585e39ed708e3df6fb6624bb8.ctex"]
+source_file="res://assets/card_textures/terrain-cards/oceans.png"
+dest_files=["res://.godot/imported/oceans.png-882d3bbcc0dadb6b4d4fee998c30ec79.ctex"]
 
 [params]
 
