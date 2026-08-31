@@ -6,6 +6,7 @@
 script = ExtResource("1_c6p36")
 type = 3
 blocks_line_of_sight = true
+unit_moving_in_must_stop = true
 infantry_max_movement_on_terrain = 1
 armor_max_movement_on_terrain = 1
 infantry_defense_modifier = -1

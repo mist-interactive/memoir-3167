@@ -28,11 +28,11 @@ static func get_reachable_hexes(unit_type: enums.UnitType, start_coord: Vector2i
 		return {}
 	var search_cfg := PathFinder.SearchConfig.new()
 	search_cfg.max_cost = float(stats.max_movement)
-	search_cfg.neighbor_filter = _neighbor_filter.bind(unit_type, map, occupied_coords)
+	search_cfg.neighbor_filter = _neighbor_filter.bind(unit_type, map, occupied_coords, start_coord)
 	search_cfg.cost_fn = _cost_fn.bind(unit_type, map, search_cfg.max_cost)
 	search_cfg.should_exit = _should_exit
 	search_cfg.priority_fn = _priority_fn
-	
+
 	var came_from: Dictionary = {}
 	search_cfg.on_better_path = _on_better_path.bind(came_from)
 	
@@ -59,20 +59,31 @@ static func get_unit_path(unit: Variant, start: Vector2i, destination: Vector2i,
 	var path = reconstruct_path(start, destination, reachable_data.get("came_from", {}))
 	return path
 
-static func _neighbor_filter(current_hex: Vector2i, neighbor_hex: Vector2i, unit_type: enums.UnitType, map: HexGrid, occupied_coords: Dictionary) -> bool:
+static func _neighbor_filter(current_hex: Vector2i, neighbor_hex: Vector2i, unit_type: enums.UnitType, map: HexGrid, occupied_coords: Dictionary, start_coord: Vector2i) -> bool:
 	if not map.is_valid(neighbor_hex):
 		return false
 	if occupied_coords.has(neighbor_hex):
 		return false
-	var terrain_type: int = map.get_cell(neighbor_hex).feature
-	#TODO: Add terrains specific logic here later
+
+	if current_hex != start_coord:
+		var current_terrain_type: int = map.get_cell(current_hex).feature
+		var current_terrain_stats: TerrainStats = TerrainDatabase.get_stats(current_terrain_type)
+		if current_terrain_stats and current_terrain_stats.unit_moving_in_must_stop:
+			return false
+	
+	var neighbor_terrain_type: int = map.get_cell(neighbor_hex).feature
+	var neighbor_terrain_stats: TerrainStats = TerrainDatabase.get_stats(neighbor_terrain_type)
+	if not neighbor_terrain_stats:
+		return false
+	#TODO: Add more terrains specific logic here later
 	return true
 
 static func _cost_fn(current_hex: Vector2i, neighbor_hex: Vector2i, unit_type: enums.UnitType, map: HexGrid, max_cost: float) -> float:
 	var terrain_type: int = map.get_cell(neighbor_hex).feature
-	if terrain_type == HexCell.Feature.NONE:
-		return 1.0
+	#if terrain_type == HexCell.Feature.NONE:
+		#return 1.0
 	var movement_cost: float = map.TERRAIN_COST.get(terrain_type, 1.0)
+	print(movement_cost)
 	if movement_cost < 0.0:
 		return max_cost + 1.0
 	#TODO: Add more logic here later:
@@ -92,7 +103,11 @@ static func _get_hex_elevation(coord: Vector2i, map: HexGrid) -> int:
 	var cell = map.get_cell(coord)
 	if !cell:
 		return INT8_MAX
-	return cell.elevation
+	var terrain_stats: TerrainStats = TerrainDatabase.get_stats(cell.feature)
+	if !terrain_stats:
+		return INT8_MAX
+	var elevation = terrain_stats.elevation
+	return elevation
 
 static func _hex_line_epsilon(a: Vector2i, b: Vector2i, epsilon: Vector3) -> Array[Vector2i]:
 	var n: int = HexGrid.distance(a, b)
@@ -121,7 +136,10 @@ static func _is_line_clear(line: Array[Vector2i], from_hex: Vector2i, to_hex: Ve
 		var cell = map.get_cell(coord)
 		if !cell:
 			return false
-		var current_elevation: float = cell.elevation
+		var terrain_stats: TerrainStats = TerrainDatabase.get_stats(cell.feature)
+		if !terrain_stats:
+			return false
+		var current_elevation = terrain_stats.elevation
 		if current_elevation > max_sight_elevation:
 			return false
 	return true
