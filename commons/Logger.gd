@@ -8,20 +8,11 @@ enum Level {
 	ERROR,
 	CRITICAL
 }
-
 var level: Level = Level.DEBUG
-
-# Persistent context
 var context: Dictionary = {}
-
 
 func _init(initial_context: Dictionary = {}) -> void:
 	context = initial_context.duplicate()
-
-
-# ---------------------------------------------------------
-# Context
-# ---------------------------------------------------------
 
 func with_context(extra: Dictionary) -> LogService:
 	var child : LogService = LogService.new(context)
@@ -32,11 +23,6 @@ func with_context(extra: Dictionary) -> LogService:
 	child.level = level
 
 	return child
-
-
-# ---------------------------------------------------------
-# Logging
-# ---------------------------------------------------------
 
 func debug(message: String, data: Dictionary = {}) -> void:
 	_log(Level.DEBUG, message, data)
@@ -106,30 +92,28 @@ func _format_context() -> String:
 
 	var result := ""
 
-	# Keep ordering predictable
 	var order := [
 		"service",
+		"component",
 		"match_id",
 		"player_id",
-		"turn",
-		"request_id",
-		"connection_id",
-		"component"
-	]
-	if context.has("service"):
-		result += "[%s] " % [context.service]
-	for key in order:
-		if context.has(key) && key != "service":
+	] 
+	
+	for i in range(order.size()):
+		var key = order[i]
+		if i < 2:
+			if context.has(key):
+				result += "[%s] " % [context[key]]
+		elif context.has(key):
 			result += "[%s:%s] " % [
 				key,
 				str(context[key])
 			]
 
-	# Include any custom context
 	for key in context:
 		if key not in order:
 			result += "[%s:%s]" % [
-				key.to_upper(),
+				key,
 				str(context[key])
 			]
 
