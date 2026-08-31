@@ -44,7 +44,6 @@ func get_snapshot() -> Dictionary:
 	}
 
 func _on_sync(snapshot: Dictionary):
-	print("syncing with server")
 	matchId = snapshot.matchId
 	scores = snapshot.scores
 	state = snapshot.state

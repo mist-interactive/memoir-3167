@@ -6,8 +6,8 @@ var deckManager: DeckManager
 var unit_manager: ServerUnitManager
 var connected: Dictionary[enums.Side, bool]
 var player_status: Dictionary[enums.Side, MatchState.STATE]
-var UNIT_SCENE = preload("res://client/units/Unit.tscn")
 var sides_peer_ids: Dictionary[enums.Side, int]
+var logger: LogService
 
 func _init(matchId: int, peer_id1: int, peer_id2: int) -> void:
 	name = "Match_" + str(matchId)
@@ -105,3 +105,41 @@ func go_next_phase(side: enums.Side) -> void:
 	elif isPhase(enums.TurnPhase.MOVE):
 		matchState.phase = enums.TurnPhase.ATTACK
 		unit_manager.next_phase(enums.TurnPhase.ATTACK)
+
+# Action handlers
+func handle_continue_next_phase(side: enums.Side) -> void:
+	go_next_phase(side)
+
+func handle_draw_hand(side: enums.Side) -> void:
+	deckManager.draw_hand(side, sides_peer_ids)
+	for hand: HandState in deckManager.player_hands.values():
+		if hand.card_ids.size() == 0:
+			return
+	matchState.phase = enums.TurnPhase.PLAY_CARD
+
+func handle_play_card(side: enums.Side, instance_id: int) -> void:
+	if deckManager.play_card(side, instance_id, sides_peer_ids):
+		matchState.phase = enums.TurnPhase.SELECT
+
+func handle_select_unit(side: enums.Side, unit_id: int) -> void:
+	if !validate_unit_selection(unit_id):
+		return
+	unit_manager.select_unit(side, unit_id, deckManager.get_card())
+
+func handle_move_unit(side: enums.Side, unit_id: int, destination: Vector2i) -> void:
+	if unit_manager.move_unit_request(side, unit_id, destination, sides_peer_ids):
+		if unit_manager.moved_units_ids.size() == unit_manager.selected_units_ids.size():
+			matchState.phase = enums.TurnPhase.ATTACK
+			unit_manager.next_phase(enums.TurnPhase.ATTACK)
+	
+func handle_attack_unit(side: enums.Side, unit_id: int, target_unit_id: int) -> void:
+	if unit_manager.attack_unit(side, unit_id, target_unit_id, sides_peer_ids):
+		if unit_manager.attacked_units_ids.size() == unit_manager.selected_units_ids.size():
+			unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)
+			matchState.phase = enums.TurnPhase.PLAY_CARD
+			matchState.current_turn = enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
+
+func handle_draw_card(side: enums.Side) -> void:
+	if deckManager.draw_card(side, sides_peer_ids):
+		matchState.phase = enums.TurnPhase.PLAY_CARD
+		unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)

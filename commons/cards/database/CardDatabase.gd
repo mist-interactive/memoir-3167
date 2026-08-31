@@ -6,8 +6,6 @@ var card_registry: Dictionary = {}
 
 func _ready() -> void:
 	_load_cards_from_directory(cards_directory)
-	print("Total Cards Loaded: ", card_registry.size())
-	print("Available Card IDs: ", card_registry.keys())
 	
 func _load_cards_from_directory(path: String) -> void:
 	# Safely ensure the path string ends with a trailing slash

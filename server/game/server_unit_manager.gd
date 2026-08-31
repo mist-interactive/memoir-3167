@@ -2,9 +2,16 @@ extends UnitManager
 class_name ServerUnitManager
 @onready var matchState: MatchState = $"../matchState"
 @onready var battlefieldState: BattlefieldState = $"../BattlefieldState"
+@onready var match_controller: matchController = $".."
 var _unit_id_counter: int = 0
 var isDirty: bool = true
 var death_queue: Array[int]
+var logger: LogService
+
+func _ready() -> void:
+	logger = match_controller.logger.with_context({
+		"component": "unitManager"
+	})
 
 func _init(initialState: BattlefieldState) -> void:
 	super(initialState)
@@ -55,6 +62,10 @@ func select_unit(owner: enums.Side, unit_id: int, card: CommandCard) -> bool:
 	if matchState.phase == enums.TurnPhase.SELECT && !selected_units_ids.has(unit_id):
 		selected_units_ids.append(unit_id)
 	isDirty = true
+	var player_logger := logger.with_context({
+		"side": owner
+	})
+	player_logger.info("Selected unit(%d)" % [unit_id])
 	return true
 
 func deselect_unit(owner: enums.Side) -> bool:
@@ -71,6 +82,7 @@ func deselect_unit(owner: enums.Side) -> bool:
 
 func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, sides_peer_ids: Dictionary[enums.Side, int]) -> bool:
 	var unit: UnitData = get_unit_by_id(unit_id)
+	
 	if unit == null || unit.owner_id != owner:
 		return false
 
@@ -91,6 +103,11 @@ func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, 
 	selected_by_peer = enums.Side.NONE
 	isDirty = true
 	moved_units_ids.append(unit_id)
+	var player_logger := logger.with_context({
+		"peer_id": sides_peer_ids[owner],
+		"side": owner
+	})
+	player_logger.info("Unit(%d) moved from %v to %v" % [unit_id, old_coord, destination])
 	return true
 
 func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer_ids: Dictionary[enums.Side, int]) -> bool:
@@ -117,12 +134,15 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	selected_by_peer = enums.Side.NONE
 	isDirty = true
 	attacked_units_ids.append(unit_id)
+	var player_logger := logger.with_context({
+		"peer_id": sides_peer_ids[side],
+		"side": side
+	})
+	player_logger.info("Unit(%d) attacked unit(%d)" % [unit_id, target_unit_id])
+	player_logger.info("Combat result ", combat_result.to_dict())
 	return true
 
 func generate_server_unit_id() -> int:
-	if not multiplayer.is_server():
-		push_error("Client tried to generate a unit ID.")
-		return -1
 	_unit_id_counter += 1
 	return _unit_id_counter
 
