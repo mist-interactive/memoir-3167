@@ -26,7 +26,18 @@ func _physics_process(delta: float) -> void:
 	matchState.sync(sides_peer_ids)
 	deckManager._sync_hands(sides_peer_ids)
 	unit_manager._sync_units(sides_peer_ids)
-
+	match matchState.phase:
+		enums.TurnPhase.DRAW_HAND:
+			var hands_drawn: bool = deckManager.player_hands[enums.Side.GREEN].is_hand_drawn && deckManager.player_hands[enums.Side.RED].is_hand_drawn
+			if hands_drawn:
+				matchState.phase = enums.TurnPhase.PLAY_CARD
+	match matchState.state:
+		MatchState.STATE.PAUSED:
+			var peers_reconnected: bool = connected[enums.Side.GREEN] == true && connected[enums.Side.RED] == true
+			var peers_ready: bool =  player_status[enums.Side.GREEN] == MatchState.STATE.READY && player_status[enums.Side.RED] == MatchState.STATE.READY
+			if peers_reconnected:
+				matchState.state = MatchState.STATE.IN_PROGRESS
+				
 func get_side(peer_id: int) -> enums.Side:
 	for side in sides_peer_ids:
 		if peer_id == sides_peer_ids[side]:
@@ -55,23 +66,28 @@ func handle_connect(peer_id: int) -> void:
 	player_status[get_side(peer_id)] = MatchState.STATE.INITIALIZING
 	#Network.Match.init.rpc_id(peer_id, matchState.matchId, battlefield.mapName)
 
-func handle_disconnect(peer_id: int) -> void:
-	self.connected[get_side(peer_id)] = false
+func handle_disconnect(side: enums.Side) -> void:
+	connected[side] = false
+	player_status[side] = MatchState.STATE.PAUSED
+	matchState.state = MatchState.STATE.PAUSED
 
 func peer_reconnected(peer_id: int, old_peer_id: int) -> void:
 	var side: enums.Side = get_side(old_peer_id)
 	sides_peer_ids[side] = peer_id
-	connected[side] = false
+	connected[side] = true
 
 func handle_client_state_change(peer_id: int, state: MatchState.STATE) -> void:
 	player_status[get_side(peer_id)] = state
+	logger.info("status %s" % MatchState.STATE.find_key(state))
 	if matchState.state == MatchState.STATE.INITIALIZING && clients_are_ready():
 		matchState.state = MatchState.STATE.INITIALIZE_BOARD
+		logger.info("initializing board")
 
 	if matchState.state == MatchState.STATE.INITIALIZE_BOARD && ready_to_initialize_board():
 		matchState.state = MatchState.STATE.IN_PROGRESS
 		unit_manager.spawn_units(sides_peer_ids)
-		matchState.phase = enums.TurnPhase.PLAY_CARD
+		logger.info("spawning units")
+		#matchState.phase = enums.TurnPhase.DRAW_HAND
 
 func isPhase(phase: enums.TurnPhase) -> bool:
 	return matchState.phase == phase
@@ -112,10 +128,10 @@ func handle_continue_next_phase(side: enums.Side) -> void:
 
 func handle_draw_hand(side: enums.Side) -> void:
 	deckManager.draw_hand(side, sides_peer_ids)
-	for hand: HandState in deckManager.player_hands.values():
-		if hand.card_ids.size() == 0:
-			return
-	matchState.phase = enums.TurnPhase.PLAY_CARD
+	#for hand: HandState in deckManager.player_hands.values():
+		#if hand.card_ids.size() == 0:
+			#return
+	#matchState.phase = enums.TurnPhase.PLAY_CARD
 
 func handle_play_card(side: enums.Side, instance_id: int) -> void:
 	if deckManager.play_card(side, instance_id, sides_peer_ids):

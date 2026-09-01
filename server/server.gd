@@ -5,6 +5,7 @@ var port: int = 6669
 var clients: Dictionary[int, ClientState]
 var sessions: Dictionary[int, int] # uuid -> peer_id
 var logger: LogService
+@export var match_manager: MatchManager
 
 func _ready() -> void:
 	name = "SERVER"
@@ -29,6 +30,7 @@ func _on_peer_connected(id: int) -> void:
 
 func _on_peer_disconnected(id: int) -> void:
 	logger.info("Clien has disconnected", {"uuid": id})
+	match_manager.client_disconnected(id)
 	clients.erase(id)
 
 func _on_auth_check_requested(peer_id: int, jwt_token: String) -> void:
