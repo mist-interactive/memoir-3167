@@ -47,6 +47,7 @@ func handle_mouse_motion(hex: Vector2i) -> void:
 	controller.hover_action_highlight_layer.clear()
 	if not controller.battlefieldState.map.cells.has(hex):
 		return
+	controller.terrain_cards.display_terrain_card(hex)
 	var unit: Unit = controller.unit_manager.get_unit_at(hex)
 	if not unit:
 		controller.hover_path_highlight_layer.modulate.a = 0.20

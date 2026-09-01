@@ -3,6 +3,7 @@ class_name PlayerController
 
 @onready var battlefieldState: BattlefieldState = $"../../BattlefieldState"
 @onready var matchState: MatchState = $"../../matchState"
+@export var terrain_cards: TerrainCards
 @export var map_ground_layer: TileMapLayer
 @export var map_feature_layer: TileMapLayer
 @export var unit_selection_highlight_layer: TileMapLayer
@@ -27,7 +28,6 @@ func _ready() -> void:
 	_initialize_states()
 	matchState.phase_changed.connect(_on_phase_changed)
 	_transition_to_phase(matchState.phase)
-	pass
 
 func _unhandled_input(event: InputEvent) -> void:
 	if !current_state:
@@ -62,7 +62,6 @@ func apply_sector_highlights(hexes: Array[Vector2i]) -> void:
 func _on_card_unhovered() -> void:
 	sector_highlight_layer.clear()
 
-#NOTE: Testing for UnitDatabase. Can be removed later! vvv
 func _print_unit_stats(unit_stats: UnitStats) -> void:
 	print("Unit type: ", enums.UnitType.find_key(unit_stats.type))
 	print("Unit max movement: ", unit_stats.max_movement)
@@ -130,7 +129,6 @@ func _initialize_states() -> void:
 	add_child(state_container)
 	var play_card_state := PhaseStatePlayCard.new()
 	
-	#NOTE:Placeholder states
 	var spawn_units_state := PhaseStateWait.new()
 	var draw_hand_state := PhaseStateWait.new()
 	var select_state := PhaseStateSelect.new()
@@ -149,7 +147,7 @@ func _initialize_states() -> void:
 		state.name = enums.TurnPhase.find_key(state_key)
 		state_container.add_child(state)
 		state.setup(self)
-	
+
 func _on_phase_changed(new_phase: enums.TurnPhase) -> void:
 	print("Phase changed to: ", enums.TurnPhase.find_key(new_phase))
 	_transition_to_phase(new_phase)
