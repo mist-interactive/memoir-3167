@@ -28,6 +28,7 @@ func _sync_hands(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 			continue
 		Network.Hand.sync.rpc_id(peer_id, hand.get_snapshot())
 		hand.should_sync = false
+		logger.info("synced new hand state")
 
 func initialize_match_deck() -> void:
 	draw_pile.clear()
@@ -42,7 +43,6 @@ func initialize_match_deck() -> void:
 			draw_pile.append(card_id)
 		
 	shuffle_deck()
-	print("Server Deck Manager: Deck initialized with %d total cards." % draw_pile.size())
 
 func draw_card_from_pile() -> Dictionary:
 	if draw_pile.is_empty():
@@ -85,7 +85,7 @@ func play_card(side: enums.Side, instance_id: int, sides_peer_ids: Dictionary[en
 		return false
 	var other_side: enums.Side = get_other_side(side)
 	var card_id: String = player_hands[side].card_ids[instance_id]
-	discard_pile.append(CardInstance.new(instance_id, card_id))
+	discard_pile.append(CardInstance.new(instance_id, card_id, side))
 	player_hands[side].discard_pile = discard_pile
 	player_hands[other_side].discard_pile = discard_pile
 	player_hands[side].remove_card(instance_id)
@@ -97,15 +97,20 @@ func draw_hand(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) ->
 		"peer_id": sides_peer_ids[side],
 		"side": side
 	})
-	var cards: Dictionary[int, String]
-	for i in range(initial_hand_size):
-		var card: Dictionary = draw_card_from_pile()
-		if card.is_empty():
-			break
-		cards[card.instance_id] = card.card_id
-	player_hands[get_other_side(side)].opponent_hand_size = cards.size()
-	player_hands[side].card_ids = cards
-	player_logger.info("Draw hand", {"cards": cards.size()})
+	if !player_hands[side].is_hand_drawn:
+		var cards: Dictionary[int, String]
+		for i in range(initial_hand_size):
+			var card: Dictionary = draw_card_from_pile()
+			if card.is_empty():
+				break
+			cards[card.instance_id] = card.card_id
+		player_hands[side].is_hand_drawn = true
+		player_hands[get_other_side(side)].opponent_hand_size = cards.size()
+		player_hands[side].card_ids = cards
+	else:
+		player_hands[side].should_sync = true
+		player_hands[get_other_side(side)].should_sync = true
+	player_logger.info("Draw hand", {"cards": player_hands[side].card_ids.size()})
 
 func get_other_side(side: enums.Side) -> enums.Side:
 	var other_side: enums.Side

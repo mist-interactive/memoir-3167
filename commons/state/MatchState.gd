@@ -22,9 +22,11 @@ var current_turn: enums.Side:
 var should_sync: bool = true
 enum STATE {INITIALIZING, READY, INITIALIZE_BOARD, IN_PROGRESS, PAUSED, ENDED}
 
-func _init() -> void:
+func _init(snapshot: Dictionary = {}) -> void:
 	name = "matchState"
 	Network.Match.sync_requested.connect(_on_sync)
+	if !snapshot.is_empty():
+		_on_sync(snapshot)
 
 func _initialize(match_id: int) -> void:
 	self.matchId = match_id
@@ -34,12 +36,13 @@ func _initialize(match_id: int) -> void:
 	self.phase = enums.TurnPhase.DRAW_HAND
 	self.current_turn = randi_range(enums.Side.GREEN,enums.Side.RED)
 
-func get_snapshot() -> Dictionary:
+func get_snapshot(side: enums.Side = enums.Side.NONE) -> Dictionary:
 	return {
 		"matchId": self.matchId,
 		"scores": self.scores,
 		"state": self.state,
 		"phase": self.phase,
+		"side": side,
 		"current_turn": self.current_turn
 	}
 

@@ -49,6 +49,7 @@ func reconnect(peer_id: int, uuid: int) -> void:
 			"coord": unit.hex_coord
 		})
 	var snapshot: Dictionary = {
+		"match_state": matchCtl.matchState.get_snapshot(matchCtl.get_side(peer_id)),
 		"state": matchCtl.matchState.state,
 		"match_id": matchCtl.matchState.matchId,
 		"map_name": matchCtl.battlefield.mapName,
@@ -56,6 +57,11 @@ func reconnect(peer_id: int, uuid: int) -> void:
 	}
 	Network.Match.init.rpc_id(peer_id, snapshot)
 
+func client_disconnected(peer_id: int) -> void:
+	var matchCtl: matchController = get_match(peer_id)
+	if !matchCtl:
+		return
+	matchCtl.handle_disconnect(matchCtl.get_side(peer_id))
 
 func get_match(peer_id: int) -> matchController:
 	var matchId: int = peer_to_match[peer_id]
