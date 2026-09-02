@@ -152,7 +152,6 @@ func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 	for elem in battlefield.units_to_spawn_player_1:
 		var coord: Vector2i = Vector2i(elem.coord[0], elem.coord[1])
 		var unit: UnitData = UnitData.new(enums.Side.GREEN, elem.type,generate_server_unit_id(), coord)
-		add_unit(unit, coord)
 		elem.owner_id = unit.owner_id
 		elem.uuid = unit.uuid
 		var new_unit: Dictionary = {
@@ -164,11 +163,11 @@ func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 		}
 		for peer_id in sides_peer_ids.values():
 			Network.Units.spawn_unit.rpc_id(peer_id, new_unit)
+		add_unit(unit, coord)
 
 	for elem in battlefield.units_to_spawn_player_2:
 		var coord: Vector2i = Vector2i(elem.coord[0], elem.coord[1])
 		var unit: UnitData = UnitData.new(enums.Side.RED, elem.type, generate_server_unit_id(), coord)
-		add_unit(unit, coord)
 		elem.owner_id = unit.owner_id
 		elem.uuid = unit.uuid
 		var new_unit: Dictionary = {
@@ -180,6 +179,7 @@ func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 		}
 		for peer_id in sides_peer_ids.values():
 			Network.Units.spawn_unit.rpc_id(peer_id, new_unit)
+		add_unit(unit, coord)
 
 func resolve_combat(result: CombatResult) -> void:
 	var target_id: int = result.unit_ids[result.target]
