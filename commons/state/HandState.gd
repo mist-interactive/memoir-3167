@@ -23,7 +23,6 @@ func _ready() -> void:
 func get_snapshot() -> Dictionary:
 	var packed_discard_pile: Array
 	for card: CardInstance in discard_pile:
-		print(card)
 		packed_discard_pile.append(card.to_dict())
 	return {
 		"card_ids": self.card_ids,
