@@ -6,7 +6,7 @@ var discard_pile: Array[CardInstance] = []
 var player_hands: Dictionary[int, HandState]
 var _next_instance_id: int = 1000 
 var initial_hand_size: int = 6
-var logger: LogService 
+var logger: LogService
 @onready var match_controller: matchController = $".."
 
 func _ready() -> void:
@@ -21,7 +21,7 @@ func _init() -> void:
 	initialize_match_deck()
 
 func _sync_hands(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
-	for side in player_hands.keys():
+	for side in sides_peer_ids:
 		var peer_id: int = sides_peer_ids[side]
 		var hand: HandState = player_hands[side]
 		if not hand.should_sync:
@@ -106,6 +106,7 @@ func draw_hand(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) ->
 			cards[card.instance_id] = card.card_id
 		player_hands[side].is_hand_drawn = true
 		player_hands[get_other_side(side)].opponent_hand_size = cards.size()
+		player_hands[side].opponent_hand_size = player_hands[get_other_side(side)].card_ids.size()
 		player_hands[side].card_ids = cards
 	else:
 		player_hands[side].should_sync = true
@@ -113,11 +114,7 @@ func draw_hand(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) ->
 	player_logger.info("Draw hand", {"cards": player_hands[side].card_ids.size()})
 
 func get_other_side(side: enums.Side) -> enums.Side:
-	var other_side: enums.Side
-	for other in player_hands.keys():
-		if other != side:
-			other_side = other
-			break
+	var other_side: enums.Side = enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
 	return other_side
 
 func get_opponent_hand_size(side: enums.Side) -> int:
