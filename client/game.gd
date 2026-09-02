@@ -16,7 +16,7 @@ func initialize_game(snapshot: Dictionary):
 	print("client(%d) initializing game" % multiplayer.get_unique_id())
 	client.players_connected = true
 	self.initial_snapshot = snapshot
-	add_child(MatchState.new(snapshot))
+	add_child(MatchState.new(snapshot.match_state if snapshot.has("match_state") else {}))
 	battlefield = BattlefieldState.new(snapshot.map_name)
 	add_child(battlefield)
 	battlefieldRenderer = renderGameBoard.instantiate()
