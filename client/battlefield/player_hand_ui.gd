@@ -17,8 +17,6 @@ func _ready() -> void:
 	_clear_hand()
 	handState.hand_drawn.connect(_on_hand_drawn)
 	handState.card_played.connect(_on_card_played)
-	await get_tree().create_timer(0.1).timeout
-	Network.Actions.draw_hand.rpc_id(1)
 
 func _on_hand_drawn() -> void:
 	var hand_data: Dictionary = handState.card_ids

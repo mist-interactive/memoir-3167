@@ -10,22 +10,26 @@ signal enemy_card_played(instance_id: int, card_id: String)
 
 @onready var match_state: MatchState = $"../matchState"
 
+var event_queue: Array[Event]
+
 func _ready() -> void:
 	name = "HandState"
 	Network.Hand.sync_requested.connect(_on_sync_requested)
 
-func _on_sync_requested(snapshot: Dictionary):
-	var events: Array[Event]
-	
+func initialize(snapshot: Dictionary) -> void:
+	_on_sync_requested(snapshot, false)
+	flush_event_queue()
+
+func _on_sync_requested(snapshot: Dictionary, flush_queue: bool = true):	
 	if card_ids.size() > snapshot.card_ids.size() + 1:
-		events.append(Event.new(card_drawn))
+		event_queue.append(Event.new(card_drawn))
 	elif card_ids.size() == 0 && snapshot.card_ids.size() != 0:
-		events.append(Event.new(hand_drawn))
+		event_queue.append(Event.new(hand_drawn))
 	
 	if opponent_hand_size == snapshot.opponent_hand_size - 1:
-		events.append(Event.new(enemy_card_drawn))
+		event_queue.append(Event.new(enemy_card_drawn))
 	elif opponent_hand_size == 0 && snapshot.opponent_hand_size != 0:
-		events.append(Event.new(enemy_hand_drawn))
+		event_queue.append(Event.new(enemy_hand_drawn))
 	
 	var new_discard_pile: Array[CardInstance]
 	for packed in snapshot.discard_pile:
@@ -36,10 +40,15 @@ func _on_sync_requested(snapshot: Dictionary):
 		var args: Array = [card.instance_id, card.card_id]
 		var enemyPlayed: bool = card.owner_side != match_state.mySide
 		var event: Event = Event.new(enemy_card_played if enemyPlayed else card_played, args)
-		events.append(event)
+		event_queue.append(event)
 		
 	card_ids = snapshot.card_ids
 	discard_pile = new_discard_pile
 	opponent_hand_size = snapshot.opponent_hand_size
-	for event: Event in events:
-		event.emit()
+	if flush_queue:
+		flush_event_queue()
+
+func flush_event_queue() -> void:
+	for event: Event in event_queue:
+			event.emit()
+	event_queue.clear()
