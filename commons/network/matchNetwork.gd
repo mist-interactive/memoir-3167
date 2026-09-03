@@ -42,11 +42,3 @@ func sync(snapshot: Dictionary) -> void:
 	if multiplayer.is_server():
 		return
 	sync_requested.emit(snapshot)
-
-# client actions
-signal update_client_match_change_requested(peer_id: int, state: MatchState.STATE)
-@rpc("any_peer", "call_remote")
-func update_client_match_state(state: MatchState.STATE):
-	if !multiplayer.is_server():
-		return
-	update_client_match_change_requested.emit(multiplayer.get_remote_sender_id(), state)
