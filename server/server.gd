@@ -7,6 +7,8 @@ var sessions: Dictionary[int, int] # uuid -> peer_id
 var logger: LogService
 @export var match_manager: MatchManager
 
+signal player_disconnected(peer_id: int)
+
 func _ready() -> void:
 	name = "SERVER"
 	logger = LogService.new({"service": "server"})
@@ -24,14 +26,14 @@ func _physics_process(delta: float) -> void:
 		var client: ClientState = clients[peer_id]
 		client.sync()
 
-func _on_peer_connected(id: int) -> void:
-	logger.info("A new client has connected", {"uuid": id})
-	clients[id] = ClientState.new(id)
+func _on_peer_connected(peer_id: int) -> void:
+	logger.info("A new client has connected", {"uuid": peer_id})
+	clients[peer_id] = ClientState.new(peer_id)
 
-func _on_peer_disconnected(id: int) -> void:
-	logger.info("Clien has disconnected", {"uuid": id})
-	match_manager.client_disconnected(id)
-	clients.erase(id)
+func _on_peer_disconnected(peer_id: int) -> void:
+	logger.info("Clien has disconnected", {"peer_id": peer_id})
+	player_disconnected.emit(peer_id)
+	clients.erase(peer_id)
 
 func _on_auth_check_requested(peer_id: int, jwt_token: String) -> void:
 	logger.info("Authenticating client", {"peer_id": peer_id, "jtw_token": jwt_token})
