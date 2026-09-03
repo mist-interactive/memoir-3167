@@ -215,7 +215,7 @@ func _get_jwt_expiration(jwt_token: String) -> int:
 	if parts.size() != 3:
 		return -1
 
-	var payload_b64 := partsTYPE_DICTIONARY[1]
+	var payload_b64 := parts[1]
 	payload_b64 = payload_b64.replace("-", "+").replace("_", "/")
 
 	while payload_b64.length() % 4 != 0:
