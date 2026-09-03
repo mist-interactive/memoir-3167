@@ -34,3 +34,4 @@ func start_game() -> void:
 func _ready_to_initialize() -> void:
 	battlefieldRenderer.initialize(initial_snapshot)
 	initial_snapshot.clear()
+	Network.Match.client_game_ready.rpc_id(1)
