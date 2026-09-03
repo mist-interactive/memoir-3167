@@ -3,7 +3,6 @@ class_name MatchManager
 var peer_to_match: Dictionary[int, int] = {}
 var uuid_to_peer: Dictionary[int, int] = {}
 var matches: Dictionary[int, matchController] = {}
-@onready var card_database: Node = $"../CardDatabase"
 @onready var server: Server = $".."
 
 func _ready() -> void:
