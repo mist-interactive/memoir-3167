@@ -58,9 +58,9 @@ func _on_sync(snapshot: Dictionary):
 func sync(side_peer_ids: Dictionary[enums.Side, int]) -> void:
 	if should_sync:
 		for side in side_peer_ids:
-			var snapshot: Dictionary = get_snapshot()
-			snapshot.side = side
-			Network.Match.sync.rpc_id(side_peer_ids[side], snapshot)
+			if side_peer_ids[side] < 0:
+				continue
+			Network.Match.sync.rpc_id(side_peer_ids[side], get_snapshot(side))
 		should_sync = false
 
 func is_my_turn() -> bool:

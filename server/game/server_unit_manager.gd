@@ -32,21 +32,19 @@ func _sync_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 	if !death_queue.is_empty():
 		isDirty = true
 		for uuid: int in death_queue:
-			for peer_id in sides_peer_ids.values():
-				Network.Units.destroy_unit.rpc_id(peer_id, uuid)
+			Network.broadcast(Network.Units.destroy_unit.rpc_id, sides_peer_ids.values(), [uuid])
 			unit_grid.erase(units_by_id[uuid].hex_coord)
 			units_by_id.erase(uuid)
 		death_queue.clear()
 	if isDirty:
-		for peer_id in sides_peer_ids.values():
-			var snapshot: Dictionary = {
-				"selected_unit_id": selected_unit_id,
-				"selected_by_peer": selected_by_peer,
-				"selected_units_ids" : selected_units_ids,
-				"moved_units_ids": moved_units_ids,
-				"attacked_units_ids": attacked_units_ids
-				}
-			Network.Units.sync_all.rpc_id(peer_id, snapshot)
+		var snapshot: Dictionary = {
+			"selected_unit_id": selected_unit_id,
+			"selected_by_peer": selected_by_peer,
+			"selected_units_ids" : selected_units_ids,
+			"moved_units_ids": moved_units_ids,
+			"attacked_units_ids": attacked_units_ids
+		}
+		Network.broadcast(Network.Units.sync_all.rpc_id, sides_peer_ids.values(), [snapshot])
 		isDirty = false
 
 func select_unit(owner: enums.Side, unit_id: int, card: CommandCard) -> bool:
@@ -96,9 +94,10 @@ func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, 
 	var old_coord := unit.hex_coord
 	if !move_unit(unit, old_coord, destination):
 		return false
-
-	for peer_id in sides_peer_ids.values():
-		Network.Actions.sync_unit_path.rpc_id(peer_id, unit_id, unit_path)
+	
+	Network.broadcast(Network.Actions.sync_unit_path.rpc_id,sides_peer_ids.values(),[unit_path] )
+	#for peer_id in sides_peer_ids.values():
+		#Network.Actions.sync_unit_path.rpc_id(peer_id, unit_id, unit_path)
 	selected_unit_id = -1
 	selected_by_peer = enums.Side.NONE
 	isDirty = true
@@ -128,8 +127,7 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	var combat_result: CombatResult = CombatResult.new()
 	combat_result.initialize(unit, target, rolled_dices)
 	resolve_combat(combat_result)
-	for peer_id in sides_peer_ids.values():
-		Network.Actions.resolve_combat_result.rpc_id(peer_id, combat_result.to_dict())
+	Network.broadcast(Network.Actions.resolve_combat_result.rpc_id, sides_peer_ids.values(), [combat_result.to_dict()])
 	selected_unit_id = -1
 	selected_by_peer = enums.Side.NONE
 	isDirty = true
@@ -161,8 +159,7 @@ func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 			"coord": coord,
 			"hit_point": unit.hit_point
 		}
-		for peer_id in sides_peer_ids.values():
-			Network.Units.spawn_unit.rpc_id(peer_id, new_unit)
+		Network.broadcast(Network.Units.spawn_unit.rpc_id, sides_peer_ids.values(), [new_unit])
 		add_unit(unit, coord)
 
 	for elem in battlefield.units_to_spawn_player_2:
@@ -177,8 +174,7 @@ func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 			"coord": coord,
 			"hit_point": unit.hit_point
 		}
-		for peer_id in sides_peer_ids.values():
-			Network.Units.spawn_unit.rpc_id(peer_id, new_unit)
+		Network.broadcast(Network.Units.spawn_unit.rpc_id, sides_peer_ids.values(), [new_unit])
 		add_unit(unit, coord)
 
 func resolve_combat(result: CombatResult) -> void:
