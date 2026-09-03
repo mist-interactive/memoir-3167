@@ -18,16 +18,29 @@ func _ready() -> void:
 	name = "SERVER"
 	logger = LogService.new({"service": "server"})
 
+	print("=== SERVER STARTING ===")
+	print("OS feature editor: ", OS.has_feature("editor"))
+	print("OS feature web: ", OS.has_feature("web"))
+
 	if not OS.has_feature("editor"):
+		print("Loading JWT public key...")
 		_load_jwt_public_key()
+	else:
+		print("Editor mode: JWT public key loading skipped")
 
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
 	Network.Client.auth_check_requested.connect(_on_auth_check_requested)
 
 	peer = WebSocketMultiplayerPeer.new()
-	peer.create_server(port)
+	var error := peer.create_server(port)
+
+	print("WebSocket server create result: ", error)
+	print("Listening on port: ", port)
+
 	multiplayer.multiplayer_peer = peer
+
+	print("=== SERVER READY ===")
 	logger.info("server has started")
 
 func _load_jwt_public_key() -> void:
