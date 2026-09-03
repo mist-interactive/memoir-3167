@@ -1,7 +1,7 @@
 extends Node
 class_name Server
 
-const JWT_PUBLIC_KEY_PATH := "/run/secrets/jwt_public.pem"
+const JWT_PUBLIC_KEY_PATH := "/run/secrets/jwt_public_key"
 
 var peer: WebSocketMultiplayerPeer
 var port: int = 6669
@@ -29,14 +29,19 @@ func _ready() -> void:
 func _load_jwt_public_key() -> void:
 	jwt_public_key = CryptoKey.new()
 
-	var error: Error = jwt_public_key.load(JWT_PUBLIC_KEY_PATH)
-
-	if error != OK:
-		push_error("Failed to load JWT public key: %s" % error)
+	if not FileAccess.file_exists(JWT_PUBLIC_KEY_PATH):
+		push_error("JWT public key file does not exist: %s" % JWT_PUBLIC_KEY_PATH)
 		get_tree().quit(1)
 		return
 
-	print("JWT public key loaded")
+	var error: Error = jwt_public_key.load(JWT_PUBLIC_KEY_PATH, true)
+
+	if error != OK:
+		push_error("Failed to load JWT public key: %d" % error)
+		get_tree().quit(1)
+		return
+
+	print("JWT public key loaded successfully")
 
 func _physics_process(delta: float) -> void:
 	for peer_id in clients.keys():
