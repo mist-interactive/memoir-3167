@@ -18,7 +18,7 @@ func _ready() -> void:
 	name = "SERVER"
 	logger = LogService.new({"service": "server"})
 
-	if OS.has_feature("web"):
+	if not OS.has_feature("editor"):
 		_load_jwt_public_key()
 
 	multiplayer.peer_connected.connect(_on_peer_connected)
