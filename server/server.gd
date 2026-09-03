@@ -15,15 +15,15 @@ func _ready() -> void:
 	name = "SERVER"
 	logger = LogService.new({"service": "server"})
 
-	print("=== SERVER STARTING ===")
-	print("OS feature editor: ", OS.has_feature("editor"))
-	print("OS feature web: ", OS.has_feature("web"))
+	logger.info("=== SERVER STARTING ===")
+	logger.info("OS feature editor: %s" % OS.has_feature("editor"))
+	logger.info("OS feature web: %s" % OS.has_feature("web"))
 
 	if not OS.has_feature("editor"):
-		print("Loading JWT public key...")
+		logger.info("Loading JWT public key...")
 		_load_jwt_public_key()
 	else:
-		print("Editor mode: JWT public key loading skipped")
+		logger.info("Editor mode: JWT public key loading skipped")
 
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
@@ -32,13 +32,14 @@ func _ready() -> void:
 	peer = WebSocketMultiplayerPeer.new()
 	var error := peer.create_server(port)
 
-	print("WebSocket server create result: ", error)
-	print("Listening on port: ", port)
+	logger.info("WebSocket server create result: %s" % error)
+	logger.info("Listening on port: %d" % port)
 
 	multiplayer.multiplayer_peer = peer
 
-	print("=== SERVER READY ===")
+	logger.info("=== SERVER READY ===")
 	logger.info("server has started")
+
 
 func _load_jwt_public_key() -> void:
 	jwt_public_key = CryptoKey.new()
@@ -55,57 +56,70 @@ func _load_jwt_public_key() -> void:
 		get_tree().quit(1)
 		return
 
-	print("JWT public key loaded successfully")
+	logger.info("JWT public key loaded successfully")
+
 
 func _physics_process(delta: float) -> void:
 	for peer_id in clients.keys():
 		var client: ClientState = clients[peer_id]
 		client.sync()
 
+
 func _on_peer_connected(id: int) -> void:
+	logger.info("=== CLIENT CONNECTED ===")
+	logger.info("Peer ID: %d" % id)
+
 	logger.info("A new client has connected", {"uuid": id})
 	clients[id] = ClientState.new(id)
 
+
 func _on_peer_disconnected(id: int) -> void:
-	logger.info("Clien has disconnected", {"uuid": id})
+	logger.info("=== CLIENT DISCONNECTED ===")
+	logger.info("Peer ID: %d" % id)
+
+	logger.info("Client has disconnected", {"uuid": id})
 	clients.erase(id)
 
+
 func _on_auth_check_requested(peer_id: int, jwt_token: String) -> void:
-	print("Authenticating client %d..." % peer_id)
+	logger.info("=== AUTHENTICATION REQUEST ===")
+	logger.info("Authenticating client %d..." % peer_id)
 
 	var client: ClientState = clients.get(peer_id)
 
 	if client == null:
+		logger.info("Authentication failed: client %d not found" % peer_id)
 		return
 
 	if OS.has_feature("editor"):
 		client.authenticated = true
-		print("Client %d authenticated (local)" % peer_id)
+		logger.info("Client %d authenticated (local)" % peer_id)
 		return
 
 	var exp := _get_jwt_expiration(jwt_token)
 
 	if exp == -1:
 		client.authenticated = false
-		print("Client %d authentication failed: no valid expiration" % peer_id)
+		logger.info("Client %d authentication failed: no valid expiration" % peer_id)
 		return
 
 	var current_time := Time.get_unix_time_from_system()
 
-	print("JWT expires at Unix timestamp: ", exp)
-	print("Current Unix timestamp: ", current_time)
+	logger.info("JWT expires at Unix timestamp: %s" % exp)
+	logger.info("Current Unix timestamp: %s" % current_time)
 
 	if exp <= current_time:
 		client.authenticated = false
-		print("Client %d authentication failed: JWT expired" % peer_id)
+		logger.info("Client %d authentication failed: JWT expired" % peer_id)
 		return
 
 	if _verify_jwt(jwt_token):
 		client.authenticated = true
-		print("Client %d authenticated" % peer_id)
+		logger.info("Client %d authenticated" % peer_id)
 	else:
 		client.authenticated = false
-		print("Client %d authentication failed" % peer_id)
+		logger.info("Client %d authentication failed" % peer_id)
+
 
 func _verify_jwt(token: String) -> bool:
 	if jwt_public_key == null:
@@ -115,7 +129,7 @@ func _verify_jwt(token: String) -> bool:
 	var parts: PackedStringArray = token.split(".")
 
 	if parts.size() != 3:
-		print("Invalid JWT format")
+		logger.info("Invalid JWT format")
 		return false
 
 	var encoded_header: String = parts[0]
@@ -126,7 +140,7 @@ func _verify_jwt(token: String) -> bool:
 	var header_bytes: PackedByteArray = _base64url_decode(encoded_header)
 
 	if header_bytes.is_empty():
-		print("Invalid JWT header")
+		logger.info("Invalid JWT header")
 		return false
 
 	var header_value: Variant = JSON.parse_string(
@@ -134,20 +148,20 @@ func _verify_jwt(token: String) -> bool:
 	)
 
 	if typeof(header_value) != TYPE_DICTIONARY:
-		print("Invalid JWT header JSON")
+		logger.info("Invalid JWT header JSON")
 		return false
 
 	var header: Dictionary = header_value
 
 	if header.get("alg", "") != "RS256":
-		print("Unsupported JWT algorithm")
+		logger.info("Unsupported JWT algorithm")
 		return false
 
 	# Decode payload.
 	var payload_bytes: PackedByteArray = _base64url_decode(encoded_payload)
 
 	if payload_bytes.is_empty():
-		print("Invalid JWT payload")
+		logger.info("Invalid JWT payload")
 		return false
 
 	var payload_value: Variant = JSON.parse_string(
@@ -155,7 +169,7 @@ func _verify_jwt(token: String) -> bool:
 	)
 
 	if typeof(payload_value) != TYPE_DICTIONARY:
-		print("Invalid JWT payload JSON")
+		logger.info("Invalid JWT payload JSON")
 		return false
 
 	var payload: Dictionary = payload_value
@@ -164,7 +178,7 @@ func _verify_jwt(token: String) -> bool:
 	var signature: PackedByteArray = _base64url_decode(encoded_signature)
 
 	if signature.is_empty():
-		print("Invalid JWT signature")
+		logger.info("Invalid JWT signature")
 		return false
 
 	# JWT signs exactly:
@@ -186,7 +200,7 @@ func _verify_jwt(token: String) -> bool:
 	)
 
 	if not valid:
-		print("Invalid JWT signature")
+		logger.info("Invalid JWT signature")
 		return false
 
 	# Check expiration.
@@ -194,17 +208,17 @@ func _verify_jwt(token: String) -> bool:
 		var exp_value: Variant = payload["exp"]
 
 		if typeof(exp_value) != TYPE_INT and typeof(exp_value) != TYPE_FLOAT:
-			print("Invalid JWT exp claim")
+			logger.info("Invalid JWT exp claim")
 			return false
 
 		var expiration: float = float(exp_value)
 		var now: float = Time.get_unix_time_from_system()
 
 		if expiration <= now:
-			print("JWT has expired")
+			logger.info("JWT has expired")
 			return false
 
-	print("JWT verified successfully")
+	logger.info("JWT verified successfully")
 
 	return true
 
@@ -217,6 +231,7 @@ func _base64url_decode(value: String) -> PackedByteArray:
 		normalized += "="
 
 	return Marshalls.base64_to_raw(normalized)
+
 
 func _get_jwt_expiration(jwt_token: String) -> int:
 	var parts := jwt_token.split(".")
