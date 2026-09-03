@@ -25,6 +25,7 @@ func _ready() -> void:
 	multiplayer.server_disconnected.connect(_on_server_disconnected)
 	var auth_data: Dictionary = await _get_authentication_data()
 	uuid.text = str(auth_data["uuid"])
+	print("==========> auth_data", auth_data)
 	if auth_data.is_empty():
 		#Handle missing token
 		push_error("No authentication data was received.")
