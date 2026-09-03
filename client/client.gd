@@ -123,7 +123,8 @@ func _get_authentication_data() -> Dictionary:
 	var signal_args = await react_data_received
 	return {
 		"token": signal_args[0],
-		"match_id": signal_args[1]
+		"match_id": get_query_param("match_id").to_int(),
+		"uuid": get_query_param("uuid").to_int()
 	}	
 	
 func _on_react_message(args) -> void:
@@ -144,3 +145,7 @@ func get_cmdline_arg(argument: String) -> String:
 	var index := args.find(argument)
 
 	return args[index + 1]
+
+func get_query_param(name: String) -> String:
+	var js := "new URLSearchParams(window.location.search).get('%s')" % name
+	return JavaScriptBridge.eval(js)
