@@ -18,7 +18,8 @@ func _ready() -> void:
 	name = "SERVER"
 	logger = LogService.new({"service": "server"})
 
-	_load_jwt_public_key()
+	if OS.has_feature("web"):
+		_load_jwt_public_key()
 
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
@@ -66,6 +67,11 @@ func _on_auth_check_requested(peer_id: int, jwt_token: String) -> void:
 	var client: ClientState = clients.get(peer_id)
 
 	if client == null:
+		return
+
+	if OS.has_feature("editor"):
+		client.authenticated = true
+		print("Client %d authenticated (local)" % peer_id)
 		return
 
 	if _verify_jwt(jwt_token):
