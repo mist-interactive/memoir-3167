@@ -13,6 +13,8 @@ func join_queue(uuid: int) -> void:
 
 func broadcast(rpc_func: Callable, peer_ids: Array[int], args: Array = []) -> void:
 	for peer_id in peer_ids:
+		if peer_id < 0:
+			continue
 		var tmp_args: Array
 		tmp_args.assign(args)
 		tmp_args.push_front(peer_id)

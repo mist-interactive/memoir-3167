@@ -24,7 +24,7 @@ func _sync_hands(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 	for side in sides_peer_ids:
 		var peer_id: int = sides_peer_ids[side]
 		var hand: HandState = player_hands[side]
-		if not hand.should_sync:
+		if not hand.should_sync || peer_id < 0:
 			continue
 		Network.Hand.sync.rpc_id(peer_id, hand.get_snapshot())
 		hand.should_sync = false
