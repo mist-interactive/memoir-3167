@@ -43,7 +43,6 @@ func _ready() -> void:
 	.stage("Waiting for players to be ready...", func(): await loader.wait_untill(func(): return players_ready == true)) \
 	.run()
 	game.add_child(game.battlefieldRenderer)
-	Network.Match.client_game_ready.rpc_id(1)
 
 func _process(delta: float) -> void:
 	pass 
