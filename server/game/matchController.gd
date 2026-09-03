@@ -5,10 +5,9 @@ var battlefield: BattlefieldState
 var deckManager: DeckManager
 var unit_manager: ServerUnitManager
 var player_game_ready: Dictionary[int, bool]
-var player_sessions: Dictionary[int, PlayerSession] # uuid-->PlayerSession
-#var sides_peer_ids: Dictionary[enums.Side, int]
 var sides_uuid: Dictionary[enums.Side, int]
 var logger: LogService
+
 @onready var match_manager: MatchManager = $"../MatchManager"
 @onready var session_manager: SessionManager = $"./SessionManager"
 
@@ -110,10 +109,6 @@ func handle_disconnect(side: enums.Side) -> void:
 	matchState.state = MatchState.STATE.PAUSED
 	session_manager.client_disconnected(sides_uuid[side])
 
-func peer_reconnected(peer_id: int, old_peer_id: int) -> void:
-	var side: enums.Side = get_side(old_peer_id)
-	#sides_peer_ids[side] = peer_id
-
 func isPhase(phase: enums.TurnPhase) -> bool:
 	return matchState.phase == phase
 
@@ -150,10 +145,6 @@ func go_next_phase(side: enums.Side) -> void:
 # Action handlers
 func handle_continue_next_phase(side: enums.Side) -> void:
 	go_next_phase(side)
-
-func handle_draw_hand(side: enums.Side) -> void:
-	logger.info("Draw hand")
-	deckManager.draw_hand(side, get_sides_peer_ids())
 
 func handle_play_card(side: enums.Side, instance_id: int) -> void:
 	if deckManager.play_card(side, instance_id, get_sides_peer_ids()):
