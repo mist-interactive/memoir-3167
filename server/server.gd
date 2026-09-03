@@ -70,6 +70,23 @@ func _on_auth_check_requested(peer_id: int, jwt_token: String) -> void:
 		print("Client %d authenticated (local)" % peer_id)
 		return
 
+	var exp := _get_jwt_expiration(jwt_token)
+
+	if exp == -1:
+		client.authenticated = false
+		print("Client %d authentication failed: no valid expiration" % peer_id)
+		return
+
+	var current_time := Time.get_unix_time_from_system()
+
+	print("JWT expires at Unix timestamp: ", exp)
+	print("Current Unix timestamp: ", current_time)
+
+	if exp <= current_time:
+		client.authenticated = false
+		print("Client %d authentication failed: JWT expired" % peer_id)
+		return
+
 	if _verify_jwt(jwt_token):
 		client.authenticated = true
 		print("Client %d authenticated" % peer_id)
@@ -187,3 +204,27 @@ func _base64url_decode(value: String) -> PackedByteArray:
 		normalized += "="
 
 	return Marshalls.base64_to_raw(normalized)
+
+func _get_jwt_expiration(jwt_token: String) -> int:
+	var parts := jwt_token.split(".")
+
+	if parts.size() != 3:
+		return -1
+
+	var payload_b64 := partsTYPE_DICTIONARY[1]
+	payload_b64 = payload_b64.replace("-", "+").replace("_", "/")
+
+	while payload_b64.length() % 4 != 0:
+		payload_b64 += "="
+
+	var payload_bytes := Marshalls.base64_to_raw(payload_b64)
+	var payload_string := payload_bytes.get_string_from_utf8()
+	var json = JSON.parse_string(payload_string)
+
+	if typeof(json) != TYPE_DICTIONARY:
+		return -1
+
+	if not json.has("exp"):
+		return -1
+
+	return int(json["exp"])
