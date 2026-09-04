@@ -93,22 +93,10 @@ func _on_auth_check_requested(peer_id: int, jwt_token: String) -> void:
 		logger.info("Client %d authenticated (local)" % peer_id)
 		return
 
-	var exp := _get_jwt_expiration(jwt_token)
-
-	if exp == -1:
-		client.authenticated = false
-		logger.info("Client %d authentication failed: no valid expiration" % peer_id)
-		return
-
 	var current_time := Time.get_unix_time_from_system()
 
 	logger.info("JWT expires at Unix timestamp: %s" % exp)
 	logger.info("Current Unix timestamp: %s" % current_time)
-
-	if exp <= current_time:
-		client.authenticated = false
-		logger.info("Client %d authentication failed: JWT expired" % peer_id)
-		return
 
 	if _verify_jwt(jwt_token):
 		client.authenticated = true
@@ -154,6 +142,8 @@ func _verify_jwt(token: String) -> bool:
 		logger.info("Unsupported JWT algorithm")
 		return false
 
+	logger.info("JWT header", header)
+
 	# Decode payload.
 	var payload_bytes: PackedByteArray = _base64url_decode(encoded_payload)
 
@@ -187,20 +177,31 @@ func _verify_jwt(token: String) -> bool:
 	).to_utf8_buffer()
 
 	# Verify RSA + SHA-256 signature.
-	var hashing_context := HashingContext.new()
-	hashing_context.start(HashingContext.HASH_SHA256)
-	hashing_context.update(signing_input)
+	var hash_ctx := HashingContext.new()
+	var error := hash_ctx.start(HashingContext.HASH_SHA256)
 
-	var hash := hashing_context.finish()
+	if error != OK:
+		logger.info("Failed to initialize SHA256")
+		return false
+
+	hash_ctx.update(signing_input)
+	var digest: PackedByteArray = hash_ctx.finish()
 
 	var crypto := Crypto.new()
 
-	var valid: bool = crypto.verify_hash(
+	var valid: bool = crypto.verify(
 		HashingContext.HASH_SHA256,
-		hash,
+		digest,
 		signature,
 		jwt_public_key
 	)
+
+	logger.info("Signing input: %s" % (
+		encoded_header + "." + encoded_payload
+	))
+	logger.info("Signing input length: %d" % signing_input.size())
+	logger.info("Signature length: %d" % signature.size())
+	logger.info("SHA256 digest length: %d" % digest.size())
 
 	if not valid:
 		logger.info("Invalid JWT signature")
