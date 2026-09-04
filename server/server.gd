@@ -20,17 +20,9 @@ func _ready() -> void:
 	logger.info("OS feature web: %s" % OS.has_feature("web"))
 
 	jwt_verifier = JwtVerifier.new(logger)
-
 	if not jwt_verifier.is_ready:
 		get_tree().quit(1)
 		return
-	if not OS.has_feature("editor"):
-		logger.info("Loading JWT public key...")
-		if not jwt_verifier.load_public_key():
-			get_tree().quit(1)
-			return
-	else:
-		logger.info("Editor mode: JWT public key loading skipped")
 
 	multiplayer.peer_connected.connect(_on_peer_connected)
 	multiplayer.peer_disconnected.connect(_on_peer_disconnected)
