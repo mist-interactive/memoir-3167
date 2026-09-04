@@ -30,8 +30,10 @@ func _on_player_connect(peer_id: int, uuid: int, match_id: int) -> void:
 	server.logger.info("Client(%d) wants to connect to match(%d)" % [uuid, match_id])
 	if !matches.has(match_id):
 		create_new_match(match_id)
+	
 	peer_to_match[peer_id] = match_id
 	uuid_to_peer[uuid] = peer_id
+	server.clients[peer_id].connected_to_game = true
 	var matchCtl: matchController = get_match(peer_id)
 	matchCtl.handle_connect(uuid, peer_id)
 
