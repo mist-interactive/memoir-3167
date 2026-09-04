@@ -1,14 +1,20 @@
 extends RefCounted
-class_name JwtService
+class_name JwtVerifier
 
 const JWT_PUBLIC_KEY_PATH := "/run/secrets/jwt_public_key"
 var logger: LogService
 var public_key: CryptoKey
+var is_ready: bool = false
 
 func _init(p_logger: LogService) -> void:
 	logger = p_logger
+	if OS.has_feature("editor"):
+		is_ready = true
+		return
+	logger.info("Loading JWT public key...")
+	is_ready = _load_public_key()
 
-func load_public_key() -> bool:
+func _load_public_key() -> bool:
 	public_key = CryptoKey.new()
 	if not FileAccess.file_exists(JWT_PUBLIC_KEY_PATH):
 		logger.error("JWT public key file does not exist: %s" % JWT_PUBLIC_KEY_PATH)
@@ -23,6 +29,10 @@ func load_public_key() -> bool:
 	return true
 
 func verify(token: String) -> bool:
+	if not is_ready:
+		logger.info("JWT verifier is not ready")
+		return false
+
 	if public_key == null:
 		logger.error("JWT public key is not loaded")
 		return false
