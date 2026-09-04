@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bs3t6guj4a2p3"]
 
 [ext_resource type="Script" uid="uid://i7jv0kni8l8j" path="res://client/client.gd" id="1_6t3qf"]
-[ext_resource type="PackedScene" uid="uid://bkaktjljq8pme" path="res://client/ui/loading.tscn" id="2_7kp2r"]
+[ext_resource type="PackedScene" uid="uid://bkaktjljq8pme" path="res://client/loader/loading.tscn" id="2_7kp2r"]
 [ext_resource type="Script" uid="uid://sdu83b0qi5xm" path="res://client/game.gd" id="3_mgmel"]
 
 [node name="Client" type="Node" unique_id=637407369 node_paths=PackedStringArray("loader", "game")]
