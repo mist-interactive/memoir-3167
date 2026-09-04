@@ -22,9 +22,11 @@ var current_turn: enums.Side:
 var should_sync: bool = true
 enum STATE {INITIALIZING, READY, INITIALIZE_BOARD, IN_PROGRESS, PAUSED, ENDED}
 
-func _init() -> void:
+func _init(snapshot: Dictionary = {}) -> void:
 	name = "matchState"
 	Network.Match.sync_requested.connect(_on_sync)
+	if !snapshot.is_empty():
+		_on_sync(snapshot)
 
 func _initialize(match_id: int) -> void:
 	self.matchId = match_id
@@ -34,12 +36,13 @@ func _initialize(match_id: int) -> void:
 	self.phase = enums.TurnPhase.DRAW_HAND
 	self.current_turn = randi_range(enums.Side.GREEN,enums.Side.RED)
 
-func get_snapshot() -> Dictionary:
+func get_snapshot(side: enums.Side = enums.Side.NONE) -> Dictionary:
 	return {
 		"matchId": self.matchId,
 		"scores": self.scores,
 		"state": self.state,
 		"phase": self.phase,
+		"side": side,
 		"current_turn": self.current_turn
 	}
 
@@ -55,9 +58,9 @@ func _on_sync(snapshot: Dictionary):
 func sync(side_peer_ids: Dictionary[enums.Side, int]) -> void:
 	if should_sync:
 		for side in side_peer_ids:
-			var snapshot: Dictionary = get_snapshot()
-			snapshot.side = side
-			Network.Match.sync.rpc_id(side_peer_ids[side], snapshot)
+			if side_peer_ids[side] < 0:
+				continue
+			Network.Match.sync.rpc_id(side_peer_ids[side], get_snapshot(side))
 		should_sync = false
 
 func is_my_turn() -> bool:

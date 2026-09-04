@@ -17,14 +17,14 @@ func _ready() -> void:
 	handState.enemy_hand_drawn.connect(_on_enemy_draw_hand)
 	handState.enemy_card_played.connect(_on_enemy_played_card)
 
+#func _instantiate_card_node
 func _on_enemy_draw_hand() -> void:
-	for id in range(handState.opponent_hand_size):
-		_add_card_node()
+	for instance_id in handState.opponent_cards:
+		_add_card_node(instance_id)
 	_recalculate_layout()
 
-func _add_card_node() -> void:
+func _add_card_node(instance_id: int) -> void:
 	var new_card: CardUI = card_ui_scene.instantiate() as CardUI
-	var instance_id: int = 1000
 	new_card.name = str(instance_id)
 	new_card.setup_enemy_visuals(instance_id)
 	new_card.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -32,7 +32,10 @@ func _add_card_node() -> void:
 	_recalculate_layout()
 
 func _on_enemy_played_card(instance_id: int, card_id: String) -> void:
-	var card_node = get_child(randi_range(0, get_child_count() - 1)) as CardUI
+	var card_node := get_node_or_null(str(instance_id)) as CardUI
+	if not card_node:
+		_add_card_node(instance_id)
+		card_node = get_node_or_null(str(instance_id)) as CardUI
 	card_node.is_discarded = true
 	card_node.setup_visuals(instance_id, card_id)
 	_remove_card_node_and_animate(card_node, instance_id)

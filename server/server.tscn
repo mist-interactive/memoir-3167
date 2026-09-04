@@ -1,18 +1,11 @@
 [gd_scene format=3 uid="uid://d282kx0di1kyy"]
 
 [ext_resource type="Script" uid="uid://cmyl4st2vljgr" path="res://server/server.gd" id="1_7u81u"]
-[ext_resource type="Script" uid="uid://bv6pjcvvrpokl" path="res://server/game/queue_manager.gd" id="2_0wvpq"]
 [ext_resource type="Script" uid="uid://u6jqeichiuhe" path="res://server/match_manager.gd" id="3_u3pyk"]
-[ext_resource type="PackedScene" uid="uid://3indydnwr0ox" path="res://commons/cards/database/CardDatabase.tscn" id="4_gc6nq"]
 
-[node name="Server" type="Node2D" unique_id=392908937]
+[node name="Server" type="Node2D" unique_id=392908937 node_paths=PackedStringArray("match_manager")]
 script = ExtResource("1_7u81u")
-
-[node name="QueueManager" type="Node" parent="." unique_id=426631389 node_paths=PackedStringArray("matchManager")]
-script = ExtResource("2_0wvpq")
-matchManager = NodePath("../MatchManager")
+match_manager = NodePath("MatchManager")
 
 [node name="MatchManager" type="Node" parent="." unique_id=762747872]
 script = ExtResource("3_u3pyk")
-
-[node name="CardDatabase" parent="." unique_id=2017173217 instance=ExtResource("4_gc6nq")]
