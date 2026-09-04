@@ -187,11 +187,17 @@ func _verify_jwt(token: String) -> bool:
 	).to_utf8_buffer()
 
 	# Verify RSA + SHA-256 signature.
-	var crypto: Crypto = Crypto.new()
+	var hashing_context := HashingContext.new()
+	hashing_context.start(HashingContext.HASH_SHA256)
+	hashing_context.update(signing_input)
+
+	var hash := hashing_context.finish()
+
+	var crypto := Crypto.new()
 
 	var valid: bool = crypto.verify_hash(
 		HashingContext.HASH_SHA256,
-		signing_input,
+		hash,
 		signature,
 		jwt_public_key
 	)
