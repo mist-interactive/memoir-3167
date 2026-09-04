@@ -61,7 +61,7 @@ func draw_card(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) ->
 	if card_instance.is_empty():
 		return false
 	player_hands[side].add_card(card_instance.instance_id, card_instance.card_id)
-	player_hands[side].opponent_hand_size = get_opponent_hand_size(side)
+	player_hands[side].opponent_cards = get_opponent_cards(side)
 	var player_logger := logger.with_context({
 		"peer_id": sides_peer_ids[side],
 		"side": side
@@ -89,6 +89,7 @@ func play_card(side: enums.Side, instance_id: int, sides_peer_ids: Dictionary[en
 	player_hands[side].discard_pile = discard_pile
 	player_hands[other_side].discard_pile = discard_pile
 	player_hands[side].remove_card(instance_id)
+	player_hands[other_side].opponent_cards = player_hands[side].card_ids.keys()
 	player_logger.info("Played card", {"instance_id":instance_id, "card_id": card_id})
 	return true
 
@@ -105,9 +106,10 @@ func draw_hand(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) ->
 				break
 			cards[card.instance_id] = card.card_id
 		player_hands[side].is_hand_drawn = true
-		player_hands[get_other_side(side)].opponent_hand_size = cards.size()
-		player_hands[side].opponent_hand_size = player_hands[get_other_side(side)].card_ids.size()
+		player_hands[get_other_side(side)].opponent_cards = cards.keys()
+		player_hands[side].opponent_cards = get_opponent_cards(side)
 		player_hands[side].card_ids = cards
+		logger.info("===> drawing player hand %d" % side)
 	else:
 		player_hands[side].should_sync = true
 		player_hands[get_other_side(side)].should_sync = true
@@ -117,9 +119,9 @@ func get_other_side(side: enums.Side) -> enums.Side:
 	var other_side: enums.Side = enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
 	return other_side
 
-func get_opponent_hand_size(side: enums.Side) -> int:
+func get_opponent_cards(side: enums.Side) -> Array[int]:
 	var other_side: enums.Side = get_other_side(side)
-	return player_hands[other_side].card_ids.size()
+	return player_hands[other_side].card_ids.keys()
 
 # helper functions
 func hasCardInHand(side: enums.Side, instance_id: int) -> bool:

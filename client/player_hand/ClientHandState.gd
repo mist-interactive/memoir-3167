@@ -21,14 +21,15 @@ func initialize(snapshot: Dictionary) -> void:
 	flush_event_queue()
 
 func _on_sync_requested(snapshot: Dictionary, flush_queue: bool = true):	
+	
 	if card_ids.size() > snapshot.card_ids.size() + 1:
 		event_queue.append(Event.new(card_drawn))
 	elif card_ids.size() == 0 && snapshot.card_ids.size() != 0:
 		event_queue.append(Event.new(hand_drawn))
 	
-	if opponent_hand_size == snapshot.opponent_hand_size - 1:
+	if opponent_cards.size() > snapshot.opponent_cards.size() + 1:
 		event_queue.append(Event.new(enemy_card_drawn))
-	elif opponent_hand_size == 0 && snapshot.opponent_hand_size != 0:
+	elif opponent_cards.size() == 0 && snapshot.opponent_cards.size() != 0:
 		event_queue.append(Event.new(enemy_hand_drawn))
 	
 	var new_discard_pile: Array[CardInstance]
@@ -44,7 +45,7 @@ func _on_sync_requested(snapshot: Dictionary, flush_queue: bool = true):
 		
 	card_ids = snapshot.card_ids
 	discard_pile = new_discard_pile
-	opponent_hand_size = snapshot.opponent_hand_size
+	opponent_cards = snapshot.opponent_cards
 	if flush_queue:
 		flush_event_queue()
 
