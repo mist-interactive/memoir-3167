@@ -59,6 +59,7 @@ func get_sides_peer_ids() -> Dictionary[enums.Side, int]:
 # signal handlers
 func handle_connect(uuid: int, peer_id: int) -> void:
 	session_manager.register_new_session(uuid, peer_id)
+	logger.info("Client(%d) joining game" % uuid)
 	if !session_manager.players_are_connected():
 		return
 	var units: Array[Dictionary]
@@ -69,10 +70,9 @@ func handle_connect(uuid: int, peer_id: int) -> void:
 			"type": unit.type,
 			"coord": unit.hex_coord
 		})
-	var peer_ids: Array[int] = session_manager.get_peer_ids()
+	var peer_ids: Array[int]
 	var uuids: Array[int] = session_manager.get_uuids()
-	assert(peer_ids.size() == 2 && uuids.size() == 2)
-	logger.info("clients  connected", {"ids": peer_ids})
+	assert(uuids.size() == 2)
 	if matchState.state == MatchState.STATE.INITIALIZING:
 		sides_uuid = {enums.Side.GREEN: uuids[0], enums.Side.RED: uuids[1]}
 	var snapshot: Dictionary = {
@@ -81,20 +81,25 @@ func handle_connect(uuid: int, peer_id: int) -> void:
 		"map_name": battlefield.mapName,
 		"units": units
 	}
-	if matchState.state != MatchState.STATE.INITIALIZING:
-		Network.Match.init.rpc_id(peer_id, snapshot)
-	else:
-		Network.broadcast(Network.Match.init.rpc_id, peer_ids, [snapshot])
+	for session: PlayerSession in session_manager.get_sessions().values():
+		if session.is_status_set(enums.ConnectionStatus.Connected) && !session.is_status_set(enums.ConnectionStatus.Ready):
+			peer_ids.append(session.peer_id)
+	Network.broadcast(Network.Match.init.rpc_id, peer_ids, [snapshot])
 		
 func handle_client_ready(uuid: int) -> void:
 	logger.info("Client(%s) is ready" % uuid)
 	session_manager.client_is_ready(uuid)
 	if !session_manager.players_are_ready():
 		return
-	Network.broadcast(Network.Match.start_game.rpc_id, session_manager.get_peer_ids())
+	var peer_ids: Array[int] = []
+	for session: PlayerSession in session_manager.get_sessions().values():
+		if session.is_status_set(enums.ConnectionStatus.Ready) && !session.is_status_set(enums.ConnectionStatus.Playing):
+			peer_ids.append(session.peer_id)
+	Network.broadcast(Network.Match.start_game.rpc_id, peer_ids)
 
 func handle_client_game_ready(uuid: int) -> void:
 	player_game_ready[uuid] = true
+	
 	if player_game_ready.size() != 2:
 		return
 	for ready in player_game_ready.values():
@@ -104,6 +109,9 @@ func handle_client_game_ready(uuid: int) -> void:
 		matchState.state = MatchState.STATE.INITIALIZE_BOARD
 	elif matchState.state == MatchState.STATE.PAUSED:
 		matchState.state == MatchState.STATE.IN_PROGRESS
+
+	for uuid_ in session_manager.get_uuids():
+		session_manager.client_is_playing(uuid_)
 
 func handle_disconnect(side: enums.Side) -> void:
 	matchState.state = MatchState.STATE.PAUSED

@@ -21,6 +21,9 @@ func client_is_ready(uuid: int) -> void:
 func client_disconnected(uuid: int) -> void:
 	player_sessions[uuid].set_status(enums.ConnectionStatus.Disconnected)
 
+func client_is_playing(uuid: int) -> void:
+	player_sessions[uuid].set_status(enums.ConnectionStatus.Playing)
+
 func players_are_ready(player_count: int = 2) -> bool:
 	for session: PlayerSession in player_sessions.values():
 		if !session.is_status_set(enums.ConnectionStatus.Ready):
@@ -49,3 +52,5 @@ func get_sides_peer_ids(sides_uuid: Dictionary[enums.Side, int]) -> Dictionary[e
 		enums.Side.GREEN: player_sessions[sides_uuid[enums.Side.GREEN]].peer_id if sides_uuid.has(enums.Side.GREEN) else -1,
 		enums.Side.RED: player_sessions[sides_uuid[enums.Side.RED]].peer_id if sides_uuid.has(enums.Side.RED) else -1
 		}
+func get_sessions() -> Dictionary[int, PlayerSession]:
+	return player_sessions
