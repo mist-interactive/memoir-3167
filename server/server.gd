@@ -1,7 +1,7 @@
 extends Node
 class_name Server
 
-var jwt_service: JwtService
+var jwt_verifier: JwtVerifier
 
 var peer: WebSocketMultiplayerPeer
 var port: int = 6669
@@ -19,10 +19,14 @@ func _ready() -> void:
 	logger.info("OS feature editor: %s" % OS.has_feature("editor"))
 	logger.info("OS feature web: %s" % OS.has_feature("web"))
 
-	jwt_service = JwtService.new(logger)
+	jwt_verifier = JwtVerifier.new(logger)
+
+	if not jwt_verifier.is_ready:
+		get_tree().quit(1)
+		return
 	if not OS.has_feature("editor"):
 		logger.info("Loading JWT public key...")
-		if not jwt_service.load_public_key():
+		if not jwt_verifier.load_public_key():
 			get_tree().quit(1)
 			return
 	else:
@@ -68,7 +72,7 @@ func _on_auth_check_requested(peer_id: int, jwt_token: String) -> void:
 		logger.info("Client %d authenticated (local)" % peer_id)
 		return
 
-	if jwt_service.verify(jwt_token):
+	if jwt_verifier.verify(jwt_token):
 		client.authenticated = true
 		logger.info("Client %d authenticated" % peer_id)
 	else:
