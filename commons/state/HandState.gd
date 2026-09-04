@@ -10,9 +10,9 @@ var discard_pile: Array[CardInstance]:
 		should_sync = true
 		discard_pile = new_pile
 
-var opponent_hand_size: int = 0:
-	set(new_hand_size):
-		opponent_hand_size = new_hand_size
+var opponent_cards: Array[int] = []:
+	set(new_cards):
+		opponent_cards = new_cards
 		should_sync = true
 var is_hand_drawn: bool = false
 var should_sync: bool = true
@@ -26,7 +26,7 @@ func get_snapshot() -> Dictionary:
 		packed_discard_pile.append(card.to_dict())
 	return {
 		"card_ids": self.card_ids,
-		"opponent_hand_size": self.opponent_hand_size,
+		"opponent_cards": self.opponent_cards,
 		"discard_pile": packed_discard_pile
 	}
 
