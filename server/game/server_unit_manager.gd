@@ -126,7 +126,7 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	var rolled_dices: Array[enums.RolledDice] = Dice.roll(num_of_dice)
 	var combat_result: CombatResult = CombatResult.new()
 	combat_result.initialize(unit, target, rolled_dices)
-	resolve_combat(combat_result)
+	resolve_combat(combat_result, side)
 	Network.broadcast(Network.Actions.resolve_combat_result.rpc_id, sides_peer_ids.values(), [combat_result.to_dict()])
 	selected_unit_id = -1
 	selected_by_peer = enums.Side.NONE
@@ -177,7 +177,7 @@ func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 		Network.broadcast(Network.Units.spawn_unit.rpc_id, sides_peer_ids.values(), [new_unit])
 		add_unit(unit, coord)
 
-func resolve_combat(result: CombatResult) -> void:
+func resolve_combat(result: CombatResult, side: enums.Side) -> void:
 	var target_id: int = result.unit_ids[result.target]
 	var target: UnitData = units_by_id[target_id]
 	var should_retreat: int = 0
@@ -193,8 +193,9 @@ func resolve_combat(result: CombatResult) -> void:
 	if should_retreat:
 		pass #retreat to prev pos
 	target.hit_point -= result.dmg
-	if target.hit_point <= 0:
+	if result.dmg != 0:
 		death_queue.append(target_id)
+		matchState.scores[side] += 1
 
 func next_phase(phase: enums.TurnPhase) -> void:
 	if phase == enums.TurnPhase.PLAY_CARD:
@@ -203,6 +204,7 @@ func next_phase(phase: enums.TurnPhase) -> void:
 		attacked_units_ids.clear()
 	selected_unit_id = -1
 	isDirty = true
+	matchState.phase = phase
 
 func can_card_target_unit(card: CommandCard, unit_id: int) -> bool:
 	var unit: UnitData = units_by_id[unit_id]
@@ -253,4 +255,17 @@ func try_assign(uid: int, allowed_sectors: Array, limit: int,
 				occupants.append(uid)
 				return true
 			occupants.append(other_uid)
+	return false
+
+func validate_unit_selection(unit_id: int, card: CommandCard) -> bool:
+	if card == null:
+		logger.error("tried to validate unit selection while discard pile is empty")
+		return false
+	match matchState.phase:
+		enums.TurnPhase.SELECT:
+			return false if !can_card_target_unit(card, unit_id) else true
+		enums.TurnPhase.MOVE:
+			return false if !is_unit_selected(unit_id) || has_unit_moved(unit_id) else true
+		enums.TurnPhase.ATTACK:
+			return false if !is_unit_selected(unit_id) || has_unit_attacked(unit_id) else true
 	return false

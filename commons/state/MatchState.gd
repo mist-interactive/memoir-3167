@@ -5,7 +5,11 @@ signal phase_changed(new_phase: enums.TurnPhase)
 
 var matchId: int
 var mySide: enums.Side
-var scores: Dictionary[enums.Side, int]
+var winner: enums.Side
+var scores: Dictionary[enums.Side, int]:
+	set(new_score):
+		scores = new_score
+		should_sync = true
 var state: STATE = STATE.INITIALIZING:
 	set(newState):
 		state = newState
@@ -30,6 +34,7 @@ func _init(snapshot: Dictionary = {}) -> void:
 
 func _initialize(match_id: int) -> void:
 	self.matchId = match_id
+	self.winner = enums.Side.NONE
 	self.mySide = enums.Side.NONE
 	self.scores[enums.Side.GREEN] = 0
 	self.scores[enums.Side.RED] = 0
@@ -39,6 +44,7 @@ func _initialize(match_id: int) -> void:
 func get_snapshot(side: enums.Side = enums.Side.NONE) -> Dictionary:
 	return {
 		"matchId": self.matchId,
+		"winner": self.winner,
 		"scores": self.scores,
 		"state": self.state,
 		"phase": self.phase,
@@ -47,13 +53,18 @@ func get_snapshot(side: enums.Side = enums.Side.NONE) -> Dictionary:
 	}
 
 func _on_sync(snapshot: Dictionary):
+	var event_queue: Array[Event]
+	if phase != snapshot.phase:
+		event_queue.push_back(Event.new(phase_changed, [snapshot.phase]))
 	matchId = snapshot.matchId
+	winner = snapshot.winner
 	scores = snapshot.scores
 	state = snapshot.state
 	phase = snapshot.phase
 	current_turn = snapshot.current_turn
 	mySide = snapshot.side
-	phase_changed.emit(phase)
+	for event: Event in event_queue:
+		event.emit()
 
 func sync(side_peer_ids: Dictionary[enums.Side, int]) -> void:
 	if should_sync:
@@ -68,3 +79,10 @@ func is_my_turn() -> bool:
 
 func is_phase(phase: enums.TurnPhase) -> bool:
 	return self.phase == phase
+
+func get_winner(min_score: int = 1) -> enums.Side:
+	if scores[enums.Side.RED] >= min_score:
+		return enums.Side.RED
+	elif scores[enums.Side.GREEN] >= min_score:
+		return enums.Side.GREEN
+	return enums.Side.NONE

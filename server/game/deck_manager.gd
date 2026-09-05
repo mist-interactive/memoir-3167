@@ -128,5 +128,7 @@ func hasCardInHand(side: enums.Side, instance_id: int) -> bool:
 	return player_hands[side].card_ids.has(instance_id)
 
 func get_card() -> CommandCard:
+	if discard_pile.is_empty():
+		return null
 	var card: CommandCard = CardDatabase.get_card(discard_pile.back().card_id)
 	return card
