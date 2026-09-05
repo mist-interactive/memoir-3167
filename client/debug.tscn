@@ -49,7 +49,7 @@ metadata/_edit_use_anchors_ = true
 [node name="ColorRect" type="ColorRect" parent="." unique_id=886609679]
 z_index = -1
 offset_left = 12.0
-offset_top = 55.0
+offset_top = 37.0
 offset_right = 387.0
 offset_bottom = 199.0
 color = Color(0, 0, 0, 0.2)
@@ -68,5 +68,21 @@ offset_top = 162.0
 offset_right = 103.0
 offset_bottom = 193.0
 text = "Confirm"
+
+[node name="Scores" type="Label" parent="." unique_id=2064108454]
+offset_left = 29.0
+offset_top = 40.0
+offset_right = 87.0
+offset_bottom = 63.0
+theme_override_colors/font_color = Color(1, 0.20784314, 0, 1)
+text = "scores: "
+
+[node name="Winner" type="Label" parent="." unique_id=1570152226]
+modulate = Color(1, 0.20784314, 0, 1)
+offset_left = 30.0
+offset_top = 56.0
+offset_right = 93.0
+offset_bottom = 79.0
+text = "winner: "
 
 [connection signal="button_down" from="Button" to="." method="_on_confirm"]
