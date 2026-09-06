@@ -11,6 +11,8 @@ var logger: LogService
 @onready var match_manager: MatchManager = $"../MatchManager"
 @onready var session_manager: SessionManager = $"./SessionManager"
 
+signal match_completed(resut: MatchResult)
+
 func _ready() -> void:
 	assert(match_manager != null)
 	assert(session_manager != null)
@@ -159,7 +161,7 @@ func get_sides_peer_ids() -> Dictionary[enums.Side, int]:
 func check_win_condition() -> void:
 	if matchState.winner != enums.Side.NONE:
 		return
-	match matchState.get_winner(2):
+	match matchState.get_winner(1):
 		enums.Side.GREEN:
 			matchState.state = MatchState.STATE.ENDED
 			matchState.winner = enums.Side.GREEN
@@ -167,7 +169,10 @@ func check_win_condition() -> void:
 			matchState.state = MatchState.STATE.ENDED
 			matchState.winner = enums.Side.RED
 		enums.Side.NONE:
-			pass
+			return
+	var result: MatchResult = get_match_result()
+	logger.info("match completed", result.to_dict())
+	match_completed.emit(result)
 
 func go_next_phase(side: enums.Side) -> void:
 	if matchState.is_phase(enums.TurnPhase.PLAY_CARD):
@@ -187,3 +192,14 @@ func change_turn(side: enums.Side) -> void:
 		side,
 		get_sides_peer_ids()
 	)
+func get_match_result() -> MatchResult:
+	var result: MatchResult = MatchResult.new()
+	result.match_id = matchState.matchId
+	result.winner_uuid = sides_uuid[matchState.winner]
+	result.uuids = [sides_uuid[enums.Side.RED], sides_uuid[enums.Side.GREEN]]
+	result.scores = {
+		sides_uuid[enums.Side.RED]: matchState.scores[enums.Side.RED],
+		sides_uuid[enums.Side.GREEN]: matchState.scores[enums.Side.GREEN]
+	}
+	result.status = MatchState.STATE.ENDED
+	return result
