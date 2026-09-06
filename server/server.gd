@@ -13,8 +13,7 @@ var logger: LogService
 signal player_disconnected(peer_id: int)
 
 func _ready() -> void:
-	name = "SERVER"
-	logger = LogService.new({"service": "server"})
+	name = "Server"
 	logger.info("=== SERVER STARTING ===")
 	logger.info("OS feature editor: %s" % OS.has_feature("editor"))
 	logger.info("OS feature web: %s" % OS.has_feature("web"))
@@ -34,6 +33,9 @@ func _ready() -> void:
 	multiplayer.multiplayer_peer = peer
 	logger.info("=== SERVER READY ===")
 	logger.info("server has started")
+
+func _init() -> void:
+	logger = LogService.new({"service": "server"})
 
 func _physics_process(delta: float) -> void:
 	for peer_id in clients.keys():
