@@ -16,7 +16,7 @@ func _init(initial_context: Dictionary = {}) -> void:
 
 func with_context(extra: Dictionary) -> LogService:
 	var child : LogService = LogService.new(context)
-	Logger
+	
 	for key in extra:
 		child.context[key] = extra[key]
 
