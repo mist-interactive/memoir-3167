@@ -3,7 +3,7 @@ class_name DeckManager
 
 var draw_pile: Array[String] = []
 var discard_pile: Array[CardInstance] = []
-var player_hands: Dictionary[int, HandState]
+var player_hands: Dictionary[int, HandState] = {}
 var _next_instance_id: int = 1000 
 var initial_hand_size: int = 6
 var logger: LogService
@@ -60,12 +60,23 @@ func draw_card(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) ->
 	var card_instance: Dictionary = draw_card_from_pile()
 	if card_instance.is_empty():
 		return false
-	player_hands[side].add_card(card_instance.instance_id, card_instance.card_id)
+
+	player_hands[side].add_card(
+		card_instance.instance_id,
+		card_instance.card_id
+	)
+
+	var other_side := get_other_side(side)
+
+	# Update both players' knowledge of the hands
 	player_hands[side].opponent_cards = get_opponent_cards(side)
+	player_hands[other_side].opponent_cards = get_opponent_cards(other_side)
+
 	var player_logger := logger.with_context({
 		"peer_id": sides_peer_ids[side],
 		"side": side
 	})
+
 	player_logger.info("Draw a card", card_instance)
 	return true
 
