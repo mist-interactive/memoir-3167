@@ -2,16 +2,15 @@ class_name ClientHandState
 extends HandState
 
 signal hand_drawn
-signal card_drawn
+signal card_drawn(instance_id: int, card_id: String)
 signal card_played(instance_id: int, card_id: String)
-signal card_added(instance_id: int, card_id: String)
 signal enemy_hand_drawn
 signal enemy_card_drawn(instance_id: int)
 signal enemy_card_played(instance_id: int, card_id: String)
 
 @onready var match_state: MatchState = $"../matchState"
 
-var event_queue: Array[Event]
+var event_queue: Array[Event] = []
 
 func _ready() -> void:
 	name = "HandState"
@@ -29,7 +28,7 @@ func _on_sync_requested(snapshot: Dictionary, flush_queue: bool = true):
 			if not card_ids.has(instance_id):
 				var card_id: String = snapshot.card_ids[instance_id]
 				event_queue.append(
-					Event.new(card_added, [instance_id, card_id])
+					Event.new(card_drawn, [instance_id, card_id])
 				)
 	
 	# Detect initial hand
