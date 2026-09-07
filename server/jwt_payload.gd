@@ -1,4 +1,4 @@
-class_name Jwt
+class_name JwtPayload
 
 var header: Dictionary
 var payload: Dictionary

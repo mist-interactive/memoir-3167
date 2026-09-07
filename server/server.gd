@@ -63,11 +63,11 @@ func _on_auth_check_requested(peer_id: int, jwt_token: String) -> void:
 		client.authenticated = true
 		logger.info("Client %d authenticated (local)" % peer_id)
 		return
-	var jwt := jwt_verifier.verify(jwt_token)
-	if jwt != null:
+	var jwt_payload := jwt_verifier.verify(jwt_token)
+	if jwt_payload != null:
 		client.authenticated = true
-		var user_id = jwt.payload.get("user_id")
-		var username = jwt.payload.get("username")
+		var user_id = jwt_payload.payload.get("user_id")
+		var username = jwt_payload.payload.get("username")
 		logger.info("Client %d authenticated" % peer_id)
 		logger.info("user_id %d username %s" % [user_id, username])
 	else:
