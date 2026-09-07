@@ -28,7 +28,7 @@ func _load_public_key() -> bool:
 	logger.info("JWT public key loaded successfully")
 	return true
 
-func verify(token: String) -> Jwt:
+func verify(token: String) -> JwtPayload:
 	if not is_ready:
 		logger.info("JWT verifier is not ready")
 		return null
@@ -85,7 +85,7 @@ func verify(token: String) -> Jwt:
 		return null
 
 	logger.info("JWT verified successfully")
-	return Jwt.new(header, payload)
+	return JwtPayload.new(header, payload)
 
 
 func _validate_expiration(payload: Dictionary) -> bool:
