@@ -15,12 +15,16 @@ extends Control
 
 func _ready() -> void:
 	handState.enemy_hand_drawn.connect(_on_enemy_draw_hand)
+	handState.enemy_card_drawn.connect(_on_enemy_card_drawn)
 	handState.enemy_card_played.connect(_on_enemy_played_card)
 
-#func _instantiate_card_node
 func _on_enemy_draw_hand() -> void:
 	for instance_id in handState.opponent_cards:
 		_add_card_node(instance_id)
+	_recalculate_layout()
+
+func _on_enemy_card_drawn(instance_id: int) -> void:
+	_add_card_node(instance_id)
 	_recalculate_layout()
 
 func _add_card_node(instance_id: int) -> void:
