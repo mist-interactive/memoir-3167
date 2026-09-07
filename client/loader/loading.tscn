@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bkaktjljq8pme"]
 
-[ext_resource type="Script" uid="uid://byxlusre1qg1i" path="res://client/ui/LoadingScene.gd" id="1_wbw4t"]
+[ext_resource type="Script" uid="uid://byxlusre1qg1i" path="res://client/loader/LoadingScene.gd" id="1_wbw4t"]
 [ext_resource type="Texture2D" uid="uid://dps0o8domy171" path="res://winter-of-wonder.webp" id="2_wpa7w"]
 
 [node name="Loader" type="Node2D" unique_id=1067640567 node_paths=PackedStringArray("progressBar")]

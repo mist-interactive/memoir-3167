@@ -60,3 +60,12 @@ enum TurnPhase
 	ATTACK,
 	DRAW_CARD
 }
+
+enum ConnectionStatus
+{
+	Disconnected = 0,
+	Connected = 1 << 0,
+	Authenticated = 1 << 1,
+	Ready = 1 << 2,
+	Playing = 1 << 3,
+}
