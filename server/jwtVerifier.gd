@@ -28,19 +28,19 @@ func _load_public_key() -> bool:
 	logger.info("JWT public key loaded successfully")
 	return true
 
-func verify(token: String) -> bool:
+func verify(token: String) -> Jwt:
 	if not is_ready:
 		logger.info("JWT verifier is not ready")
-		return false
+		return null
 
 	if public_key == null:
 		logger.error("JWT public key is not loaded")
-		return false
+		return null
 
 	var parts := token.split(".")
 	if parts.size() != 3:
 		logger.info("Invalid JWT format")
-		return false
+		return null
 
 	var encoded_header := parts[0]
 	var encoded_payload := parts[1]
@@ -49,22 +49,23 @@ func verify(token: String) -> bool:
 
 	if header.is_empty():
 		logger.info("Invalid JWT header")
-		return false
+		return null
 
 	if header.get("alg", "") != "RS256":
 		logger.info("Unsupported JWT algorithm")
-		return false
+		return null
 
 	logger.info("JWT header", header)
+
 	var payload := _decode_json(encoded_payload)
 	if payload.is_empty():
 		logger.info("Invalid JWT payload")
-		return false
+		return null
 
 	var signature := _base64url_decode(encoded_signature)
 	if signature.is_empty():
 		logger.info("Invalid JWT signature")
-		return false
+		return null
 
 	var signing_input := encoded_header + "." + encoded_payload
 	var digest := signing_input.sha256_buffer()
@@ -75,14 +76,16 @@ func verify(token: String) -> bool:
 		signature,
 		public_key
 	)
+
 	if not valid:
 		logger.info("Invalid JWT signature")
-		return false
+		return null
 
 	if not _validate_expiration(payload):
-		return false
+		return null
+
 	logger.info("JWT verified successfully")
-	return true
+	return Jwt.new(header, payload)
 
 
 func _validate_expiration(payload: Dictionary) -> bool:
