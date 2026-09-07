@@ -26,7 +26,6 @@ var result_to_face := {
 
 func _ready() -> void:
 	Network.Actions.resolve_combat_result_requested.connect(_on_resolve_combat_result)
-	randomize()
 
 func _on_resolve_combat_result(result: CombatResult) -> void:
 	roll_dice(result.rolled_dices)
@@ -46,8 +45,6 @@ func roll_dice(results: Array[enums.RolledDice]) -> void:
 	var result_index := 0
 	var dies = $Dies
 	
-	print("roll results: ", results)
-
 	for die in dies.get_children():
 
 		if result_index >= results.size():
@@ -57,13 +54,9 @@ func roll_dice(results: Array[enums.RolledDice]) -> void:
 
 		var result: enums.RolledDice = results[result_index]
 		var face: int = result_to_face[result]
-
 		result_index += 1
-
 		var target_rotation: Vector3 = face_rotations[face]
-
 		var spins := randi_range(min_spins, max_spins)
-
 		var spin_x := TAU * spins
 		var spin_y := TAU * spins
 		var spin_z := TAU * spins
@@ -92,15 +85,11 @@ func roll_dice(results: Array[enums.RolledDice]) -> void:
 
 	await tween.finished
 
-	# Snap each die to its exact result.
 	result_index = 0
-
 	for die in dice:
 		var result: enums.RolledDice = results[result_index]
 		var face: int = result_to_face[result]
-
 		die.rotation = face_rotations[face]
-
 		result_index += 1
 
 	rolling = false
