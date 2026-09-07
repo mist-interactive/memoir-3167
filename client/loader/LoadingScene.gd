@@ -31,7 +31,10 @@ func run() -> void:
 
 	for task: Task in tasks:
 		taskLabel.text = task.name
-		await task.execute.call()
+		var res: taskResult = await task.execute.call()
+		if !res.done:
+			taskLabel.text = res.err_msg
+			return
 		completed_weight += task.weight
 		var target = completed_weight / total_weight * 100
 		var tween = create_tween()
@@ -51,6 +54,13 @@ func hide_loader() -> void:
 	taskLabel.hide()
 	progressBar.hide()
 
-func wait_untill(cond: Callable) -> void:
-	while !cond.call():
+func wait_untill(cond: Callable, timeout: float = 5.0) -> bool:
+	var elapsed: float = 0.0
+
+	while not cond.call():
+		if timeout > 0.0 && elapsed >= timeout:
+			return false
 		await get_tree().process_frame
+		elapsed += get_process_delta_time()
+	
+	return true

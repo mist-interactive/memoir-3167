@@ -17,8 +17,6 @@ func _ready() -> void:
 	_clear_hand()
 	handState.hand_drawn.connect(_on_hand_drawn)
 	handState.card_played.connect(_on_card_played)
-	await get_tree().create_timer(0.1).timeout
-	Network.Actions.draw_hand.rpc_id(1)
 
 func _on_hand_drawn() -> void:
 	var hand_data: Dictionary = handState.card_ids
@@ -35,7 +33,8 @@ func _on_model_card_added(instance_id: int, card_id: String) -> void:
 func _on_card_played(instance_id: int, card_id: String) -> void:
 	var card_node := get_node_or_null(str(instance_id)) as CardUI
 	if not card_node:
-		return
+		_instantiate_card_node(instance_id, card_id)
+		card_node = get_node_or_null(str(instance_id)) as CardUI
 	card_node.is_discarded = true
 	_remove_card_node_and_animate(card_node, instance_id)
 

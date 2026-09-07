@@ -33,8 +33,7 @@ func get_snapshot() -> Dictionary:
 func sync(peer_ids: Array[int]) -> void:
 	if !isDirty:
 		return
-	for peer_id in peer_ids:
-		Network.Units.sync_unit.rpc_id(peer_id, get_snapshot())
+	Network.broadcast(Network.Units.sync_unit.rpc_id, peer_ids, [get_snapshot()])
 	isDirty = false
 
 func is_my_unit(side: enums.Side) -> bool:
