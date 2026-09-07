@@ -141,7 +141,7 @@ func isInProgress() ->bool:
 func go_next_phase(side: enums.Side) -> void:
 	if isPhase(enums.TurnPhase.ATTACK) || (isPhase(enums.TurnPhase.SELECT) && unit_manager.selected_units_ids.is_empty()):
 		matchState.phase = enums.TurnPhase.PLAY_CARD
-		matchState.current_turn = enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
+		change_turn(side)
 		unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)
 	elif isPhase(enums.TurnPhase.SELECT):
 		matchState.phase = enums.TurnPhase.MOVE
@@ -149,6 +149,14 @@ func go_next_phase(side: enums.Side) -> void:
 	elif isPhase(enums.TurnPhase.MOVE):
 		matchState.phase = enums.TurnPhase.ATTACK
 		unit_manager.next_phase(enums.TurnPhase.ATTACK)
+
+func change_turn(side: enums.Side) -> void:
+	var next_side := enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
+	matchState.current_turn = next_side
+	deckManager.draw_card(
+		side,
+		get_sides_peer_ids()
+	)
 
 # Action handlers
 func handle_continue_next_phase(side: enums.Side) -> void:
@@ -174,7 +182,7 @@ func handle_attack_unit(side: enums.Side, unit_id: int, target_unit_id: int) -> 
 		if unit_manager.attacked_units_ids.size() == unit_manager.selected_units_ids.size():
 			unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)
 			matchState.phase = enums.TurnPhase.PLAY_CARD
-			matchState.current_turn = enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
+			change_turn(side)
 
 func handle_draw_card(side: enums.Side) -> void:
 	
