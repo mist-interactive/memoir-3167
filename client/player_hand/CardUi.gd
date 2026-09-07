@@ -1,20 +1,27 @@
 class_name CardUI
 extends Control
 
-signal card_clicked(instance_id: int)
 var SIZE := HandUI.card_size
 const BASE_SCALE := Vector2(0.5, 0.5)
 const DISCARD_BASE_SCALE := Vector2(1.0, 1.0)
+
+const DRAG_THRESHOLD := 8.0
+const CLICK_SCALE := BASE_SCALE * 3.0
+const HOVER_SCALE := BASE_SCALE * 1.35
 
 @export var title_label: Label
 @export var description_label: Label
 @export var description_label_bottom: Label
 @onready var background_texture: TextureRect
+@export var play_area: Control
 
 signal card_drag_started(card: CardUI)
 signal card_drag_ended(card: CardUI)
 
 var is_dragging: bool = false
+var is_mouse_pressed: bool = false
+var press_position: Vector2 = Vector2.ZERO
+
 var drag_offset: Vector2 = Vector2.ZERO
 var original_position: Vector2 = Vector2.ZERO
 var base_position_x: float
@@ -23,6 +30,7 @@ var _instance_id: int
 var _card_id: String
 var is_interactive: bool = true
 var is_discarded: bool = false
+var is_selected: bool = false
 
 signal card_hovered(target_sector: enums.MapSector)
 signal card_unhovered
@@ -34,7 +42,7 @@ func setup_visuals(instance_id: int, id: String) -> void:
 	_instance_id = instance_id
 	_card_id = id
 	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
-	
+
 	var card_data: CommandCard = CardDatabase.get_card(id)
 	if not card_data:
 		push_error("Card UI: Database missing definition for ", id)
@@ -52,36 +60,36 @@ func setup_enemy_visuals(instance_id: int) -> void:
 
 func animate_to_discard(target_global_pos: Vector2, on_complete_callback: Callable) -> void:
 	is_interactive = false
+
 	if is_dragging:
 		_end_drag()
+
 	_reset_hover_state()
-	
-	# 1. Store the exact screen coordinates before detaching from parent layout
+
 	var start_global_pos: Vector2 = global_position
-	
-	# 2. Detach from parent coordinate space
+
 	top_level = true
-	
-	# 3. Restore true screen coordinates so the card stays stationary
 	global_position = start_global_pos
-	
+
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
-	
-	# 4. Tween smoothly from start_global_pos to final_pos
+
 	var tween := create_tween().set_parallel(true)
 	var final_pos := target_global_pos - (size / 2.0)
-	
+
 	tween.tween_property(self, "global_position", final_pos, 0.4)\
 		.set_trans(Tween.TRANS_CUBIC)\
 		.set_ease(Tween.EASE_IN_OUT)
+
 	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.4)\
 		.set_trans(Tween.TRANS_CUBIC)
+
 	tween.tween_property(self, "rotation_degrees", 0.0, 0.4)
-	
+
 	tween.chain().tween_callback(func():
 		if on_complete_callback.is_valid():
 			on_complete_callback.call()
 	)
+
 	is_interactive = true
 	mouse_filter = Control.MOUSE_FILTER_PASS
 
@@ -97,19 +105,27 @@ func _on_mouse_exited() -> void:
 		return
 	if is_discarded:
 		return _animate_discard_pile_hover(0)
-	z_index = 0
-	scale = BASE_SCALE
-	position.y = position.y + SIZE.y / 10 
+
+	if not is_dragging and not is_mouse_pressed and not is_selected:
+		z_index = 0
+		scale = BASE_SCALE
+
+	position.y = position.y + SIZE.y / 10
 	card_unhovered.emit()
 
 func _on_mouse_entered() -> void:
 	if not is_interactive:
 		return
+
 	if is_discarded:
 		return _animate_discard_pile_hover(1)
-	z_index = 10
-	scale = BASE_SCALE * 1.35 
-	position.y = position.y - SIZE.y / 10 
+
+	if not is_dragging:
+		z_index = 10
+		scale = HOVER_SCALE
+
+	position.y = position.y - SIZE.y / 10
+
 	var card_data: CommandCard = CardDatabase.get_card(_card_id)
 	if card_data:
 		card_hovered.emit(card_data.target_sector)
@@ -124,52 +140,108 @@ func _animate_discard_pile_hover(state: int) -> void:
 		position.x = base_position_x
 
 func _gui_input(event: InputEvent) -> void:
-	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		card_clicked.emit(_instance_id)
-	_drag_gui_input(event)
+	if not is_interactive:
+		return
 
-func _drag_gui_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
-		var mouse_event: InputEventMouseButton = event as InputEventMouseButton
-		if mouse_event.button_index == MOUSE_BUTTON_LEFT and mouse_event.pressed and not is_dragging:
-			_start_drag()
+		var mouse_event := event as InputEventMouseButton
+
+		if mouse_event.button_index != MOUSE_BUTTON_LEFT:
+			return
+
+		if mouse_event.pressed:
+			is_mouse_pressed = true
+			press_position = get_global_mouse_position()
+			accept_event()
+
+		else:
+			if not is_dragging:
+				is_mouse_pressed = false
+
+				is_selected = not is_selected
+
+				if is_selected:
+					scale = CLICK_SCALE
+				else:
+					scale = BASE_SCALE
+
+				accept_event()
+
+	elif event is InputEventMouseMotion:
+		if is_mouse_pressed and not is_dragging:
+			var mouse_position := get_global_mouse_position()
+
+			if mouse_position.distance_to(press_position) >= DRAG_THRESHOLD:
+				_start_drag()
 
 func _input(event: InputEvent) -> void:
 	if not is_interactive:
 		return
 	if not is_dragging:
 		return
+
 	if event is InputEventMouseMotion:
 		global_position = get_global_mouse_position() - drag_offset
+
 	elif event is InputEventMouseButton:
-		var mouse_event: InputEventMouseButton = event as InputEventMouseButton
+		var mouse_event := event as InputEventMouseButton
+
 		if mouse_event.button_index == MOUSE_BUTTON_LEFT and not mouse_event.pressed:
 			_end_drag()
 			accept_event()
 
 func _start_drag() -> void:
+	if is_dragging:
+		return
+
 	is_dragging = true
+	is_mouse_pressed = true
 	original_position = global_position
-	drag_offset = get_global_mouse_position() - global_position
 	z_index = 10
+
+	is_selected = false
+	scale = BASE_SCALE
+
+	drag_offset = get_global_mouse_position() - global_position
+
 	var hand = get_parent()
+
 	if hand:
 		for card in hand.get_children():
 			if card is CardUI and card != self:
 				card.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
 	card_drag_started.emit(self)
 
 func _end_drag() -> void:
 	if not is_dragging:
 		return
+	
 	is_dragging = false
+	is_mouse_pressed = false
+	var valid_drop := is_over_play_area()
 	z_index = 0
 	var hand = get_parent()
+
 	if hand:
 		for card in hand.get_children():
 			if card is CardUI:
 				card.mouse_filter = Control.MOUSE_FILTER_STOP
-		if hand.has_method("_recalculate_layout"):
-			hand._recalculate_layout()
-	Network.Actions.play_card.rpc(_instance_id)
+
+	if valid_drop:
+		Network.Actions.play_card.rpc(_instance_id)
+	else:
+		global_position = original_position
+
+	scale = BASE_SCALE
+
+	if hand and hand.has_method("_recalculate_layout"):
+		hand._recalculate_layout()
+
 	card_drag_ended.emit(self)
+
+func is_over_play_area() -> bool:
+	if not play_area:
+		return false
+	var card_center := global_position + size * 0.5
+	return play_area.get_global_rect().has_point(card_center)
