@@ -28,10 +28,8 @@ func attack_unit(unit_id: int, target_unit_id: int) -> void:
 	attack_unit_requested.emit(multiplayer.get_remote_sender_id(), unit_id, target_unit_id)
 
 signal resolve_combat_result_requested(result: CombatResult)
-@rpc("authority", "call_remote")
+@rpc("authority", "call_local", "reliable")
 func resolve_combat_result(result: Dictionary) -> void:
-	if multiplayer.is_server():
-		return
 	resolve_combat_result_requested.emit(CombatResult.from_dict(result))
 
 signal draw_card_requested(peer_id: int)
