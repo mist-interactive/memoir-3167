@@ -17,6 +17,7 @@ func _ready() -> void:
 	_clear_hand()
 	handState.hand_drawn.connect(_on_hand_drawn)
 	handState.card_played.connect(_on_card_played)
+	handState.card_drawn.connect(_on_model_card_added)
 
 func _on_hand_drawn() -> void:
 	var hand_data: Dictionary = handState.card_ids
