@@ -9,7 +9,7 @@ var clients: Dictionary[int, ClientState]
 var sessions: Dictionary[int, int] # uuid -> peer_id
 var logger: LogService
 @export var match_manager: MatchManager
-
+@export var memoir_api: MemoirApi
 signal player_disconnected(peer_id: int)
 
 func _ready() -> void:
@@ -19,7 +19,7 @@ func _ready() -> void:
 	logger.info("OS feature web: %s" % OS.has_feature("web"))
 
 	jwt_verifier = JwtVerifier.new(logger)
-	if not jwt_verifier.is_ready:
+	if not jwt_verifier.is_ready || not memoir_api.is_ready:
 		get_tree().quit(1)
 		return
 
