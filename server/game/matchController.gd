@@ -153,7 +153,11 @@ func isPlayerTurn(peer_id: int) -> bool:
 	return matchState.current_turn == side;
 	
 func get_side(peer_id: int) -> enums.Side:
-	return sides_uuid[match_manager.get_uuid(peer_id)]
+	var uuid: int = match_manager.get_uuid(peer_id)
+	for side: enums.Side in sides_uuid:
+		if sides_uuid[side] == uuid:
+			return side
+	return enums.Side.NONE
 
 func get_sides_peer_ids() -> Dictionary[enums.Side, int]:
 	return session_manager.get_sides_peer_ids(sides_uuid) 
