@@ -77,15 +77,15 @@ func handle_connect(uuid: int, peer_id: int) -> void:
 		sides_uuid = {enums.Side.GREEN: uuids[0], enums.Side.RED: uuids[1]}
 	var snapshot: Dictionary = {
 		"match_state": matchState.get_snapshot(get_side(peer_id)),
-		"hand_state": deckManager.player_hands[get_side(peer_id)].get_snapshot(),
 		"map_name": battlefield.mapName,
 		"units": units
 	}
 	for session: PlayerSession in session_manager.get_sessions().values():
 		if session.is_status_set(enums.ConnectionStatus.Connected) && !session.is_status_set(enums.ConnectionStatus.Ready):
 			peer_ids.append(session.peer_id)
-	Network.broadcast(Network.Match.init.rpc_id, peer_ids, [snapshot])
-		
+		snapshot.hand_state = deckManager.player_hands[get_side(session.peer_id)].get_snapshot()
+		Network.Match.init.rpc_id(session.peer_id, snapshot)
+
 func handle_client_ready(uuid: int) -> void:
 	logger.info("Client(%s) is ready" % uuid)
 	session_manager.client_is_ready(uuid)

@@ -21,9 +21,10 @@ func initialize(snapshot: Dictionary) -> void:
 	flush_event_queue()
 
 func _on_sync_requested(snapshot: Dictionary, flush_queue: bool = true):
-	
 	# Detect cards added to our hand
-	if snapshot.card_ids.size() > card_ids.size():
+	if card_ids.size() == 0 && snapshot.card_ids.size() != 0:
+		event_queue.append(Event.new(hand_drawn))
+	elif snapshot.card_ids.size() > card_ids.size():
 		for instance_id in snapshot.card_ids:
 			if not card_ids.has(instance_id):
 				var card_id: String = snapshot.card_ids[instance_id]
@@ -31,20 +32,15 @@ func _on_sync_requested(snapshot: Dictionary, flush_queue: bool = true):
 					Event.new(card_drawn, [instance_id, card_id])
 				)
 	
-	# Detect initial hand
-	if card_ids.size() == 0 && snapshot.card_ids.size() != 0:
-		event_queue.append(Event.new(hand_drawn))
-	
-	# Detect opponent cards
-	if opponent_cards.is_empty() && !snapshot.opponent_cards.is_empty():
+	# Detect opponent initial hand
+	if opponent_cards.size() == 0 && snapshot.opponent_cards.size() != 0:
 		event_queue.append(Event.new(enemy_hand_drawn))
-	else:
-		if snapshot.opponent_cards.size() > opponent_cards.size():
-			for instance_id: int in snapshot.opponent_cards:
-				if not opponent_cards.has(instance_id):
-					event_queue.append(
-						Event.new(enemy_card_drawn, [instance_id])
-					)
+	elif snapshot.opponent_cards.size() > opponent_cards.size():
+		for instance_id: int in snapshot.opponent_cards:
+			if not opponent_cards.has(instance_id):
+				event_queue.append(
+					Event.new(enemy_card_drawn, [instance_id])
+				)
 	
 	var new_discard_pile: Array[CardInstance]
 	for packed in snapshot.discard_pile:
