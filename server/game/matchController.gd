@@ -77,15 +77,15 @@ func handle_connect(uuid: int, peer_id: int) -> void:
 		sides_uuid = {enums.Side.GREEN: uuids[0], enums.Side.RED: uuids[1]}
 	var snapshot: Dictionary = {
 		"match_state": matchState.get_snapshot(get_side(peer_id)),
-		"hand_state": deckManager.player_hands[get_side(peer_id)].get_snapshot(),
 		"map_name": battlefield.mapName,
 		"units": units
 	}
 	for session: PlayerSession in session_manager.get_sessions().values():
 		if session.is_status_set(enums.ConnectionStatus.Connected) && !session.is_status_set(enums.ConnectionStatus.Ready):
 			peer_ids.append(session.peer_id)
-	Network.broadcast(Network.Match.init.rpc_id, peer_ids, [snapshot])
-		
+		snapshot.hand_state = deckManager.player_hands[get_side(session.peer_id)].get_snapshot()
+		Network.Match.init.rpc_id(session.peer_id, snapshot)
+
 func handle_client_ready(uuid: int) -> void:
 	logger.info("Client(%s) is ready" % uuid)
 	session_manager.client_is_ready(uuid)
@@ -141,7 +141,7 @@ func isInProgress() ->bool:
 func go_next_phase(side: enums.Side) -> void:
 	if isPhase(enums.TurnPhase.ATTACK) || (isPhase(enums.TurnPhase.SELECT) && unit_manager.selected_units_ids.is_empty()):
 		matchState.phase = enums.TurnPhase.PLAY_CARD
-		matchState.current_turn = enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
+		change_turn(side)
 		unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)
 	elif isPhase(enums.TurnPhase.SELECT):
 		matchState.phase = enums.TurnPhase.MOVE
@@ -149,6 +149,14 @@ func go_next_phase(side: enums.Side) -> void:
 	elif isPhase(enums.TurnPhase.MOVE):
 		matchState.phase = enums.TurnPhase.ATTACK
 		unit_manager.next_phase(enums.TurnPhase.ATTACK)
+
+func change_turn(side: enums.Side) -> void:
+	var next_side := enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
+	matchState.current_turn = next_side
+	deckManager.draw_card(
+		side,
+		get_sides_peer_ids()
+	)
 
 # Action handlers
 func handle_continue_next_phase(side: enums.Side) -> void:
@@ -174,7 +182,7 @@ func handle_attack_unit(side: enums.Side, unit_id: int, target_unit_id: int) -> 
 		if unit_manager.attacked_units_ids.size() == unit_manager.selected_units_ids.size():
 			unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)
 			matchState.phase = enums.TurnPhase.PLAY_CARD
-			matchState.current_turn = enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
+			change_turn(side)
 
 func handle_draw_card(side: enums.Side) -> void:
 	
