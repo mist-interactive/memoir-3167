@@ -12,6 +12,7 @@ extends Control
 @export var y_max: float = -15.0
 @export var default_separation: float = -5.0
 @onready var handState: HandState = $"../../../../HandState"
+@export var play_area: Control
 
 func _ready() -> void:
 	_clear_hand()
@@ -58,9 +59,9 @@ func _instantiate_card_node(instance_id: int, card_id: String) -> void:
 	new_card.name = str(instance_id)
 	new_card.card_hovered.connect(player_controller._on_card_hovered)
 	new_card.card_unhovered.connect(player_controller._on_card_unhovered)
+	new_card.play_area = play_area
 	add_child(new_card)
 	new_card.setup_visuals(instance_id, card_id)
-	new_card.card_clicked.connect(_on_card_clicked_by_player)
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_RESIZED:
@@ -152,9 +153,6 @@ func _recalculate_layout() -> void:
 			0.2
 		).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		
-
-func _on_card_clicked_by_player(instance_id: int) -> void:
-	Network.Actions.play_card.rpc(instance_id)
 
 func _clear_hand() -> void:
 	for child: Node in get_children():
