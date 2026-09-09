@@ -53,32 +53,32 @@ offset_left = 960.0
 offset_top = 488.0
 offset_right = 1179.0
 offset_bottom = 516.0
-theme_override_colors/font_color = Color(1, 0, 0, 1)
 text = "Turn phase:"
 metadata/_edit_use_anchors_ = true
 
 [node name="Turn" type="Label" parent="." unique_id=425633101]
+offset_left = 24.0
 offset_top = 80.0
-offset_right = 91.0
-offset_bottom = 103.0
+offset_right = 124.0
+offset_bottom = 105.0
 theme = SubResource("Theme_eu3yq")
-theme_override_colors/font_color = Color(1, 0.20784314, 0, 1)
 text = "Player turn:"
 metadata/_edit_use_anchors_ = true
 
 [node name="Peer_ids" type="Label" parent="." unique_id=1089954271]
-offset_top = 48.0
-offset_right = 91.0
-offset_bottom = 71.0
+offset_left = 24.0
+offset_top = 128.0
+offset_right = 124.0
+offset_bottom = 153.0
 theme = SubResource("Theme_eu3yq")
-theme_override_colors/font_color = Color(1, 0.20784314, 0, 1)
 text = "player_ids:"
 metadata/_edit_use_anchors_ = true
 
 [node name="State" type="Label" parent="." unique_id=550106070]
-offset_right = 97.0
-offset_bottom = 23.0
-theme_override_colors/font_color = Color(1, 0, 0, 1)
+offset_left = 24.0
+offset_top = 103.0
+offset_right = 124.0
+offset_bottom = 128.0
 text = "match state:"
 metadata/_edit_use_anchors_ = true
 
@@ -114,14 +114,13 @@ offset_left = 896.0
 offset_top = 584.0
 offset_right = 954.0
 offset_bottom = 607.0
-theme_override_colors/font_color = Color(1, 0.20784314, 0, 1)
 text = "scores: "
 
 [node name="Winner" type="Label" parent="." unique_id=1570152226]
-modulate = Color(1, 0.20784314, 0, 1)
-offset_top = 23.0
-offset_right = 64.0
-offset_bottom = 47.0
+offset_left = 24.0
+offset_top = 56.0
+offset_right = 124.0
+offset_bottom = 81.0
 text = "winner: "
 
 [connection signal="button_down" from="Button" to="." method="_on_confirm"]
