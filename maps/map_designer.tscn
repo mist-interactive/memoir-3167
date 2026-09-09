@@ -15,7 +15,7 @@
 [ext_resource type="Script" uid="uid://7tdnt2pcipdq" path="res://client/battlefield/camera_controller.gd" id="13_pa0pi"]
 [ext_resource type="Texture2D" uid="uid://w6gqi2ht6c1" path="res://assets/sprites/units/artillery_sprite_sheet.png" id="13_vxy4q"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e5smb"]
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_173rr"]
 texture = ExtResource("4_jpqe7")
 texture_region_size = Vector2i(442, 512)
 0:0/0 = 0
@@ -25,7 +25,7 @@ texture_region_size = Vector2i(442, 512)
 [sub_resource type="TileSet" id="TileSet_o6wfx"]
 tile_shape = 3
 tile_size = Vector2i(442, 512)
-sources/0 = SubResource("TileSetAtlasSource_e5smb")
+sources/0 = SubResource("TileSetAtlasSource_173rr")
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mhs4e"]
 texture = ExtResource("6_1eehx")

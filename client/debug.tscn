@@ -5,6 +5,13 @@
 [ext_resource type="Texture2D" uid="uid://rtb43f6i1ud" path="res://assets/ui/dot-bold-highlight.svg" id="2_yubbw"]
 [ext_resource type="StyleBox" uid="uid://dkft0hfud0hmr" path="res://assets/ui/CommonStyleBoxes/BorderlessDefaultPanel/glassmorphism_borderless_default_panel_alpha_two_thirds.tres" id="3_gpedw"]
 [ext_resource type="StyleBox" uid="uid://usfs55q161cf" path="res://assets/ui/CommonStyleBoxes/BorderlessDefaultPanel/glassmorphism_borderless_default_panel_alpha_third.tres" id="4_yubbw"]
+[ext_resource type="Texture2D" uid="uid://bgg48xojsp7xr" path="res://assets/ui/512x512/Metal/Metal_20-512x512.png" id="6_u4rvt"]
+[ext_resource type="Texture2D" uid="uid://dk2wt31m3c8ut" path="res://assets/ui/512x512/Metal/Metal_12-512x512.png" id="7_4vnqf"]
+[ext_resource type="Texture2D" uid="uid://lssst1i8gr6m" path="res://assets/ui/512x512/Metal/Metal_06-512x512.png" id="7_ve2jj"]
+[ext_resource type="Texture2D" uid="uid://b15rr5rf5tge7" path="res://assets/ui/512x512/Box/Box_20-512x512.png" id="8_7rlv4"]
+[ext_resource type="Texture2D" uid="uid://bxwkjqkwc5a36" path="res://assets/ui/512x512/Metal/Metal_10-512x512.png" id="9_7rlv4"]
+[ext_resource type="Texture2D" uid="uid://bu1guq3x7m3wy" path="res://assets/ui/512x512/Metal/Metal_22-512x512.png" id="10_6ngy6"]
+[ext_resource type="Texture2D" uid="uid://c8rfwfifyt8ri" path="res://assets/ui/512x512/Box/Box_19-512x512.png" id="12_hpd0d"]
 
 [sub_resource type="Theme" id="Theme_eu3yq"]
 
@@ -18,10 +25,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 896.0
-offset_top = 608.0
-offset_right = 1152.0
-offset_bottom = 640.0
+offset_left = 126.0
+offset_top = 532.0
+offset_right = 381.99866
+offset_bottom = 564.0
 grow_horizontal = 0
 grow_vertical = 0
 
@@ -49,36 +56,36 @@ layout_mode = 2
 texture = ExtResource("2_yubbw")
 
 [node name="Phase" type="Label" parent="." unique_id=1511377127]
-offset_left = 960.0
-offset_top = 488.0
-offset_right = 1179.0
-offset_bottom = 516.0
-theme_override_colors/font_color = Color(1, 0, 0, 1)
+offset_left = 8.0
+offset_top = 215.0
+offset_right = 227.0
+offset_bottom = 243.0
 text = "Turn phase:"
 metadata/_edit_use_anchors_ = true
 
 [node name="Turn" type="Label" parent="." unique_id=425633101]
-offset_top = 80.0
-offset_right = 91.0
-offset_bottom = 103.0
+offset_left = 8.0
+offset_top = 142.0
+offset_right = 108.0
+offset_bottom = 167.0
 theme = SubResource("Theme_eu3yq")
-theme_override_colors/font_color = Color(1, 0.20784314, 0, 1)
 text = "Player turn:"
 metadata/_edit_use_anchors_ = true
 
 [node name="Peer_ids" type="Label" parent="." unique_id=1089954271]
-offset_top = 48.0
-offset_right = 91.0
-offset_bottom = 71.0
+offset_left = 8.0
+offset_top = 190.0
+offset_right = 108.0
+offset_bottom = 215.0
 theme = SubResource("Theme_eu3yq")
-theme_override_colors/font_color = Color(1, 0.20784314, 0, 1)
 text = "player_ids:"
 metadata/_edit_use_anchors_ = true
 
 [node name="State" type="Label" parent="." unique_id=550106070]
-offset_right = 97.0
-offset_bottom = 23.0
-theme_override_colors/font_color = Color(1, 0, 0, 1)
+offset_left = 8.0
+offset_top = 166.0
+offset_right = 108.0
+offset_bottom = 191.0
 text = "match state:"
 metadata/_edit_use_anchors_ = true
 
@@ -100,28 +107,212 @@ offset_bottom = 141.0
 text = "crt+d to toggle"
 
 [node name="Button" type="Button" parent="." unique_id=1001220325]
-offset_left = 960.0
-offset_top = 520.0
-offset_right = 1088.0
-offset_bottom = 568.0
+offset_left = 1040.0
+offset_top = 496.0
+offset_right = 1144.0
+offset_bottom = 536.0
 theme_override_styles/normal = ExtResource("2_gpedw")
 theme_override_styles/pressed = ExtResource("3_gpedw")
 theme_override_styles/hover = ExtResource("4_yubbw")
 text = "Confirm"
 
 [node name="Scores" type="Label" parent="." unique_id=2064108454]
-offset_left = 896.0
-offset_top = 584.0
-offset_right = 954.0
-offset_bottom = 607.0
-theme_override_colors/font_color = Color(1, 0.20784314, 0, 1)
+offset_left = 8.0
+offset_top = 238.0
+offset_right = 66.0
+offset_bottom = 261.0
 text = "scores: "
 
 [node name="Winner" type="Label" parent="." unique_id=1570152226]
-modulate = Color(1, 0.20784314, 0, 1)
-offset_top = 23.0
-offset_right = 64.0
-offset_bottom = 47.0
+offset_left = 8.0
+offset_top = 120.0
+offset_right = 108.0
+offset_bottom = 145.0
 text = "winner: "
+
+[node name="Control" type="Control" parent="." unique_id=1007110047]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+
+[node name="TextureRect4" type="TextureRect" parent="Control" unique_id=734664742]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 104.0
+texture = ExtResource("6_u4rvt")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="Control" unique_id=433934365]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_top = 544.0
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 2
+texture = ExtResource("6_u4rvt")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TextureRect3" type="TextureRect" parent="Control" unique_id=526610191]
+modulate = Color(0.1503343, 0.1651972, 0.12934586, 1)
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 128.0
+offset_top = 104.0
+offset_right = 568.0
+offset_bottom = 232.0
+rotation = 1.5707964
+texture = ExtResource("7_4vnqf")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TextureRect5" type="TextureRect" parent="Control" unique_id=1236631210]
+modulate = Color(0.2737653, 0.19064942, 0.19725722, 1)
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 1152.0
+offset_top = 64.0
+offset_right = 1735.6146
+offset_bottom = 192.0
+rotation = 1.5707964
+mouse_filter = 2
+texture = ExtResource("8_7rlv4")
+expand_mode = 1
+
+[node name="TextureRect6" type="TextureRect" parent="Control" unique_id=882206696]
+visible = false
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 128.0
+offset_top = 64.0
+offset_right = 1024.0
+offset_bottom = 584.0
+texture = ExtResource("8_7rlv4")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TextureRect7" type="TextureRect" parent="Control" unique_id=875270151]
+visible = false
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 8.0
+texture = ExtResource("9_7rlv4")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TextureRect8" type="TextureRect" parent="Control" unique_id=616215393]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_top = 640.0
+offset_right = 1032.0
+offset_bottom = 648.0
+texture = ExtResource("9_7rlv4")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TextureRect9" type="TextureRect" parent="Control" unique_id=1489111585]
+visible = false
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 640.0
+offset_bottom = 16.0
+rotation = 1.5707964
+texture = ExtResource("9_7rlv4")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TextureRect10" type="TextureRect" parent="Control" unique_id=1950714615]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 1032.0
+offset_top = 63.999996
+offset_right = 1608.0
+offset_bottom = 72.0
+rotation = 1.5707964
+texture = ExtResource("9_7rlv4")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TextureRect11" type="TextureRect" parent="Control" unique_id=442823216]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_top = 544.0
+offset_right = 1024.0
+offset_bottom = 548.0
+texture = ExtResource("10_6ngy6")
+expand_mode = 1
+flip_v = true
+
+[node name="TextureRect12" type="TextureRect" parent="Control" unique_id=1606184121]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_top = 100.0
+offset_right = 1024.0
+offset_bottom = 104.0
+texture = ExtResource("10_6ngy6")
+expand_mode = 1
+flip_v = true
+
+[node name="TextureRect13" type="TextureRect" parent="Control" unique_id=242430284]
+modulate = Color(0.53410035, 0.62836266, 0.8008638, 1)
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 128.0
+offset_top = 104.0
+offset_right = 568.0
+offset_bottom = 112.0
+rotation = 1.5707964
+texture = ExtResource("7_ve2jj")
+expand_mode = 1
+flip_v = true
+
+[node name="TextureRect14" type="TextureRect" parent="Control" unique_id=1805384407]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 64.0
+texture = ExtResource("12_hpd0d")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TextureRect15" type="TextureRect" parent="Control" unique_id=1967957678]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_top = 98.0
+offset_right = 1024.0
+offset_bottom = 100.0
+texture = ExtResource("8_7rlv4")
+expand_mode = 1
+flip_v = true
+
+[node name="TextureRect16" type="TextureRect" parent="Control" unique_id=1847770063]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_top = 64.0
+offset_right = 1024.0
+offset_bottom = 66.0
+texture = ExtResource("8_7rlv4")
+expand_mode = 1
+flip_v = true
 
 [connection signal="button_down" from="Button" to="." method="_on_confirm"]
