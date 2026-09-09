@@ -16,6 +16,7 @@ func _ready() -> void:
 	# Action signals
 	Network.Actions.play_card_requested.connect(_on_play_card)
 	Network.Actions.select_unit_requested.connect(_on_select_unit)
+	Network.Actions.deselect_unit_requested.connect(_on_deselect_unit)
 	Network.Actions.move_unit_requested.connect(_on_move_unit)
 	Network.Actions.attack_unit_requested.connect(_on_attack_unit)
 	Network.Actions.draw_card_requested.connect(_on_draw_card)
@@ -75,37 +76,43 @@ func _on_client_game_ready(peer_id: int) -> void:
 # player actions
 func _on_continue_to_next_phase_requested(peer_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
-	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id):
+	if !matchCtl || !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id):
 		return
 	matchCtl.handle_continue_next_phase(matchCtl.get_side(peer_id))
 
 func _on_play_card(peer_id: int, instance_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
-	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(enums.TurnPhase.PLAY_CARD):
+	if !matchCtl || !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(enums.TurnPhase.PLAY_CARD):
 		return
 	matchCtl.handle_play_card(matchCtl.get_side(peer_id), instance_id)
 
 func _on_select_unit(peer_id: int, unit_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
-	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id):
+	if !matchCtl || !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id):
 		return
 	matchCtl.handle_select_unit(matchCtl.get_side(peer_id), unit_id)
+	
+func _on_deselect_unit(peer_id: int, unit_id: int) -> void:
+	var matchCtl: matchController = get_match(peer_id)
+	if !matchCtl || !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id):
+		return
+	matchCtl.handle_deselect_unit(matchCtl.get_side(peer_id), unit_id)
 
 func _on_move_unit(peer_id: int, unit_id: int, destination: Vector2i) -> void:
 	var matchCtl: matchController = get_match(peer_id)
-	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(enums.TurnPhase.MOVE):
+	if !matchCtl || !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(enums.TurnPhase.MOVE):
 		return
 	matchCtl.handle_move_unit(matchCtl.get_side(peer_id), unit_id, destination)
 
 func _on_attack_unit(peer_id: int, unit_id: int, target_unit_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
-	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(enums.TurnPhase.ATTACK):
+	if !matchCtl || !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(enums.TurnPhase.ATTACK):
 		return
 	matchCtl.handle_attack_unit(matchCtl.get_side(peer_id), unit_id, target_unit_id)
 
 func _on_draw_card(peer_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
-	if !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(enums.TurnPhase.DRAW_CARD):
+	if !matchCtl || !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(enums.TurnPhase.DRAW_CARD):
 		return
 	matchCtl.handle_draw_card(matchCtl.get_side(peer_id))
 
