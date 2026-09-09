@@ -222,8 +222,7 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = -256.0
-offset_top = -184.965
-offset_bottom = 71.03662
+offset_top = -256.0
 grow_horizontal = 0
 grow_vertical = 0
 
@@ -234,34 +233,35 @@ size = Vector2i(256, 256)
 render_target_update_mode = 4
 
 [node name="Node3D" type="Node3D" parent="UICanvas/DiceView/SubViewport" unique_id=731957518]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+rotation_edit_mode = 1
 script = ExtResource("12_wygn3")
 
 [node name="Camera3D" type="Camera3D" parent="UICanvas/DiceView/SubViewport/Node3D" unique_id=69600790]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 2.033, 0.131, 10.99)
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 10)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="UICanvas/DiceView/SubViewport/Node3D" unique_id=964542631]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
 
-[node name="Dies" type="Node3D" parent="UICanvas/DiceView/SubViewport/Node3D" unique_id=574441762]
+[node name="Dice" type="Node3D" parent="UICanvas/DiceView/SubViewport/Node3D" unique_id=574441762]
 
-[node name="Die1" type="MeshInstance3D" parent="UICanvas/DiceView/SubViewport/Node3D/Dies" unique_id=2078356565]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2.0342007, 0, 0)
+[node name="Die1" type="MeshInstance3D" parent="UICanvas/DiceView/SubViewport/Node3D/Dice" unique_id=662234873]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, -4, 0, 0)
 mesh = SubResource("ArrayMesh_vln62")
 
-[node name="Die2" type="MeshInstance3D" parent="UICanvas/DiceView/SubViewport/Node3D/Dies" unique_id=2017985912]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10570037, 0, 0)
+[node name="Die2" type="MeshInstance3D" parent="UICanvas/DiceView/SubViewport/Node3D/Dice" unique_id=2017985912]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, -2, 0, 0)
 mesh = SubResource("ArrayMesh_vln62")
 
-[node name="Die3" type="MeshInstance3D" parent="UICanvas/DiceView/SubViewport/Node3D/Dies" unique_id=1766791892]
-transform = Transform3D(1, 0, 0, 0, 0.99999994, 0, 0, 0, 0.99999994, 2.114, 0, 0)
+[node name="Die3" type="MeshInstance3D" parent="UICanvas/DiceView/SubViewport/Node3D/Dice" unique_id=1766791892]
+transform = Transform3D(-4.371139e-08, 0.99999994, 0, -1, -4.3711385e-08, 0, 0, 0, 0.99999994, 0, 0, 0)
 mesh = SubResource("ArrayMesh_vln62")
 
-[node name="Die4" type="MeshInstance3D" parent="UICanvas/DiceView/SubViewport/Node3D/Dies" unique_id=191860564]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.087207, 0.00010752678, 0)
+[node name="Die4" type="MeshInstance3D" parent="UICanvas/DiceView/SubViewport/Node3D/Dice" unique_id=191860564]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 2, 0, 0)
 mesh = SubResource("ArrayMesh_vln62")
 
-[node name="Die5" type="MeshInstance3D" parent="UICanvas/DiceView/SubViewport/Node3D/Dies" unique_id=1706098154]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.1883903, 0, 0)
+[node name="Die5" type="MeshInstance3D" parent="UICanvas/DiceView/SubViewport/Node3D/Dice" unique_id=1706098154]
+transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 4, 0, 0)
 mesh = SubResource("ArrayMesh_vln62")
 
 [node name="MarginContainer" type="MarginContainer" parent="UICanvas" unique_id=2042215150]
