@@ -18,10 +18,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 976.0
-offset_top = 616.0
+offset_left = 896.0
+offset_top = 608.0
 offset_right = 1152.0
-offset_bottom = 648.0
+offset_bottom = 640.0
 grow_horizontal = 0
 grow_vertical = 0
 
@@ -49,44 +49,41 @@ layout_mode = 2
 texture = ExtResource("2_yubbw")
 
 [node name="Phase" type="Label" parent="." unique_id=1511377127]
-offset_left = 26.0
-offset_top = 136.0
-offset_right = 245.0
-offset_bottom = 164.0
+offset_left = 960.0
+offset_top = 488.0
+offset_right = 1179.0
+offset_bottom = 516.0
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 text = "Turn phase:"
 metadata/_edit_use_anchors_ = true
 
 [node name="Turn" type="Label" parent="." unique_id=425633101]
-offset_left = 27.0
-offset_top = 114.0
-offset_right = 118.0
-offset_bottom = 137.0
+offset_top = 80.0
+offset_right = 91.0
+offset_bottom = 103.0
 theme = SubResource("Theme_eu3yq")
 theme_override_colors/font_color = Color(1, 0.20784314, 0, 1)
 text = "Player turn:"
 metadata/_edit_use_anchors_ = true
 
 [node name="Peer_ids" type="Label" parent="." unique_id=1089954271]
-offset_left = 28.0
-offset_top = 93.0
-offset_right = 119.0
-offset_bottom = 116.0
+offset_top = 48.0
+offset_right = 91.0
+offset_bottom = 71.0
 theme = SubResource("Theme_eu3yq")
 theme_override_colors/font_color = Color(1, 0.20784314, 0, 1)
 text = "player_ids:"
 metadata/_edit_use_anchors_ = true
 
 [node name="State" type="Label" parent="." unique_id=550106070]
-offset_left = 28.0
-offset_top = 73.0
-offset_right = 247.0
-offset_bottom = 101.0
+offset_right = 97.0
+offset_bottom = 23.0
 theme_override_colors/font_color = Color(1, 0, 0, 1)
 text = "match state:"
 metadata/_edit_use_anchors_ = true
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=886609679]
+visible = false
 z_index = -1
 offset_left = 12.0
 offset_top = 37.0
@@ -103,29 +100,28 @@ offset_bottom = 141.0
 text = "crt+d to toggle"
 
 [node name="Button" type="Button" parent="." unique_id=1001220325]
-offset_left = 990.0
-offset_top = 505.0
-offset_right = 1129.0
-offset_bottom = 556.0
+offset_left = 960.0
+offset_top = 520.0
+offset_right = 1088.0
+offset_bottom = 568.0
 theme_override_styles/normal = ExtResource("2_gpedw")
 theme_override_styles/pressed = ExtResource("3_gpedw")
 theme_override_styles/hover = ExtResource("4_yubbw")
 text = "Confirm"
 
 [node name="Scores" type="Label" parent="." unique_id=2064108454]
-offset_left = 935.0
-offset_top = 591.0
-offset_right = 993.0
-offset_bottom = 614.0
+offset_left = 896.0
+offset_top = 584.0
+offset_right = 954.0
+offset_bottom = 607.0
 theme_override_colors/font_color = Color(1, 0.20784314, 0, 1)
 text = "scores: "
 
 [node name="Winner" type="Label" parent="." unique_id=1570152226]
 modulate = Color(1, 0.20784314, 0, 1)
-offset_left = 30.0
-offset_top = 56.0
-offset_right = 93.0
-offset_bottom = 79.0
+offset_top = 23.0
+offset_right = 64.0
+offset_bottom = 47.0
 text = "winner: "
 
 [connection signal="button_down" from="Button" to="." method="_on_confirm"]
