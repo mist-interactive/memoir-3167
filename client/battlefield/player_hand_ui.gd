@@ -62,7 +62,6 @@ func _instantiate_card_node(instance_id: int, card_id: String) -> void:
 	new_card.play_area = play_area
 	add_child(new_card)
 	new_card.setup_visuals(instance_id, card_id)
-	#new_card.card_clicked.connect(_on_card_clicked_by_player)
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_RESIZED:
@@ -154,9 +153,6 @@ func _recalculate_layout() -> void:
 			0.2
 		).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 		
-
-func _on_card_clicked_by_player(instance_id: int) -> void:
-	Network.Actions.play_card.rpc(instance_id)
 
 func _clear_hand() -> void:
 	for child: Node in get_children():

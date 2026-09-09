@@ -14,6 +14,8 @@ const HOVER_SCALE := BASE_SCALE * 1.35
 @export var description_label_bottom: Label
 @onready var background_texture: TextureRect
 @export var play_area: Control
+@export var discard_target: Control
+@onready var handState: HandState = $"../../../../../HandState"
 
 signal card_drag_started(card: CardUI)
 signal card_drag_ended(card: CardUI)
@@ -70,6 +72,8 @@ func animate_to_discard(target_global_pos: Vector2, on_complete_callback: Callab
 
 	top_level = true
 	global_position = start_global_pos
+	
+	z_index = 100
 
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
@@ -80,7 +84,7 @@ func animate_to_discard(target_global_pos: Vector2, on_complete_callback: Callab
 		.set_trans(Tween.TRANS_CUBIC)\
 		.set_ease(Tween.EASE_IN_OUT)
 
-	tween.tween_property(self, "scale", Vector2(1.0, 1.0), 0.4)\
+	tween.tween_property(self, "scale", DISCARD_BASE_SCALE, 0.4)\
 		.set_trans(Tween.TRANS_CUBIC)
 
 	tween.tween_property(self, "rotation_degrees", 0.0, 0.4)
@@ -219,26 +223,73 @@ func _end_drag() -> void:
 	
 	is_dragging = false
 	is_mouse_pressed = false
-	var valid_drop := is_over_play_area()
 	z_index = 0
-	var hand = get_parent()
+	scale = BASE_SCALE
 
+	var hand = get_parent()
 	if hand:
 		for card in hand.get_children():
 			if card is CardUI:
 				card.mouse_filter = Control.MOUSE_FILTER_STOP
 
-	if valid_drop:
+	if is_over_play_area():
+		# 1. Freeze card at drop location
+		var drop_pos := global_position
+		top_level = true
+		global_position = drop_pos
+
+		# 2. Fire RPC
 		Network.Actions.play_card.rpc(_instance_id)
+
+		# 3. Wait for confirmation signal with a 3.0 second timeout
+		var confirmed := await _wait_for_card_confirmation(0.1)
+
+		if confirmed:
+			var target_pos := Vector2.ZERO
+			if discard_target:
+				target_pos = discard_target.global_position + (discard_target.size / 2.0)
+
+			animate_to_discard(target_pos, func():
+				queue_free()
+				if hand and hand.has_method("_recalculate_layout"):
+					hand._recalculate_layout()
+			)
+		else:
+			# Server rejected or connection timed out: snap back to hand
+			return_to_hand()
 	else:
-		global_position = original_position
-
-	scale = BASE_SCALE
-
-	if hand and hand.has_method("_recalculate_layout"):
-		hand._recalculate_layout()
+		return_to_hand()
 
 	card_drag_ended.emit(self)
+
+func _wait_for_card_confirmation(timeout_seconds: float) -> bool:
+	if not handState:
+		return false
+
+	var confirmed := false
+	var on_played := func(confirmed_id: int, _c_id: String):
+		if confirmed_id == _instance_id:
+			confirmed = true
+
+	handState.card_played.connect(on_played)
+
+	var timer := get_tree().create_timer(timeout_seconds)
+
+	# Loop until either confirmed or timer expires
+	while not confirmed and timer.time_left > 0:
+		await get_tree().process_frame
+
+	if handState.card_played.is_connected(on_played):
+		handState.card_played.disconnect(on_played)
+
+	return confirmed
+
+func return_to_hand() -> void:
+	top_level = false
+	global_position = original_position
+	var hand = get_parent()
+	if hand and hand.has_method("_recalculate_layout"):
+		hand._recalculate_layout()
 
 func is_over_play_area() -> bool:
 	if not play_area:
