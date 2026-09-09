@@ -24,6 +24,7 @@
 [ext_resource type="Script" uid="uid://cl0168wcrdlf1" path="res://client/battlefield/discard_pile_ui.gd" id="15_eq063"]
 [ext_resource type="PackedScene" uid="uid://c3nofdwjiv8vk" path="res://client/debug.tscn" id="19_3y24m"]
 [ext_resource type="Texture2D" uid="uid://vgleurc45wyk" path="res://assets/card_textures/aAAA_card_back.png" id="21_wygn3"]
+[ext_resource type="Script" uid="uid://ctk6r7joynsl2" path="res://client/battlefield/card_play_area.gd" id="24_fpqqf"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e5smb"]
 texture = ExtResource("2_4ok02")
@@ -274,7 +275,7 @@ grow_vertical = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="PlayerHandUI" type="Control" parent="UICanvas/MarginContainer" unique_id=1348647858 node_paths=PackedStringArray("player_controller", "discard_pile_ui")]
+[node name="PlayerHandUI" type="Control" parent="UICanvas/MarginContainer" unique_id=1348647858 node_paths=PackedStringArray("player_controller", "discard_pile_ui", "play_area")]
 layout_mode = 2
 script = ExtResource("9_cuxbe")
 card_ui_scene = ExtResource("12_f3lu3")
@@ -282,6 +283,7 @@ hand_curve = SubResource("Curve_u0eng")
 rotation_curve = SubResource("Curve_f3lu3")
 player_controller = NodePath("../../../PlayerController")
 discard_pile_ui = NodePath("../../DiscardPileUI")
+play_area = NodePath("../../CardPlayArea/Control")
 
 [node name="MarginContainer2" type="MarginContainer" parent="UICanvas" unique_id=491818102]
 anchors_preset = 10
@@ -307,7 +309,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 2
-scale = Vector2(0.8, 0.8)
 script = ExtResource("15_eq063")
 top_card_texture = NodePath("TextureRect")
 
@@ -329,6 +330,22 @@ texture = ExtResource("21_wygn3")
 
 [node name="Debug" parent="UICanvas" unique_id=1503541458 instance=ExtResource("19_3y24m")]
 position = Vector2(54.092194, 200.49394)
+
+[node name="CardPlayArea" type="MarginContainer" parent="UICanvas" unique_id=1810127606]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 3.0
+offset_right = -0.16003418
+offset_bottom = -179.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Control" type="Control" parent="UICanvas/CardPlayArea" unique_id=5727715]
+layout_mode = 2
+mouse_filter = 2
+script = ExtResource("24_fpqqf")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1708214605 node_paths=PackedStringArray("target_map", "map_manager")]
 position = Vector2(2877, 1619)
