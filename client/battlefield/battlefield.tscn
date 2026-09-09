@@ -208,28 +208,23 @@ default_color = Color(1, 0, 0, 1)
 
 [node name="UICanvas" type="CanvasLayer" parent="." unique_id=1086948552]
 
-[node name="Button" type="Button" parent="UICanvas" unique_id=721084783]
-offset_left = 4737.0
-offset_top = 1005.0
-offset_right = 5381.0
-offset_bottom = 1355.0
-theme_override_font_sizes/font_size = 54
-text = "Draw card"
-
 [node name="DiceView" type="SubViewportContainer" parent="UICanvas" unique_id=94270845]
-anchors_preset = 3
+anchors_preset = 1
 anchor_left = 1.0
-anchor_top = 1.0
 anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -256.0
-offset_top = -256.0
+offset_left = -128.0
+offset_bottom = 128.0
 grow_horizontal = 0
-grow_vertical = 0
 
 [node name="SubViewport" type="SubViewport" parent="UICanvas/DiceView" unique_id=443539317]
+own_world_3d = true
 transparent_bg = true
 handle_input_locally = false
+msaa_2d = 3
+msaa_3d = 3
+screen_space_aa = 2
+scaling_3d_mode = 2
+anisotropic_filtering_level = 4
 size = Vector2i(256, 256)
 render_target_update_mode = 4
 
@@ -328,9 +323,6 @@ grow_horizontal = 0
 grow_vertical = 2
 texture = ExtResource("21_wygn3")
 
-[node name="Debug" parent="UICanvas" unique_id=1503541458 instance=ExtResource("19_3y24m")]
-position = Vector2(54.092194, 200.49394)
-
 [node name="CardPlayArea" type="MarginContainer" parent="UICanvas" unique_id=1810127606]
 anchors_preset = 15
 anchor_right = 1.0
@@ -347,11 +339,15 @@ layout_mode = 2
 mouse_filter = 2
 script = ExtResource("24_fpqqf")
 
+[node name="Debug" parent="UICanvas" unique_id=1503541458 instance=ExtResource("19_3y24m")]
+visible = false
+position = Vector2(54.092194, 200.49394)
+
+[node name="placeholderUI" parent="UICanvas" unique_id=664071434 instance=ExtResource("19_3y24m")]
+
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1708214605 node_paths=PackedStringArray("target_map", "map_manager")]
 position = Vector2(2877, 1619)
 zoom = Vector2(0.305, 0.305)
 script = ExtResource("5_7nanj")
 target_map = NodePath("../MapVisuals/MapGround")
 map_manager = NodePath("../MapManager")
-
-[connection signal="pressed" from="UICanvas/Button" to="UICanvas/Button" method="_on_pressed"]

@@ -1,12 +1,52 @@
 [gd_scene format=3 uid="uid://c3nofdwjiv8vk"]
 
 [ext_resource type="Script" uid="uid://dy4oh48kiy7sm" path="res://client/debug.gd" id="1_cm8to"]
+[ext_resource type="StyleBox" uid="uid://b5hbff7ws0pot" path="res://assets/ui/CommonStyleBoxes/BorderlessDefaultPanel/glassmorphism_borderless_default_panel_alpha_40.tres" id="2_gpedw"]
+[ext_resource type="Texture2D" uid="uid://rtb43f6i1ud" path="res://assets/ui/dot-bold-highlight.svg" id="2_yubbw"]
+[ext_resource type="StyleBox" uid="uid://dkft0hfud0hmr" path="res://assets/ui/CommonStyleBoxes/BorderlessDefaultPanel/glassmorphism_borderless_default_panel_alpha_two_thirds.tres" id="3_gpedw"]
+[ext_resource type="StyleBox" uid="uid://usfs55q161cf" path="res://assets/ui/CommonStyleBoxes/BorderlessDefaultPanel/glassmorphism_borderless_default_panel_alpha_third.tres" id="4_yubbw"]
 
 [sub_resource type="Theme" id="Theme_eu3yq"]
 
 [node name="Debug" type="Node2D" unique_id=1503541458]
 z_index = 100
 script = ExtResource("1_cm8to")
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2112857008]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 976.0
+offset_top = 616.0
+offset_right = 1152.0
+offset_bottom = 648.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="ScorePips" type="HBoxContainer" parent="MarginContainer" unique_id=340862218]
+layout_mode = 2
+
+[node name="TextureRect1" type="TextureRect" parent="MarginContainer/ScorePips" unique_id=2067447044]
+layout_mode = 2
+texture = ExtResource("2_yubbw")
+
+[node name="TextureRect2" type="TextureRect" parent="MarginContainer/ScorePips" unique_id=389831737]
+layout_mode = 2
+texture = ExtResource("2_yubbw")
+
+[node name="TextureRect3" type="TextureRect" parent="MarginContainer/ScorePips" unique_id=444964470]
+layout_mode = 2
+texture = ExtResource("2_yubbw")
+
+[node name="TextureRect4" type="TextureRect" parent="MarginContainer/ScorePips" unique_id=1978110536]
+layout_mode = 2
+texture = ExtResource("2_yubbw")
+
+[node name="TextureRect5" type="TextureRect" parent="MarginContainer/ScorePips" unique_id=1151708755]
+layout_mode = 2
+texture = ExtResource("2_yubbw")
 
 [node name="Phase" type="Label" parent="." unique_id=1511377127]
 offset_left = 26.0
@@ -63,17 +103,20 @@ offset_bottom = 141.0
 text = "crt+d to toggle"
 
 [node name="Button" type="Button" parent="." unique_id=1001220325]
-offset_left = 32.0
-offset_top = 162.0
-offset_right = 103.0
-offset_bottom = 193.0
+offset_left = 990.0
+offset_top = 505.0
+offset_right = 1129.0
+offset_bottom = 556.0
+theme_override_styles/normal = ExtResource("2_gpedw")
+theme_override_styles/pressed = ExtResource("3_gpedw")
+theme_override_styles/hover = ExtResource("4_yubbw")
 text = "Confirm"
 
 [node name="Scores" type="Label" parent="." unique_id=2064108454]
-offset_left = 29.0
-offset_top = 40.0
-offset_right = 87.0
-offset_bottom = 63.0
+offset_left = 935.0
+offset_top = 591.0
+offset_right = 993.0
+offset_bottom = 614.0
 theme_override_colors/font_color = Color(1, 0.20784314, 0, 1)
 text = "scores: "
 
