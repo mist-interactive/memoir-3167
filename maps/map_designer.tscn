@@ -1,0 +1,226 @@
+[gd_scene format=4 uid="uid://cyn26y5n1jxf3"]
+
+[ext_resource type="Script" uid="uid://chagsifi7w8n6" path="res://client/battlefield/battlefield.gd" id="1_87gq2"]
+[ext_resource type="PackedScene" uid="uid://bnvkbvf5d8tyv" path="res://scenes/map_baker/map_baker.tscn" id="2_lchce"]
+[ext_resource type="Script" uid="uid://cgtpxpasdke04" path="res://client/battlefield/client_map_manager.gd" id="3_4xhwn"]
+[ext_resource type="PackedScene" uid="uid://br53t6qvsase5" path="res://client/units/Unit.tscn" id="3_qbn32"]
+[ext_resource type="Texture2D" uid="uid://dq8khvkm5weph" path="res://assets/sprites/hex/fields_ground_sprite_sheet.png" id="4_jpqe7"]
+[ext_resource type="Script" uid="uid://doeqye6s2a65e" path="res://client/battlefield/map_controller.gd" id="5_sbrtb"]
+[ext_resource type="Texture2D" uid="uid://bbk0bb2k6twkd" path="res://assets/sprites/hex/fields_feature_sprite_sheet.png" id="6_1eehx"]
+[ext_resource type="Script" uid="uid://buj6ft1vvdf2f" path="res://addons/hexagon_tilemaplayer/hexagon_tilemaplayer.gd" id="7_yyf4b"]
+[ext_resource type="Texture2D" uid="uid://l08uw4hx56l0" path="res://assets/sprites/hex/highlight.png" id="8_wy7vx"]
+[ext_resource type="Script" uid="uid://birdmambhh8rf" path="res://client/battlefield/map_highlight.gd" id="9_4r7qn"]
+[ext_resource type="PackedScene" uid="uid://bygbxnjm8uose" path="res://client/units/UnitSpawnMarker.tscn" id="11_173rr"]
+[ext_resource type="Texture2D" uid="uid://c3e467q1ibvtl" path="res://assets/sprites/units/tank_sprite_sheet.png" id="12_qbn32"]
+[ext_resource type="Script" uid="uid://7tdnt2pcipdq" path="res://client/battlefield/camera_controller.gd" id="13_pa0pi"]
+[ext_resource type="Texture2D" uid="uid://w6gqi2ht6c1" path="res://assets/sprites/units/artillery_sprite_sheet.png" id="13_vxy4q"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_173rr"]
+texture = ExtResource("4_jpqe7")
+texture_region_size = Vector2i(442, 512)
+0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_o6wfx"]
+tile_shape = 3
+tile_size = Vector2i(442, 512)
+sources/0 = SubResource("TileSetAtlasSource_173rr")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mhs4e"]
+texture = ExtResource("6_1eehx")
+texture_region_size = Vector2i(512, 512)
+0:0/0 = 0
+0:0/0/texture_origin = Vector2i(0, 35)
+1:0/0 = 0
+1:0/0/texture_origin = Vector2i(0, 35)
+0:1/0 = 0
+1:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_jqkp6"]
+tile_shape = 3
+tile_size = Vector2i(442, 512)
+sources/0 = SubResource("TileSetAtlasSource_mhs4e")
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_upguu"]
+texture = ExtResource("8_wy7vx")
+texture_region_size = Vector2i(442, 512)
+0:0/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_ql7mu"]
+tile_shape = 3
+tile_size = Vector2i(442, 512)
+sources/0 = SubResource("TileSetAtlasSource_upguu")
+
+[node name="MapDesigner" type="Node2D" unique_id=1534648312 node_paths=PackedStringArray("unit_container")]
+script = ExtResource("1_87gq2")
+unit_container = NodePath("UnitContainer")
+
+[node name="MapBaker" parent="." unique_id=621948442 node_paths=PackedStringArray("map_ground_layer", "map_feature_layer", "unit_container") instance=ExtResource("2_lchce")]
+map_ground_layer = NodePath("../MapGround")
+map_feature_layer = NodePath("../MapFeature")
+unit_container = NodePath("../UnitContainer")
+map_name = "map"
+
+[node name="MapManager" type="Node" parent="." unique_id=225508304 node_paths=PackedStringArray("map_ground_layer", "map_features_layer", "unit_container", "left_sector_divider", "right_sector_divider")]
+script = ExtResource("3_4xhwn")
+map_ground_layer = NodePath("../MapGround")
+map_features_layer = NodePath("../MapFeature")
+unit_container = NodePath("../UnitContainer")
+unit_scene = ExtResource("3_qbn32")
+left_sector_divider = NodePath("../LeftSectorDivider")
+right_sector_divider = NodePath("../RightSectorDivider")
+
+[node name="MapGround" type="TileMapLayer" parent="." unique_id=1769591625]
+tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAAoAAAAAAAAAAAABAAAAAAAAAAAAAAABAAEAAAABAAAAAAABAAIAAAAAAAAAAAABAAQAAAAAAAAAAAABAAYAAAAAAAAAAAABAAgAAAAAAAAAAAABAAoAAAAAAAAAAAABAAkAAAAAAAAAAAACAAgAAAABAAAAAAACAAcAAAABAAAAAAACAAYAAAAAAAAAAAACAAUAAAACAAAAAAACAAQAAAAAAAAAAAACAAMAAAABAAAAAAACAAIAAAABAAAAAAACAAEAAAAAAAAAAAACAAAAAAAAAAAAAAABAAMAAAABAAAAAAABAAUAAAAAAAAAAAABAAcAAAAAAAAAAAACAAoAAAAAAAAAAAACAAkAAAAAAAAAAAADAAgAAAABAAAAAAADAAcAAAABAAAAAAADAAYAAAAAAAAAAAADAAUAAAACAAAAAAADAAQAAAACAAAAAAADAAMAAAACAAAAAAADAAIAAAABAAAAAAADAAEAAAAAAAAAAAADAAAAAAAAAAAAAAAEAAIAAAAAAAAAAAAEAAQAAAACAAAAAAAEAAUAAAAAAAAAAAAEAAYAAAAAAAAAAAAEAAcAAAABAAAAAAAEAAgAAAABAAAAAAAEAAkAAAAAAAAAAAADAAkAAAAAAAAAAAAEAAoAAAAAAAAAAAADAAoAAAAAAAAAAAAFAAoAAAACAAAAAAAGAAoAAAAAAAAAAAAHAAoAAAAAAAAAAAAIAAoAAAAAAAAAAAAJAAoAAAAAAAAAAAAKAAoAAAAAAAAAAAALAAoAAAAAAAAAAAAMAAoAAAACAAAAAAALAAkAAAAAAAAAAAAMAAgAAAAAAAAAAAALAAcAAAAAAAAAAAAMAAYAAAAAAAAAAAALAAUAAAAAAAAAAAAMAAQAAAAAAAAAAAALAAMAAAAAAAAAAAALAAIAAAACAAAAAAALAAEAAAAAAAAAAAALAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAJAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAMAAIAAAAAAAAAAAALAAQAAAAAAAAAAAAKAAMAAAAAAAAAAAAKAAIAAAAAAAAAAAAKAAEAAAACAAAAAAAJAAEAAAACAAAAAAAIAAEAAAACAAAAAAAHAAEAAAACAAAAAAAGAAEAAAAAAAAAAAAFAAEAAAAAAAAAAAAEAAEAAAAAAAAAAAAFAAIAAAAAAAAAAAAGAAIAAAAAAAAAAAAHAAIAAAAAAAAAAAAIAAIAAAACAAAAAAAJAAIAAAAAAAAAAAAEAAMAAAACAAAAAAAFAAMAAAACAAAAAAAGAAMAAAABAAAAAAAHAAMAAAACAAAAAAAIAAMAAAAAAAAAAAAJAAMAAAABAAAAAAAKAAUAAAABAAAAAAAKAAQAAAABAAAAAAAJAAQAAAABAAAAAAAIAAQAAAAAAAAAAAAHAAQAAAACAAAAAAAGAAQAAAABAAAAAAAFAAQAAAAAAAAAAAAFAAUAAAABAAAAAAAGAAUAAAACAAAAAAAHAAUAAAAAAAAAAAAIAAUAAAABAAAAAAAJAAUAAAABAAAAAAALAAYAAAAAAAAAAAAKAAYAAAAAAAAAAAAJAAYAAAABAAAAAAAIAAYAAAAAAAAAAAAHAAYAAAAAAAAAAAAGAAYAAAAAAAAAAAAFAAYAAAABAAAAAAAFAAcAAAAAAAAAAAAGAAgAAAAAAAAAAAAGAAcAAAAAAAAAAAAHAAgAAAACAAAAAAAHAAcAAAAAAAAAAAAIAAcAAAAAAAAAAAAJAAgAAAABAAAAAAAJAAcAAAAAAAAAAAAKAAgAAAAAAAAAAAAKAAcAAAAAAAAAAAALAAgAAAAAAAAAAAAIAAgAAAABAAAAAAAFAAgAAAAAAAAAAAAFAAkAAAACAAAAAAAGAAkAAAACAAAAAAAHAAkAAAAAAAAAAAAIAAkAAAABAAAAAAAJAAkAAAABAAAAAAAKAAkAAAAAAAAAAAAAAAsAAAAAAAAAAAABAAsAAAAAAAAAAAALAAsAAAACAAAAAAAKAAsAAAACAAAAAAAJAAsAAAACAAAAAAAIAAsAAAAAAAAAAAAHAAsAAAAAAAAAAAAGAAsAAAAAAAAAAAAFAAsAAAAAAAAAAAAEAAsAAAAAAAAAAAADAAsAAAAAAAAAAAACAAsAAAAAAAAAAAANAAAAAAAAAAAAAAAOAAAAAAAAAAAAAAAPAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAARAAAAAAAAAAAAAAAQAAEAAAAAAAAAAAARAAIAAAAAAAAAAAAQAAMAAAAAAAAAAAARAAQAAAAAAAAAAAAQAAUAAAAAAAAAAAARAAYAAAAAAAAAAAAQAAcAAAAAAAAAAAARAAgAAAAAAAAAAAARAAkAAAAAAAAAAAARAAoAAAAAAAAAAAARAAsAAAAAAAAAAAAMAAsAAAACAAAAAAAMAAkAAAAAAAAAAAAMAAcAAAAAAAAAAAAMAAUAAAAAAAAAAAANAAQAAAABAAAAAAAMAAMAAAAAAAAAAAANAAIAAAAAAAAAAAAMAAEAAAAAAAAAAAANAAEAAAAAAAAAAAAOAAEAAAAAAAAAAAAPAAEAAAAAAAAAAAAQAAIAAAAAAAAAAAAQAAQAAAAAAAAAAAAPAAUAAAAAAAAAAAAQAAYAAAAAAAAAAAAPAAcAAAAAAAAAAAAQAAgAAAAAAAAAAAAQAAkAAAAAAAAAAAAQAAoAAAACAAAAAAARAAcAAAAAAAAAAAARAAUAAAAAAAAAAAARAAMAAAAAAAAAAAARAAEAAAAAAAAAAAANAAoAAAACAAAAAAANAAkAAAACAAAAAAAOAAgAAAACAAAAAAANAAgAAAACAAAAAAAOAAoAAAACAAAAAAAPAAoAAAACAAAAAAAQAAsAAAACAAAAAAAPAAsAAAACAAAAAAAOAAsAAAACAAAAAAANAAsAAAACAAAAAAANAAcAAAABAAAAAAANAAYAAAABAAAAAAANAAUAAAABAAAAAAAOAAQAAAABAAAAAAAOAAMAAAABAAAAAAAOAAIAAAABAAAAAAANAAMAAAABAAAAAAAPAAIAAAABAAAAAAAPAAMAAAABAAAAAAAPAAQAAAABAAAAAAAOAAUAAAABAAAAAAAPAAYAAAABAAAAAAAOAAYAAAABAAAAAAAOAAcAAAABAAAAAAAPAAgAAAABAAAAAAAOAAkAAAABAAAAAAAPAAkAAAABAAAAAAASAAAAAAAAAAAAAAASAAIAAAAAAAAAAAASAAQAAAAAAAAAAAASAAYAAAAAAAAAAAASAAgAAAAAAAAAAAASAAoAAAAAAAAAAAALAAwAAAAAAAAAAAAMAAwAAAAAAAAAAAANAAwAAAAAAAAAAAAOAAwAAAAAAAAAAAAPAAwAAAAAAAAAAAAQAAwAAAAAAAAAAAARAAwAAAAAAAAAAAASAAwAAAAAAAAAAAAAAAwAAAAAAAAAAAABAAwAAAAAAAAAAAACAAwAAAAAAAAAAAADAAwAAAAAAAAAAAAEAAwAAAAAAAAAAAAFAAwAAAAAAAAAAAAGAAwAAAAAAAAAAAAHAAwAAAAAAAAAAAAIAAwAAAAAAAAAAAAJAAwAAAAAAAAAAAAKAAwAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_o6wfx")
+script = ExtResource("5_sbrtb")
+debug_mode = 1
+metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
+
+[node name="MapFeature" type="TileMapLayer" parent="." unique_id=12123868]
+tile_map_data = PackedByteArray("AAAGAAEAAAAAAAAAAAAIAAYAAAAAAAAAAAAHAAYAAAAAAAAAAAAGAAYAAAAAAAAAAAABAAQAAAAAAAAAAAABAAUAAAAAAAAAAAAMAAMAAAABAAAAAAANAAQAAAABAAAAAAANAAMAAAABAAAAAAAOAAQAAAABAAAAAAANAAUAAAABAAAAAAADAAoAAAABAAEAAAACAAkAAAABAAEAAAABAAkAAAABAAEAAAACAAoAAAABAAEAAAABAAoAAAABAAEAAAADAAEAAAAAAAEAAAAEAAEAAAAAAAEAAAAFAAEAAAAAAAEAAAAQAAAAAAAAAAEAAAAQAAEAAAAAAAEAAAARAAIAAAAAAAEAAAAQAAMAAAAAAAEAAAARAAQAAAAAAAEAAAAQAAQAAAAAAAAAAAAPAAUAAAAAAAAAAAAQAAYAAAAAAAAAAAAQAAUAAAAAAAAAAAARAAYAAAAAAAAAAAARAAUAAAAAAAAAAAADAAsAAAAAAAAAAAAAAAsAAAABAAAAAAABAAsAAAABAAAAAAACAAsAAAABAAAAAAAKAAAAAAABAAAAAAAJAAAAAAABAAAAAAASAAYAAAAAAAAAAAAHAAwAAAAAAAAAAAAGAAwAAAAAAAAAAAAFAAwAAAAAAAAAAAAEAAwAAAAAAAAAAAADAAwAAAABAAAAAAACAAwAAAABAAAAAAABAAwAAAABAAAAAAAAAAwAAAABAAAAAAABAAcAAAAAAAAAAAAEAAcAAAAAAAAAAAAKAAYAAAAAAAAAAAAKAAgAAAAAAAAAAAALAAcAAAAAAAAAAAA=")
+tile_set = SubResource("TileSet_jqkp6")
+script = ExtResource("7_yyf4b")
+metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
+
+[node name="MapHighlight" type="TileMapLayer" parent="." unique_id=1870725227]
+modulate = Color(1, 1, 1, 0.5019608)
+tile_set = SubResource("TileSet_ql7mu")
+script = ExtResource("9_4r7qn")
+metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
+
+[node name="SectorHighlight" type="TileMapLayer" parent="." unique_id=2070973290]
+modulate = Color(0.8501193, 0.69538933, 0.14475939, 0.5019608)
+self_modulate = Color(1, 1, 0.14509805, 1)
+tile_set = SubResource("TileSet_ql7mu")
+script = ExtResource("9_4r7qn")
+metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
+
+[node name="LeftSectorDivider" type="Line2D" parent="." unique_id=1538020218]
+width = 20.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="RightSectorDivider" type="Line2D" parent="." unique_id=479535643]
+width = 20.0
+default_color = Color(1, 0, 0, 1)
+
+[node name="UnitContainer" type="Node2D" parent="." unique_id=1804487023]
+
+[node name="Player1_Infantry_1" parent="UnitContainer" unique_id=1324794981 instance=ExtResource("11_173rr")]
+position = Vector2(3094, 2944)
+frame = 0
+owner_id = 1
+
+[node name="Player1_Infantry_2" parent="UnitContainer" unique_id=1635616779 instance=ExtResource("11_173rr")]
+position = Vector2(3536, 2944)
+frame = 0
+owner_id = 1
+
+[node name="Player1_Infantry_3" parent="UnitContainer" unique_id=2077526996 instance=ExtResource("11_173rr")]
+position = Vector2(4862, 2944)
+frame = 0
+owner_id = 1
+
+[node name="Player1_Infantry_4" parent="UnitContainer" unique_id=2106007384 instance=ExtResource("11_173rr")]
+position = Vector2(1105, 2560)
+frame = 0
+owner_id = 1
+
+[node name="Player1_Infantry_5" parent="UnitContainer" unique_id=294968706 instance=ExtResource("11_173rr")]
+position = Vector2(1989, 2560)
+frame = 0
+owner_id = 1
+
+[node name="Player1_Infantry_6" parent="UnitContainer" unique_id=1699252334 instance=ExtResource("11_173rr")]
+position = Vector2(7514, 3712)
+frame = 0
+owner_id = 1
+
+[node name="Player1_Tank_1" parent="UnitContainer" unique_id=710508746 instance=ExtResource("11_173rr")]
+position = Vector2(3315, 4096)
+texture = ExtResource("12_qbn32")
+hframes = 5
+frame = 0
+unit_type = 2
+owner_id = 1
+
+[node name="Player1_Tank_2" parent="UnitContainer" unique_id=1661991245 instance=ExtResource("11_173rr")]
+position = Vector2(4641, 4096)
+texture = ExtResource("12_qbn32")
+hframes = 5
+frame = 0
+unit_type = 2
+owner_id = 1
+
+[node name="Player1_Tank_3" parent="UnitContainer" unique_id=666678424 instance=ExtResource("11_173rr")]
+position = Vector2(3978, 4480)
+texture = ExtResource("12_qbn32")
+hframes = 5
+frame = 0
+unit_type = 2
+owner_id = 1
+
+[node name="Player1_Artillery_1" parent="UnitContainer" unique_id=276452804 instance=ExtResource("11_173rr")]
+position = Vector2(663, 1024)
+texture = ExtResource("13_vxy4q")
+hframes = 6
+frame = 0
+unit_type = 4
+owner_id = 1
+
+[node name="Player2_Infantry_1" parent="UnitContainer" unique_id=2036855746 instance=ExtResource("11_173rr")]
+position = Vector2(1105, 3328)
+
+[node name="Player2_Infantry_2" parent="UnitContainer" unique_id=1457913778 instance=ExtResource("11_173rr")]
+position = Vector2(5746, 2944)
+
+[node name="Player2_Infantry_3" parent="UnitContainer" unique_id=341804876 instance=ExtResource("11_173rr")]
+position = Vector2(3978, 3712)
+
+[node name="Player2_Infantry_4" parent="UnitContainer" unique_id=1271445771 instance=ExtResource("11_173rr")]
+position = Vector2(1989, 3328)
+
+[node name="Player2_Infantry_5" parent="UnitContainer" unique_id=1099313226 instance=ExtResource("11_173rr")]
+position = Vector2(4641, 1024)
+
+[node name="Player2_Infantry_6" parent="UnitContainer" unique_id=237949741 instance=ExtResource("11_173rr")]
+position = Vector2(2431, 1024)
+
+[node name="Player2_Infantry_7" parent="UnitContainer" unique_id=1148785308 instance=ExtResource("11_173rr")]
+position = Vector2(5967, 1024)
+
+[node name="Player2_Tank_1" parent="UnitContainer" unique_id=2086597034 instance=ExtResource("11_173rr")]
+position = Vector2(4199, 2560)
+texture = ExtResource("12_qbn32")
+hframes = 5
+frame = 20
+unit_type = 2
+
+[node name="Player2_Tank_2" parent="UnitContainer" unique_id=828635556 instance=ExtResource("11_173rr")]
+position = Vector2(4862, 1408)
+texture = ExtResource("12_qbn32")
+hframes = 5
+frame = 20
+unit_type = 2
+
+[node name="Player2_Artillery_1" parent="UnitContainer" unique_id=667135779 instance=ExtResource("11_173rr")]
+position = Vector2(3094, 640)
+texture = ExtResource("13_vxy4q")
+hframes = 6
+frame = 24
+unit_type = 4
+
+[node name="Player2_Artillery_2" parent="UnitContainer" unique_id=135672416 instance=ExtResource("11_173rr")]
+position = Vector2(6188, 640)
+texture = ExtResource("13_vxy4q")
+hframes = 6
+frame = 24
+unit_type = 4
+
+[node name="Camera2D" type="Camera2D" parent="." unique_id=1708214605 node_paths=PackedStringArray("target_map", "map_manager")]
+position = Vector2(2877, 1619)
+zoom = Vector2(0.305, 0.305)
+script = ExtResource("13_pa0pi")
+target_map = NodePath("../MapGround")
+map_manager = NodePath("../MapManager")
