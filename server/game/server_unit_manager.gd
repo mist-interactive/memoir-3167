@@ -195,7 +195,7 @@ func resolve_combat(result: CombatResult, side: enums.Side, sides_peer_ids: Dict
 		elif (target.type == enums.UnitType.TANK || target.type == enums.UnitType.ARTILLERY) && rolled_dice == enums.RolledDice.ARMOR:
 			result.dmg += 1
 	target.hit_point -= result.dmg
-	if result.dmg != 0: # should change back to target.hit_point <= 0
+	if target.hit_point <= 0:
 		death_queue.append(target_id)
 		matchState.scores[side] += 1
 		return
