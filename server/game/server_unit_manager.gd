@@ -48,7 +48,7 @@ func _sync_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 		Network.broadcast(Network.Units.sync_all.rpc_id, sides_peer_ids.values(), [snapshot])
 		isDirty = false
 
-func select_unit(owner: enums.Side, unit_id: int, card: CommandCard) -> bool:
+func select_unit(owner: enums.Side, unit_id: int) -> bool:
 	var unit: UnitData = get_unit_by_id(unit_id)
 
 	if unit == null:
@@ -68,13 +68,10 @@ func select_unit(owner: enums.Side, unit_id: int, card: CommandCard) -> bool:
 	player_logger.info("Selected unit(%d)" % [unit_id])
 	return true
 
-func deselect_unit(owner: enums.Side) -> bool:
-	if selected_unit_id == -1:
+func deselect_unit(owner: enums.Side, unit_id: int) -> bool:
+	if selected_unit_id == -1 || selected_by_peer != owner || selected_unit_id != unit_id:
 		return false
 
-	if selected_by_peer != owner:
-		return false
-	
 	selected_unit_id = -1
 	selected_by_peer = -1
 	isDirty = true
@@ -127,8 +124,9 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	var rolled_dices: Array[enums.RolledDice] = Dice.roll(num_of_dice)
 	var combat_result: CombatResult = CombatResult.new()
 	combat_result.initialize(unit, target, rolled_dices)
-	resolve_combat(combat_result, side)
+	resolve_combat(combat_result, side, sides_peer_ids)
 	Network.broadcast(Network.Actions.resolve_combat_result.rpc_id, sides_peer_ids.values(), [combat_result.to_dict()])
+
 	selected_unit_id = -1
 	selected_by_peer = enums.Side.NONE
 	unit.set_can_attack(false)
@@ -139,6 +137,10 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	})
 	player_logger.info("Unit(%d) attacked unit(%d)" % [unit_id, target_unit_id])
 	player_logger.info("Combat result ", combat_result.to_dict())
+	if not combat_result.retreat_path.is_empty():
+		await get_tree().create_timer(2).timeout
+		if move_unit(target, target.hex_coord, combat_result.retreat_path.back()):
+			Network.broadcast(Network.Actions.sync_unit_path.rpc_id,sides_peer_ids.values(),[target.uuid, combat_result.retreat_path])
 	return true
 
 func generate_server_unit_id() -> int:
@@ -162,6 +164,7 @@ func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 		}
 		Network.broadcast(Network.Units.spawn_unit.rpc_id, sides_peer_ids.values(), [new_unit])
 		add_unit(unit, coord)
+		units_path_history[unit.uuid] = DoublyLinkedList.new(_Node.new(coord))
 
 	for elem in battlefield.units_to_spawn_player_2:
 		var coord: Vector2i = Vector2i(elem.coord[0], elem.coord[1])
@@ -177,11 +180,11 @@ func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 		}
 		Network.broadcast(Network.Units.spawn_unit.rpc_id, sides_peer_ids.values(), [new_unit])
 		add_unit(unit, coord)
+		units_path_history[unit.uuid] = DoublyLinkedList.new(_Node.new(coord))
 
-func resolve_combat(result: CombatResult, side: enums.Side) -> void:
+func resolve_combat(result: CombatResult, side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 	var target_id: int = result.unit_ids[result.target]
 	var target: UnitData = units_by_id[target_id]
-	var should_retreat: int = 0
 	for rolled_dice in result.rolled_dices:
 		if rolled_dice == enums.RolledDice.ALL:
 			result.dmg += 1
@@ -191,12 +194,13 @@ func resolve_combat(result: CombatResult, side: enums.Side) -> void:
 			result.dmg += 1
 		elif (target.type == enums.UnitType.TANK || target.type == enums.UnitType.ARTILLERY) && rolled_dice == enums.RolledDice.ARMOR:
 			result.dmg += 1
-	if should_retreat:
-		pass #retreat to prev pos
 	target.hit_point -= result.dmg
-	if result.dmg != 0:
+	if result.dmg != 0: # should change back to target.hit_point <= 0
 		death_queue.append(target_id)
 		matchState.scores[side] += 1
+		return
+	if  result.retreat > 0:
+		retreat(target, result)
 
 func next_phase(phase: enums.TurnPhase) -> void:
 	if phase == enums.TurnPhase.PLAY_CARD:
