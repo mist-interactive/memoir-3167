@@ -37,10 +37,8 @@ func _physics_process(delta: float) -> void:
 
 	if matchState.current_turn != matchState.mySide:
 		button.text = "Waiting"
-		button.disabled = true
 	else:
 		button.text = get_turn_phase_txt(matchState.phase)
-		button.disabled = false
 
 	update_score_pips()
 
