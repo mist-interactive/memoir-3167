@@ -6,7 +6,7 @@ const BASE_SCALE := Vector2(0.5, 0.5)
 const DISCARD_BASE_SCALE := Vector2(1.0, 1.0)
 
 const DRAG_THRESHOLD := 8.0
-const CLICK_SCALE := BASE_SCALE * 3.0
+const CLICK_SCALE := BASE_SCALE * 2.0
 const HOVER_SCALE := BASE_SCALE * 1.35
 
 @export var title_label: Label
