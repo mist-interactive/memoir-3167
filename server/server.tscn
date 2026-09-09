@@ -1,11 +1,19 @@
 [gd_scene format=3 uid="uid://d282kx0di1kyy"]
 
 [ext_resource type="Script" uid="uid://cmyl4st2vljgr" path="res://server/server.gd" id="1_7u81u"]
+[ext_resource type="Script" uid="uid://b5nv1agjhdlxs" path="res://server/api/memoir_api.gd" id="3_gc6nq"]
 [ext_resource type="Script" uid="uid://u6jqeichiuhe" path="res://server/match_manager.gd" id="3_u3pyk"]
 
-[node name="Server" type="Node2D" unique_id=392908937 node_paths=PackedStringArray("match_manager")]
+[node name="Server" type="Node2D" unique_id=392908937 node_paths=PackedStringArray("match_manager", "memoir_api")]
 script = ExtResource("1_7u81u")
 match_manager = NodePath("MatchManager")
+memoir_api = NodePath("MemoirApi")
 
-[node name="MatchManager" type="Node" parent="." unique_id=762747872]
+[node name="MatchManager" type="Node" parent="." unique_id=762747872 node_paths=PackedStringArray("server", "memoir_api")]
 script = ExtResource("3_u3pyk")
+server = NodePath("..")
+memoir_api = NodePath("../MemoirApi")
+
+[node name="MemoirApi" type="Node" parent="." unique_id=1518272679 node_paths=PackedStringArray("server")]
+script = ExtResource("3_gc6nq")
+server = NodePath("..")

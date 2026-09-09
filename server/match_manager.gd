@@ -3,7 +3,9 @@ class_name MatchManager
 var peer_to_match: Dictionary[int, int] = {}
 var uuid_to_peer: Dictionary[int, int] = {}
 var matches: Dictionary[int, matchController] = {}
-@onready var server: Server = $".."
+var match_result: Dictionary[int, MatchResult] = {}
+@export var server: Server
+@export var memoir_api: MemoirApi
 
 func _ready() -> void:
 	# Connection
@@ -25,7 +27,19 @@ func create_new_match(match_id: int) -> void:
 	get_parent().add_child(matchNode)
 	matches[match_id] = matchNode
 	matchNode.logger.info("Created match")
+	matchNode.match_completed.connect(_on_match_completed)
 
+func _on_match_completed(result: MatchResult) -> void:
+	match_result[result.match_id] = result
+	for uuid: int in result.uuids:
+		var peer_id: int = get_peer_id(uuid)
+		uuid_to_peer.erase(uuid)
+		peer_to_match.erase(peer_id)
+	await get_tree().create_timer(2).timeout
+	matches[result.match_id].queue_free()
+	matches.erase(result.match_id)
+	memoir_api.post_match_results(result)
+	
 func _on_player_connect(peer_id: int, uuid: int, match_id: int) -> void:
 	server.logger.info("Client(%d) wants to connect to match(%d)" % [uuid, match_id])
 	if !matches.has(match_id):
@@ -42,6 +56,9 @@ func _on_player_disconnect(peer_id: int) -> void:
 	if !matchCtl:
 		return
 	matchCtl.handle_disconnect(matchCtl.get_side(peer_id))
+	var uuid: int = get_uuid(peer_id)
+	uuid_to_peer.erase(uuid)
+	peer_to_match.erase(peer_id)
 
 func _on_client_ready(peer_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)

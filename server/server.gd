@@ -9,18 +9,17 @@ var clients: Dictionary[int, ClientState]
 var sessions: Dictionary[int, int] # uuid -> peer_id
 var logger: LogService
 @export var match_manager: MatchManager
-
+@export var memoir_api: MemoirApi
 signal player_disconnected(peer_id: int)
 
 func _ready() -> void:
-	name = "SERVER"
-	logger = LogService.new({"service": "server"})
+	name = "Server"
 	logger.info("=== SERVER STARTING ===")
 	logger.info("OS feature editor: %s" % OS.has_feature("editor"))
 	logger.info("OS feature web: %s" % OS.has_feature("web"))
 
 	jwt_verifier = JwtVerifier.new(logger)
-	if not jwt_verifier.is_ready:
+	if not jwt_verifier.is_ready || not memoir_api.is_ready:
 		get_tree().quit(1)
 		return
 
@@ -34,6 +33,9 @@ func _ready() -> void:
 	multiplayer.multiplayer_peer = peer
 	logger.info("=== SERVER READY ===")
 	logger.info("server has started")
+
+func _init() -> void:
+	logger = LogService.new({"service": "server"})
 
 func _physics_process(delta: float) -> void:
 	for peer_id in clients.keys():
