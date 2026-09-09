@@ -9,6 +9,7 @@ extends Control
 @export var y_min: float = 0.0
 @export var y_max: float = -15.0
 @export var default_separation: float = -5.0
+@export var hand_vertical_offset: float = 30.0
 @onready var handState: HandState = $"../../../../HandState"
 @export var discard_pile_ui: DiscardPileUI
 @export var player_controller: PlayerController 
@@ -99,9 +100,17 @@ func _recalculate_layout() -> void:
 			rot_multiplier = 0.0
 			
 		var target_x: float = start_x + float(i) * (base_card_size.x + separation)
-		var target_y: float = y_min + (y_max * y_multiplier)
+		var target_y: float = (
+			y_min
+			+ (y_max * y_multiplier)
+			+ hand_vertical_offset
+		)
+
+		card.position = Vector2(
+			target_x,
+			target_y - base_card_size.y / 2
+		)
 		
 		var canvas_size: Vector2 = get_viewport_rect().size
 		
-		card.position = Vector2(target_x, target_y - base_card_size.y / 2)
 		card.rotation_degrees = max_rotation_degrees * rot_multiplier

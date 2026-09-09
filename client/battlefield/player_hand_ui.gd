@@ -11,6 +11,7 @@ extends Control
 @export var y_min: float = 0.0
 @export var y_max: float = -15.0
 @export var default_separation: float = -5.0
+@export var hand_vertical_offset: float = 60.0
 @onready var handState: HandState = $"../../../../HandState"
 @export var play_area: Control
 
@@ -129,10 +130,11 @@ func _recalculate_layout() -> void:
 		var target_x: float = start_x + float(i) * (base_card_size.x + separation)
 		
 		var target_y: float = (
-			size.y 
-			- base_card_size.y 
-			+ y_min 
+			size.y
+			- base_card_size.y
+			+ y_min
 			+ (y_max * y_multiplier)
+			+ hand_vertical_offset
 		)
 
 		var target_pos := Vector2(target_x, target_y)
