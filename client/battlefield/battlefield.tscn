@@ -260,7 +260,7 @@ mesh = SubResource("ArrayMesh_vln62")
 transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 4, 0, 0)
 mesh = SubResource("ArrayMesh_vln62")
 
-[node name="MarginContainer" type="MarginContainer" parent="UICanvas" unique_id=2042215150]
+[node name="PlayerHandUI" type="MarginContainer" parent="UICanvas" unique_id=2042215150]
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -270,7 +270,7 @@ grow_vertical = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="PlayerHandUI" type="Control" parent="UICanvas/MarginContainer" unique_id=1348647858 node_paths=PackedStringArray("player_controller", "discard_pile_ui", "play_area")]
+[node name="Control" type="Control" parent="UICanvas/PlayerHandUI" unique_id=1348647858 node_paths=PackedStringArray("player_controller", "discard_pile_ui", "play_area")]
 layout_mode = 2
 script = ExtResource("9_cuxbe")
 card_ui_scene = ExtResource("12_f3lu3")
@@ -280,14 +280,14 @@ player_controller = NodePath("../../../PlayerController")
 discard_pile_ui = NodePath("../../DiscardPileUI")
 play_area = NodePath("../../CardPlayArea/Control")
 
-[node name="MarginContainer2" type="MarginContainer" parent="UICanvas" unique_id=491818102]
+[node name="EnemyHandUI" type="MarginContainer" parent="UICanvas" unique_id=491818102]
 anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
-[node name="EnemyHandUI" type="Control" parent="UICanvas/MarginContainer2" unique_id=1002495451 node_paths=PackedStringArray("discard_pile_ui", "player_controller")]
+[node name="Control" type="Control" parent="UICanvas/EnemyHandUI" unique_id=1002495451 node_paths=PackedStringArray("discard_pile_ui", "player_controller")]
 layout_mode = 2
 script = ExtResource("13_ec6rr")
 card_ui_scene = ExtResource("12_f3lu3")
