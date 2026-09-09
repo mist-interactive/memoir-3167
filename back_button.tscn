@@ -1,0 +1,8 @@
+[gd_scene format=3 uid="uid://cval8saet1fcm"]
+
+[node name="BackButton" type="TextureButton" unique_id=889376924]
+modulate = Color(1, 1, 1, 0.666667)
+custom_minimum_size = Vector2(40, 40)
+offset_right = 40.0
+offset_bottom = 40.0
+stretch_mode = 4
