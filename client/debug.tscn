@@ -186,6 +186,7 @@ texture = ExtResource("8_7rlv4")
 expand_mode = 1
 
 [node name="TextureRect6" type="TextureRect" parent="Control" unique_id=882206696]
+visible = false
 show_behind_parent = true
 z_index = -100
 z_as_relative = false
