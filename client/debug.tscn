@@ -6,18 +6,78 @@
 [ext_resource type="StyleBox" uid="uid://dkft0hfud0hmr" path="res://assets/ui/CommonStyleBoxes/BorderlessDefaultPanel/glassmorphism_borderless_default_panel_alpha_two_thirds.tres" id="3_gpedw"]
 [ext_resource type="StyleBox" uid="uid://usfs55q161cf" path="res://assets/ui/CommonStyleBoxes/BorderlessDefaultPanel/glassmorphism_borderless_default_panel_alpha_third.tres" id="4_yubbw"]
 [ext_resource type="Texture2D" uid="uid://bgg48xojsp7xr" path="res://assets/ui/512x512/Metal/Metal_20-512x512.png" id="6_u4rvt"]
-[ext_resource type="Texture2D" uid="uid://dk2wt31m3c8ut" path="res://assets/ui/512x512/Metal/Metal_12-512x512.png" id="7_4vnqf"]
+[ext_resource type="Shader" uid="uid://b1svcsf4tl3ky" path="res://shaders/shadow.gdshader" id="7_v3bbg"]
 [ext_resource type="Texture2D" uid="uid://lssst1i8gr6m" path="res://assets/ui/512x512/Metal/Metal_06-512x512.png" id="7_ve2jj"]
 [ext_resource type="Texture2D" uid="uid://b15rr5rf5tge7" path="res://assets/ui/512x512/Box/Box_20-512x512.png" id="8_7rlv4"]
+[ext_resource type="Texture2D" uid="uid://c7obcu83pvd63" path="res://assets/ui/Brutal Base Texture pack/PNG textures/slimed_material.png" id="8_v3bbg"]
 [ext_resource type="Texture2D" uid="uid://bxwkjqkwc5a36" path="res://assets/ui/512x512/Metal/Metal_10-512x512.png" id="9_7rlv4"]
-[ext_resource type="Texture2D" uid="uid://bu1guq3x7m3wy" path="res://assets/ui/512x512/Metal/Metal_22-512x512.png" id="10_6ngy6"]
-[ext_resource type="Texture2D" uid="uid://c8rfwfifyt8ri" path="res://assets/ui/512x512/Box/Box_19-512x512.png" id="12_hpd0d"]
+[ext_resource type="Texture2D" uid="uid://c4ttu3hxl1uxl" path="res://assets/ui/Brutal Base Texture pack/PNG textures/floor_treadplate.png" id="9_hpd0d"]
+[ext_resource type="Texture2D" uid="uid://te7yh001b2p2" path="res://assets/ui/Brutal Base Texture pack/PNG textures/cement_materialdark.png" id="13_v3bbg"]
+[ext_resource type="Shader" uid="uid://carilmokp0nwg" path="res://shaders/inverse_circle.gdshader" id="14_hpd0d"]
+[ext_resource type="Texture2D" uid="uid://dtf5j6a2lmf2y" path="res://assets/ui/Brutal Base Texture pack/PNG textures/light_ceil_arc.png" id="15_0psvw"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5imi5"]
+shader = ExtResource("7_v3bbg")
+shader_parameter/shadow_only = true
+shader_parameter/shadow_color = Color(0, 0, 0, 0.49411765)
+shader_parameter/blur_std = 3.83
 
 [sub_resource type="Theme" id="Theme_eu3yq"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_v3bbg"]
+shader = ExtResource("7_v3bbg")
+shader_parameter/shadow_only = true
+shader_parameter/shadow_color = Color(0, 0, 0, 1)
+shader_parameter/blur_std = 3.62
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hpd0d"]
+shader = ExtResource("14_hpd0d")
+shader_parameter/ellipse_size = 0.995
 
 [node name="Debug" type="Node2D" unique_id=1503541458]
 z_index = 100
 script = ExtResource("1_cm8to")
+
+[node name="MarginContainer2" type="MarginContainer" parent="." unique_id=2117628797]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 128.76
+offset_top = 533.89
+offset_right = 384.75873
+offset_bottom = 565.89
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="ScorePipsShadow" type="HBoxContainer" parent="MarginContainer2" unique_id=1618499471]
+layout_mode = 2
+
+[node name="TextureRect1" type="TextureRect" parent="MarginContainer2/ScorePipsShadow" unique_id=830301559]
+material = SubResource("ShaderMaterial_5imi5")
+layout_mode = 2
+texture = ExtResource("2_yubbw")
+
+[node name="TextureRect2" type="TextureRect" parent="MarginContainer2/ScorePipsShadow" unique_id=955223888]
+material = SubResource("ShaderMaterial_5imi5")
+layout_mode = 2
+texture = ExtResource("2_yubbw")
+
+[node name="TextureRect3" type="TextureRect" parent="MarginContainer2/ScorePipsShadow" unique_id=1229668374]
+material = SubResource("ShaderMaterial_5imi5")
+layout_mode = 2
+texture = ExtResource("2_yubbw")
+
+[node name="TextureRect4" type="TextureRect" parent="MarginContainer2/ScorePipsShadow" unique_id=1761296364]
+material = SubResource("ShaderMaterial_5imi5")
+layout_mode = 2
+texture = ExtResource("2_yubbw")
+
+[node name="TextureRect5" type="TextureRect" parent="MarginContainer2/ScorePipsShadow" unique_id=1563975963]
+material = SubResource("ShaderMaterial_5imi5")
+layout_mode = 2
+texture = ExtResource("2_yubbw")
 
 [node name="MarginContainer" type="MarginContainer" parent="." unique_id=2112857008]
 anchors_preset = 3
@@ -107,7 +167,7 @@ offset_bottom = 141.0
 text = "crt+d to toggle"
 
 [node name="Button" type="Button" parent="." unique_id=1001220325]
-offset_left = 1040.0
+offset_left = 1036.0
 offset_top = 496.0
 offset_right = 1144.0
 offset_bottom = 536.0
@@ -136,6 +196,7 @@ anchors_preset = 0
 mouse_filter = 2
 
 [node name="TextureRect4" type="TextureRect" parent="Control" unique_id=734664742]
+modulate = Color(0.41568628, 0.39607844, 0.3254902, 1)
 z_index = -100
 z_as_relative = false
 layout_mode = 0
@@ -146,12 +207,105 @@ expand_mode = 1
 stretch_mode = 1
 
 [node name="TextureRect2" type="TextureRect" parent="Control" unique_id=433934365]
+modulate = Color(0.41711074, 0.39792523, 0.32510397, 1)
 z_index = -100
 z_as_relative = false
 layout_mode = 0
 offset_top = 544.0
 offset_right = 1152.0
 offset_bottom = 648.0
+mouse_filter = 2
+texture = ExtResource("6_u4rvt")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="shadow" type="TextureRect" parent="Control/TextureRect2" unique_id=1088838324]
+modulate = Color(1, 1, 1, 0.36078432)
+z_index = -138
+z_as_relative = false
+material = SubResource("ShaderMaterial_v3bbg")
+layout_mode = 0
+offset_left = 640.0
+offset_right = 1152.0
+offset_bottom = 16.0
+mouse_filter = 2
+texture = ExtResource("6_u4rvt")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="shadow2" type="TextureRect" parent="Control/TextureRect2" unique_id=450822172]
+modulate = Color(1, 1, 1, 0.36078432)
+z_index = -138
+z_as_relative = false
+material = SubResource("ShaderMaterial_v3bbg")
+layout_mode = 0
+offset_left = 128.0
+offset_right = 640.0
+offset_bottom = 16.0
+mouse_filter = 2
+texture = ExtResource("6_u4rvt")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="shadow3" type="TextureRect" parent="Control/TextureRect2" unique_id=803974642]
+modulate = Color(1, 1, 1, 0.36078432)
+z_index = -138
+z_as_relative = false
+material = SubResource("ShaderMaterial_v3bbg")
+layout_mode = 0
+offset_left = 576.0
+offset_top = -440.0
+offset_right = 1088.0
+offset_bottom = -424.0
+rotation = 3.1415927
+mouse_filter = 2
+texture = ExtResource("6_u4rvt")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="shadow4" type="TextureRect" parent="Control/TextureRect2" unique_id=845491092]
+modulate = Color(1, 1, 1, 0.36078432)
+z_index = -138
+z_as_relative = false
+material = SubResource("ShaderMaterial_v3bbg")
+layout_mode = 0
+offset_left = 1088.0
+offset_top = -440.0
+offset_right = 1600.0
+offset_bottom = -424.0
+rotation = 3.1415927
+mouse_filter = 2
+texture = ExtResource("6_u4rvt")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="shadow5" type="TextureRect" parent="Control/TextureRect2" unique_id=1684301302]
+modulate = Color(1, 1, 1, 0.36078432)
+z_index = -138
+z_as_relative = false
+material = SubResource("ShaderMaterial_v3bbg")
+layout_mode = 0
+offset_left = 1024.0
+offset_top = 32.0
+offset_right = 1536.0
+offset_bottom = 48.0
+rotation = 4.712389
+mouse_filter = 2
+texture = ExtResource("6_u4rvt")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="shadow6" type="TextureRect" parent="Control/TextureRect2" unique_id=185800875]
+modulate = Color(1, 1, 1, 0.36078432)
+z_index = -138
+z_as_relative = false
+material = SubResource("ShaderMaterial_v3bbg")
+layout_mode = 0
+offset_left = 128.0
+offset_top = -444.0
+offset_right = 640.0
+offset_bottom = -428.0
+rotation = 1.5707964
 mouse_filter = 2
 texture = ExtResource("6_u4rvt")
 expand_mode = 1
@@ -167,7 +321,7 @@ offset_top = 104.0
 offset_right = 568.0
 offset_bottom = 232.0
 rotation = 1.5707964
-texture = ExtResource("7_4vnqf")
+texture = ExtResource("8_v3bbg")
 expand_mode = 1
 stretch_mode = 1
 
@@ -177,13 +331,14 @@ z_index = -100
 z_as_relative = false
 layout_mode = 0
 offset_left = 1152.0
-offset_top = 64.0
-offset_right = 1735.6146
-offset_bottom = 192.0
+offset_top = 4.9591064e-05
+offset_right = 1808.3845
+offset_bottom = 128.00005
 rotation = 1.5707964
 mouse_filter = 2
-texture = ExtResource("8_7rlv4")
+texture = ExtResource("9_hpd0d")
 expand_mode = 1
+stretch_mode = 1
 
 [node name="TextureRect6" type="TextureRect" parent="Control" unique_id=882206696]
 visible = false
@@ -200,22 +355,24 @@ expand_mode = 1
 stretch_mode = 1
 
 [node name="TextureRect8" type="TextureRect" parent="Control" unique_id=616215393]
+modulate = Color(0.45490196, 0.45490196, 0.45490196, 1)
 layout_mode = 0
-offset_top = 640.0
-offset_right = 1032.0
+offset_top = 644.0
+offset_right = 1024.0
 offset_bottom = 648.0
 texture = ExtResource("9_7rlv4")
 expand_mode = 1
 stretch_mode = 1
 
 [node name="TextureRect10" type="TextureRect" parent="Control" unique_id=1950714615]
+modulate = Color(0.45452422, 0.45452428, 0.45452422, 1)
 z_index = -100
 z_as_relative = false
 layout_mode = 0
-offset_left = 1032.0
+offset_left = 1028.0
 offset_top = 63.999996
-offset_right = 1608.0
-offset_bottom = 72.0
+offset_right = 1612.0
+offset_bottom = 68.0
 rotation = 1.5707964
 texture = ExtResource("9_7rlv4")
 expand_mode = 1
@@ -228,8 +385,9 @@ layout_mode = 0
 offset_top = 544.0
 offset_right = 1024.0
 offset_bottom = 548.0
-texture = ExtResource("10_6ngy6")
+texture = ExtResource("9_hpd0d")
 expand_mode = 1
+stretch_mode = 1
 flip_v = true
 
 [node name="TextureRect12" type="TextureRect" parent="Control" unique_id=1606184121]
@@ -239,8 +397,9 @@ layout_mode = 0
 offset_top = 100.0
 offset_right = 1024.0
 offset_bottom = 104.0
-texture = ExtResource("10_6ngy6")
+texture = ExtResource("9_hpd0d")
 expand_mode = 1
+stretch_mode = 1
 flip_v = true
 
 [node name="TextureRect13" type="TextureRect" parent="Control" unique_id=242430284]
@@ -258,16 +417,18 @@ expand_mode = 1
 flip_v = true
 
 [node name="TextureRect14" type="TextureRect" parent="Control" unique_id=1805384407]
+modulate = Color(0.56, 0.56, 0.56, 0.8117647)
 z_index = -100
 z_as_relative = false
 layout_mode = 0
 offset_right = 1152.0
 offset_bottom = 64.0
-texture = ExtResource("12_hpd0d")
+texture = ExtResource("13_v3bbg")
 expand_mode = 1
 stretch_mode = 1
 
 [node name="TextureRect15" type="TextureRect" parent="Control" unique_id=1967957678]
+modulate = Color(0.56078434, 0.50980395, 0.2901961, 1)
 z_index = -100
 z_as_relative = false
 layout_mode = 0
@@ -279,6 +440,7 @@ expand_mode = 1
 flip_v = true
 
 [node name="TextureRect16" type="TextureRect" parent="Control" unique_id=1847770063]
+modulate = Color(0.5605468, 0.5113426, 0.29038903, 1)
 z_index = -100
 z_as_relative = false
 layout_mode = 0
@@ -288,5 +450,18 @@ offset_bottom = 66.0
 texture = ExtResource("8_7rlv4")
 expand_mode = 1
 flip_v = true
+
+[node name="TextureRect9" type="TextureRect" parent="Control" unique_id=1720476905]
+visible = false
+modulate = Color(0.54, 0.54, 0.54, 0.59607846)
+show_behind_parent = true
+z_index = -100
+z_as_relative = false
+material = SubResource("ShaderMaterial_hpd0d")
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+texture = ExtResource("15_0psvw")
+expand_mode = 1
 
 [connection signal="button_down" from="Button" to="." method="_on_confirm"]
