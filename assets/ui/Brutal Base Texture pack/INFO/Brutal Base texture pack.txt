@@ -1,0 +1,47 @@
+Brutal Base texture pack
+
+Thank you for downloading the Brutal Base texture pack. This pack is free to use as part of your
+games and other interactive applications, but it must not be redistributed, whether altered or
+unmodified, as part of a larger asset pack without permission. See License.txt for more info.
+
+If you would like to, a credit to "Shallow Thinking Games" would be appreciated, but this is not
+necessary. If you use these materials in a commercial project, a donation would be welcome but
+is not compulsory.
+
+The core of this texture set was originally created from scratch or from source photos in
+Photoshop in 2002. The set has been extensively expanded for this 2025 re-release, primarily
+using Krita for retouching and some rendered elements to create the bounce pads. Every texture
+has been updated at least slightly from the initial version. No generative AI was used in the
+creation of these textures.
+
+The textures are included in three formats:
+
+TGA files: These are mainly intended for anyone making Quake 3 maps or other games using that
+engine, which originally only supported TGA and JPG. An example .shader file is included for
+anyone using that engine or its cousins, you'll probably have to fiddle with them a bit.
+
+PNG files: This is a more widely used format today and probably most suitable for modern engines
+and software.
+
+Reduced scale and palette PNG files: Pre-scrunged textures for anyone wanting an even more
+crunchy retro pixelated look.
+
+Usage notes:
+
+The majority of these textures are intended for use as walls and/or floors and should tile nicely
+over large surfaces. Repeating every two to four metres should work fine as none really have any
+scale-specific details. In Quake 3 terms: Default scaling i.e. 2 texels per world unit.
+
+The "light" textures are intended to indicate light fixtures and are best mapped onto smaller
+objects, or cut as insets into wider surfaces. The "glow" light textures were a method Quake 3
+used as an additive layer to get overbrights. In other engines you can put this into the
+material for one of the light textures as a straight additive stage if you want to, e.g. pipe it
+into the emissive input on your material.
+
+The "bounce" textures are for Quake 3 style jump pads, but you can use them for whatever you
+like, I'm not your boss. They can be used as-is, or you can add the "glow" and "ring" effect
+stages for the full effect. In Quake 3 the "glow" stage would have a slight Sine wave applied to
+its RGB values and go in as an additive layer to get a gentle pulsing light effect, but you can
+also just have it is a constant emissive stage. The "ring" was another additive stage which had
+a sawtooth wave applied to scale its clamped UVs, giving the effect of an energy wave that
+radiates from the centre then disappears.
