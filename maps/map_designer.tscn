@@ -1,19 +1,17 @@
-[gd_scene format=4 uid="uid://cyn26y5n1jxf3"]
+[gd_scene format=3 uid="uid://cyn26y5n1jxf3"]
 
-[ext_resource type="Script" uid="uid://chagsifi7w8n6" path="res://client/battlefield/battlefield.gd" id="1_87gq2"]
-[ext_resource type="PackedScene" uid="uid://bnvkbvf5d8tyv" path="res://scenes/map_baker/map_baker.tscn" id="2_lchce"]
-[ext_resource type="Script" uid="uid://cgtpxpasdke04" path="res://client/battlefield/client_map_manager.gd" id="3_4xhwn"]
-[ext_resource type="PackedScene" uid="uid://br53t6qvsase5" path="res://client/units/Unit.tscn" id="3_qbn32"]
-[ext_resource type="Texture2D" uid="uid://dq8khvkm5weph" path="res://assets/sprites/hex/fields_ground_sprite_sheet.png" id="4_jpqe7"]
-[ext_resource type="Script" uid="uid://doeqye6s2a65e" path="res://client/battlefield/map_controller.gd" id="5_sbrtb"]
-[ext_resource type="Texture2D" uid="uid://bbk0bb2k6twkd" path="res://assets/sprites/hex/fields_feature_sprite_sheet.png" id="6_1eehx"]
-[ext_resource type="Script" uid="uid://buj6ft1vvdf2f" path="res://addons/hexagon_tilemaplayer/hexagon_tilemaplayer.gd" id="7_yyf4b"]
-[ext_resource type="Texture2D" uid="uid://l08uw4hx56l0" path="res://assets/sprites/hex/highlight.png" id="8_wy7vx"]
-[ext_resource type="Script" uid="uid://birdmambhh8rf" path="res://client/battlefield/map_highlight.gd" id="9_4r7qn"]
-[ext_resource type="PackedScene" uid="uid://bygbxnjm8uose" path="res://client/units/UnitSpawnMarker.tscn" id="11_173rr"]
-[ext_resource type="Texture2D" uid="uid://c3e467q1ibvtl" path="res://assets/sprites/units/tank_sprite_sheet.png" id="12_qbn32"]
-[ext_resource type="Script" uid="uid://7tdnt2pcipdq" path="res://client/battlefield/camera_controller.gd" id="13_pa0pi"]
-[ext_resource type="Texture2D" uid="uid://w6gqi2ht6c1" path="res://assets/sprites/units/artillery_sprite_sheet.png" id="13_vxy4q"]
+[ext_resource type="Script" uid="uid://dy4oh48kiy7sm" path="res://client/debug.gd" id="1_rxatx"]
+[ext_resource type="Texture2D" uid="uid://rtb43f6i1ud" path="res://assets/ui/dot-bold-highlight.svg" id="2_kvb7t"]
+[ext_resource type="StyleBox" uid="uid://b5hbff7ws0pot" path="res://assets/ui/CommonStyleBoxes/BorderlessDefaultPanel/glassmorphism_borderless_default_panel_alpha_40.tres" id="3_173rr"]
+[ext_resource type="StyleBox" uid="uid://dkft0hfud0hmr" path="res://assets/ui/CommonStyleBoxes/BorderlessDefaultPanel/glassmorphism_borderless_default_panel_alpha_two_thirds.tres" id="4_qbn32"]
+[ext_resource type="StyleBox" uid="uid://usfs55q161cf" path="res://assets/ui/CommonStyleBoxes/BorderlessDefaultPanel/glassmorphism_borderless_default_panel_alpha_third.tres" id="5_vxy4q"]
+[ext_resource type="Texture2D" uid="uid://bgg48xojsp7xr" path="res://assets/ui/512x512/Metal/Metal_20-512x512.png" id="6_bg8sc"]
+[ext_resource type="Texture2D" uid="uid://dk2wt31m3c8ut" path="res://assets/ui/512x512/Metal/Metal_12-512x512.png" id="7_lchce"]
+[ext_resource type="Texture2D" uid="uid://b15rr5rf5tge7" path="res://assets/ui/512x512/Box/Box_20-512x512.png" id="8_8ssrn"]
+[ext_resource type="Texture2D" uid="uid://bxwkjqkwc5a36" path="res://assets/ui/512x512/Metal/Metal_10-512x512.png" id="9_j3b3m"]
+[ext_resource type="Texture2D" uid="uid://bu1guq3x7m3wy" path="res://assets/ui/512x512/Metal/Metal_22-512x512.png" id="10_2cie4"]
+[ext_resource type="Texture2D" uid="uid://lssst1i8gr6m" path="res://assets/ui/512x512/Metal/Metal_06-512x512.png" id="11_nr1ir"]
+[ext_resource type="Texture2D" uid="uid://c8rfwfifyt8ri" path="res://assets/ui/512x512/Box/Box_19-512x512.png" id="12_oybce"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_173rr"]
 texture = ExtResource("4_jpqe7")
@@ -25,202 +23,493 @@ texture_region_size = Vector2i(442, 512)
 [sub_resource type="TileSet" id="TileSet_o6wfx"]
 tile_shape = 3
 tile_size = Vector2i(442, 512)
-sources/0 = SubResource("TileSetAtlasSource_173rr")
+sources/0 = SubResource("TileSetAtlasSource_e5smb")
+[sub_resource type="Theme" id="Theme_eu3yq"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mhs4e"]
-texture = ExtResource("6_1eehx")
-texture_region_size = Vector2i(512, 512)
-0:0/0 = 0
-0:0/0/texture_origin = Vector2i(0, 35)
-1:0/0 = 0
-1:0/0/texture_origin = Vector2i(0, 35)
-0:1/0 = 0
-1:1/0 = 0
+[node name="Debug" type="Node2D" unique_id=1503541458]
+z_index = 100
+script = ExtResource("1_rxatx")
 
-[sub_resource type="TileSet" id="TileSet_jqkp6"]
-tile_shape = 3
-tile_size = Vector2i(442, 512)
-sources/0 = SubResource("TileSetAtlasSource_mhs4e")
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=2112857008]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 126.0
+offset_top = 532.0
+offset_right = 381.99866
+offset_bottom = 564.0
+grow_horizontal = 0
+grow_vertical = 0
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_upguu"]
-texture = ExtResource("8_wy7vx")
-texture_region_size = Vector2i(442, 512)
-0:0/0 = 0
+[node name="ScorePips" type="HBoxContainer" parent="MarginContainer" unique_id=340862218]
+layout_mode = 2
 
-[sub_resource type="TileSet" id="TileSet_ql7mu"]
-tile_shape = 3
-tile_size = Vector2i(442, 512)
-sources/0 = SubResource("TileSetAtlasSource_upguu")
+[node name="TextureRect1" type="TextureRect" parent="MarginContainer/ScorePips" unique_id=2067447044]
+layout_mode = 2
+texture = ExtResource("2_kvb7t")
 
-[node name="MapDesigner" type="Node2D" unique_id=1534648312 node_paths=PackedStringArray("unit_container")]
-script = ExtResource("1_87gq2")
-unit_container = NodePath("UnitContainer")
+[node name="TextureRect2" type="TextureRect" parent="MarginContainer/ScorePips" unique_id=389831737]
+layout_mode = 2
+texture = ExtResource("2_kvb7t")
 
-[node name="MapBaker" parent="." unique_id=621948442 node_paths=PackedStringArray("map_ground_layer", "map_feature_layer", "unit_container") instance=ExtResource("2_lchce")]
-map_ground_layer = NodePath("../MapGround")
-map_feature_layer = NodePath("../MapFeature")
-unit_container = NodePath("../UnitContainer")
-map_name = "map"
+[node name="TextureRect3" type="TextureRect" parent="MarginContainer/ScorePips" unique_id=444964470]
+layout_mode = 2
+texture = ExtResource("2_kvb7t")
 
-[node name="MapManager" type="Node" parent="." unique_id=225508304 node_paths=PackedStringArray("map_ground_layer", "map_features_layer", "unit_container", "left_sector_divider", "right_sector_divider")]
-script = ExtResource("3_4xhwn")
-map_ground_layer = NodePath("../MapGround")
-map_features_layer = NodePath("../MapFeature")
-unit_container = NodePath("../UnitContainer")
-unit_scene = ExtResource("3_qbn32")
-left_sector_divider = NodePath("../LeftSectorDivider")
-right_sector_divider = NodePath("../RightSectorDivider")
+[node name="TextureRect4" type="TextureRect" parent="MarginContainer/ScorePips" unique_id=1978110536]
+layout_mode = 2
+texture = ExtResource("2_kvb7t")
 
-[node name="MapGround" type="TileMapLayer" parent="." unique_id=1769591625]
-tile_map_data = PackedByteArray("AAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAUAAAAAAAAAAAAAAAYAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAkAAAAAAAAAAAAAAAoAAAAAAAAAAAABAAAAAAAAAAAAAAABAAEAAAABAAAAAAABAAIAAAAAAAAAAAABAAQAAAAAAAAAAAABAAYAAAAAAAAAAAABAAgAAAAAAAAAAAABAAoAAAAAAAAAAAABAAkAAAAAAAAAAAACAAgAAAABAAAAAAACAAcAAAABAAAAAAACAAYAAAAAAAAAAAACAAUAAAACAAAAAAACAAQAAAAAAAAAAAACAAMAAAABAAAAAAACAAIAAAABAAAAAAACAAEAAAAAAAAAAAACAAAAAAAAAAAAAAABAAMAAAABAAAAAAABAAUAAAAAAAAAAAABAAcAAAAAAAAAAAACAAoAAAAAAAAAAAACAAkAAAAAAAAAAAADAAgAAAABAAAAAAADAAcAAAABAAAAAAADAAYAAAAAAAAAAAADAAUAAAACAAAAAAADAAQAAAACAAAAAAADAAMAAAACAAAAAAADAAIAAAABAAAAAAADAAEAAAAAAAAAAAADAAAAAAAAAAAAAAAEAAIAAAAAAAAAAAAEAAQAAAACAAAAAAAEAAUAAAAAAAAAAAAEAAYAAAAAAAAAAAAEAAcAAAABAAAAAAAEAAgAAAABAAAAAAAEAAkAAAAAAAAAAAADAAkAAAAAAAAAAAAEAAoAAAAAAAAAAAADAAoAAAAAAAAAAAAFAAoAAAACAAAAAAAGAAoAAAAAAAAAAAAHAAoAAAAAAAAAAAAIAAoAAAAAAAAAAAAJAAoAAAAAAAAAAAAKAAoAAAAAAAAAAAALAAoAAAAAAAAAAAAMAAoAAAACAAAAAAALAAkAAAAAAAAAAAAMAAgAAAAAAAAAAAALAAcAAAAAAAAAAAAMAAYAAAAAAAAAAAALAAUAAAAAAAAAAAAMAAQAAAAAAAAAAAALAAMAAAAAAAAAAAALAAIAAAACAAAAAAALAAEAAAAAAAAAAAALAAAAAAAAAAAAAAAKAAAAAAAAAAAAAAAJAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAHAAAAAAAAAAAAAAAGAAAAAAAAAAAAAAAFAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAMAAAAAAAAAAAAAAAMAAIAAAAAAAAAAAALAAQAAAAAAAAAAAAKAAMAAAAAAAAAAAAKAAIAAAAAAAAAAAAKAAEAAAACAAAAAAAJAAEAAAACAAAAAAAIAAEAAAACAAAAAAAHAAEAAAACAAAAAAAGAAEAAAAAAAAAAAAFAAEAAAAAAAAAAAAEAAEAAAAAAAAAAAAFAAIAAAAAAAAAAAAGAAIAAAAAAAAAAAAHAAIAAAAAAAAAAAAIAAIAAAACAAAAAAAJAAIAAAAAAAAAAAAEAAMAAAACAAAAAAAFAAMAAAACAAAAAAAGAAMAAAABAAAAAAAHAAMAAAACAAAAAAAIAAMAAAAAAAAAAAAJAAMAAAABAAAAAAAKAAUAAAABAAAAAAAKAAQAAAABAAAAAAAJAAQAAAABAAAAAAAIAAQAAAAAAAAAAAAHAAQAAAACAAAAAAAGAAQAAAABAAAAAAAFAAQAAAAAAAAAAAAFAAUAAAABAAAAAAAGAAUAAAACAAAAAAAHAAUAAAAAAAAAAAAIAAUAAAABAAAAAAAJAAUAAAABAAAAAAALAAYAAAAAAAAAAAAKAAYAAAAAAAAAAAAJAAYAAAABAAAAAAAIAAYAAAAAAAAAAAAHAAYAAAAAAAAAAAAGAAYAAAAAAAAAAAAFAAYAAAABAAAAAAAFAAcAAAAAAAAAAAAGAAgAAAAAAAAAAAAGAAcAAAAAAAAAAAAHAAgAAAACAAAAAAAHAAcAAAAAAAAAAAAIAAcAAAAAAAAAAAAJAAgAAAABAAAAAAAJAAcAAAAAAAAAAAAKAAgAAAAAAAAAAAAKAAcAAAAAAAAAAAALAAgAAAAAAAAAAAAIAAgAAAABAAAAAAAFAAgAAAAAAAAAAAAFAAkAAAACAAAAAAAGAAkAAAACAAAAAAAHAAkAAAAAAAAAAAAIAAkAAAABAAAAAAAJAAkAAAABAAAAAAAKAAkAAAAAAAAAAAAAAAsAAAAAAAAAAAABAAsAAAAAAAAAAAALAAsAAAACAAAAAAAKAAsAAAACAAAAAAAJAAsAAAACAAAAAAAIAAsAAAAAAAAAAAAHAAsAAAAAAAAAAAAGAAsAAAAAAAAAAAAFAAsAAAAAAAAAAAAEAAsAAAAAAAAAAAADAAsAAAAAAAAAAAACAAsAAAAAAAAAAAANAAAAAAAAAAAAAAAOAAAAAAAAAAAAAAAPAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAARAAAAAAAAAAAAAAAQAAEAAAAAAAAAAAARAAIAAAAAAAAAAAAQAAMAAAAAAAAAAAARAAQAAAAAAAAAAAAQAAUAAAAAAAAAAAARAAYAAAAAAAAAAAAQAAcAAAAAAAAAAAARAAgAAAAAAAAAAAARAAkAAAAAAAAAAAARAAoAAAAAAAAAAAARAAsAAAAAAAAAAAAMAAsAAAACAAAAAAAMAAkAAAAAAAAAAAAMAAcAAAAAAAAAAAAMAAUAAAAAAAAAAAANAAQAAAABAAAAAAAMAAMAAAAAAAAAAAANAAIAAAAAAAAAAAAMAAEAAAAAAAAAAAANAAEAAAAAAAAAAAAOAAEAAAAAAAAAAAAPAAEAAAAAAAAAAAAQAAIAAAAAAAAAAAAQAAQAAAAAAAAAAAAPAAUAAAAAAAAAAAAQAAYAAAAAAAAAAAAPAAcAAAAAAAAAAAAQAAgAAAAAAAAAAAAQAAkAAAAAAAAAAAAQAAoAAAACAAAAAAARAAcAAAAAAAAAAAARAAUAAAAAAAAAAAARAAMAAAAAAAAAAAARAAEAAAAAAAAAAAANAAoAAAACAAAAAAANAAkAAAACAAAAAAAOAAgAAAACAAAAAAANAAgAAAACAAAAAAAOAAoAAAACAAAAAAAPAAoAAAACAAAAAAAQAAsAAAACAAAAAAAPAAsAAAACAAAAAAAOAAsAAAACAAAAAAANAAsAAAACAAAAAAANAAcAAAABAAAAAAANAAYAAAABAAAAAAANAAUAAAABAAAAAAAOAAQAAAABAAAAAAAOAAMAAAABAAAAAAAOAAIAAAABAAAAAAANAAMAAAABAAAAAAAPAAIAAAABAAAAAAAPAAMAAAABAAAAAAAPAAQAAAABAAAAAAAOAAUAAAABAAAAAAAPAAYAAAABAAAAAAAOAAYAAAABAAAAAAAOAAcAAAABAAAAAAAPAAgAAAABAAAAAAAOAAkAAAABAAAAAAAPAAkAAAABAAAAAAASAAAAAAAAAAAAAAASAAIAAAAAAAAAAAASAAQAAAAAAAAAAAASAAYAAAAAAAAAAAASAAgAAAAAAAAAAAASAAoAAAAAAAAAAAALAAwAAAAAAAAAAAAMAAwAAAAAAAAAAAANAAwAAAAAAAAAAAAOAAwAAAAAAAAAAAAPAAwAAAAAAAAAAAAQAAwAAAAAAAAAAAARAAwAAAAAAAAAAAASAAwAAAAAAAAAAAAAAAwAAAAAAAAAAAABAAwAAAAAAAAAAAACAAwAAAAAAAAAAAADAAwAAAAAAAAAAAAEAAwAAAAAAAAAAAAFAAwAAAAAAAAAAAAGAAwAAAAAAAAAAAAHAAwAAAAAAAAAAAAIAAwAAAAAAAAAAAAJAAwAAAAAAAAAAAAKAAwAAAAAAAAAAAA=")
-tile_set = SubResource("TileSet_o6wfx")
-script = ExtResource("5_sbrtb")
-debug_mode = 1
-metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
+[node name="TextureRect5" type="TextureRect" parent="MarginContainer/ScorePips" unique_id=1151708755]
+layout_mode = 2
+texture = ExtResource("2_kvb7t")
 
-[node name="MapFeature" type="TileMapLayer" parent="." unique_id=12123868]
-tile_map_data = PackedByteArray("AAAGAAEAAAAAAAAAAAAIAAYAAAAAAAAAAAAHAAYAAAAAAAAAAAAGAAYAAAAAAAAAAAABAAQAAAAAAAAAAAABAAUAAAAAAAAAAAAMAAMAAAABAAAAAAANAAQAAAABAAAAAAANAAMAAAABAAAAAAAOAAQAAAABAAAAAAANAAUAAAABAAAAAAADAAoAAAABAAEAAAACAAkAAAABAAEAAAABAAkAAAABAAEAAAACAAoAAAABAAEAAAABAAoAAAABAAEAAAADAAEAAAAAAAEAAAAEAAEAAAAAAAEAAAAFAAEAAAAAAAEAAAAQAAAAAAAAAAEAAAAQAAEAAAAAAAEAAAARAAIAAAAAAAEAAAAQAAMAAAAAAAEAAAARAAQAAAAAAAEAAAAQAAQAAAAAAAAAAAAPAAUAAAAAAAAAAAAQAAYAAAAAAAAAAAAQAAUAAAAAAAAAAAARAAYAAAAAAAAAAAARAAUAAAAAAAAAAAADAAsAAAAAAAAAAAAAAAsAAAABAAAAAAABAAsAAAABAAAAAAACAAsAAAABAAAAAAAKAAAAAAABAAAAAAAJAAAAAAABAAAAAAASAAYAAAAAAAAAAAAHAAwAAAAAAAAAAAAGAAwAAAAAAAAAAAAFAAwAAAAAAAAAAAAEAAwAAAAAAAAAAAADAAwAAAABAAAAAAACAAwAAAABAAAAAAABAAwAAAABAAAAAAAAAAwAAAABAAAAAAABAAcAAAAAAAAAAAAEAAcAAAAAAAAAAAAKAAYAAAAAAAAAAAAKAAgAAAAAAAAAAAALAAcAAAAAAAAAAAA=")
-tile_set = SubResource("TileSet_jqkp6")
-script = ExtResource("7_yyf4b")
-metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
+[node name="Phase" type="Label" parent="." unique_id=1511377127]
+offset_left = 8.0
+offset_top = 215.0
+offset_right = 227.0
+offset_bottom = 243.0
+text = "Turn phase:"
+metadata/_edit_use_anchors_ = true
 
-[node name="MapHighlight" type="TileMapLayer" parent="." unique_id=1870725227]
-modulate = Color(1, 1, 1, 0.5019608)
-tile_set = SubResource("TileSet_ql7mu")
-script = ExtResource("9_4r7qn")
-metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
+[node name="Turn" type="Label" parent="." unique_id=425633101]
+offset_left = 8.0
+offset_top = 142.0
+offset_right = 108.0
+offset_bottom = 167.0
+theme = SubResource("Theme_eu3yq")
+text = "Player turn:"
+metadata/_edit_use_anchors_ = true
 
-[node name="SectorHighlight" type="TileMapLayer" parent="." unique_id=2070973290]
-modulate = Color(0.8501193, 0.69538933, 0.14475939, 0.5019608)
-self_modulate = Color(1, 1, 0.14509805, 1)
-tile_set = SubResource("TileSet_ql7mu")
-script = ExtResource("9_4r7qn")
-metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
+[node name="Peer_ids" type="Label" parent="." unique_id=1089954271]
+offset_left = 8.0
+offset_top = 190.0
+offset_right = 108.0
+offset_bottom = 215.0
+theme = SubResource("Theme_eu3yq")
+text = "player_ids:"
+metadata/_edit_use_anchors_ = true
 
-[node name="LeftSectorDivider" type="Line2D" parent="." unique_id=1538020218]
-width = 20.0
-default_color = Color(1, 0, 0, 1)
+[node name="State" type="Label" parent="." unique_id=550106070]
+offset_left = 8.0
+offset_top = 166.0
+offset_right = 108.0
+offset_bottom = 191.0
+text = "match state:"
+metadata/_edit_use_anchors_ = true
 
-[node name="RightSectorDivider" type="Line2D" parent="." unique_id=479535643]
-width = 20.0
-default_color = Color(1, 0, 0, 1)
+[node name="ColorRect" type="ColorRect" parent="." unique_id=886609679]
+visible = false
+z_index = -1
+offset_left = 12.0
+offset_top = 37.0
+offset_right = 387.0
+offset_bottom = 199.0
+color = Color(0, 0, 0, 0.2)
 
-[node name="UnitContainer" type="Node2D" parent="." unique_id=1804487023]
+[node name="label" type="Label" parent="ColorRect" unique_id=1730657490]
+layout_mode = 0
+offset_left = 254.0
+offset_top = 118.0
+offset_right = 367.0
+offset_bottom = 141.0
+text = "crt+d to toggle"
 
-[node name="Player1_Infantry_1" parent="UnitContainer" unique_id=1324794981 instance=ExtResource("11_173rr")]
-position = Vector2(3094, 2944)
-frame = 0
-owner_id = 1
+[node name="Button" type="Button" parent="." unique_id=1001220325]
+offset_left = 1040.0
+offset_top = 496.0
+offset_right = 1144.0
+offset_bottom = 536.0
+theme_override_styles/normal = ExtResource("3_173rr")
+theme_override_styles/pressed = ExtResource("4_qbn32")
+theme_override_styles/hover = ExtResource("5_vxy4q")
+text = "Confirm"
 
-[node name="Player1_Infantry_2" parent="UnitContainer" unique_id=1635616779 instance=ExtResource("11_173rr")]
-position = Vector2(3536, 2944)
-frame = 0
-owner_id = 1
+[node name="Scores" type="Label" parent="." unique_id=2064108454]
+offset_left = 8.0
+offset_top = 238.0
+offset_right = 66.0
+offset_bottom = 261.0
+text = "scores: "
 
-[node name="Player1_Infantry_3" parent="UnitContainer" unique_id=2077526996 instance=ExtResource("11_173rr")]
-position = Vector2(4862, 2944)
-frame = 0
-owner_id = 1
+[node name="Winner" type="Label" parent="." unique_id=1570152226]
+offset_left = 8.0
+offset_top = 120.0
+offset_right = 108.0
+offset_bottom = 145.0
+text = "winner: "
 
-[node name="Player1_Infantry_4" parent="UnitContainer" unique_id=2106007384 instance=ExtResource("11_173rr")]
-position = Vector2(1105, 2560)
-frame = 0
-owner_id = 1
+[node name="Control" type="Control" parent="." unique_id=1007110047]
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
 
-[node name="Player1_Infantry_5" parent="UnitContainer" unique_id=294968706 instance=ExtResource("11_173rr")]
-position = Vector2(1989, 2560)
-frame = 0
-owner_id = 1
+[node name="TextureRect4" type="TextureRect" parent="Control" unique_id=734664742]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 104.0
+texture = ExtResource("6_bg8sc")
+expand_mode = 1
+stretch_mode = 1
 
-[node name="Player1_Infantry_6" parent="UnitContainer" unique_id=1699252334 instance=ExtResource("11_173rr")]
-position = Vector2(7514, 3712)
-frame = 0
-owner_id = 1
+[node name="TextureRect2" type="TextureRect" parent="Control" unique_id=433934365]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_top = 544.0
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 2
+texture = ExtResource("6_bg8sc")
+expand_mode = 1
+stretch_mode = 1
 
-[node name="Player1_Tank_1" parent="UnitContainer" unique_id=710508746 instance=ExtResource("11_173rr")]
-position = Vector2(3315, 4096)
-texture = ExtResource("12_qbn32")
-hframes = 5
-frame = 0
-unit_type = 2
-owner_id = 1
+[node name="TextureRect3" type="TextureRect" parent="Control" unique_id=526610191]
+modulate = Color(0.1503343, 0.1651972, 0.12934586, 1)
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 128.0
+offset_top = 104.0
+offset_right = 568.0
+offset_bottom = 232.0
+rotation = 1.5707964
+texture = ExtResource("7_lchce")
+expand_mode = 1
+stretch_mode = 1
 
-[node name="Player1_Tank_2" parent="UnitContainer" unique_id=1661991245 instance=ExtResource("11_173rr")]
-position = Vector2(4641, 4096)
-texture = ExtResource("12_qbn32")
-hframes = 5
-frame = 0
-unit_type = 2
-owner_id = 1
+[node name="TextureRect5" type="TextureRect" parent="Control" unique_id=1236631210]
+modulate = Color(0.2737653, 0.19064942, 0.19725722, 1)
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 1152.0
+offset_top = 64.0
+offset_right = 1735.6146
+offset_bottom = 192.0
+rotation = 1.5707964
+mouse_filter = 2
+texture = ExtResource("8_8ssrn")
+expand_mode = 1
 
-[node name="Player1_Tank_3" parent="UnitContainer" unique_id=666678424 instance=ExtResource("11_173rr")]
-position = Vector2(3978, 4480)
-texture = ExtResource("12_qbn32")
-hframes = 5
-frame = 0
-unit_type = 2
-owner_id = 1
+[node name="TextureRect6" type="TextureRect" parent="Control" unique_id=882206696]
+visible = false
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 128.0
+offset_top = 64.0
+offset_right = 1024.0
+offset_bottom = 584.0
+texture = ExtResource("8_8ssrn")
+expand_mode = 1
+stretch_mode = 1
 
-[node name="Player1_Artillery_1" parent="UnitContainer" unique_id=276452804 instance=ExtResource("11_173rr")]
-position = Vector2(663, 1024)
-texture = ExtResource("13_vxy4q")
-hframes = 6
-frame = 0
-unit_type = 4
-owner_id = 1
+[node name="TextureRect7" type="TextureRect" parent="Control" unique_id=875270151]
+visible = false
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 8.0
+texture = ExtResource("9_j3b3m")
+expand_mode = 1
+stretch_mode = 1
 
-[node name="Player2_Infantry_1" parent="UnitContainer" unique_id=2036855746 instance=ExtResource("11_173rr")]
-position = Vector2(1105, 3328)
+[node name="TextureRect8" type="TextureRect" parent="Control" unique_id=616215393]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_top = 640.0
+offset_right = 1032.0
+offset_bottom = 648.0
+texture = ExtResource("9_j3b3m")
+expand_mode = 1
+stretch_mode = 1
 
-[node name="Player2_Infantry_2" parent="UnitContainer" unique_id=1457913778 instance=ExtResource("11_173rr")]
-position = Vector2(5746, 2944)
+[node name="TextureRect9" type="TextureRect" parent="Control" unique_id=1489111585]
+visible = false
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 640.0
+offset_bottom = 16.0
+rotation = 1.5707964
+texture = ExtResource("9_j3b3m")
+expand_mode = 1
+stretch_mode = 1
 
-[node name="Player2_Infantry_3" parent="UnitContainer" unique_id=341804876 instance=ExtResource("11_173rr")]
-position = Vector2(3978, 3712)
+[node name="TextureRect10" type="TextureRect" parent="Control" unique_id=1950714615]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 1032.0
+offset_top = 63.999996
+offset_right = 1608.0
+offset_bottom = 72.0
+rotation = 1.5707964
+texture = ExtResource("9_j3b3m")
+expand_mode = 1
+stretch_mode = 1
 
-[node name="Player2_Infantry_4" parent="UnitContainer" unique_id=1271445771 instance=ExtResource("11_173rr")]
-position = Vector2(1989, 3328)
+[node name="TextureRect11" type="TextureRect" parent="Control" unique_id=442823216]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_top = 544.0
+offset_right = 1024.0
+offset_bottom = 548.0
+texture = ExtResource("10_2cie4")
+expand_mode = 1
+flip_v = true
 
-[node name="Player2_Infantry_5" parent="UnitContainer" unique_id=1099313226 instance=ExtResource("11_173rr")]
-position = Vector2(4641, 1024)
+[node name="TextureRect12" type="TextureRect" parent="Control" unique_id=1606184121]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_top = 100.0
+offset_right = 1024.0
+offset_bottom = 104.0
+texture = ExtResource("10_2cie4")
+expand_mode = 1
+flip_v = true
 
-[node name="Player2_Infantry_6" parent="UnitContainer" unique_id=237949741 instance=ExtResource("11_173rr")]
-position = Vector2(2431, 1024)
+[node name="TextureRect13" type="TextureRect" parent="Control" unique_id=242430284]
+modulate = Color(0.53410035, 0.62836266, 0.8008638, 1)
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 128.0
+offset_top = 104.0
+offset_right = 568.0
+offset_bottom = 112.0
+rotation = 1.5707964
+texture = ExtResource("11_nr1ir")
+expand_mode = 1
+flip_v = true
 
-[node name="Player2_Infantry_7" parent="UnitContainer" unique_id=1148785308 instance=ExtResource("11_173rr")]
-position = Vector2(5967, 1024)
+[node name="TextureRect14" type="TextureRect" parent="Control" unique_id=1805384407]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 64.0
+texture = ExtResource("12_oybce")
+expand_mode = 1
+stretch_mode = 1
 
-[node name="Player2_Tank_1" parent="UnitContainer" unique_id=2086597034 instance=ExtResource("11_173rr")]
-position = Vector2(4199, 2560)
-texture = ExtResource("12_qbn32")
-hframes = 5
-frame = 20
-unit_type = 2
+[node name="TextureRect15" type="TextureRect" parent="Control" unique_id=1967957678]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_top = 98.0
+offset_right = 1024.0
+offset_bottom = 100.0
+texture = ExtResource("8_8ssrn")
+expand_mode = 1
+flip_v = true
 
-[node name="Player2_Tank_2" parent="UnitContainer" unique_id=828635556 instance=ExtResource("11_173rr")]
-position = Vector2(4862, 1408)
-texture = ExtResource("12_qbn32")
-hframes = 5
-frame = 20
-unit_type = 2
+[node name="TextureRect16" type="TextureRect" parent="Control" unique_id=1847770063]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_top = 64.0
+offset_right = 1024.0
+offset_bottom = 66.0
+texture = ExtResource("8_8ssrn")
+expand_mode = 1
+flip_v = true
 
-[node name="Player2_Artillery_1" parent="UnitContainer" unique_id=667135779 instance=ExtResource("11_173rr")]
-position = Vector2(3094, 640)
-texture = ExtResource("13_vxy4q")
-hframes = 6
-frame = 24
-unit_type = 4
+[node name="Control2" type="Control" parent="." unique_id=1835179958]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
 
-[node name="Player2_Artillery_2" parent="UnitContainer" unique_id=135672416 instance=ExtResource("11_173rr")]
-position = Vector2(6188, 640)
-texture = ExtResource("13_vxy4q")
-hframes = 6
-frame = 24
-unit_type = 4
+[node name="TextureRect4" type="TextureRect" parent="Control2" unique_id=87148821]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 104.0
+texture = ExtResource("6_bg8sc")
+expand_mode = 1
+stretch_mode = 1
 
-[node name="Camera2D" type="Camera2D" parent="." unique_id=1708214605 node_paths=PackedStringArray("target_map", "map_manager")]
-position = Vector2(2877, 1619)
-zoom = Vector2(0.305, 0.305)
-script = ExtResource("13_pa0pi")
-target_map = NodePath("../MapGround")
-map_manager = NodePath("../MapManager")
+[node name="TextureRect2" type="TextureRect" parent="Control2" unique_id=880777809]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_top = 544.0
+offset_right = 1152.0
+offset_bottom = 648.0
+mouse_filter = 2
+texture = ExtResource("6_bg8sc")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TextureRect3" type="TextureRect" parent="Control2" unique_id=1196394566]
+modulate = Color(0.1503343, 0.1651972, 0.12934586, 1)
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 128.0
+offset_top = 104.0
+offset_right = 568.0
+offset_bottom = 232.0
+rotation = 1.5707964
+texture = ExtResource("7_lchce")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TextureRect5" type="TextureRect" parent="Control2" unique_id=903995823]
+modulate = Color(0.2737653, 0.19064942, 0.19725722, 1)
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 1152.0
+offset_top = 64.0
+offset_right = 1735.6146
+offset_bottom = 192.0
+rotation = 1.5707964
+mouse_filter = 2
+texture = ExtResource("8_8ssrn")
+expand_mode = 1
+
+[node name="TextureRect6" type="TextureRect" parent="Control2" unique_id=1870688422]
+visible = false
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 128.0
+offset_top = 64.0
+offset_right = 1024.0
+offset_bottom = 584.0
+texture = ExtResource("8_8ssrn")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TextureRect7" type="TextureRect" parent="Control2" unique_id=673613813]
+visible = false
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 8.0
+texture = ExtResource("9_j3b3m")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TextureRect8" type="TextureRect" parent="Control2" unique_id=195233706]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_top = 640.0
+offset_right = 1032.0
+offset_bottom = 648.0
+texture = ExtResource("9_j3b3m")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TextureRect9" type="TextureRect" parent="Control2" unique_id=1987596859]
+visible = false
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 640.0
+offset_bottom = 16.0
+rotation = 1.5707964
+texture = ExtResource("9_j3b3m")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TextureRect10" type="TextureRect" parent="Control2" unique_id=376326566]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 1032.0
+offset_top = 63.999996
+offset_right = 1608.0
+offset_bottom = 72.0
+rotation = 1.5707964
+texture = ExtResource("9_j3b3m")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TextureRect11" type="TextureRect" parent="Control2" unique_id=1033690826]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_top = 544.0
+offset_right = 1024.0
+offset_bottom = 548.0
+texture = ExtResource("10_2cie4")
+expand_mode = 1
+flip_v = true
+
+[node name="TextureRect12" type="TextureRect" parent="Control2" unique_id=1321650073]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_top = 100.0
+offset_right = 1024.0
+offset_bottom = 104.0
+texture = ExtResource("10_2cie4")
+expand_mode = 1
+flip_v = true
+
+[node name="TextureRect13" type="TextureRect" parent="Control2" unique_id=1144133027]
+modulate = Color(0.53410035, 0.62836266, 0.8008638, 1)
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 128.0
+offset_top = 104.0
+offset_right = 568.0
+offset_bottom = 112.0
+rotation = 1.5707964
+texture = ExtResource("11_nr1ir")
+expand_mode = 1
+flip_v = true
+
+[node name="TextureRect14" type="TextureRect" parent="Control2" unique_id=764015425]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 64.0
+texture = ExtResource("12_oybce")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TextureRect15" type="TextureRect" parent="Control2" unique_id=1865181737]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_top = 98.0
+offset_right = 1024.0
+offset_bottom = 100.0
+texture = ExtResource("8_8ssrn")
+expand_mode = 1
+flip_v = true
+
+[node name="TextureRect16" type="TextureRect" parent="Control2" unique_id=1593198634]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_top = 64.0
+offset_right = 1024.0
+offset_bottom = 66.0
+texture = ExtResource("8_8ssrn")
+expand_mode = 1
+flip_v = true
+
+[connection signal="button_down" from="Button" to="." method="_on_confirm"]
