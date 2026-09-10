@@ -53,12 +53,12 @@ func setup_visuals(instance_id: int, id: String) -> void:
 	title_label.text = card_data.title_label
 	description_label.text = card_data.description_label
 	description_label_bottom.text = card_data.description_label_bottom
-	get_child(1).texture = card_data.card_art
+	$background_texture.texture = card_data.card_art
 
 func setup_enemy_visuals(instance_id: int) -> void:
 	var card_data: CommandCard = CardDatabase.get_card("000")
 	_instance_id = instance_id
-	get_child(1).texture = card_data.card_art
+	$background_texture.texture = card_data.card_art
 
 func animate_to_discard(target_global_pos: Vector2, on_complete_callback: Callable) -> void:
 	is_interactive = false
