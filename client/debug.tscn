@@ -186,7 +186,7 @@ texture = ExtResource("8_7rlv4")
 expand_mode = 1
 
 [node name="TextureRect6" type="TextureRect" parent="Control" unique_id=882206696]
-visible = false
+show_behind_parent = true
 z_index = -100
 z_as_relative = false
 layout_mode = 0
@@ -198,36 +198,11 @@ texture = ExtResource("8_7rlv4")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="TextureRect7" type="TextureRect" parent="Control" unique_id=875270151]
-visible = false
-z_index = -100
-z_as_relative = false
-layout_mode = 0
-offset_right = 1152.0
-offset_bottom = 8.0
-texture = ExtResource("9_7rlv4")
-expand_mode = 1
-stretch_mode = 1
-
 [node name="TextureRect8" type="TextureRect" parent="Control" unique_id=616215393]
 layout_mode = 0
 offset_top = 640.0
 offset_right = 1032.0
 offset_bottom = 648.0
-texture = ExtResource("9_7rlv4")
-expand_mode = 1
-stretch_mode = 1
-
-[node name="TextureRect9" type="TextureRect" parent="Control" unique_id=1489111585]
-visible = false
-z_index = -100
-z_as_relative = false
-layout_mode = 0
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 640.0
-offset_bottom = 16.0
-rotation = 1.5707964
 texture = ExtResource("9_7rlv4")
 expand_mode = 1
 stretch_mode = 1
