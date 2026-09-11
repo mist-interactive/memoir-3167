@@ -1,26 +1,40 @@
-extends Node2D
+extends Control
 
 @onready var matchState: MatchState = $"../../../matchState"
-@onready var phase = $Phase
-@onready var turn = $Turn
-@onready var peer_ids = $Peer_ids
-@onready var state = $State
-@onready var scores = $Scores
-@onready var winner = $Winner
-@onready var button = $Button
+@onready var phase = $ResizeUI/Phase
+@onready var turn = $ResizeUI/Turn
+@onready var peer_ids = $ResizeUI/Peer_ids
+@onready var state = $ResizeUI/State
+@onready var scores = $ResizeUI/Scores
+@onready var winner = $ResizeUI/Winner
+@onready var button = $ResizeUI/Button
 
 @onready var score_pips: Array[TextureRect] = [
-	$MarginContainer/ScorePips/TextureRect1,
-	$MarginContainer/ScorePips/TextureRect2,
-	$MarginContainer/ScorePips/TextureRect3,
-	$MarginContainer/ScorePips/TextureRect4,
-	$MarginContainer/ScorePips/TextureRect5,
+	$ResizeUI/MarginContainer/ScorePips/TextureRect1,
+	$ResizeUI/MarginContainer/ScorePips/TextureRect2,
+	$ResizeUI/MarginContainer/ScorePips/TextureRect3,
+	$ResizeUI/MarginContainer/ScorePips/TextureRect4,
+	$ResizeUI/MarginContainer/ScorePips/TextureRect5,
 ]
 
 var debug_hidden: bool = false
 
 func _ready() -> void:
+	get_viewport().size_changed.connect(update_ui)
+	update_ui()
 	update_score_pips()
+
+@onready var ui = $ResizeUI
+const DESIGN_SIZE := Vector2(1920, 1080)
+func update_ui():
+	var viewport_size := get_viewport_rect().size
+	var scale_factor := minf(
+		viewport_size.x / DESIGN_SIZE.x,
+		viewport_size.y / DESIGN_SIZE.y
+	)
+
+	ui.scale = Vector2.ONE * scale_factor
+	ui.position = (viewport_size - DESIGN_SIZE * scale_factor) / 2.0
 
 
 func _physics_process(delta: float) -> void:

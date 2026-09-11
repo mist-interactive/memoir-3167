@@ -26,6 +26,8 @@ TerrainDatabase="*uid://dluam6lgh3i8n"
 
 [display]
 
+window/size/viewport_width=1920
+window/size/viewport_height=1080
 window/stretch/mode="canvas_items"
 
 [editor_plugins]
