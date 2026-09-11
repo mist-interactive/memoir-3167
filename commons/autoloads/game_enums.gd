@@ -27,6 +27,17 @@ enum RolledDice
 	MISS,
 }
 
+const CARD_ID_OFFSET: int = 100
+enum TerrainCardId
+{
+	BEACHES = 100,
+	FORESTS = 103,
+	HEDGEROWS = 106,
+	HILLS = 104,
+	MOUNTAINS = 105,
+	OCEANS = 107,
+}
+
 enum MapSector
 {
 	NONE = 0,
