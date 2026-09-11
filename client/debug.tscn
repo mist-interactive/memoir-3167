@@ -49,6 +49,7 @@ script = ExtResource("1_cm8to")
 anchors_preset = 0
 offset_right = 1920.0
 offset_bottom = 1080.0
+mouse_filter = 2
 
 [node name="MarginContainer2" type="MarginContainer" parent="ResizeUI" unique_id=2117628797]
 layout_mode = 1
