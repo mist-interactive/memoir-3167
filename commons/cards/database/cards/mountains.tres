@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CommandCard" format=3 uid="uid://4s2g1w73ufe"]
+
+[ext_resource type="Texture2D" uid="uid://bw5l8qeq22m1p" path="res://assets/card_textures/terrain-cards/mountains.png" id="1_qms1c"]
+[ext_resource type="Script" uid="uid://brv7b2q4f6ws5" path="res://commons/cards/command_card/CommandCard.gd" id="2_738ng"]
+
+[resource]
+script = ExtResource("2_738ng")
+id = "105"
+title_label = "mountains"
+deck_quantity = 0
+target_unit_limit = 0
+card_art = ExtResource("1_qms1c")
+metadata/_custom_type_script = "uid://brv7b2q4f6ws5"
