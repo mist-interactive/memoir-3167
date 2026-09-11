@@ -67,6 +67,7 @@ func _on_auth_check_requested(peer_id: int, jwt_token: String) -> void:
 		return
 	var jwt_payload := jwt_verifier.verify(jwt_token)
 	if jwt_payload != null:
+		client.uuid = jwt_payload.payload.get("user_id")
 		client.authenticated = true
 		var user_id = jwt_payload.payload.get("user_id")
 		var username = jwt_payload.payload.get("username")

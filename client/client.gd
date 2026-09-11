@@ -36,7 +36,8 @@ func _ready() -> void:
 		return taskResult.new()
 	) \
 	.stage("Joining game...", func():
-		Network.Match.connect_match.rpc_id(1, auth_data.get("uuid"), auth_data.get("match_id"))
+		print("joining game, uuid: %d , match_id: %d" % [client.uuid, auth_data.get("match_id")])
+		Network.Match.connect_match.rpc_id(1, client.uuid, auth_data.get("match_id"))
 		await loader.wait_untill(func(): return client.connected_to_game)
 		if !client.connected_to_game:
 			return taskResult.new(false, "Failed to connect to game")
@@ -136,8 +137,7 @@ func _get_authentication_data() -> Dictionary:
 	var signal_args = await react_data_received
 	return {
 		"token": signal_args[0],
-		"match_id": get_query_param("match_id").to_int(),
-		"uuid": get_query_param("uuid").to_int()
+		"match_id": signal_args[1], #get_query_param("match_id").to_int(),
 	}
 	
 func _on_react_message(args) -> void:
