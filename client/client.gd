@@ -37,7 +37,8 @@ func _ready() -> void:
 	) \
 	.stage("Joining game...", func():
 		print("joining game, uuid: %d , match_id: %d" % [client.uuid, auth_data.get("match_id")])
-		Network.Match.connect_match.rpc_id(1, client.uuid, auth_data.get("match_id"))
+		var uuid: int = client.uuid if not OS.has_feature("editor") else auth_data.get("uuid")
+		Network.Match.connect_match.rpc_id(1, uuid, auth_data.get("match_id"))
 		await loader.wait_untill(func(): return client.connected_to_game)
 		if !client.connected_to_game:
 			return taskResult.new(false, "Failed to connect to game")
