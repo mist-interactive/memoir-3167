@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="CommandCard" format=3 uid="uid://b5jbncffqelnd"]
+
+[ext_resource type="Texture2D" uid="uid://iyiii2ntj15x" path="res://assets/card_textures/terrain-cards/oceans.png" id="1_vxqsm"]
+[ext_resource type="Script" uid="uid://brv7b2q4f6ws5" path="res://commons/cards/command_card/CommandCard.gd" id="2_o0ihd"]
+
+[resource]
+script = ExtResource("2_o0ihd")
+id = "107"
+title_label = "oceans"
+deck_quantity = 0
+target_unit_limit = 0
+card_art = ExtResource("1_vxqsm")
+metadata/_custom_type_script = "uid://brv7b2q4f6ws5"
