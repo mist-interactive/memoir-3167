@@ -125,7 +125,10 @@ func handle_play_card(side: enums.Side, instance_id: int) -> void:
 func handle_select_unit(side: enums.Side, unit_id: int) -> void:
 	if !unit_manager.validate_unit_selection(unit_id, deckManager.get_card()):
 		return
-	unit_manager.select_unit(side, unit_id, deckManager.get_card())
+	unit_manager.select_unit(side, unit_id)
+	
+func handle_deselect_unit(side: enums.Side, unit_id: int) -> void:
+	unit_manager.deselect_unit(side, unit_id)
 
 func handle_move_unit(side: enums.Side, unit_id: int, destination: Vector2i) -> void:
 	if unit_manager.move_unit_request(side, unit_id, destination, get_sides_peer_ids()):
@@ -133,7 +136,7 @@ func handle_move_unit(side: enums.Side, unit_id: int, destination: Vector2i) -> 
 			go_next_phase(side)
 
 func handle_attack_unit(side: enums.Side, unit_id: int, target_unit_id: int) -> void:
-	if unit_manager.attack_unit(side, unit_id, target_unit_id, get_sides_peer_ids()):
+	if await unit_manager.attack_unit(side, unit_id, target_unit_id, get_sides_peer_ids()):
 		if unit_manager.attacked_units_ids.size() == unit_manager.selected_units_ids.size():
 			go_next_phase(side)
 
