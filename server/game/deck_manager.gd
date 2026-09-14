@@ -143,3 +143,6 @@ func get_card() -> CommandCard:
 		return null
 	var card: CommandCard = CardDatabase.get_card(discard_pile.back().card_id)
 	return card
+
+func card_was_played(side: enums.Side):
+	return player_hands[side].card_ids.size() < 6
