@@ -11,7 +11,7 @@ extends Resource
 
 const DEFAULT_TERRAIN_COLORS: Dictionary = {
 	HexCell.Ground.PLAINS: Color(0.463, 0.565, 0.0, 1.0),
-	HexCell.Ground.SAND: Color(0.925, 0.745, 0.396, 1.0),
+	HexCell.Ground.HILL: Color(0.925, 0.745, 0.396, 1.0),
 	HexCell.Ground.WATER: Color(0.035, 0.714, 0.973, 1.0),
 }
 
