@@ -22,9 +22,12 @@ var current_turn: enums.Side:
 	set(new_turn):
 		current_turn = new_turn
 		should_sync = true
-
-var should_sync: bool = true
+var phase_timer: PhaseTimer = PhaseTimer.new():
+	set(new_phase):
+		phase_timer = new_phase
+		should_sync = true
 enum STATE {INITIALIZING, READY, INITIALIZE_BOARD, IN_PROGRESS, PAUSED, ENDED}
+var should_sync: bool = true
 
 func _init(snapshot: Dictionary = {}) -> void:
 	name = "matchState"
@@ -49,7 +52,8 @@ func get_snapshot(side: enums.Side = enums.Side.NONE) -> Dictionary:
 		"state": self.state,
 		"phase": self.phase,
 		"side": side,
-		"current_turn": self.current_turn
+		"current_turn": self.current_turn,
+		"phase_timer": self.phase_timer.to_dict(),
 	}
 
 func _on_sync(snapshot: Dictionary):
@@ -63,6 +67,7 @@ func _on_sync(snapshot: Dictionary):
 	phase = snapshot.phase
 	current_turn = snapshot.current_turn
 	mySide = snapshot.side
+	phase_timer.sync(snapshot.phase_timer)
 	for event: Event in event_queue:
 		event.emit()
 
@@ -86,3 +91,29 @@ func get_winner(min_score: int = 1) -> enums.Side:
 	elif scores[enums.Side.GREEN] >= min_score:
 		return enums.Side.GREEN
 	return enums.Side.NONE
+
+func is_paused() -> bool:
+	return state == STATE.PAUSED
+
+func new_phase_timer(duration_in_sec: float) -> void:
+	phase_timer.started_at = Time.get_ticks_msec()
+	phase_timer.ends_at = phase_timer.started_at + duration_in_sec * 1000
+	phase_timer.duration = duration_in_sec * 1000
+	should_sync = true
+	
+func pause() -> void:
+	if state != MatchState.STATE.PAUSED:
+		phase_timer.paused_at = Time.get_ticks_msec()
+	state = STATE.PAUSED
+	should_sync = true
+	
+func unpause() -> void:
+	var time_used: float = phase_timer.paused_at - phase_timer.started_at
+	phase_timer.ends_at = Time.get_ticks_msec() + (phase_timer.duration - time_used)
+	phase_timer.started_at = phase_timer.ends_at - phase_timer.duration
+	state = STATE.IN_PROGRESS
+
+func has_phase_ended(server_time: float) -> bool:
+	if state != STATE.IN_PROGRESS:
+		return false
+	return server_time >= phase_timer.ends_at
