@@ -14,20 +14,17 @@ extends RefCounted
 ## custom constants without modifying the addon.
 ## The cost of each terrain is defined by HexGrid.terrain_cost.
 enum Ground {
-	FIELDS,
-	SAND,
-	WATER,
+	PLAINS,    ## Plains (default cost 1.5).
+	HEDGEROW,
+	FOREST,    ## Forest (default cost 2.0).
+	TOWN,
+	HILL,      ## Mountain (default cost 2.5).
+	MOUNTAIN,  ## Mountain (default cost 3.0).
+	WATER,     ## Water — impassable by default (cost -1.0).
 }
 
 enum Feature {
 	NONE,
-	ROAD,      ## Road (default cost 1.0).
-	PLAINS,    ## Plains (default cost 1.5).
-	FOREST,    ## Forest (default cost 2.0).
-	HILL,      ## Mountain (default cost 2.5).
-	MOUNTAIN,  ## Mountain (default cost 3.0).
-	ROCKS,
-	WATER,     ## Water — impassable by default (cost -1.0).
 }
 
 
@@ -36,9 +33,9 @@ var coord: Vector2i = Vector2i.ZERO
 ## Sector that the tile belongs to
 var sector: enums.MapSector = enums.MapSector.NONE
 ## Active terrain ground type. One of Ground.* or a custom integer constant.
-var ground: int = Ground.FIELDS
+var ground: int = Ground.PLAINS
 ## Active terrain feature type. One of Feature.* or a custom integer constant.
-var feature: int = Feature.PLAINS
+var feature: int = Feature.NONE
 ## Location type. 0 = no location. Define with custom constants (1 = city, 2 = dungeon…).
 var location_type: int = 0
 ## Data attached to the location. The addon does not interpret them — free structure from game to game.
@@ -55,7 +52,7 @@ var elevation: float = 0.0
 
 ## Creates the cell at [param cell_coord] with [param cell_terrain].
 ## HexGrid calls this method internally during generate_cells().
-func _init(cell_coord: Vector2i = Vector2i.ZERO, cell_ground: int = Ground.FIELDS, cell_feature: int = Feature.PLAINS, cell_sector: enums.MapSector = enums.MapSector.NONE) -> void:
+func _init(cell_coord: Vector2i = Vector2i.ZERO, cell_ground: int = Ground.PLAINS, cell_feature: int = Feature.NONE, cell_sector: enums.MapSector = enums.MapSector.NONE) -> void:
 	coord = cell_coord
 	sector = cell_sector
 	ground = cell_ground

@@ -14,7 +14,7 @@ const hex_elevation: Dictionary[HexCell.Feature, float] = {
 	HexCell.Feature.FOREST: 2.0,
 	HexCell.Feature.HILL: 3.0,
 	HexCell.Feature.MOUNTAIN: 4.0,
-	HexCell.Feature.ROCKS: 1.5,
+	HexCell.Feature.HEDGEROW: 1.5,
 	HexCell.Feature.WATER: 0,
 }
 
