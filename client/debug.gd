@@ -9,24 +9,34 @@ extends Control
 @onready var scores = $ResizeUI/Scores
 @onready var winner = $ResizeUI/Winner
 @onready var button = $ResizeUI/Button
+@onready var ui = $ResizeUI
+
+const DESIGN_SIZE := Vector2(1920, 1080)
+var debug_hidden: bool = false
 
 @onready var score_pips: Array[TextureRect] = [
-	$ResizeUI/MarginContainer/ScorePips/TextureRect1,
-	$ResizeUI/MarginContainer/ScorePips/TextureRect2,
-	$ResizeUI/MarginContainer/ScorePips/TextureRect3,
-	$ResizeUI/MarginContainer/ScorePips/TextureRect4,
-	$ResizeUI/MarginContainer/ScorePips/TextureRect5,
+	$ResizeUI/ScorePips/BoxContainer/TextureRect1,
+	$ResizeUI/ScorePips/BoxContainer/TextureRect2,
+	$ResizeUI/ScorePips/BoxContainer/TextureRect3,
+	$ResizeUI/ScorePips/BoxContainer/TextureRect4,
+	$ResizeUI/ScorePips/BoxContainer/TextureRect5,
 ]
 
-var debug_hidden: bool = false
+@onready var score_pips_enemy: Array[TextureRect] = [
+	$ResizeUI/ScorePipsEnemy/BoxContainer/TextureRect1,
+	$ResizeUI/ScorePipsEnemy/BoxContainer/TextureRect2,
+	$ResizeUI/ScorePipsEnemy/BoxContainer/TextureRect3,
+	$ResizeUI/ScorePipsEnemy/BoxContainer/TextureRect4,
+	$ResizeUI/ScorePipsEnemy/BoxContainer/TextureRect5,
+]
+
 
 func _ready() -> void:
 	get_viewport().size_changed.connect(update_ui)
 	update_ui()
 	update_score_pips()
 
-@onready var ui = $ResizeUI
-const DESIGN_SIZE := Vector2(1920, 1080)
+
 func update_ui():
 	var viewport_size := get_viewport_rect().size
 	var scale_factor := minf(
@@ -65,22 +75,47 @@ func _physics_process(delta: float) -> void:
 
 
 func update_score_pips() -> void:
-	var score: int = matchState.scores[matchState.mySide]
+	var my_score: int = matchState.scores[matchState.mySide]
+	var enemy_side: enums.Side
 
-	var active_color: Color
-
+	# Determine the enemy side
 	if matchState.mySide == enums.Side.RED:
-		active_color = Color.GREEN
+		enemy_side = enums.Side.GREEN
 	elif matchState.mySide == enums.Side.GREEN:
-		active_color = Color.RED
+		enemy_side = enums.Side.RED
 	else:
-		active_color = Color.WHITE
+		enemy_side = enums.Side.NONE
 
+	var enemy_score: int = matchState.scores[enemy_side]
+
+	var my_active_color: Color
+	var enemy_active_color: Color
+
+	# Your pips use the enemy's color
+	if matchState.mySide == enums.Side.RED:
+		my_active_color = Color.GREEN
+		enemy_active_color = Color.RED
+	elif matchState.mySide == enums.Side.GREEN:
+		my_active_color = Color.RED
+		enemy_active_color = Color.GREEN
+	else:
+		my_active_color = Color.WHITE
+		enemy_active_color = Color.WHITE
+
+	# Update your score pips
 	for i in range(score_pips.size()):
-		if i < score:
-			score_pips[i].modulate = active_color
+		if i < my_score:
+			score_pips[i].modulate = my_active_color
 		else:
 			score_pips[i].modulate = Color(0.25, 0.25, 0.25, 1.0)
+
+	# Update enemy score pips
+	for i in range(score_pips_enemy.size()):
+		if i < enemy_score:
+			score_pips_enemy[i].modulate = enemy_active_color
+		else:
+			score_pips_enemy[i].modulate = Color(0.25, 0.25, 0.25, 1.0)
+
 
 
 func player_id_text(side: enums.Side) -> String:
