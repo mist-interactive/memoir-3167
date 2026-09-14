@@ -1,27 +1,87 @@
-extends Node2D
+extends Control
+
 @onready var matchState: MatchState = $"../../../matchState"
 @onready var clock: NetworkClock = $"../../../NetworkClock"
-@onready var phase = $Phase
-@onready var turn = $Turn
-@onready var peer_ids = $Peer_ids
-@onready var state = $State
-@onready var scores = $Scores
-@onready var winner = $Winner
+@onready var phase = $ResizeUI/Phase
+@onready var turn = $ResizeUI/Turn
+@onready var peer_ids = $ResizeUI/Peer_ids
+@onready var state = $ResizeUI/State
+@onready var scores = $ResizeUI/Scores
+@onready var winner = $ResizeUI/Winner
+@onready var button = $ResizeUI/Button
+
+@onready var score_pips: Array[TextureRect] = [
+	$ResizeUI/MarginContainer/ScorePips/TextureRect1,
+	$ResizeUI/MarginContainer/ScorePips/TextureRect2,
+	$ResizeUI/MarginContainer/ScorePips/TextureRect3,
+	$ResizeUI/MarginContainer/ScorePips/TextureRect4,
+	$ResizeUI/MarginContainer/ScorePips/TextureRect5,
+]
 
 var debug_hidden: bool = false
+
+func _ready() -> void:
+	get_viewport().size_changed.connect(update_ui)
+	update_ui()
+	update_score_pips()
+
+@onready var ui = $ResizeUI
+const DESIGN_SIZE := Vector2(1920, 1080)
+func update_ui():
+	var viewport_size := get_viewport_rect().size
+	var scale_factor := minf(
+		viewport_size.x / DESIGN_SIZE.x,
+		viewport_size.y / DESIGN_SIZE.y
+	)
+
+	ui.scale = Vector2.ONE * scale_factor
+	ui.position = (viewport_size - DESIGN_SIZE * scale_factor) / 2.0
+
 
 func _physics_process(delta: float) -> void:
 	var server_now: float = clock.get_server_time()
 	var count_down: float = matchState.phase_timer.get_time_left_ms(matchState.state, server_now)
-	scores.text = "scores: Red %d - %d Green" %[matchState.scores[enums.Side.RED], matchState.scores[enums.Side.GREEN]]
+	scores.text = "scores: Red %d - %d Green" % [
+		matchState.scores[enums.Side.RED],
+		matchState.scores[enums.Side.GREEN]
+	]
+
 	peer_ids.text = "Side: " + player_id_text(matchState.mySide)
 	phase.text = "turn phase: " + get_turn_phase_txt(matchState.phase) + "(%d)" % (count_down / 1000)
 	state.text = "match state: " + get_game_state_txt(matchState.state)
 	turn.text = "player_turn: " + player_id_text(matchState.current_turn)
 	winner.text = "winner: " + player_id_text(matchState.winner)
+
+	if matchState.current_turn != matchState.mySide:
+		button.text = "Waiting"
+	else:
+		button.text = get_turn_phase_txt(matchState.phase)
+
+	update_score_pips()
+
 	if Input.is_action_just_released("toggle_debug_overlay"):
 		show() if debug_hidden else hide()
 		debug_hidden = !debug_hidden
+
+
+func update_score_pips() -> void:
+	var score: int = matchState.scores[matchState.mySide]
+
+	var active_color: Color
+
+	if matchState.mySide == enums.Side.RED:
+		active_color = Color.GREEN
+	elif matchState.mySide == enums.Side.GREEN:
+		active_color = Color.RED
+	else:
+		active_color = Color.WHITE
+
+	for i in range(score_pips.size()):
+		if i < score:
+			score_pips[i].modulate = active_color
+		else:
+			score_pips[i].modulate = Color(0.25, 0.25, 0.25, 1.0)
+
 
 func player_id_text(side: enums.Side) -> String:
 	if side == enums.Side.GREEN:
@@ -30,6 +90,7 @@ func player_id_text(side: enums.Side) -> String:
 		return "Red"
 	else:
 		return "None"
+
 
 func get_turn_phase_txt(phase: enums.TurnPhase) -> String:
 	match phase:
@@ -48,7 +109,8 @@ func get_turn_phase_txt(phase: enums.TurnPhase) -> String:
 		enums.TurnPhase.DRAW_CARD:
 			return "Draw Card"
 	return "Unknown"
-	
+
+
 func get_game_state_txt(state: MatchState.STATE) -> String:
 	match state:
 		MatchState.STATE.INITIALIZING:
