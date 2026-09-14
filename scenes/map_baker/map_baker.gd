@@ -7,17 +7,6 @@ extends Node
 @export var unit_container: Node2D
 @export var map_name: String
 
-const hex_elevation: Dictionary[HexCell.Feature, float] = {
-	HexCell.Feature.NONE: 1.0,
-	HexCell.Feature.ROAD: 1.0,
-	HexCell.Feature.PLAINS: 1.0,
-	HexCell.Feature.FOREST: 2.0,
-	HexCell.Feature.HILL: 3.0,
-	HexCell.Feature.MOUNTAIN: 4.0,
-	HexCell.Feature.HEDGEROW: 1.5,
-	HexCell.Feature.WATER: 0,
-}
-
 var _map_width: int
 var _map_height: int
 var _left_max_x: int
@@ -81,13 +70,10 @@ func _get_hex_grid() -> Dictionary:
 		var final_feature: int
 		if MapData.FEATURE_ATLAS.has(feature_key):
 			final_feature = MapData.FEATURE_ATLAS[feature_key]
-		elif final_ground == HexCell.Ground.WATER:
-			final_feature = HexCell.Feature.WATER
 		else:
 			final_feature = HexCell.Feature.NONE
 		var sector = _get_hex_sector(coord)
 		var temp_hex = HexCell.new(coord, final_ground, final_feature, sector)
-		temp_hex.elevation = hex_elevation[temp_hex.feature]
 		hex_grid.cells[coord] = temp_hex
 	return hex_grid.serialize()
 
