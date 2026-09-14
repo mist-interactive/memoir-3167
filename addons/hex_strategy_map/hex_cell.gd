@@ -14,6 +14,7 @@ extends RefCounted
 ## custom constants without modifying the addon.
 ## The cost of each terrain is defined by HexGrid.terrain_cost.
 enum Ground {
+	NONE,
 	PLAINS,    ## Plains (default cost 1.5).
 	HEDGEROW,
 	FOREST,    ## Forest (default cost 2.0).

@@ -57,7 +57,7 @@ func _on_card_hovered(card_target: enums.MapSector) -> void:
 
 func apply_sector_highlights(hexes: Array[Vector2i]) -> void:
 	for hex in hexes:
-		sector_highlight_layer.set_cell(hex, 0, Vector2i(0, 0))
+		sector_highlight_layer.set_cell(hex, 2, Vector2i(0, 0))
 
 func _on_card_unhovered() -> void:
 	sector_highlight_layer.clear()

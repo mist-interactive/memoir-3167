@@ -4,6 +4,6 @@
 
 [resource]
 script = ExtResource("1_nhwmn")
-type = 2
+type = 1
 can_move_in_and_fight = 3
 metadata/_custom_type_script = "uid://u76o6qpu8r0"
