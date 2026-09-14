@@ -1,5 +1,6 @@
 extends Node2D
 @onready var matchState: MatchState = $"../../../matchState"
+@onready var clock: NetworkClock = $"../../../NetworkClock"
 @onready var phase = $Phase
 @onready var turn = $Turn
 @onready var peer_ids = $Peer_ids
@@ -10,9 +11,11 @@ extends Node2D
 var debug_hidden: bool = false
 
 func _physics_process(delta: float) -> void:
+	var server_now: float = clock.get_server_time()
+	var count_down: float = matchState.phase_timer.get_time_left_ms(matchState.state, server_now)
 	scores.text = "scores: Red %d - %d Green" %[matchState.scores[enums.Side.RED], matchState.scores[enums.Side.GREEN]]
 	peer_ids.text = "Side: " + player_id_text(matchState.mySide)
-	phase.text = "turn phase: " + get_turn_phase_txt(matchState.phase)
+	phase.text = "turn phase: " + get_turn_phase_txt(matchState.phase) + "(%d)" % (count_down / 1000)
 	state.text = "match state: " + get_game_state_txt(matchState.state)
 	turn.text = "player_turn: " + player_id_text(matchState.current_turn)
 	winner.text = "winner: " + player_id_text(matchState.winner)
