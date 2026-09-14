@@ -7,6 +7,7 @@ var _unit_id_counter: int = 0
 var isDirty: bool = true
 var death_queue: Array[int]
 var logger: LogService
+var unit_is_attacking: bool = false
 
 func _ready() -> void:
 	logger = match_controller.logger.with_context({
@@ -80,7 +81,7 @@ func deselect_unit(owner: enums.Side) -> bool:
 
 func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, sides_peer_ids: Dictionary[enums.Side, int]) -> bool:
 	var unit: UnitData = get_unit_by_id(unit_id)
-	
+
 	if unit == null || unit.owner_id != owner:
 		return false
 
@@ -94,7 +95,7 @@ func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, 
 	var old_coord := unit.hex_coord
 	if !move_unit(unit, old_coord, destination):
 		return false
-	
+
 	Network.broadcast(Network.Actions.sync_unit_path.rpc_id,sides_peer_ids.values(),[unit_path] )
 	#for peer_id in sides_peer_ids.values():
 		#Network.Actions.sync_unit_path.rpc_id(peer_id, unit_id, unit_path)
@@ -121,6 +122,7 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	var targets: Dictionary[int, Vector2i] = get_enemies_within_range_and_los(unit)
 	if !targets.has(target_unit_id):
 		return false
+	unit_is_attacking = true
 	var d: int = battlefield.map.distance(unit.hex_coord, target.hex_coord)
 	var num_of_dice: int = UnitDatabase.get_stats(unit.type).attack_dice_by_distance[d - 1]
 	var rolled_dices: Array[enums.RolledDice] = Dice.roll(num_of_dice)
