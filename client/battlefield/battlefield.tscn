@@ -196,12 +196,12 @@ script = ExtResource("11_tjobt")
 metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
 
 [node name="LeftSectorDivider" type="Line2D" parent="MapVisuals" unique_id=1538020218]
-width = 20.0
-default_color = Color(1, 0, 0, 1)
+width = 5.0
+default_color = Color(0.79607844, 0.22352941, 0.16862746, 1)
 
 [node name="RightSectorDivider" type="Line2D" parent="MapVisuals" unique_id=479535643]
-width = 20.0
-default_color = Color(1, 0, 0, 1)
+width = 5.0
+default_color = Color(0.79613465, 0.22224942, 0.17009893, 1)
 
 [node name="UnitContainer" type="Node2D" parent="." unique_id=1804487023]
 
