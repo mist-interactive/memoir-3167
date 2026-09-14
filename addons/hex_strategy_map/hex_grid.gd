@@ -37,7 +37,7 @@ const EDGE_COST: Dictionary = {
 
 # The circumscribed radius (half the width of a pointy-top tile).
 # Set this to match the Y dimension of your TileSet divided by 2.
-const HEX_SIZE: float = 512 / 2
+const HEX_SIZE: float = 128 / 2
 const HEX_SQRT3: float = 1.7320508075688772
 
 var tile_width: float

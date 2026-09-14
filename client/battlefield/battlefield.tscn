@@ -1,14 +1,14 @@
 [gd_scene format=4 uid="uid://ct57afg2bcg0e"]
 
 [ext_resource type="Script" uid="uid://chagsifi7w8n6" path="res://client/battlefield/battlefield.gd" id="1_u0eng"]
-[ext_resource type="Texture2D" uid="uid://dq8khvkm5weph" path="res://assets/sprites/hex/fields_ground_sprite_sheet.png" id="2_4ok02"]
 [ext_resource type="Script" uid="uid://cgtpxpasdke04" path="res://client/battlefield/client_map_manager.gd" id="2_ynl45"]
 [ext_resource type="PackedScene" uid="uid://br53t6qvsase5" path="res://client/units/Unit.tscn" id="3_0hlkx"]
 [ext_resource type="Script" uid="uid://doeqye6s2a65e" path="res://client/battlefield/map_controller.gd" id="3_stskl"]
 [ext_resource type="Script" uid="uid://buj6ft1vvdf2f" path="res://addons/hexagon_tilemaplayer/hexagon_tilemaplayer.gd" id="4_4ok02"]
 [ext_resource type="Script" uid="uid://p2qb3rgi6dap" path="res://client/battlefield/player_controller.gd" id="4_eq063"]
 [ext_resource type="Script" uid="uid://7tdnt2pcipdq" path="res://client/battlefield/camera_controller.gd" id="5_7nanj"]
-[ext_resource type="Texture2D" uid="uid://bbk0bb2k6twkd" path="res://assets/sprites/hex/fields_feature_sprite_sheet.png" id="7_yttjq"]
+[ext_resource type="Texture2D" uid="uid://bklyrlmknh4ui" path="res://assets/sprites/hex/hex_tile_set_128x128.png" id="5_fpqqf"]
+[ext_resource type="Texture2D" uid="uid://bytaguj5p1rtm" path="res://assets/sprites/hex/higlight_tile_set_128x128.png" id="8_fpqqf"]
 [ext_resource type="Script" uid="uid://cpytl0qe8h6u5" path="res://client/battlefield/player_hand_ui.gd" id="9_cuxbe"]
 [ext_resource type="Script" uid="uid://bq54bqhfhjf5o" path="res://client/battlefield/unit_selection_highlight.gd" id="10_cvs13"]
 [ext_resource type="Script" uid="uid://bovs46if0cf51" path="res://client/battlefield/unit_path_highlight.gd" id="11_2w58j"]
@@ -16,7 +16,6 @@
 [ext_resource type="Script" uid="uid://cviqoy1ixqq6j" path="res://client/battlefield/sector_highlight.gd" id="11_tjobt"]
 [ext_resource type="PackedScene" uid="uid://bs3n3ysl7e5vc" path="res://client/player_hand/card_ui.tscn" id="12_f3lu3"]
 [ext_resource type="Script" uid="uid://dsajes703tyny" path="res://client/battlefield/roll_dice.gd" id="12_wygn3"]
-[ext_resource type="Texture2D" uid="uid://l08uw4hx56l0" path="res://assets/sprites/hex/highlight.png" id="13_56ovr"]
 [ext_resource type="Script" uid="uid://ixegjorc6cco" path="res://client/battlefield/enemy_hand_ui.gd" id="13_ec6rr"]
 [ext_resource type="Script" uid="uid://bx150801txbve" path="res://client/battlefield/action_highlight.gd" id="13_fpqqf"]
 [ext_resource type="Texture2D" uid="uid://wd8gerj4bli1" path="res://assets/sprites/dice/textures/dice-sides.png" id="13_wygn3"]
@@ -27,42 +26,40 @@
 [ext_resource type="Script" uid="uid://d0i075tkk6mwe" path="res://client/battlefield/terrain_cards.gd" id="23_vln62"]
 [ext_resource type="Script" uid="uid://ctk6r7joynsl2" path="res://client/battlefield/card_play_area.gd" id="24_fpqqf"]
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_e5smb"]
-texture = ExtResource("2_4ok02")
-texture_region_size = Vector2i(442, 512)
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_axx1d"]
+texture = ExtResource("5_fpqqf")
+texture_region_size = Vector2i(128, 128)
 0:0/0 = 0
 1:0/0 = 0
 2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
+6:0/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_o6wfx"]
 tile_shape = 3
-tile_size = Vector2i(442, 512)
-sources/0 = SubResource("TileSetAtlasSource_e5smb")
-
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_mhs4e"]
-texture = ExtResource("7_yttjq")
-texture_region_size = Vector2i(512, 512)
-0:0/0 = 0
-0:0/0/texture_origin = Vector2i(0, 35)
-1:0/0 = 0
-1:0/0/texture_origin = Vector2i(0, 35)
-0:1/0 = 0
-1:1/0 = 0
+tile_size = Vector2i(128, 128)
+sources/1 = SubResource("TileSetAtlasSource_axx1d")
 
 [sub_resource type="TileSet" id="TileSet_jqkp6"]
 tile_shape = 3
-tile_size = Vector2i(442, 512)
-sources/0 = SubResource("TileSetAtlasSource_mhs4e")
+tile_size = Vector2i(128, 128)
 
-[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_upguu"]
-texture = ExtResource("13_56ovr")
-texture_region_size = Vector2i(442, 512)
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_1ra3n"]
+texture = ExtResource("8_fpqqf")
+texture_region_size = Vector2i(128, 128)
 0:0/0 = 0
+1:0/0 = 0
+2:0/0 = 0
+3:0/0 = 0
+4:0/0 = 0
+5:0/0 = 0
 
 [sub_resource type="TileSet" id="TileSet_ql7mu"]
 tile_shape = 3
-tile_size = Vector2i(442, 512)
-sources/0 = SubResource("TileSetAtlasSource_upguu")
+tile_size = Vector2i(128, 128)
+sources/2 = SubResource("TileSetAtlasSource_1ra3n")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x8frt"]
 resource_name = "Material"
