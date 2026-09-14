@@ -234,10 +234,13 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -256.0
-offset_top = -256.0
+offset_left = -129.00006
+offset_top = -597.0
+offset_right = 127.0
+offset_bottom = -341.0
 grow_horizontal = 0
 grow_vertical = 0
+scale = Vector2(0.54, 0.54)
 
 [node name="SubViewport" type="SubViewport" parent="UICanvas/DiceView" unique_id=443539317]
 transparent_bg = true
@@ -319,9 +322,12 @@ anchors_preset = 11
 anchor_left = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 47.319946
+offset_top = -35.365
+offset_right = 47.319946
+offset_bottom = -35.36499
 grow_horizontal = 0
 grow_vertical = 2
-scale = Vector2(0.8, 0.8)
 script = ExtResource("15_eq063")
 top_card_texture = NodePath("TextureRect")
 
