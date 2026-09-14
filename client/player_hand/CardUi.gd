@@ -61,6 +61,7 @@ func setup_enemy_visuals(instance_id: int) -> void:
 	$background_texture.texture = card_data.card_art
 
 func animate_to_discard(target_global_pos: Vector2, on_complete_callback: Callable) -> void:
+	is_discarded = true
 	is_interactive = false
 
 	if is_dragging:
@@ -84,7 +85,9 @@ func animate_to_discard(target_global_pos: Vector2, on_complete_callback: Callab
 		.set_trans(Tween.TRANS_CUBIC)\
 		.set_ease(Tween.EASE_IN_OUT)
 
-	tween.tween_property(self, "scale", DISCARD_BASE_SCALE, 0.4)\
+	var target_scale := get_discard_scale()
+
+	tween.tween_property(self, "scale", target_scale, 0.4)\
 		.set_trans(Tween.TRANS_CUBIC)
 
 	tween.tween_property(self, "rotation_degrees", 0.0, 0.4)
@@ -135,16 +138,29 @@ func _on_mouse_entered() -> void:
 		card_hovered.emit(card_data.target_sector)
 
 func _animate_discard_pile_hover(state: int) -> void:
+	var discard_scale := get_discard_scale()
+
 	if state == 1:
-		scale = DISCARD_BASE_SCALE * 1.5
+		scale = discard_scale * 1.5
 		base_position_x = position.x
 		position.x = position.x - (size.x * 0.25)
 	else:
-		scale = DISCARD_BASE_SCALE
+		scale = discard_scale
 		position.x = base_position_x
 
+func get_discard_scale() -> Vector2:
+	if not discard_target:
+		return BASE_SCALE
+
+	var parent_global_scale := discard_target.global_transform.get_scale() as Vector2
+
+	return Vector2(
+		BASE_SCALE.x / parent_global_scale.x,
+		BASE_SCALE.y / parent_global_scale.y
+	)
+
 func _gui_input(event: InputEvent) -> void:
-	if not is_interactive:
+	if not is_interactive or is_discarded:
 		return
 
 	if event is InputEventMouseButton:
