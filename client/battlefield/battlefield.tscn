@@ -105,6 +105,8 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_mdp4n")
 
+[sub_resource type="PackedScene" id="PackedScene_axx1d"]
+
 [sub_resource type="Curve" id="Curve_u0eng"]
 _data = [Vector2(0, 0), 0.0, 5.0, 0, 0, Vector2(0.5081967, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), -5.0, 0.0, 0, 0]
 point_count = 3
@@ -273,7 +275,7 @@ mesh = SubResource("ArrayMesh_vln62")
 transform = Transform3D(-4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0, 1, 4, 0, 0)
 mesh = SubResource("ArrayMesh_vln62")
 
-[node name="PlayerHandUI" type="MarginContainer" parent="UICanvas" unique_id=2042215150]
+[node name="PlayerHandUI" type="MarginContainer" parent="UICanvas" unique_id=2042215150 node_paths=PackedStringArray("player_controller", "discard_pile_ui", "play_area")]
 anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
@@ -282,40 +284,34 @@ grow_horizontal = 2
 grow_vertical = 0
 size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[node name="Control" type="Control" parent="UICanvas/PlayerHandUI" unique_id=1348647858 node_paths=PackedStringArray("player_controller", "discard_pile_ui", "play_area")]
-layout_mode = 2
 script = ExtResource("9_cuxbe")
-card_ui_scene = ExtResource("12_f3lu3")
-hand_curve = SubResource("Curve_u0eng")
-rotation_curve = SubResource("Curve_f3lu3")
-player_controller = NodePath("../../../PlayerController")
-discard_pile_ui = NodePath("../../DiscardPileUI")
-play_area = NodePath("../../CardPlayArea/Control")
+player_controller = NodePath("../../PlayerController")
+discard_pile_ui = NodePath("../DiscardPileUI")
+play_area = NodePath("../CardPlayArea")
 
-[node name="EnemyHandUI" type="MarginContainer" parent="UICanvas" unique_id=491818102]
+[node name="Control" type="Control" parent="UICanvas/PlayerHandUI" unique_id=635763255]
+layout_mode = 2
+
+[node name="EnemyHandUI" type="MarginContainer" parent="UICanvas" unique_id=491818102 node_paths=PackedStringArray("discard_pile_ui", "player_controller")]
 anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[node name="Control" type="Control" parent="UICanvas/EnemyHandUI" unique_id=1002495451 node_paths=PackedStringArray("discard_pile_ui", "player_controller")]
-layout_mode = 2
 script = ExtResource("13_ec6rr")
-card_ui_scene = ExtResource("12_f3lu3")
-hand_curve = SubResource("Curve_ec6rr")
-rotation_curve = SubResource("Curve_0hlkx")
-discard_pile_ui = NodePath("../../DiscardPileUI")
-player_controller = NodePath("../../../PlayerController")
+card_ui_scene = SubResource("PackedScene_axx1d")
+discard_pile_ui = NodePath("../DiscardPileUI")
+player_controller = NodePath("../../PlayerController")
+
+[node name="Control" type="Control" parent="UICanvas/EnemyHandUI" unique_id=258260206]
+layout_mode = 2
 
 [node name="DiscardPileUI" type="Control" parent="UICanvas" unique_id=1834357906 node_paths=PackedStringArray("top_card_texture")]
 layout_mode = 3
-anchors_preset = 6
+anchors_preset = 11
 anchor_left = 1.0
-anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 0.5
+anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 2
 script = ExtResource("15_eq063")
@@ -361,6 +357,22 @@ offset_right = 54.092194
 offset_bottom = 200.49394
 
 [node name="placeholderUI" parent="UICanvas" unique_id=664071434 instance=ExtResource("19_3y24m")]
+
+[node name="UICanvas_MarginContainer#PlayerHandUI" type="Control" parent="." unique_id=1348647858]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("9_cuxbe")
+card_ui_scene = ExtResource("12_f3lu3")
+hand_curve = SubResource("Curve_u0eng")
+rotation_curve = SubResource("Curve_f3lu3")
+
+[node name="UICanvas_MarginContainer2#EnemyHandUI" type="Control" parent="." unique_id=1002495451]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("13_ec6rr")
+card_ui_scene = ExtResource("12_f3lu3")
+hand_curve = SubResource("Curve_ec6rr")
+rotation_curve = SubResource("Curve_0hlkx")
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=1708214605 node_paths=PackedStringArray("target_map", "map_manager")]
 position = Vector2(2877, 1619)
