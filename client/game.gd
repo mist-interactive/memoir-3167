@@ -23,6 +23,7 @@ func initialize_game(snapshot: Dictionary):
 	unitManager = ClientUnitManager.new(battlefield)
 	add_child(unitManager)
 	add_child(ClientHandState.new())
+	add_child(NetworkClock.new())
 	battlefieldRenderer.ready.connect(_ready_to_initialize)
 	unitManager.initialize(battlefieldRenderer.unit_container, snapshot)
 	client.initialized = true
