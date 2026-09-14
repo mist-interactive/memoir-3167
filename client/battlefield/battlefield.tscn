@@ -354,7 +354,10 @@ script = ExtResource("24_fpqqf")
 
 [node name="Debug" parent="UICanvas" unique_id=1503541458 instance=ExtResource("19_3y24m")]
 visible = false
-position = Vector2(54.092194, 200.49394)
+offset_left = 54.092194
+offset_top = 200.49394
+offset_right = 54.092194
+offset_bottom = 200.49394
 
 [node name="placeholderUI" parent="UICanvas" unique_id=664071434 instance=ExtResource("19_3y24m")]
 
