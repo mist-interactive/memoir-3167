@@ -4,7 +4,6 @@ var matchState: MatchState
 var battlefield: BattlefieldState
 var deckManager: DeckManager
 var unit_manager: ServerUnitManager
-var player_game_ready: Dictionary[int, bool]
 var sides_uuid: Dictionary[enums.Side, int]
 var logger: LogService
 
@@ -36,28 +35,29 @@ func _physics_process(delta: float) -> void:
 	deckManager._sync_hands(sides_peer_ids)
 	unit_manager._sync_units(sides_peer_ids)
 	check_win_condition()
+	if matchState.has_phase_ended(Time.get_ticks_msec()) && !unit_manager.unit_is_attacking:
+		go_next_phase(matchState.current_turn)
 	match matchState.phase:
 		enums.TurnPhase.DRAW_HAND:
 			var hands_drawn: bool = deckManager.player_hands[enums.Side.GREEN].is_hand_drawn && deckManager.player_hands[enums.Side.RED].is_hand_drawn
 			if hands_drawn:
-				matchState.phase = enums.TurnPhase.PLAY_CARD
+				go_next_phase(matchState.current_turn)
+				matchState.state = MatchState.STATE.IN_PROGRESS
 	match matchState.state:
 		MatchState.STATE.PAUSED:
-			pass
-			if session_manager.players_are_connected():
-				matchState.state = MatchState.STATE.IN_PROGRESS
+			if session_manager.players_are_playing():
+				matchState.unpause()
 		MatchState.STATE.INITIALIZE_BOARD:
 			logger.info("Initializing board")
 			unit_manager.spawn_units(get_sides_peer_ids())
 			for side in sides_uuid:
 				deckManager.draw_hand(side, get_sides_peer_ids())
-			matchState.state = MatchState.STATE.IN_PROGRESS
 
 # signal handlers
 func handle_connect(uuid: int, peer_id: int) -> void:
 	session_manager.register_new_session(uuid, peer_id)
 	logger.info("Client(%d) joining game" % uuid)
-	if !session_manager.players_are_connected():
+	if !matchState.is_paused() && !session_manager.players_are_connected():
 		return
 	var units: Array[Dictionary]
 	for unit: UnitData in unit_manager.units_by_id.values():
@@ -77,42 +77,39 @@ func handle_connect(uuid: int, peer_id: int) -> void:
 		"map_name": battlefield.mapName,
 		"units": units
 	}
-	for session: PlayerSession in session_manager.get_sessions().values():
-		if session.is_status_set(enums.ConnectionStatus.Connected) && !session.is_status_set(enums.ConnectionStatus.Ready):
-			peer_ids.append(session.peer_id)
+	var sessions: Dictionary[int, PlayerSession] = session_manager.get_sessions()
+	for _uuid: int in sessions:
+		var session: PlayerSession = sessions[_uuid]
+		if matchState.is_paused():
+			if _uuid != uuid:
+				continue
 		snapshot.hand_state = deckManager.player_hands[get_side(session.peer_id)].get_snapshot()
 		Network.Match.init.rpc_id(session.peer_id, snapshot)
 
 func handle_client_ready(uuid: int) -> void:
 	logger.info("Client(%s) is ready" % uuid)
 	session_manager.client_is_ready(uuid)
-	if !session_manager.players_are_ready():
+	if !matchState.is_paused() && !session_manager.players_are_ready():
 		return
 	var peer_ids: Array[int] = []
-	for session: PlayerSession in session_manager.get_sessions().values():
-		if session.is_status_set(enums.ConnectionStatus.Ready) && !session.is_status_set(enums.ConnectionStatus.Playing):
+	var sessions: Dictionary[int, PlayerSession] = session_manager.get_sessions()
+	for _uuid: int in sessions:
+		var session: PlayerSession = sessions[_uuid]
+		if matchState.is_paused():
+			if _uuid == uuid:
+				peer_ids.append(session.peer_id)
+		elif session.is_status_set(enums.ConnectionStatus.Ready):
 			peer_ids.append(session.peer_id)
 	Network.broadcast(Network.Match.start_game.rpc_id, peer_ids)
 
 func handle_client_game_ready(uuid: int) -> void:
-	player_game_ready[uuid] = true
-
-	if player_game_ready.size() != 2:
-		return
-	for ready in player_game_ready.values():
-		if !ready:
-			return
-	if matchState.state == MatchState.STATE.INITIALIZING:
+	session_manager.client_is_playing(uuid)
+	if session_manager.players_are_playing() && matchState.state == MatchState.STATE.INITIALIZING:
 		matchState.state = MatchState.STATE.INITIALIZE_BOARD
-	elif matchState.state == MatchState.STATE.PAUSED:
-		matchState.state == MatchState.STATE.IN_PROGRESS
-
-	for uuid_ in session_manager.get_uuids():
-		session_manager.client_is_playing(uuid_)
 
 func handle_disconnect(side: enums.Side) -> void:
-	matchState.state = MatchState.STATE.PAUSED
 	session_manager.client_disconnected(sides_uuid[side])
+	matchState.pause()
 
 # Action handlers
 func handle_continue_next_phase(side: enums.Side) -> void:
@@ -136,6 +133,7 @@ func handle_attack_unit(side: enums.Side, unit_id: int, target_unit_id: int) -> 
 	if unit_manager.attack_unit(side, unit_id, target_unit_id, get_sides_peer_ids()):
 		if unit_manager.attacked_units_ids.size() == unit_manager.selected_units_ids.size():
 			go_next_phase(side)
+			unit_manager.unit_is_attacking = false
 
 func handle_draw_card(side: enums.Side) -> void:
 	if deckManager.draw_card(side, get_sides_peer_ids()):
@@ -179,23 +177,34 @@ func check_win_condition() -> void:
 	match_completed.emit(result)
 
 func go_next_phase(side: enums.Side) -> void:
-	if matchState.is_phase(enums.TurnPhase.PLAY_CARD):
-		unit_manager.next_phase(enums.TurnPhase.SELECT)
-	elif matchState.is_phase(enums.TurnPhase.ATTACK) || (matchState.is_phase(enums.TurnPhase.SELECT) && unit_manager.selected_units_ids.is_empty()):
-		change_turn(side)
+	if matchState.is_phase(enums.TurnPhase.DRAW_HAND):
 		unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)
+		matchState.new_phase_timer(10)
+	elif matchState.is_phase(enums.TurnPhase.PLAY_CARD):
+		var is_card_played: bool = deckManager.card_was_played(side)
+		unit_manager.next_phase(enums.TurnPhase.SELECT if is_card_played else enums.TurnPhase.PLAY_CARD)
+		matchState.new_phase_timer(10)
+		if !is_card_played:
+			change_turn(side, false)
+	elif matchState.is_phase(enums.TurnPhase.ATTACK) || (matchState.is_phase(enums.TurnPhase.SELECT) && unit_manager.selected_units_ids.is_empty()):
+		unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)
+		matchState.new_phase_timer(10)
+		change_turn(side)
 	elif matchState.is_phase(enums.TurnPhase.SELECT):
 		unit_manager.next_phase(enums.TurnPhase.MOVE)
+		matchState.new_phase_timer(10)
 	elif matchState.is_phase(enums.TurnPhase.MOVE):
 		unit_manager.next_phase(enums.TurnPhase.ATTACK)
+		matchState.new_phase_timer(10)
 
-func change_turn(side: enums.Side) -> void:
+func change_turn(side: enums.Side, should_draw_card: bool = true) -> void:
 	var next_side := enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
 	matchState.current_turn = next_side
-	deckManager.draw_card(
-		side,
-		get_sides_peer_ids()
-	)
+	if should_draw_card:
+		deckManager.draw_card(
+			side,
+			get_sides_peer_ids()
+		)
 func get_match_result() -> MatchResult:
 	var result: MatchResult = MatchResult.new()
 	result.match_id = matchState.matchId
