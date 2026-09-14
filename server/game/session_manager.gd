@@ -38,6 +38,14 @@ func players_are_connected(player_count: int = 2) -> bool:
 			return false
 	return true
 
+func players_are_playing(player_count: int = 2) -> bool:
+	if player_sessions.size() != player_count:
+		return false
+	for session: PlayerSession in player_sessions.values():
+		if !session.is_status_set(enums.ConnectionStatus.Playing):
+			return false
+	return true
+
 func get_peer_ids() -> Array[int]:
 	var peer_ids: Array[int]
 	for session: PlayerSession in player_sessions.values():
