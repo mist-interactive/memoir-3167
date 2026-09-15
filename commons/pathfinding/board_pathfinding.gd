@@ -66,12 +66,12 @@ static func _neighbor_filter(current_hex: Vector2i, neighbor_hex: Vector2i, unit
 		return false
 
 	if current_hex != start_coord:
-		var current_terrain_type: int = map.get_cell(current_hex).feature
+		var current_terrain_type: int = map.get_cell(current_hex).ground
 		var current_terrain_stats: TerrainStats = TerrainDatabase.get_stats(current_terrain_type)
 		if current_terrain_stats and current_terrain_stats.unit_moving_in_must_stop:
 			return false
 	
-	var neighbor_terrain_type: int = map.get_cell(neighbor_hex).feature
+	var neighbor_terrain_type: int = map.get_cell(neighbor_hex).ground
 	var neighbor_terrain_stats: TerrainStats = TerrainDatabase.get_stats(neighbor_terrain_type)
 	if not neighbor_terrain_stats:
 		return false
@@ -79,11 +79,10 @@ static func _neighbor_filter(current_hex: Vector2i, neighbor_hex: Vector2i, unit
 	return true
 
 static func _cost_fn(current_hex: Vector2i, neighbor_hex: Vector2i, unit_type: enums.UnitType, map: HexGrid, max_cost: float) -> float:
-	var terrain_type: int = map.get_cell(neighbor_hex).feature
+	var terrain_type: int = map.get_cell(neighbor_hex).ground
 	#if terrain_type == HexCell.Feature.NONE:
 		#return 1.0
 	var movement_cost: float = map.TERRAIN_COST.get(terrain_type, 1.0)
-	print(movement_cost)
 	if movement_cost < 0.0:
 		return max_cost + 1.0
 	#TODO: Add more logic here later:
@@ -103,7 +102,7 @@ static func _get_hex_elevation(coord: Vector2i, map: HexGrid) -> int:
 	var cell = map.get_cell(coord)
 	if !cell:
 		return INT8_MAX
-	var terrain_stats: TerrainStats = TerrainDatabase.get_stats(cell.feature)
+	var terrain_stats: TerrainStats = TerrainDatabase.get_stats(cell.ground)
 	if !terrain_stats:
 		return INT8_MAX
 	var elevation = terrain_stats.elevation
@@ -136,7 +135,7 @@ static func _is_line_clear(line: Array[Vector2i], from_hex: Vector2i, to_hex: Ve
 		var cell = map.get_cell(coord)
 		if !cell:
 			return false
-		var terrain_stats: TerrainStats = TerrainDatabase.get_stats(cell.feature)
+		var terrain_stats: TerrainStats = TerrainDatabase.get_stats(cell.ground)
 		if !terrain_stats:
 			return false
 		var current_elevation = terrain_stats.elevation

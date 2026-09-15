@@ -4,7 +4,7 @@ class_name TerrainStats
 extends Resource
 
 @export_group("Type and LOS")
-@export var type: HexCell.Feature
+@export var type: HexCell.Ground
 
 @export_range(0, 2) var elevation: int = 0
 

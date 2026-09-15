@@ -1,10 +1,10 @@
 [gd_resource type="Resource" script_class="TerrainStats" format=3 uid="uid://cgbklfk3q6q5n"]
 
-[ext_resource type="Script" uid="uid://u76o6qpu8r0" path="res://commons/autoloads/terrain_database/terrains/terrain_stats.gd" id="1_b2cfx"]
+[ext_resource type="Script" uid="uid://u76o6qpu8r0" path="res://commons/autoloads/terrain_database/terrains/terrain_stats.gd" id="1_g26hp"]
 
 [resource]
-script = ExtResource("1_b2cfx")
-type = 6
+script = ExtResource("1_g26hp")
+type = 2
 blocks_line_of_sight = true
 infantry_max_movement_on_terrain = 1
 armor_max_movement_on_terrain = 1

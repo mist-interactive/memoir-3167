@@ -16,7 +16,7 @@ static var TEXTURE_MAP: Dictionary = {
 		enums.UnitType.ARTILLERY: preload("res://assets/sprites/units/artillery_sprite_sheet.png")
 	}
 }
-static var scale: Vector2 = Vector2(6, 6)
+static var scale: Vector2 = Vector2(2, 2)
 
 static func apply_unit_visuals(sprite: Sprite2D, owner_id: int, unit_type: int) -> void:
 	if not TEXTURE_MAP.has(owner_id):

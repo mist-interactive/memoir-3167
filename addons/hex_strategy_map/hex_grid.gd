@@ -20,13 +20,13 @@ enum EdgeType {
 }
 
 const TERRAIN_COST: Dictionary = {
-	HexCell.Feature.ROAD: 1.0,
-	HexCell.Feature.PLAINS: 1.5,
-	HexCell.Feature.FOREST: 2.0,
-	HexCell.Feature.ROCKS: 2.0,
-	HexCell.Feature.HILL: 2.0,
-	HexCell.Feature.MOUNTAIN: 3.0,
-	HexCell.Feature.WATER: -1.0,
+	HexCell.Ground.PLAINS: 1.0,
+	HexCell.Ground.HEDGEROW: 1.0,
+	HexCell.Ground.FOREST: 1.0,
+	HexCell.Ground.TOWN: 1.0,
+	HexCell.Ground.HILL: 1.0,
+	HexCell.Ground.MOUNTAIN: 3.0,
+	HexCell.Ground.WATER: -1.0,
 }
 
 const EDGE_COST: Dictionary = {
@@ -37,8 +37,11 @@ const EDGE_COST: Dictionary = {
 
 # The circumscribed radius (half the width of a pointy-top tile).
 # Set this to match the Y dimension of your TileSet divided by 2.
-const HEX_SIZE: float = 512 / 2
+const HEX_SIZE: float = 128 / 2
 const HEX_SQRT3: float = 1.7320508075688772
+const TILE_WIDTH: float = 128.0
+const TILE_HEIGHT: float = 128.0
+
 
 var tile_width: float
 var tile_height: float
@@ -89,7 +92,7 @@ func _init(map_width: int = 15, map_height: int = 15, cost_table: Dictionary = {
 
 ## Generates the grid cells with [param default_terrain] in all positions.
 ## Clears any previous cells. Call once after _init().
-func generate_cells(default_terrain: int = HexCell.Feature.PLAINS) -> void:
+func generate_cells(default_terrain: int = HexCell.Ground.PLAINS) -> void:
 	cells.clear()
 	for y in height:
 		for x in width:
@@ -263,8 +266,10 @@ static func deserialize(data: Dictionary) -> HexGrid:
 
 ## Odd-r offset to pixel (pointy-top hexes).
 static func offset_to_pixel(coord: Vector2i, size: float = HEX_SIZE) -> Vector2:
-	var x := size * HEX_SQRT3 * (coord.x + 0.5 * (coord.y & 1))
-	var y := size * 1.5 * coord.y
+	var x: float = (coord.x * TILE_WIDTH) + ((coord.y) & 1) * (TILE_WIDTH / 2.0)
+	var y: float = coord.y * (TILE_HEIGHT * 0.75)
+	#var x := size * HEX_SQRT3 * (coord.x + 0.5 * (coord.y & 1))
+	#var y := size * 1.5 * coord.y
 	return Vector2(x, y)
 
 # Odd-q offset to pixe (flat-top hexes).

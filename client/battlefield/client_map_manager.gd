@@ -71,7 +71,6 @@ func _load_map_data_to_tilemap_layers() -> void:
 			var atlas_coord: Vector2i = tile_info[1]
 			map_features_layer.set_cell(coord, source_id, atlas_coord)
 		else:
-			if !(feature_type == HexCell.Feature.NONE || feature_type == HexCell.Feature.WATER):
 				push_error("Client doesn't have visual data for the Feature enum: ", feature_type)
 	pass
 
