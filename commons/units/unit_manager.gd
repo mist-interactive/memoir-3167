@@ -85,3 +85,23 @@ func get_enemies_within_range_and_los(unit: Variant) -> Dictionary:
 			valid_targets[other_unit.uuid] = coord
 			continue
 	return valid_targets
+
+func get_retreat_coords(coord: Vector2i, retreat: int) -> BinaryTree:
+	if retreat < 0:
+		return null
+	var tree: BinaryTree = BinaryTree.new(coord);
+	var left_coord: Vector2i = Vector2i(coord.x if coord.y % 2 != 0 else coord.x - 1 , coord.y - 1)
+	var right_coord: Vector2i = Vector2i(coord.x if coord.y % 2 == 0 else coord.x + 1 , coord.y - 1)
+	var cell: HexCell = battlefield.map.get_cell(coord);
+	if is_traversable(left_coord):
+		tree.left = get_retreat_coords(left_coord, retreat - 1)
+	if is_traversable(right_coord):
+		tree.right = get_retreat_coords(right_coord, retreat - 1)
+	return tree
+
+func is_traversable(coord: Vector2i) -> bool:
+	var cell: HexCell = battlefield.map.get_cell(coord)
+	var blocked: Array[HexCell.Ground] = [HexCell.Ground.MOUNTAIN, HexCell.Ground.WATER, HexCell.Ground.HEDGEROW]
+	if coord.y < 0 || unit_grid.has(coord) || blocked.has(cell.ground):
+		return false
+	return true
