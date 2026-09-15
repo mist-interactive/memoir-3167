@@ -1,13 +1,11 @@
 [gd_scene format=3 uid="uid://bygbxnjm8uose"]
 
-[ext_resource type="Texture2D" uid="uid://dke2albmj8fh0" path="res://assets/sprites/units/infantry_sprite_sheet.png" id="1_bhgym"]
+[ext_resource type="Texture2D" uid="uid://mimgydc4577m" path="res://assets/sprites/units/axis_infantry_idle_48x48.png" id="1_lsefl"]
 [ext_resource type="Script" uid="uid://b7w4gy415gj6a" path="res://client/units/unit_spawn_marker.gd" id="2_lsefl"]
 
 [node name="Player2_Infantry_1" type="Sprite2D" unique_id=276452804]
-scale = Vector2(6, 6)
-texture = ExtResource("1_bhgym")
-hframes = 4
-vframes = 5
-frame = 16
+scale = Vector2(-1, 1)
+texture = ExtResource("1_lsefl")
+hframes = 13
 script = ExtResource("2_lsefl")
 owner_id = 2

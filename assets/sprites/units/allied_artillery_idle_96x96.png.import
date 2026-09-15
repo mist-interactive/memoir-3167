@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://w6gqi2ht6c1"
-path="res://.godot/imported/artillery_sprite_sheet.png-107249ff726d3c59ddb4eb84ed3c322e.ctex"
+uid="uid://bvd3xgcwoqcpt"
+path="res://.godot/imported/allied_artillery_idle_96x96.png-0f0195272743a703dbe0ff2c97cba6e3.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/units/artillery_sprite_sheet.png"
-dest_files=["res://.godot/imported/artillery_sprite_sheet.png-107249ff726d3c59ddb4eb84ed3c322e.ctex"]
+source_file="res://assets/sprites/units/allied_artillery_idle_96x96.png"
+dest_files=["res://.godot/imported/allied_artillery_idle_96x96.png-0f0195272743a703dbe0ff2c97cba6e3.ctex"]
 
 [params]
 

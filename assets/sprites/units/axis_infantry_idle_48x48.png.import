@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c3e467q1ibvtl"
-path="res://.godot/imported/tank_sprite_sheet.png-007814ed9e2a0482d9eaa5d05725d8e7.ctex"
+uid="uid://mimgydc4577m"
+path="res://.godot/imported/axis_infantry_idle_48x48.png-e3cc5a6b595da2397d9c2ba1e1c0b0a1.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/sprites/units/tank_sprite_sheet.png"
-dest_files=["res://.godot/imported/tank_sprite_sheet.png-007814ed9e2a0482d9eaa5d05725d8e7.ctex"]
+source_file="res://assets/sprites/units/axis_infantry_idle_48x48.png"
+dest_files=["res://.godot/imported/axis_infantry_idle_48x48.png-e3cc5a6b595da2397d9c2ba1e1c0b0a1.ctex"]
 
 [params]
 
