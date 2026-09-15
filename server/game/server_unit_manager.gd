@@ -7,7 +7,6 @@ var _unit_id_counter: int = 0
 var isDirty: bool = true
 var death_queue: Array[int]
 var logger: LogService
-var unit_is_attacking: bool = false
 
 func _ready() -> void:
 	logger = match_controller.logger.with_context({
@@ -106,6 +105,24 @@ func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, 
 	player_logger.info("Unit(%d) moved from %v to %v" % [unit_id, old_coord, destination])
 	return true
 
+func retreat_unit(owner: enums.Side, unit_id: int, destination: Vector2i, sides_peer_ids: Dictionary[enums.Side, int]) -> bool:
+	if !units_by_id.has(unit_id):
+		logger.info("could not find unit")
+		return false
+	var unit: UnitData = units_by_id[unit_id]
+	if unit.num_of_retreat <= 0:
+		logger.info("num of retreat is zero or bellow")
+		return false
+	var tree: BinaryTree = get_retreat_coords(unit.hex_coord, unit.num_of_retreat)
+	var level: int = tree.find_node_level(destination)
+	if level == -1:
+		logger.info("could not find level")
+		return false
+	var unit_path = BoardPathfinding.get_unit_path(unit, unit.hex_coord, destination, battlefield.map, get_occupied_coords())
+	Network.broadcast(Network.Actions.sync_unit_path.rpc_id,sides_peer_ids.values(),[unit_id, unit_path])
+	unit.num_of_retreat -= level
+	return unit.num_of_retreat <= 0
+
 func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer_ids: Dictionary[enums.Side, int]) -> bool:
 	if !units_by_id.has(unit_id) || !units_by_id.has(target_unit_id):
 		return false
@@ -121,7 +138,7 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	unit_is_attacking = true
 	var d: int = battlefield.map.distance(unit.hex_coord, target.hex_coord)
 	var num_of_dice: int = UnitDatabase.get_stats(unit.type).attack_dice_by_distance[d - 1]
-	var rolled_dices: Array[enums.RolledDice] = Dice.roll(num_of_dice)
+	var rolled_dices: Array[enums.RolledDice] = [enums.RolledDice.RETREAT] #Dice.roll(num_of_dice)
 	var combat_result: CombatResult = CombatResult.new()
 	combat_result.initialize(unit, target, rolled_dices)
 	resolve_combat(combat_result, side, sides_peer_ids)
@@ -137,10 +154,12 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	})
 	player_logger.info("Unit(%d) attacked unit(%d)" % [unit_id, target_unit_id])
 	player_logger.info("Combat result ", combat_result.to_dict())
-	if not combat_result.retreat_path.is_empty():
-		await get_tree().create_timer(2).timeout
-		if move_unit(target, target.hex_coord, combat_result.retreat_path.back()):
-			Network.broadcast(Network.Actions.sync_unit_path.rpc_id,sides_peer_ids.values(),[target.uuid, combat_result.retreat_path])
+	await get_tree().create_timer(2).timeout
+	if combat_result.retreat > 0:
+		matchState.phase = enums.TurnPhase.RESOLVE_RETREAT
+		selected_unit_id = target_unit_id
+		matchState.current_turn = enums.Side.GREEN if side == enums.Side.RED else enums.Side.RED
+		return false
 	return true
 
 func generate_server_unit_id() -> int:
@@ -164,7 +183,6 @@ func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 		}
 		Network.broadcast(Network.Units.spawn_unit.rpc_id, sides_peer_ids.values(), [new_unit])
 		add_unit(unit, coord)
-		units_path_history[unit.uuid] = DoublyLinkedList.new(_Node.new(coord))
 
 	for elem in battlefield.units_to_spawn_player_2:
 		var coord: Vector2i = Vector2i(elem.coord[0], elem.coord[1])
@@ -180,7 +198,6 @@ func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 		}
 		Network.broadcast(Network.Units.spawn_unit.rpc_id, sides_peer_ids.values(), [new_unit])
 		add_unit(unit, coord)
-		units_path_history[unit.uuid] = DoublyLinkedList.new(_Node.new(coord))
 
 func resolve_combat(result: CombatResult, side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 	var target_id: int = result.unit_ids[result.target]
@@ -200,7 +217,7 @@ func resolve_combat(result: CombatResult, side: enums.Side, sides_peer_ids: Dict
 		matchState.scores[side] += 1
 		return
 	if  result.retreat > 0:
-		retreat(target, result)
+		target.num_of_retreat = result.retreat
 
 func next_phase(phase: enums.TurnPhase) -> void:
 	if phase == enums.TurnPhase.PLAY_CARD:
