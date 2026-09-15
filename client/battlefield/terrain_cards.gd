@@ -19,13 +19,8 @@ func display_terrain_card(hex: Vector2) -> void:
 
 	var new_card = card_ui_scene.instantiate()
 
-	add_child(new_card)
-	_current_terrain_card = new_card
-	var terrain_id: int = hex_cell.ground + enums.CARD_ID_OFFSET
-	if terrain_id in enums.TerrainCardId.values():
-		new_card.setup_visuals(0, str(terrain_id))
-	var local_hex_pos: Vector2 = map_ground_layer.map_to_local(hex)
-	new_card.global_position = Vector2(0.0, 0.0)
+	#var local_hex_pos: Vector2 = map_ground_layer.map_to_local(hex)
+	#new_card.global_position = Vector2(0.0, 0.0)
 	if new_card == null:
 		print("TerrainCards: Failed to instantiate card_ui_scene")
 		return
@@ -42,9 +37,9 @@ func display_terrain_card(hex: Vector2) -> void:
 	add_child(terrain_card_ui)
 	_current_terrain_card = terrain_card_ui
 
-	var feature_id: int = hex_cell.feature + enums.CARD_ID_OFFSET
+	var terrain_id: int = hex_cell.ground + enums.CARD_ID_OFFSET
 
-	if feature_id in enums.TerrainCardId.values():
+	if terrain_id in enums.TerrainCardId.values():
 		#new_card.setup_terrain_visuals(0, str(feature_id))
 		new_card.setup_visuals("002")
 
