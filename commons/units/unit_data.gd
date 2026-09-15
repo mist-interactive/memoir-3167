@@ -15,6 +15,9 @@ var type: enums.UnitType
 var actions: enums.UnitActions = enums.UnitActions.NONE:
 	set(new_val):
 		actions = new_val
+var num_of_retreat: int = -1:
+	set(new_val):
+		num_of_retreat = new_val
 		isDirty = true
 var isDirty: bool = false
 
@@ -33,6 +36,7 @@ func get_snapshot() -> Dictionary:
 		"owner_id": owner_id,
 		"hit_point": hit_point,
 		"actions": actions
+		"num_of_retreat": num_of_retreat
 	}
 
 func sync(peer_ids: Array[int]) -> void:
@@ -55,19 +59,19 @@ func set_selected(value: bool) -> void:
 
 func set_can_move(value: bool) -> void:
 	actions &= ~(enums.UnitActions.CAN_MOVE | enums.UnitActions.CAN_ATTACK | enums.UnitActions.CAN_RETREAT)
-	
+
 	if value:
 		actions |= enums.UnitActions.CAN_MOVE
 
 func set_can_attack(value: bool) -> void:
 	actions &= ~(enums.UnitActions.CAN_MOVE | enums.UnitActions.CAN_ATTACK | enums.UnitActions.CAN_RETREAT)
-	
+
 	if value:
 		actions |= enums.UnitActions.CAN_ATTACK
 
 func set_can_retreat(value: bool) -> void:
 	actions &= ~(enums.UnitActions.CAN_MOVE | enums.UnitActions.CAN_ATTACK | enums.UnitActions.CAN_RETREAT)
-	
+
 	if value:
 		actions |= enums.UnitActions.CAN_RETREAT
 
