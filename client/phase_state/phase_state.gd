@@ -14,6 +14,7 @@ func enter() -> void:
 	controller.hover_path_highlight_layer.clear()
 	controller.hover_action_highlight_layer.clear()
 	controller.sector_highlight_layer.clear()
+	set_process(true)
 
 ## Called when the server transitions the client OUT of this phase.
 func exit() -> void:
@@ -23,6 +24,7 @@ func exit() -> void:
 	controller.hover_path_highlight_layer.clear()
 	controller.hover_action_highlight_layer.clear()
 	controller.sector_highlight_layer.clear()
+	set_process(false)
 
 func handle_left_click(hex: Vector2i) -> void:
 	var cell_source_id: int = controller.map_ground_layer.get_cell_source_id(hex)
