@@ -78,6 +78,7 @@ enum TurnPhase
 	SELECT,
 	MOVE,
 	ATTACK,
+	RESOLVE_RETREAT,
 	DRAW_CARD
 }
 
