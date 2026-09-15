@@ -13,6 +13,13 @@ func move_unit(unit_id: int, destination: Vector2i) -> void:
 		return
 	move_unit_requested.emit(multiplayer.get_remote_sender_id(), unit_id, destination)
 
+signal retreat_unit_requested(peer_id: int, unit_id: int, destination: Vector2i)
+@rpc("any_peer", "call_remote")
+func retreat_unit(unit_id: int, destination: Vector2i) -> void:
+	if !multiplayer.is_server():
+		return
+	retreat_unit_requested.emit(multiplayer.get_remote_sender_id(), unit_id, destination)
+
 signal select_unit_requested(peer_id: int, unit_id: int)
 @rpc("any_peer", "call_remote")
 func select_unit(unit_id: int) -> void:

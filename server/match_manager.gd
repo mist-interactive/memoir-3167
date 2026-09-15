@@ -18,6 +18,7 @@ func _ready() -> void:
 	Network.Actions.select_unit_requested.connect(_on_select_unit)
 	Network.Actions.deselect_unit_requested.connect(_on_deselect_unit)
 	Network.Actions.move_unit_requested.connect(_on_move_unit)
+	Network.Actions.retreat_unit_requested.connect(_on_retreat_unit)
 	Network.Actions.attack_unit_requested.connect(_on_attack_unit)
 	Network.Actions.draw_card_requested.connect(_on_draw_card)
 	Network.Actions.continue_to_next_phase_requested.connect(_on_continue_to_next_phase_requested)
@@ -103,6 +104,13 @@ func _on_move_unit(peer_id: int, unit_id: int, destination: Vector2i) -> void:
 	if !matchCtl || !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(enums.TurnPhase.MOVE):
 		return
 	matchCtl.handle_move_unit(matchCtl.get_side(peer_id), unit_id, destination)
+
+func _on_retreat_unit(peer_id: int, unit_id: int, destination: Vector2i) -> void:
+	var matchCtl: matchController = get_match(peer_id)
+	if !matchCtl || !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(enums.TurnPhase.RESOLVE_RETREAT):
+		return
+	print("handling retreat...")
+	matchCtl.handle_retreat_unit(matchCtl.get_side(peer_id), unit_id, destination)
 
 func _on_attack_unit(peer_id: int, unit_id: int, target_unit_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
