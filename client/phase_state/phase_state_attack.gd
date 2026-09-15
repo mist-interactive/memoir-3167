@@ -1,6 +1,9 @@
 class_name PhaseStateAttack
 extends PhaseState
 
+func _process(delta: float) -> void:
+	controller.unit_selection_highlight_layer.highlight_attackable_units()
+
 func handle_left_click(hex: Vector2i) -> void:
 	super.handle_left_click(hex)
 	if controller.matchState.is_my_turn():
