@@ -6,17 +6,17 @@ extends RefCounted
 
 static var TEXTURE_MAP: Dictionary = {
 	1: {
-		enums.UnitType.INFANTRY: preload("res://assets/sprites/units/infantry_sprite_sheet.png"),	
-		enums.UnitType.TANK: preload("res://assets/sprites/units/tank_sprite_sheet.png"),	
-		enums.UnitType.ARTILLERY: preload("res://assets/sprites/units/artillery_sprite_sheet.png")
+		enums.UnitType.INFANTRY: preload("res://assets/sprites/units/allied_infantry_idle_48x48.png"),	
+		enums.UnitType.TANK: preload("res://assets/sprites/units/allied_armor_idle_96x96.png"),	
+		enums.UnitType.ARTILLERY: preload("res://assets/sprites/units/allied_artillery_idle_96x96.png")
 	},
 	2: {
-		enums.UnitType.INFANTRY: preload("res://assets/sprites/units/infantry_sprite_sheet.png"),	
-		enums.UnitType.TANK: preload("res://assets/sprites/units/tank_sprite_sheet.png"),	
-		enums.UnitType.ARTILLERY: preload("res://assets/sprites/units/artillery_sprite_sheet.png")
+		enums.UnitType.INFANTRY: preload("res://assets/sprites/units/axis_infantry_idle_48x48.png"),	
+		enums.UnitType.TANK: preload("res://assets/sprites/units/axis_armor_idle_96x96.png"),	
+		enums.UnitType.ARTILLERY: preload("res://assets/sprites/units/axis_artillery_96x96.png")
 	}
 }
-static var scale: Vector2 = Vector2(2, 2)
+static var scale: Vector2 = Vector2(1, 1)
 
 static func apply_unit_visuals(sprite: Sprite2D, owner_id: int, unit_type: int) -> void:
 	if not TEXTURE_MAP.has(owner_id):
@@ -28,23 +28,17 @@ static func apply_unit_visuals(sprite: Sprite2D, owner_id: int, unit_type: int) 
 	sprite.texture = TEXTURE_MAP[owner_id][unit_type]
 	sprite.scale = scale
 	if unit_type == enums.UnitType.INFANTRY:
-		sprite.hframes = 4
-		sprite.vframes = 5
-		if owner_id == 1:
-			sprite.frame = 0
+		sprite.hframes = 13
+		sprite.frame = 0
 		if owner_id == 2:
-			sprite.frame = 16
+			sprite.scale.x *= -1
 	if unit_type == enums.UnitType.TANK:
-		sprite.hframes = 5
-		sprite.vframes = 5
+		sprite.hframes = 13
+		sprite.frame = 0
 		if owner_id == 1:
-			sprite.frame = 0
-		if owner_id == 2:
-			sprite.frame = 20
+			sprite.scale.x *= -1
 	if unit_type == enums.UnitType.ARTILLERY:
-		sprite.hframes = 6
-		sprite.vframes = 5
+		sprite.hframes = 13
+		sprite.frame = 0
 		if owner_id == 1:
-			sprite.frame = 0
-		if owner_id == 2:
-			sprite.frame = 24
+			sprite.scale.x *= -1
