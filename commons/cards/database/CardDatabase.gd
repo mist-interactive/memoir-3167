@@ -29,7 +29,7 @@ func _load_cards_from_directory(path: String) -> void:
 				var clean_file_name = file_name.trim_suffix(".remap")
 				var full_path = path + clean_file_name
 				
-				var card = load(full_path) as CommandCard
+				var card = load(full_path) as Variant
 				if card:
 					if card.id == "":
 						push_error("Card Database Error: Card has an empty ID string at: " + full_path)
@@ -42,7 +42,7 @@ func _load_cards_from_directory(path: String) -> void:
 		
 	dir.list_dir_end()
 
-func get_card(card_id: String) -> CommandCard:
+func get_card(card_id: String) -> Variant:
 	if card_registry.has(card_id):
 		return card_registry[card_id]
 	push_error("Card ID not found in database: " + card_id)
