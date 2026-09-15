@@ -58,7 +58,6 @@ func _get_hex_grid() -> Dictionary:
 		var ground_atlas_coords: Vector2i = map_ground_layer.get_cell_atlas_coords(coord)
 		var ground_key: Array = [ground_source_id, ground_atlas_coords]
 		var final_ground: int
-		print("ground key: ", ground_key)
 		if MapData.GROUND_ATLAS.has(ground_key):
 			final_ground = MapData.GROUND_ATLAS[ground_key]
 		else:
