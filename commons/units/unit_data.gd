@@ -12,6 +12,10 @@ var hex_coord: Vector2i:
 		hex_coord = new_coord
 		isDirty = true
 var type: enums.UnitType
+var actions: enums.UnitActions = enums.UnitActions.NONE:
+	set(new_val):
+		actions = new_val
+		isDirty = true
 var isDirty: bool = false
 
 func _init(owner_id: enums.Side, type: int, id: int, coord: Vector2i) -> void:
@@ -27,7 +31,8 @@ func get_snapshot() -> Dictionary:
 		"hex_coord": hex_coord,
 		"type": type,
 		"owner_id": owner_id,
-		"hit_point": hit_point
+		"hit_point": hit_point,
+		"actions": actions
 	}
 
 func sync(peer_ids: Array[int]) -> void:
@@ -38,3 +43,42 @@ func sync(peer_ids: Array[int]) -> void:
 
 func is_my_unit(side: enums.Side) -> bool:
 	return owner_id == side
+
+func unset_all() -> void:
+	actions = enums.UnitActions.NONE
+
+func set_selected(value: bool) -> void:
+	if value:
+		actions |= enums.UnitActions.IS_SELECTED
+	else:
+		actions &= ~enums.UnitActions.IS_SELECTED
+
+func set_can_move(value: bool) -> void:
+	actions &= ~(enums.UnitActions.CAN_MOVE | enums.UnitActions.CAN_ATTACK | enums.UnitActions.CAN_RETREAT)
+	
+	if value:
+		actions |= enums.UnitActions.CAN_MOVE
+
+func set_can_attack(value: bool) -> void:
+	actions &= ~(enums.UnitActions.CAN_MOVE | enums.UnitActions.CAN_ATTACK | enums.UnitActions.CAN_RETREAT)
+	
+	if value:
+		actions |= enums.UnitActions.CAN_ATTACK
+
+func set_can_retreat(value: bool) -> void:
+	actions &= ~(enums.UnitActions.CAN_MOVE | enums.UnitActions.CAN_ATTACK | enums.UnitActions.CAN_RETREAT)
+	
+	if value:
+		actions |= enums.UnitActions.CAN_RETREAT
+
+func is_selected() -> bool:
+	return (actions & enums.UnitActions.IS_SELECTED) != 0
+
+func can_move() -> bool:
+	return (actions & enums.UnitActions.CAN_MOVE) != 0
+
+func can_attack() -> bool:
+	return (actions & enums.UnitActions.CAN_ATTACK) != 0
+
+func can_retreat() -> bool:
+	return (actions & enums.UnitActions.CAN_RETREAT) != 0
