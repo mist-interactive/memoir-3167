@@ -2,6 +2,7 @@ extends Node
 class_name MatchState
 
 signal phase_changed(new_phase: enums.TurnPhase)
+signal match_state_changed(new_state: STATE)
 
 var matchId: int
 var mySide: enums.Side
@@ -60,6 +61,8 @@ func _on_sync(snapshot: Dictionary):
 	var event_queue: Array[Event]
 	if phase != snapshot.phase:
 		event_queue.push_back(Event.new(phase_changed, [snapshot.phase]))
+	if state != snapshot.state:
+		event_queue.push_back(Event.new(match_state_changed, [snapshot.state]))
 	matchId = snapshot.matchId
 	winner = snapshot.winner
 	scores = snapshot.scores
