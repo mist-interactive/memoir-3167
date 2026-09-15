@@ -18,8 +18,8 @@ extends Node2D
 
 var uuid: int = -1
 var type: enums.UnitType = enums.UnitType.INFANTRY
+var actions: enums.UnitActions = enums.UnitActions.NONE
 var hit_point: int = -1
-var is_selected: bool = false
 var _is_initialized: bool = false
 var _move_tween: Tween
 
@@ -57,7 +57,19 @@ func sync_with_snapshot(snapshot: Dictionary) -> void:
 	self.owner_id = snapshot.owner_id
 	self.hit_point = snapshot.hit_point
 	self.hex_coord = snapshot.hex_coord
-
+	self.actions = snapshot.actions
 
 func _exit_tree() -> void:
 	pass
+
+func is_selected() -> bool:
+	return (actions & enums.UnitActions.IS_SELECTED) != 0
+
+func can_move() -> bool:
+	return (actions & enums.UnitActions.CAN_MOVE) != 0
+
+func can_attack() -> bool:
+	return (actions & enums.UnitActions.CAN_ATTACK) != 0
+
+func can_retreat() -> bool:
+	return (actions & enums.UnitActions.CAN_RETREAT) != 0
