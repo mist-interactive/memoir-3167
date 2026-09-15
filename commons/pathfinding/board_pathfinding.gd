@@ -83,7 +83,6 @@ static func _cost_fn(current_hex: Vector2i, neighbor_hex: Vector2i, unit_type: e
 	#if terrain_type == HexCell.Feature.NONE:
 		#return 1.0
 	var movement_cost: float = map.TERRAIN_COST.get(terrain_type, 1.0)
-	print(movement_cost)
 	if movement_cost < 0.0:
 		return max_cost + 1.0
 	#TODO: Add more logic here later:
