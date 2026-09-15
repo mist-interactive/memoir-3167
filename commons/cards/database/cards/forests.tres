@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="TerrainCard" format=3 uid="uid://bww225hvvr68l"]
 
 [ext_resource type="Script" uid="uid://bp4fu7qfy86hn" path="res://commons/cards/command_card/TerrainCard.gd" id="1_2arv6"]
-[ext_resource type="Texture2D" uid="uid://bwh1h68qbj0ld" path="res://assets/images/sea.png" id="1_2p0s7"]
+[ext_resource type="Texture2D" uid="uid://bklyrlmknh4ui" path="res://assets/sprites/hex/hex_tile_set_128x128.png" id="1_2p0s7"]
 [ext_resource type="Texture2D" uid="uid://cw5i8ef6l7e83" path="res://assets/terrainunits_infrantry.png" id="2_sui88"]
 [ext_resource type="Texture2D" uid="uid://bqrote6s7ke10" path="res://assets/terrainunits_tank.png" id="4_578q6"]
 
