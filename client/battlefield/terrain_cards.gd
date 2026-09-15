@@ -19,8 +19,8 @@ func display_terrain_card(hex: Vector2) -> void:
 
 	var new_card = card_ui_scene.instantiate()
 
-	#var local_hex_pos: Vector2 = map_ground_layer.map_to_local(hex)
-	#new_card.global_position = Vector2(0.0, 0.0)
+	var local_hex_pos: Vector2 = map_ground_layer.map_to_local(hex)
+	new_card.global_position = Vector2(0.0, 0.0)
 	if new_card == null:
 		print("TerrainCards: Failed to instantiate card_ui_scene")
 		return

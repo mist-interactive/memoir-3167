@@ -304,10 +304,13 @@ leftBar = NodePath("left-bar")
 
 [node name="TerrainCardUI" parent="ResizeUI/Control" unique_id=1384061792 instance=ExtResource("10_hpd0d")]
 layout_mode = 0
+anchors_preset = 0
+anchor_bottom = 0.0
 offset_left = 8.0
 offset_top = 178.0
 offset_right = 218.0
 offset_bottom = 503.0
+grow_vertical = 1
 
 [node name="left-box" type="TextureRect" parent="ResizeUI/Control" unique_id=526610191]
 modulate = Color(0.1503343, 0.1651972, 0.12934586, 1)
