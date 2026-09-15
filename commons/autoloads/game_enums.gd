@@ -17,6 +17,15 @@ enum UnitType
 	ANY = INFANTRY | TANK | ARTILLERY,
 }
 
+enum UnitActions
+{
+	NONE = 0,
+	IS_SELECTED = 1 << 0,
+	CAN_MOVE = 1 << 1,
+	CAN_ATTACK = 1 << 2,
+	CAN_RETREAT = 1 << 3
+}
+
 enum RolledDice
 {
 	INFANTRY_1,
