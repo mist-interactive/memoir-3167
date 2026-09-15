@@ -45,6 +45,8 @@ func get_turn_phase_txt(phase: enums.TurnPhase) -> String:
 			return "Move"
 		enums.TurnPhase.ATTACK:
 			return "Attack"
+		enums.TurnPhase.RESOLVE_RETREAT:
+			return "Retreat"
 		enums.TurnPhase.DRAW_CARD:
 			return "Draw Card"
 	return "Unknown"
