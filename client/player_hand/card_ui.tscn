@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://bs3n3ysl7e5vc"]
 
-[ext_resource type="Script" uid="uid://bfgpsi28noghb" path="res://client/player_hand/CardUi.gd" id="1_ii6mt"]
+[ext_resource type="Script" uid="uid://c1gvby1ilc0hh" path="res://client/player_hand/CardUi.gd" id="1_ii6mt"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ii6mt"]
 bg_color = Color(0.9119239, 0.88776505, 0.9849506, 1)
@@ -12,7 +12,7 @@ shadow_color = Color(0.0627451, 0.0627451, 0.0627451, 0.42352942)
 shadow_size = 1
 shadow_offset = Vector2(-4, 24.36)
 
-[node name="CardUI" type="MarginContainer" unique_id=1384061792 node_paths=PackedStringArray("title_label", "description_label", "description_label_bottom")]
+[node name="CardUI" type="MarginContainer" unique_id=1384061792 node_paths=PackedStringArray("title_label", "description_label", "description_label_bottom", "effect_label", "infantry_negate_count", "tank_negate_count")]
 offset_right = 210.0
 offset_bottom = 325.0
 scale = Vector2(0.5, 0.5)
@@ -20,6 +20,9 @@ script = ExtResource("1_ii6mt")
 title_label = NodePath("title_label")
 description_label = NodePath("description_label")
 description_label_bottom = NodePath("description_label_bottom")
+effect_label = NodePath("effect_label")
+infantry_negate_count = NodePath("infantry_negate_count")
+tank_negate_count = NodePath("tank_negate_count")
 
 [node name="canvas" type="Panel" parent="." unique_id=1347091456]
 visible = false
@@ -46,6 +49,41 @@ vertical_alignment = 2
 autowrap_mode = 3
 
 [node name="description_label_bottom" type="Label" parent="." unique_id=1097639137]
+visible = false
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(0, 87.975)
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 2
+autowrap_mode = 3
+
+[node name="effect_label" type="Label" parent="." unique_id=33350227]
+visible = false
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(0, 87.975)
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 2
+autowrap_mode = 3
+
+[node name="terrain_infantry_art" type="TextureRect" parent="." unique_id=1577902001]
+visible = false
+layout_mode = 2
+
+[node name="terrain_tank_art" type="TextureRect" parent="." unique_id=710385116]
+visible = false
+layout_mode = 2
+
+[node name="infantry_negate_count" type="Label" parent="." unique_id=209782746]
+visible = false
+modulate = Color(0, 0, 0, 1)
+custom_minimum_size = Vector2(0, 87.975)
+layout_mode = 2
+horizontal_alignment = 1
+vertical_alignment = 2
+autowrap_mode = 3
+
+[node name="tank_negate_count" type="Label" parent="." unique_id=892040534]
 visible = false
 modulate = Color(0, 0, 0, 1)
 custom_minimum_size = Vector2(0, 87.975)

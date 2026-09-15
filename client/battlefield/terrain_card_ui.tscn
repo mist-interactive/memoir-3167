@@ -1,0 +1,103 @@
+[gd_scene format=3 uid="uid://bpenm2rqd2xau"]
+
+[ext_resource type="Script" uid="uid://dx0qkf2l3bufk" path="res://client/battlefield/terrain_card_ui.gd" id="1_gd3o8"]
+[ext_resource type="Texture2D" uid="uid://bwh1h68qbj0ld" path="res://assets/images/sea.png" id="2_jbmmi"]
+[ext_resource type="Texture2D" uid="uid://cw5i8ef6l7e83" path="res://assets/terrainunits_infrantry.png" id="3_2og8p"]
+[ext_resource type="Texture2D" uid="uid://bqrote6s7ke10" path="res://assets/terrainunits_tank.png" id="4_fpmyj"]
+
+[node name="TerrainCardUI" type="MarginContainer" unique_id=1384061792 node_paths=PackedStringArray("title_label", "description_label", "effect_label", "infantry_negate_count", "tank_negate_count")]
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_bottom = -648.0
+grow_vertical = 2
+script = ExtResource("1_gd3o8")
+title_label = NodePath("Control/title_label")
+description_label = NodePath("Control/description_label")
+effect_label = NodePath("Control/effect_label")
+infantry_negate_count = NodePath("Control/infantry_negate_count")
+tank_negate_count = NodePath("Control/tank_negate_count")
+
+[node name="Control" type="Control" parent="." unique_id=2036863683]
+layout_mode = 2
+
+[node name="background_texture" type="TextureRect" parent="Control" unique_id=1947103247]
+layout_mode = 0
+offset_left = 26.0
+offset_top = 147.0
+offset_right = 92.0
+offset_bottom = 223.0
+offset_transform_enabled = true
+offset_transform_visual_only = false
+texture = ExtResource("2_jbmmi")
+stretch_mode = 2
+
+[node name="terrain_infantry_art" type="TextureRect" parent="Control" unique_id=1577902001]
+layout_mode = 0
+offset_left = 35.000023
+offset_top = 307.99997
+offset_right = 1689.0
+offset_bottom = 776.0
+scale = Vector2(0.05, 0.05)
+offset_transform_scale = Vector2(0.1, 0.1)
+offset_transform_visual_only = false
+texture = ExtResource("3_2og8p")
+
+[node name="terrain_tank_art" type="TextureRect" parent="Control" unique_id=710385116]
+layout_mode = 0
+offset_left = 37.0
+offset_top = 339.0
+offset_right = 1691.0
+offset_bottom = 1126.0
+scale = Vector2(0.05, 0.05)
+offset_transform_scale = Vector2(0.1, 0.1)
+texture = ExtResource("4_fpmyj")
+stretch_mode = 2
+
+[node name="title_label" type="Label" parent="Control" unique_id=174640353]
+layout_mode = 0
+offset_left = 55.0
+offset_top = 98.0
+offset_right = 171.0
+offset_bottom = 126.0
+text = "title_label"
+autowrap_mode = 3
+
+[node name="description_label" type="Label" parent="Control" unique_id=248198948]
+layout_mode = 0
+offset_left = 95.0
+offset_top = 126.0
+offset_right = 336.0
+offset_bottom = 305.0
+text = "description_label"
+autowrap_mode = 3
+
+[node name="effect_label" type="Label" parent="Control" unique_id=33350227]
+visible = false
+custom_minimum_size = Vector2(0, 87.975)
+layout_mode = 0
+offset_left = -699.0
+offset_top = 156.0
+offset_right = 955.0
+offset_bottom = 243.975
+text = "effect_label"
+horizontal_alignment = 1
+vertical_alignment = 2
+autowrap_mode = 3
+
+[node name="infantry_negate_count" type="Label" parent="Control" unique_id=209782746]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 305.0
+offset_right = 366.0
+offset_bottom = 331.0
+text = "infantry_negate_count"
+autowrap_mode = 3
+
+[node name="tank_negate_count" type="Label" parent="Control" unique_id=892040534]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 339.0
+offset_right = 385.0
+offset_bottom = 375.0
+text = "tank_negate_count"
+autowrap_mode = 3

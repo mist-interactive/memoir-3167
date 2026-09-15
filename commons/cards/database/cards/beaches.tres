@@ -1,13 +1,21 @@
-[gd_resource type="Resource" script_class="CommandCard" format=3 uid="uid://qvwso5l3sluc"]
+[gd_resource type="Resource" script_class="TerrainCard" format=3 uid="uid://cllf8hq13ppm1"]
 
-[ext_resource type="Texture2D" uid="uid://bwo8kjxdx482x" path="res://assets/card_textures/terrain-cards/beaches.png" id="1_gf8x0"]
-[ext_resource type="Script" uid="uid://brv7b2q4f6ws5" path="res://commons/cards/command_card/CommandCard.gd" id="2_y821m"]
+[ext_resource type="Texture2D" uid="uid://bwh1h68qbj0ld" path="res://assets/images/sea.png" id="1_ox430"]
+[ext_resource type="Texture2D" uid="uid://cw5i8ef6l7e83" path="res://assets/terrainunits_infrantry.png" id="2_5wl1g"]
+[ext_resource type="Script" uid="uid://bp4fu7qfy86hn" path="res://commons/cards/command_card/TerrainCard.gd" id="3_74b2q"]
+[ext_resource type="Texture2D" uid="uid://bqrote6s7ke10" path="res://assets/terrainunits_tank.png" id="4_p3tc3"]
 
 [resource]
-script = ExtResource("2_y821m")
-id = "100"
-title_label = "beaches"
-deck_quantity = 0
-target_unit_limit = 0
-card_art = ExtResource("1_gf8x0")
-metadata/_custom_type_script = "uid://brv7b2q4f6ws5"
+script = ExtResource("3_74b2q")
+id = "003"
+title_label = "BEACHES"
+effect_label = "Effect"
+description_label = "Block line of sight
+Unit moving in must stop
+Unit moving in cannot battle"
+infantry_negate_count = "-1"
+tank_negate_count = "-2"
+card_art = ExtResource("1_ox430")
+infantry_art = ExtResource("2_5wl1g")
+tank_art = ExtResource("4_p3tc3")
+metadata/_custom_type_script = "uid://bp4fu7qfy86hn"

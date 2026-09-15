@@ -35,13 +35,16 @@ func initialize_match_deck() -> void:
 	discard_pile.clear()
 	
 	for card_id in CardDatabase.card_registry.keys():
-		var card_data: CommandCard = CardDatabase.get_card(card_id)
-		if not card_data:
-			continue
-			
-		for i in range(card_data.deck_quantity):
-			draw_pile.append(card_id)
+		var card_data = CardDatabase.get_card(card_id)
 		
+		if not card_data is CommandCard:
+			continue
+		
+		var command_card := card_data as CommandCard
+		
+		for i in range(command_card.deck_quantity):
+			draw_pile.append(card_id)
+	
 	shuffle_deck()
 
 func draw_card_from_pile() -> Dictionary:
