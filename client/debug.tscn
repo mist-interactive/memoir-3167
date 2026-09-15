@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://c7obcu83pvd63" path="res://assets/ui/Brutal Base Texture pack/PNG textures/slimed_material.png" id="8_v3bbg"]
 [ext_resource type="Texture2D" uid="uid://bxwkjqkwc5a36" path="res://assets/ui/512x512/Metal/Metal_10-512x512.png" id="9_7rlv4"]
 [ext_resource type="Texture2D" uid="uid://c4ttu3hxl1uxl" path="res://assets/ui/Brutal Base Texture pack/PNG textures/floor_treadplate.png" id="9_hpd0d"]
+[ext_resource type="PackedScene" uid="uid://bpenm2rqd2xau" path="res://client/battlefield/terrain_card_ui.tscn" id="10_hpd0d"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5imi5"]
 shader = ExtResource("7_v3bbg")
@@ -206,43 +207,43 @@ texture = ExtResource("2_yubbw")
 [node name="Turn" type="Label" parent="ResizeUI" unique_id=425633101]
 layout_mode = 0
 offset_left = 8.0
-offset_top = 390.0
+offset_top = 663.0
 offset_right = 108.0
-offset_bottom = 415.0
+offset_bottom = 688.0
 theme = SubResource("Theme_eu3yq")
 text = "Player turn:"
 
 [node name="Peer_ids" type="Label" parent="ResizeUI" unique_id=1089954271]
 layout_mode = 0
 offset_left = 8.0
-offset_top = 438.0
+offset_top = 711.0
 offset_right = 108.0
-offset_bottom = 463.0
+offset_bottom = 736.0
 theme = SubResource("Theme_eu3yq")
 text = "player_ids:"
 
 [node name="Scores" type="Label" parent="ResizeUI" unique_id=2064108454]
 layout_mode = 0
 offset_left = 8.0
-offset_top = 486.0
+offset_top = 759.0
 offset_right = 66.0
-offset_bottom = 509.0
+offset_bottom = 782.0
 text = "scores: "
 
 [node name="State" type="Label" parent="ResizeUI" unique_id=550106070]
 layout_mode = 0
 offset_left = 8.0
-offset_top = 414.0
+offset_top = 687.0
 offset_right = 108.0
-offset_bottom = 439.0
+offset_bottom = 712.0
 text = "match state:"
 
 [node name="Winner" type="Label" parent="ResizeUI" unique_id=1570152226]
 layout_mode = 0
 offset_left = 8.0
-offset_top = 368.0
+offset_top = 641.0
 offset_right = 108.0
-offset_bottom = 393.0
+offset_bottom = 666.0
 text = "winner: "
 
 [node name="ColorRect" type="ColorRect" parent="ResizeUI" unique_id=886609679]
@@ -301,9 +302,16 @@ script = ExtResource("7_0psvw")
 leftBox = NodePath("left-box")
 leftBar = NodePath("left-bar")
 
+[node name="TerrainCardUI" parent="ResizeUI/Control" unique_id=1384061792 instance=ExtResource("10_hpd0d")]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 178.0
+offset_right = 218.0
+offset_bottom = 503.0
+
 [node name="left-box" type="TextureRect" parent="ResizeUI/Control" unique_id=526610191]
 modulate = Color(0.1503343, 0.1651972, 0.12934586, 1)
-z_index = -100
+z_index = -99
 z_as_relative = false
 layout_mode = 0
 offset_left = 128.0
@@ -312,20 +320,6 @@ offset_right = 1000.0544
 offset_bottom = 231.99994
 rotation = 1.5707964
 texture = ExtResource("8_v3bbg")
-expand_mode = 1
-stretch_mode = 1
-
-[node name="TextureRect6" type="TextureRect" parent="ResizeUI/Control" unique_id=882206696]
-visible = false
-show_behind_parent = true
-z_index = -100
-z_as_relative = false
-layout_mode = 0
-offset_left = 128.0
-offset_top = 64.0
-offset_right = 1024.0
-offset_bottom = 584.0
-texture = ExtResource("8_7rlv4")
 expand_mode = 1
 stretch_mode = 1
 
@@ -365,7 +359,7 @@ offset_bottom = 40.0
 
 [node name="TextureRect13" type="TextureRect" parent="ResizeUI/Control/left-bar" unique_id=242430284]
 modulate = Color(0.53410035, 0.62836266, 0.8008638, 1)
-z_index = -100
+z_index = -99
 z_as_relative = false
 layout_mode = 0
 offset_left = 128.0
@@ -379,7 +373,7 @@ flip_v = true
 
 [node name="TextureRect17" type="TextureRect" parent="ResizeUI/Control/left-bar" unique_id=1422788613]
 modulate = Color(0.53410035, 0.62836266, 0.8008638, 1)
-z_index = -100
+z_index = -99
 z_as_relative = false
 layout_mode = 0
 offset_left = 128.0
@@ -393,7 +387,7 @@ flip_v = true
 
 [node name="TextureRect18" type="TextureRect" parent="ResizeUI/Control/left-bar" unique_id=786014652]
 modulate = Color(0.53410035, 0.62836266, 0.8008638, 1)
-z_index = -100
+z_index = -99
 z_as_relative = false
 layout_mode = 0
 offset_left = 128.0
@@ -415,7 +409,7 @@ z_index = -100
 z_as_relative = false
 layout_mode = 0
 offset_top = 100.0
-offset_right = 1968.0
+offset_right = 1760.0
 offset_bottom = 104.0
 texture = ExtResource("9_hpd0d")
 expand_mode = 1
@@ -428,7 +422,7 @@ z_index = -100
 z_as_relative = false
 layout_mode = 0
 offset_top = 64.0
-offset_right = 1968.0
+offset_right = 1904.0
 offset_bottom = 66.0
 texture = ExtResource("8_7rlv4")
 expand_mode = 1
@@ -440,7 +434,7 @@ z_index = -100
 z_as_relative = false
 layout_mode = 0
 offset_top = 98.0
-offset_right = 1968.0
+offset_right = 1904.0
 offset_bottom = 100.0
 texture = ExtResource("8_7rlv4")
 expand_mode = 1
@@ -487,18 +481,6 @@ texture = ExtResource("6_u4rvt")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="TextureRect11" type="TextureRect" parent="ResizeUI/Control/bottom-bar" unique_id=442823216]
-z_index = -100
-z_as_relative = false
-layout_mode = 0
-offset_top = 976.0
-offset_right = 1024.0
-offset_bottom = 980.0
-texture = ExtResource("9_hpd0d")
-expand_mode = 1
-stretch_mode = 1
-flip_v = true
-
 [node name="TextureRect8" type="TextureRect" parent="ResizeUI/Control/bottom-bar" unique_id=616215393]
 modulate = Color(0.45490196, 0.45490196, 0.45490196, 1)
 layout_mode = 0
@@ -511,14 +493,54 @@ stretch_mode = 1
 
 [node name="TextureRect4" type="TextureRect" parent="ResizeUI/Control/bottom-bar" unique_id=352639451]
 modulate = Color(0.82108766, 0.85961276, 0.9067951, 1)
-z_index = -91
+z_index = -98
 z_as_relative = false
 layout_mode = 0
 offset_top = 976.0
 offset_right = 1920.0
 offset_bottom = 1016.0
+mouse_filter = 2
 texture = ExtResource("6_u4rvt")
 expand_mode = 1
 stretch_mode = 1
+
+[node name="TextureRect12" type="TextureRect" parent="ResizeUI/Control/bottom-bar" unique_id=1792730711]
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 128.0
+offset_top = 976.0
+offset_right = 1968.0
+offset_bottom = 980.0
+texture = ExtResource("9_hpd0d")
+expand_mode = 1
+stretch_mode = 1
+flip_v = true
+
+[node name="TextureRect16" type="TextureRect" parent="ResizeUI/Control/bottom-bar" unique_id=847838035]
+modulate = Color(0.5605468, 0.5113426, 0.29038903, 1)
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 128.0
+offset_top = 979.0
+offset_right = 1968.0
+offset_bottom = 981.0
+texture = ExtResource("8_7rlv4")
+expand_mode = 1
+flip_v = true
+
+[node name="TextureRect15" type="TextureRect" parent="ResizeUI/Control/bottom-bar" unique_id=755926345]
+modulate = Color(0.56078434, 0.50980395, 0.2901961, 1)
+z_index = -100
+z_as_relative = false
+layout_mode = 0
+offset_left = 128.0
+offset_top = 1014.0
+offset_right = 1968.0
+offset_bottom = 1016.0
+texture = ExtResource("8_7rlv4")
+expand_mode = 1
+flip_v = true
 
 [connection signal="button_down" from="ResizeUI/Button" to="." method="_on_confirm"]
