@@ -60,6 +60,7 @@ func select_unit(owner: enums.Side, unit_id: int, card: CommandCard) -> bool:
 	selected_by_peer = owner
 	if matchState.phase == enums.TurnPhase.SELECT && !selected_units_ids.has(unit_id):
 		selected_units_ids.append(unit_id)
+	unit.set_selected(true)
 	isDirty = true
 	var player_logger := logger.with_context({
 		"side": owner
@@ -73,7 +74,7 @@ func deselect_unit(owner: enums.Side) -> bool:
 
 	if selected_by_peer != owner:
 		return false
-
+	
 	selected_unit_id = -1
 	selected_by_peer = -1
 	isDirty = true
@@ -96,13 +97,11 @@ func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, 
 	if !move_unit(unit, old_coord, destination):
 		return false
 
-	Network.broadcast(Network.Actions.sync_unit_path.rpc_id,sides_peer_ids.values(),[unit_path] )
-	#for peer_id in sides_peer_ids.values():
-		#Network.Actions.sync_unit_path.rpc_id(peer_id, unit_id, unit_path)
+	Network.broadcast(Network.Actions.sync_unit_path.rpc_id, sides_peer_ids.values(),[unit_id, unit_path] )
 	selected_unit_id = -1
 	selected_by_peer = enums.Side.NONE
-	isDirty = true
 	moved_units_ids.append(unit_id)
+	unit.set_can_move(false)
 	var player_logger := logger.with_context({
 		"peer_id": sides_peer_ids[owner],
 		"side": owner
@@ -132,7 +131,7 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	Network.broadcast(Network.Actions.resolve_combat_result.rpc_id, sides_peer_ids.values(), [combat_result.to_dict()])
 	selected_unit_id = -1
 	selected_by_peer = enums.Side.NONE
-	isDirty = true
+	unit.set_can_attack(false)
 	attacked_units_ids.append(unit_id)
 	var player_logger := logger.with_context({
 		"peer_id": sides_peer_ids[side],
@@ -201,9 +200,17 @@ func resolve_combat(result: CombatResult, side: enums.Side) -> void:
 
 func next_phase(phase: enums.TurnPhase) -> void:
 	if phase == enums.TurnPhase.PLAY_CARD:
+		for id in selected_units_ids:
+			units_by_id[id].unset_all()
 		selected_units_ids.clear()
 		moved_units_ids.clear()
 		attacked_units_ids.clear()
+	elif phase == enums.TurnPhase.MOVE:
+		for id in selected_units_ids:
+			units_by_id[id].set_can_move(true)
+	elif phase == enums.TurnPhase.ATTACK:
+		for id in selected_units_ids:
+			units_by_id[id].set_can_attack(true)
 	selected_unit_id = -1
 	isDirty = true
 	matchState.phase = phase
