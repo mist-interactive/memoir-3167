@@ -132,6 +132,10 @@ func handle_move_unit(side: enums.Side, unit_id: int, destination: Vector2i) -> 
 		if unit_manager.moved_units_ids.size() == unit_manager.selected_units_ids.size():
 			go_next_phase(side)
 
+func handle_retreat_unit(side: enums.Side, unit_id: int, destination: Vector2i) -> void:
+	if unit_manager.retreat_unit(side, unit_id, destination, get_sides_peer_ids()):
+		logger.info("handle switching back to attack phase")
+
 func handle_attack_unit(side: enums.Side, unit_id: int, target_unit_id: int) -> void:
 	if await unit_manager.attack_unit(side, unit_id, target_unit_id, get_sides_peer_ids()):
 		if unit_manager.attacked_units_ids.size() == unit_manager.selected_units_ids.size():
@@ -219,3 +223,8 @@ func get_match_result() -> MatchResult:
 	}
 	result.status = MatchState.STATE.ENDED
 	return result
+
+func go_resolve_retreat_phase(side: enums.Side) -> void:
+	matchState.phase = enums.TurnPhase.RESOLVE_RETREAT
+	change_turn(side)
+	
