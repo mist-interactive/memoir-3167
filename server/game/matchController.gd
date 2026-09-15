@@ -179,23 +179,23 @@ func check_win_condition() -> void:
 func go_next_phase(side: enums.Side) -> void:
 	if matchState.is_phase(enums.TurnPhase.DRAW_HAND):
 		unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)
-		matchState.new_phase_timer(10)
+		matchState.new_phase_timer(60)
 	elif matchState.is_phase(enums.TurnPhase.PLAY_CARD):
 		var is_card_played: bool = deckManager.card_was_played(side)
 		unit_manager.next_phase(enums.TurnPhase.SELECT if is_card_played else enums.TurnPhase.PLAY_CARD)
-		matchState.new_phase_timer(10)
+		matchState.new_phase_timer(60)
 		if !is_card_played:
 			change_turn(side, false)
 	elif matchState.is_phase(enums.TurnPhase.ATTACK) || (matchState.is_phase(enums.TurnPhase.SELECT) && unit_manager.selected_units_ids.is_empty()):
 		unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)
-		matchState.new_phase_timer(10)
+		matchState.new_phase_timer(60)
 		change_turn(side)
 	elif matchState.is_phase(enums.TurnPhase.SELECT):
 		unit_manager.next_phase(enums.TurnPhase.MOVE)
-		matchState.new_phase_timer(10)
+		matchState.new_phase_timer(60)
 	elif matchState.is_phase(enums.TurnPhase.MOVE):
 		unit_manager.next_phase(enums.TurnPhase.ATTACK)
-		matchState.new_phase_timer(10)
+		matchState.new_phase_timer(60)
 
 func change_turn(side: enums.Side, should_draw_card: bool = true) -> void:
 	var next_side := enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
