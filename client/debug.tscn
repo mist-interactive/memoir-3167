@@ -10,9 +10,8 @@
 [ext_resource type="Shader" uid="uid://b1svcsf4tl3ky" path="res://shaders/shadow.gdshader" id="7_v3bbg"]
 [ext_resource type="Texture2D" uid="uid://lssst1i8gr6m" path="res://assets/ui/512x512/Metal/Metal_06-512x512.png" id="7_ve2jj"]
 [ext_resource type="Texture2D" uid="uid://b15rr5rf5tge7" path="res://assets/ui/512x512/Box/Box_20-512x512.png" id="8_7rlv4"]
-[ext_resource type="Texture2D" uid="uid://c7obcu83pvd63" path="res://assets/ui/Brutal Base Texture pack/PNG textures/slimed_material.png" id="8_v3bbg"]
 [ext_resource type="Texture2D" uid="uid://bxwkjqkwc5a36" path="res://assets/ui/512x512/Metal/Metal_10-512x512.png" id="9_7rlv4"]
-[ext_resource type="Texture2D" uid="uid://c4ttu3hxl1uxl" path="res://assets/ui/Brutal Base Texture pack/PNG textures/floor_treadplate.png" id="9_hpd0d"]
+[ext_resource type="Texture2D" uid="uid://c4ttu3hxl1uxl" path="res://assets/ui/textures/floor_treadplate.png" id="9_hpd0d"]
 [ext_resource type="PackedScene" uid="uid://bpenm2rqd2xau" path="res://client/battlefield/terrain_card_ui.tscn" id="10_hpd0d"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_5imi5"]
@@ -22,6 +21,9 @@ shader_parameter/shadow_color = Color(0, 0, 0, 0.49411765)
 shader_parameter/blur_std = 3.83
 
 [sub_resource type="Theme" id="Theme_eu3yq"]
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_v3bbg"]
+load_path = "res://.godot/imported/slimed_material.png-352d0ddb6f641f4774328df1efbac0fa.ctex"
 
 [node name="Debug" type="Control" unique_id=1744084876 node_paths=PackedStringArray("bottom_colored_bar", "top_colored_bar")]
 z_index = 100
@@ -322,7 +324,7 @@ offset_top = 103.99993
 offset_right = 1000.0544
 offset_bottom = 231.99994
 rotation = 1.5707964
-texture = ExtResource("8_v3bbg")
+texture = SubResource("CompressedTexture2D_v3bbg")
 expand_mode = 1
 stretch_mode = 1
 
@@ -351,7 +353,7 @@ offset_right = 3015.6663
 offset_bottom = 192.2606
 rotation = 1.5707964
 mouse_filter = 2
-texture = ExtResource("8_v3bbg")
+texture = SubResource("CompressedTexture2D_v3bbg")
 expand_mode = 1
 stretch_mode = 1
 
