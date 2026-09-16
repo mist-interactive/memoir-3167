@@ -7,6 +7,7 @@ var _unit_id_counter: int = 0
 var isDirty: bool = true
 var death_queue: Array[int]
 var logger: LogService
+var unit_is_attacking: bool = true
 
 func _ready() -> void:
 	logger = match_controller.logger.with_context({
