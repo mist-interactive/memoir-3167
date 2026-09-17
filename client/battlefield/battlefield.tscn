@@ -24,9 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://c3nofdwjiv8vk" path="res://client/debug.tscn" id="19_3y24m"]
 [ext_resource type="Texture2D" uid="uid://vgleurc45wyk" path="res://assets/card_textures/aAAA_card_back.png" id="21_wygn3"]
 [ext_resource type="Script" uid="uid://d0i075tkk6mwe" path="res://client/battlefield/terrain_cards.gd" id="23_vln62"]
-[ext_resource type="PackedScene" uid="uid://bpenm2rqd2xau" path="res://client/battlefield/terrain_card_ui.tscn" id="24_axx1d"]
 [ext_resource type="Script" uid="uid://ctk6r7joynsl2" path="res://client/battlefield/card_play_area.gd" id="24_fpqqf"]
-[ext_resource type="Script" uid="uid://bmxdyxqcsc1dl" path="res://client/battlefield/info_screen.gd" id="26_axx1d"]
 [ext_resource type="PackedScene" uid="uid://bpenm2rqd2xau" path="res://client/battlefield/terrain_card_ui.tscn" id="25_kys61"]
 [ext_resource type="Script" uid="uid://byr2vmwobfbys" path="res://client/battlefield/background.gd" id="27_1ra3n"]
 
@@ -332,12 +330,12 @@ grow_horizontal = 0
 grow_vertical = 2
 texture = ExtResource("21_wygn3")
 
-[node name="Debug" parent="UICanvas" unique_id=1503541458 instance=ExtResource("19_3y24m")]
+[node name="UI" parent="UICanvas" unique_id=1503541458 instance=ExtResource("19_3y24m")]
 
 [node name="TerrainCards" type="MarginContainer" parent="UICanvas" unique_id=549801023 node_paths=PackedStringArray("map_ground_layer")]
 scale = Vector2(0.7, 0.7)
 script = ExtResource("23_vln62")
-card_ui_scene = ExtResource("24_axx1d")
+card_ui_scene = ExtResource("25_kys61")
 map_ground_layer = NodePath("../../MapVisuals/MapGround")
 
 [node name="Control" type="Control" parent="UICanvas/TerrainCards" unique_id=622240117]

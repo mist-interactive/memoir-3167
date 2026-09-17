@@ -2,7 +2,7 @@ extends MarginContainer
 class_name TerrainCards
 
 @onready var battlefieldState: BattlefieldState = $"../../../BattlefieldState"
-@onready var ui_control: Control = $"../Debug/ResizeUI/Control"
+@onready var ui_control: Control = $"../UI/ResizeUI/Control"
 @export var card_ui_scene: PackedScene
 @export var map_ground_layer: TileMapLayer
 var _current_terrain_card: TerrainCardUI = null
@@ -37,11 +37,9 @@ func display_terrain_card(hex: Vector2) -> void:
 	add_child(terrain_card_ui)
 	_current_terrain_card = terrain_card_ui
 
-	var terrain_id: int = hex_cell.ground + enums.CARD_ID_OFFSET
-
-	if terrain_id in enums.TerrainCardId.values():
-		#new_card.setup_terrain_visuals(0, str(feature_id))
-		new_card.setup_visuals("002")
+	var terrain_id: int = hex_cell.ground
+	if terrain_id != HexCell.Ground.PLAINS:
+		new_card.setup_visuals(str(terrain_id))
 
 	new_card.global_position = Vector2.ZERO
 	new_card.size = Vector2(HandUI.card_size.y, HandUI.card_size.x)

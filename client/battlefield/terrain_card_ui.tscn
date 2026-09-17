@@ -37,27 +37,26 @@ expand_mode = 1
 
 [node name="title_label" type="Label" parent="Control" unique_id=174640353]
 layout_mode = 0
-offset_left = 55.0
+offset_left = -1.0
 offset_top = 98.0
-offset_right = 171.0
+offset_right = 200.0
 offset_bottom = 126.0
 text = "title_label"
+horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="description_label" type="Label" parent="Control" unique_id=248198948]
 layout_mode = 0
-offset_left = 16.000004
+offset_left = 8.000004
 offset_top = 200.0
-offset_right = 336.00003
+offset_right = 328.00003
 offset_bottom = 396.9231
 scale = Vector2(0.65, 0.65)
-text = "description_label_label
-description_label_label
-description_label_label
-description_label_label
-description_label_label
-description_label_label
-"
+text = "description_label_label_label_label_label
+description_label_label_label_label_label
+description_label_label_label_label_label
+description_label_label_label_label_label
+description_label_label_label_label_label"
 autowrap_mode = 3
 
 [node name="effect_label" type="Label" parent="Control" unique_id=33350227]

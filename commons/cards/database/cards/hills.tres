@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="TerrainCard" format=3 uid="uid://c2sr1fmlhqkhj"]
+[gd_resource type="Resource" script_class="TerrainCard" format=3 uid="uid://b5jbncffqelnd"]
 
 [ext_resource type="Texture2D" uid="uid://bklyrlmknh4ui" path="res://assets/sprites/hex/hex_tile_set_128x128.png" id="1_l1a1x"]
 [ext_resource type="Texture2D" uid="uid://cw5i8ef6l7e83" path="res://assets/terrainunits_infrantry.png" id="2_psw5p"]
@@ -7,19 +7,19 @@
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jbmmi"]
 atlas = ExtResource("1_l1a1x")
-region = Rect2(768, 0, 128, 128)
+region = Rect2(512, 0, 128, 128)
 
 [resource]
 script = ExtResource("3_t2qdc")
-id = "7"
-title_label = "OCEANS & SHORELINES"
+id = "5"
+title_label = "HILLS"
 effect_label = "Effect"
-description_label = "• Maximum movement in ocean
-   and or shoreline is 1 hex*
-• Unit cannot battle when in ocean
-   or on shoreline
-• Unit cannot retreat on ocean hex*
-• Do not block line of sight"
+description_label = "• No movement restrictions
+• Block line of sight (except
+   from adjacent contiguous
+   hills at same height) "
+infantry_negate_count = "-1"
+tank_negate_count = "-1"
 card_art = SubResource("AtlasTexture_jbmmi")
 infantry_art = ExtResource("2_psw5p")
 tank_art = ExtResource("4_2s81h")

@@ -35,6 +35,10 @@ func setup_visuals(id: String) -> void:
 	tank_negate_count.text = card_data.tank_negate_count
 
 	background_texture.texture = card_data.card_art
+	if id == str(HexCell.Ground.WATER):
+		terrain_infantry_art.visible = false
+		terrain_tank_art.visible = false
+		return
 	terrain_infantry_art.texture = card_data.infantry_art
 	terrain_tank_art.texture = card_data.tank_art
 

@@ -16,7 +16,7 @@
 
 [sub_resource type="Theme" id="Theme_eu3yq"]
 
-[node name="Debug2" type="Control" unique_id=1744084876 node_paths=PackedStringArray("bottom_colored_bar", "top_colored_bar")]
+[node name="UI" type="Control" unique_id=1744084876 node_paths=PackedStringArray("bottom_colored_bar", "top_colored_bar")]
 z_index = 100
 layout_mode = 3
 anchors_preset = 15
@@ -113,44 +113,44 @@ texture = ExtResource("2_yubbw")
 
 [node name="Turn" type="Label" parent="ResizeUI" unique_id=425633101]
 layout_mode = 0
-offset_left = 8.0
-offset_top = 663.0
-offset_right = 108.0
-offset_bottom = 688.0
+offset_left = 24.0
+offset_top = 725.0
+offset_right = 124.0
+offset_bottom = 750.0
 theme = SubResource("Theme_eu3yq")
 text = "Player turn:"
 
 [node name="Peer_ids" type="Label" parent="ResizeUI" unique_id=1089954271]
 layout_mode = 0
-offset_left = 8.0
-offset_top = 711.0
-offset_right = 108.0
-offset_bottom = 736.0
+offset_left = 24.0
+offset_top = 773.0
+offset_right = 124.0
+offset_bottom = 798.0
 theme = SubResource("Theme_eu3yq")
 text = "player_ids:"
 
 [node name="Scores" type="Label" parent="ResizeUI" unique_id=2064108454]
 layout_mode = 0
-offset_left = 8.0
-offset_top = 759.0
-offset_right = 66.0
-offset_bottom = 782.0
+offset_left = 24.0
+offset_top = 799.0
+offset_right = 82.0
+offset_bottom = 822.0
 text = "scores: "
 
 [node name="State" type="Label" parent="ResizeUI" unique_id=550106070]
 layout_mode = 0
-offset_left = 8.0
-offset_top = 687.0
-offset_right = 108.0
-offset_bottom = 712.0
+offset_left = 24.0
+offset_top = 749.0
+offset_right = 124.0
+offset_bottom = 774.0
 text = "match state:"
 
 [node name="Winner" type="Label" parent="ResizeUI" unique_id=1570152226]
 layout_mode = 0
-offset_left = 8.0
-offset_top = 641.0
-offset_right = 108.0
-offset_bottom = 666.0
+offset_left = 24.0
+offset_top = 701.0
+offset_right = 124.0
+offset_bottom = 726.0
 text = "winner: "
 
 [node name="ColorRect" type="ColorRect" parent="ResizeUI" unique_id=886609679]

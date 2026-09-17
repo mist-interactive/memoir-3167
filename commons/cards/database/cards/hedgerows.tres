@@ -1,0 +1,31 @@
+[gd_resource type="Resource" script_class="TerrainCard" format=3 uid="uid://cgx5g6x6uuii8"]
+
+[ext_resource type="Texture2D" uid="uid://bklyrlmknh4ui" path="res://assets/sprites/hex/hex_tile_set_128x128.png" id="1_o5m26"]
+[ext_resource type="Texture2D" uid="uid://cw5i8ef6l7e83" path="res://assets/terrainunits_infrantry.png" id="2_rk7pu"]
+[ext_resource type="Script" uid="uid://bp4fu7qfy86hn" path="res://commons/cards/command_card/TerrainCard.gd" id="3_osxxm"]
+[ext_resource type="Texture2D" uid="uid://bqrote6s7ke10" path="res://assets/terrainunits_tank.png" id="4_i5n1e"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbmmi"]
+atlas = ExtResource("1_o5m26")
+region = Rect2(128, 0, 128, 128)
+
+[resource]
+script = ExtResource("3_osxxm")
+id = "2"
+title_label = "HEDGEROWS"
+effect_label = "Effect"
+description_label = "• Unit moving in must stop and 
+   may move no further on  that turn
+• Unit moving in cannot battle that turn
+• To enter or take ground, unit must
+   start its move from adjacent hex
+• When exiting, unit must stop
+   on adjacent hex, may still
+   Take ground
+• Block line of sight"
+infantry_negate_count = "-1"
+tank_negate_count = "-2"
+card_art = SubResource("AtlasTexture_jbmmi")
+infantry_art = ExtResource("2_rk7pu")
+tank_art = ExtResource("4_i5n1e")
+metadata/_custom_type_script = "uid://bp4fu7qfy86hn"
