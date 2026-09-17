@@ -116,6 +116,7 @@ func highlight_attackable_enemies_on_layer(unit: Unit, highlight_layer: TileMapL
 	highlight_layer.clear()
 	for target in unit_manager.get_attackable_enemies(unit).values():
 		var enemy = target.get("enemy")
+		var dice = target.get("dice")
 		highlight_layer.highlight_cell(enemy.hex_coord)
 
 func highlight_possible_retreats() -> void:
