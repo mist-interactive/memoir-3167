@@ -1,7 +1,7 @@
 class_name CombatResolver
 extends RefCounted
 
-static func get_attack_dice_count(attacker: Variant, attacker_hex: HexCell, defender: Variant, defender_hex: HexCell, distance: int) -> int:
+static func get_attack_dice_count(attacker: Variant, attacker_hex: HexCell, target: Variant, target_hex: HexCell, distance: int) -> int:
 	var attacker_stats: UnitStats = UnitDatabase.get_stats(attacker.type)
 	if !attacker_stats:
 		push_warning("No attacker stats found for unit type ", attacker.type)
@@ -9,9 +9,9 @@ static func get_attack_dice_count(attacker: Variant, attacker_hex: HexCell, defe
 	if distance > attacker_stats.max_attack_range || distance < 0:
 		return 0
 		
-	var defender_stats: UnitStats = UnitDatabase.get_stats(defender.type)
-	if !defender_stats:
-		push_warning("No defender stats found for unit type ", attacker.type)
+	var target_stats: UnitStats = UnitDatabase.get_stats(target.type)
+	if !target_stats:
+		push_warning("No target stats found for unit type ", attacker.type)
 		return 0
 		
 	var attacker_terrain_stats: TerrainStats = TerrainDatabase.get_stats(attacker_hex.ground)
@@ -19,11 +19,11 @@ static func get_attack_dice_count(attacker: Variant, attacker_hex: HexCell, defe
 		push_warning("No attacker terrain stats found for terrain type ", attacker_hex.ground)
 		return 0
 		
-	var defender_terrain_stats: TerrainStats = TerrainDatabase.get_stats(defender_hex.ground)
-	if !defender_terrain_stats:
-		push_warning("No defender terrain stats found for terrain type ", defender_hex.ground)
+	var target_terrain_stats: TerrainStats = TerrainDatabase.get_stats(target_hex.ground)
+	if !target_terrain_stats:
+		push_warning("No target terrain stats found for terrain type ", target_hex.ground)
 		return 0
 	var dice_count = attacker_stats.get_attack_dice_by_distance(distance)
 	dice_count += attacker_terrain_stats.get_unit_attack_modifier(attacker.type)
-	dice_count += defender_terrain_stats.get_unit_defense_modifier(defender.type)
+	dice_count += target_terrain_stats.get_unit_defense_modifier(target.type)
 	return dice_count
