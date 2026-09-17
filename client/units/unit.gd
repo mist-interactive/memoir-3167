@@ -73,5 +73,5 @@ func can_move() -> bool:
 func can_attack() -> bool:
 	return (actions & enums.UnitActions.CAN_ATTACK) != 0
 
-func can_retreat() -> bool:
-	return (actions & enums.UnitActions.CAN_RETREAT) != 0
+func must_retreat() -> bool:
+	return (actions & enums.UnitActions.MUST_RETREAT) != 0

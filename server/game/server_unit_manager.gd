@@ -122,12 +122,12 @@ func retreat_unit(owner: enums.Side, unit_id: int, destination: Vector2i, sides_
 	Network.broadcast(Network.Actions.sync_unit_path.rpc_id,sides_peer_ids.values(),[unit_id, unit_path])
 	unit.num_of_retreat -= level
 	if unit.num_of_retreat <= 0:
-		unit.set_can_retreat(false)
+		unit.set_must_retreat(false)
 	return unit.num_of_retreat <= 0
 
 func retreat_randomly(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 	var unit: UnitData = get_retreating_unit()
-	if !unit || !unit.can_retreat() || unit.num_of_retreat <= 0:
+	if !unit || !unit.must_retreat() || unit.num_of_retreat <= 0:
 		return
 	var tree: BinaryTree = get_retreat_coords(side, unit.hex_coord, unit.num_of_retreat)
 	var retreats: Array = []
@@ -147,7 +147,7 @@ func retreat_randomly(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, i
 	# takes dmg based on number of fail retreats
 	unit.hit_point -= (unit.num_of_retreat - max_retreatable_level)
 	unit.num_of_retreat = 0
-	unit.set_can_retreat(false)
+	unit.set_must_retreat(false)
 	if unit.hit_point <= 0:
 		var attacker_side: enums.Side = enums.Side.GREEN if side == enums.Side.RED else enums.Side.RED
 		death_queue.append(unit.uuid)
@@ -247,7 +247,7 @@ func resolve_combat(result: CombatResult, side: enums.Side, sides_peer_ids: Dict
 		return
 	if  result.retreat > 0:
 		target.num_of_retreat = result.retreat
-		target.set_can_retreat(true)
+		target.set_must_retreat(true)
 
 func next_phase(phase: enums.TurnPhase, prev_phase: enums.TurnPhase = enums.TurnPhase.NONE) -> void:
 	if phase == enums.TurnPhase.PLAY_CARD:
@@ -256,12 +256,6 @@ func next_phase(phase: enums.TurnPhase, prev_phase: enums.TurnPhase = enums.Turn
 		selected_units_ids.clear()
 		moved_units_ids.clear()
 		attacked_units_ids.clear()
-	elif phase == enums.TurnPhase.MOVE:
-		for id in selected_units_ids:
-			units_by_id[id].set_can_move(true)
-	elif phase == enums.TurnPhase.ATTACK && prev_phase == enums.TurnPhase.MOVE:
-		for id in selected_units_ids:
-			units_by_id[id].set_can_attack(true)
 	selected_unit_id = -1
 	isDirty = true
 	matchState.phase = phase

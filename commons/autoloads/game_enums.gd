@@ -1,6 +1,5 @@
 extends Node
 class_name enums
-
 enum Side
 {
 	GREEN = 1,
@@ -23,7 +22,7 @@ enum UnitActions
 	IS_SELECTED = 1 << 0,
 	CAN_MOVE = 1 << 1,
 	CAN_ATTACK = 1 << 2,
-	CAN_RETREAT = 1 << 3
+	MUST_RETREAT = 1 << 3
 }
 
 enum RolledDice
