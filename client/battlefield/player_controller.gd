@@ -120,12 +120,13 @@ func highlight_possible_retreats() -> void:
 	selected_unit_path_highlight_layer.clear()
 	for unit: Unit in unit_manager.units_by_id.values():
 		if unit.num_of_retreat > 0:
+			print("unit hex coord ", unit.hex_coord)
 			var side: enums.Side
 			if matchState.is_my_turn():
 				side = matchState.mySide
 			else:
 				side = enums.Side.RED if matchState.mySide == enums.Side.GREEN else enums.Side.GREEN
-			var tree: BinaryTree = unit_manager.get_retreat_coords(side, unit.hex_coord, unit.num_of_retreat)
+			var tree: BinaryTree = unit_manager.get_retreat_coords(side, unit.hex_coord, unit, unit.num_of_retreat)
 			var coords: Array[Variant] = tree.to_array()
 			unit_selection_highlight_layer.highlight_cell(unit.hex_coord)
 			for i in range(1, coords.size()):

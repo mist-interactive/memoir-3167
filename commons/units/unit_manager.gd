@@ -89,25 +89,27 @@ func get_enemies_within_range_and_los(unit: Variant) -> Dictionary:
 			continue
 	return valid_targets
 
-func get_retreat_coords(side: enums.Side, coord: Vector2i, retreat: int) -> BinaryTree:
+func get_retreat_coords(side: enums.Side, coord: Vector2i, unit: Variant, retreat: int) -> BinaryTree:
 	if retreat < 0:
 		return null
 	var tree: BinaryTree = BinaryTree.new(coord);
 	var left_coord: Vector2i = Vector2i(coord.x if coord.y % 2 != 0 else coord.x - 1 , coord.y + base_dir[side].y)
 	var right_coord: Vector2i = Vector2i(coord.x if coord.y % 2 == 0 else coord.x + 1 , coord.y + base_dir[side].y)
 	var cell: HexCell = battlefield.map.get_cell(coord);
-	if is_traversable(left_coord):
-		tree.left = get_retreat_coords(side, left_coord, retreat - 1)
-	if is_traversable(right_coord):
-		tree.right = get_retreat_coords(side, right_coord, retreat - 1)
+	if is_traversable(unit, left_coord):
+		tree.left = get_retreat_coords(side, left_coord, unit, retreat - 1)
+	if is_traversable(unit, right_coord):
+		tree.right = get_retreat_coords(side, right_coord, unit, retreat - 1)
 	return tree
 
-func is_traversable(coord: Vector2i) -> bool:
+func is_traversable(unit: Variant, coord: Vector2i) -> bool:
 	var cell: HexCell = battlefield.map.get_cell(coord)
-	var blocked: Array[HexCell.Ground] = [HexCell.Ground.MOUNTAIN, HexCell.Ground.WATER, HexCell.Ground.HEDGEROW]
-	if !cell || unit_grid.has(coord) || blocked.has(cell.ground):
+	if !cell || unit_grid.has(coord):
 		return false
-	return true
+	var terrain_stats: TerrainStats = TerrainDatabase.get_stats(cell.ground)
+	if (!terrain_stats):
+		return false
+	return terrain_stats.get_unit_max_movement(unit.type) > 0
 
 func has_attackable_unit() -> bool:
 	for id: int in selected_units_ids:

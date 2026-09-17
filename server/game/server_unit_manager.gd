@@ -116,7 +116,7 @@ func retreat_unit(owner: enums.Side, unit_id: int, destination: Vector2i, sides_
 	var unit: UnitData = units_by_id[unit_id]
 	if unit.num_of_retreat <= 0:
 		return false
-	var tree: BinaryTree = get_retreat_coords(owner, unit.hex_coord, unit.num_of_retreat)
+	var tree: BinaryTree = get_retreat_coords(owner, unit.hex_coord, unit, unit.num_of_retreat)
 	var level: int = tree.find_node_level(destination)
 	if level == -1:
 		return false
@@ -133,7 +133,7 @@ func retreat_randomly(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, i
 	var unit: UnitData = get_retreating_unit()
 	if !unit || !unit.must_retreat() || unit.num_of_retreat <= 0:
 		return
-	var tree: BinaryTree = get_retreat_coords(side, unit.hex_coord, unit.num_of_retreat)
+	var tree: BinaryTree = get_retreat_coords(side, unit.hex_coord, unit, unit.num_of_retreat)
 	var retreats: Array = []
 	var max_retreatable_level: int = unit.num_of_retreat
 	while max_retreatable_level > 0:
@@ -172,7 +172,8 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	unit_is_attacking = true
 	var d: int = battlefield.map.distance(unit.hex_coord, target.hex_coord)
 	var num_of_dice: int = UnitDatabase.get_stats(unit.type).attack_dice_by_distance[d - 1]
-	var rolled_dices: Array[enums.RolledDice] = Dice.roll(num_of_dice)
+	#var rolled_dices: Array[enums.RolledDice] = Dice.roll(num_of_dice)
+	var rolled_dices: Array[enums.RolledDice] = [enums.RolledDice.RETREAT, enums.RolledDice.RETREAT, enums.RolledDice.RETREAT, enums.RolledDice.RETREAT, enums.RolledDice.RETREAT, enums.RolledDice.RETREAT, enums.RolledDice.RETREAT, ]
 	var combat_result: CombatResult = CombatResult.new()
 	combat_result.initialize(unit, target, rolled_dices)
 	resolve_combat(combat_result, side, sides_peer_ids)
