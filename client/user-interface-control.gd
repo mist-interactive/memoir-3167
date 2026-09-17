@@ -2,6 +2,9 @@ extends Control
 
 @onready var matchState: MatchState = $"../../../matchState"
 @onready var clock: NetworkClock = $"../../../NetworkClock"
+
+@onready var ui = $ResizeUI
+
 @onready var phase = $ResizeUI/Phase
 @onready var turn = $ResizeUI/Turn
 @onready var peer_ids = $ResizeUI/Peer_ids
@@ -10,13 +13,16 @@ extends Control
 @onready var winner = $ResizeUI/Winner
 @onready var button = $ResizeUI/Button
 @onready var next_phase = $ResizeUI/NextPhase
-@onready var ui = $ResizeUI
+@onready var my_faction = $ResizeUI/MyFaction
+@onready var enemy_faction = $ResizeUI/EnemyFaction
 
 @export var bottom_colored_bar: TextureRect
 @export var top_colored_bar: TextureRect
 
 const DESIGN_SIZE := Vector2(1920, 1080)
 var debug_hidden: bool = false
+const ALLIES := "Allies"
+const AXIS := "Axis"
 
 @onready var score_pips: Array[TextureRect] = [
 	$ResizeUI/ScorePips/BoxContainer/TextureRect1,
@@ -43,11 +49,23 @@ func _ready() -> void:
 func update_player_color() -> void:
 	match matchState.mySide:
 		enums.Side.RED:
-			bottom_colored_bar.modulate = Color(0.429, 0.07, 0.08, 1.0)
-			top_colored_bar.modulate = Color(0.029, 0.37, 0.08, 1.0)
+			my_faction.text = AXIS
+			enemy_faction.text = ALLIES
+			var style = my_faction.get_theme_stylebox("normal") as StyleBoxFlat
+			style.bg_color = Color(0.429, 0.07, 0.08, 1.0)
+			style = enemy_faction.get_theme_stylebox("normal") as StyleBoxFlat
+			style.bg_color = Color(0.029, 0.37, 0.08, 1.0)
+			#bottom_colored_bar.modulate = Color(0.429, 0.07, 0.08, 1.0)
+			#top_colored_bar.modulate = Color(0.029, 0.37, 0.08, 1.0)
 		enums.Side.GREEN:
-			bottom_colored_bar.modulate = Color(0.029, 0.37, 0.08, 1.0)
-			top_colored_bar.modulate = Color(0.429, 0.07, 0.08, 1.0)
+			my_faction.text = ALLIES
+			enemy_faction.text = AXIS
+			var style = my_faction.get_theme_stylebox("normal") as StyleBoxFlat
+			style.bg_color = Color(0.029, 0.37, 0.08, 1.0)
+			style = enemy_faction.get_theme_stylebox("normal") as StyleBoxFlat
+			style.bg_color = Color(0.429, 0.07, 0.08, 1.0)
+			#bottom_colored_bar.modulate = Color(0.029, 0.37, 0.08, 1.0)
+			#top_colored_bar.modulate = Color(0.429, 0.07, 0.08, 1.0)
 		enums.Side.NONE:
 			return
 

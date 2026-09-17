@@ -21,7 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://wd8gerj4bli1" path="res://assets/sprites/dice/textures/dice-sides.png" id="13_wygn3"]
 [ext_resource type="Script" uid="uid://cm4a8di22xvu3" path="res://client/battlefield/hover_action_highlight.gd" id="14_vln62"]
 [ext_resource type="Script" uid="uid://cl0168wcrdlf1" path="res://client/battlefield/discard_pile_ui.gd" id="15_eq063"]
-[ext_resource type="PackedScene" uid="uid://c3nofdwjiv8vk" path="res://client/debug.tscn" id="19_3y24m"]
+[ext_resource type="PackedScene" uid="uid://c3nofdwjiv8vk" path="res://client/user-interface.tscn" id="19_3y24m"]
 [ext_resource type="Texture2D" uid="uid://vgleurc45wyk" path="res://assets/card_textures/aAAA_card_back.png" id="21_wygn3"]
 [ext_resource type="Script" uid="uid://d0i075tkk6mwe" path="res://client/battlefield/terrain_cards.gd" id="23_vln62"]
 [ext_resource type="Script" uid="uid://ctk6r7joynsl2" path="res://client/battlefield/card_play_area.gd" id="24_fpqqf"]
