@@ -1,9 +1,13 @@
 [gd_resource type="Resource" script_class="TerrainCard" format=3 uid="uid://b5jbncffqelnd"]
 
-[ext_resource type="Texture2D" uid="uid://rtb43f6i1ud" path="res://assets/ui/dot-bold-highlight.svg" id="1_l1a1x"]
+[ext_resource type="Texture2D" uid="uid://bklyrlmknh4ui" path="res://assets/sprites/hex/hex_tile_set_128x128.png" id="1_l1a1x"]
 [ext_resource type="Texture2D" uid="uid://cw5i8ef6l7e83" path="res://assets/terrainunits_infrantry.png" id="2_psw5p"]
 [ext_resource type="Script" uid="uid://bp4fu7qfy86hn" path="res://commons/cards/command_card/TerrainCard.gd" id="3_t2qdc"]
 [ext_resource type="Texture2D" uid="uid://bqrote6s7ke10" path="res://assets/terrainunits_tank.png" id="4_2s81h"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5wl1g"]
+atlas = ExtResource("1_l1a1x")
+region = Rect2(768, 0, 128, 128)
 
 [resource]
 script = ExtResource("3_t2qdc")
@@ -15,7 +19,7 @@ Unit moving in must stop
 Unit moving in cannot battle"
 infantry_negate_count = "-1"
 tank_negate_count = "-2"
-card_art = ExtResource("1_l1a1x")
+card_art = SubResource("AtlasTexture_5wl1g")
 infantry_art = ExtResource("2_psw5p")
 tank_art = ExtResource("4_2s81h")
 metadata/_custom_type_script = "uid://bp4fu7qfy86hn"

@@ -1,9 +1,13 @@
 [gd_scene format=3 uid="uid://bpenm2rqd2xau"]
 
 [ext_resource type="Script" uid="uid://dx0qkf2l3bufk" path="res://client/battlefield/terrain_card_ui.gd" id="1_gd3o8"]
-[ext_resource type="Texture2D" uid="uid://rtb43f6i1ud" path="res://assets/ui/dot-bold-highlight.svg" id="2_jbmmi"]
+[ext_resource type="Texture2D" uid="uid://bklyrlmknh4ui" path="res://assets/sprites/hex/hex_tile_set_128x128.png" id="2_jbmmi"]
 [ext_resource type="Texture2D" uid="uid://cw5i8ef6l7e83" path="res://assets/terrainunits_infrantry.png" id="3_2og8p"]
 [ext_resource type="Texture2D" uid="uid://bqrote6s7ke10" path="res://assets/terrainunits_tank.png" id="4_fpmyj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbmmi"]
+atlas = ExtResource("2_jbmmi")
+region = Rect2(0, 0, 128, 128)
 
 [node name="TerrainCardUI" type="MarginContainer" unique_id=1384061792 node_paths=PackedStringArray("title_label", "description_label", "effect_label", "infantry_negate_count", "tank_negate_count")]
 anchors_preset = 9
@@ -22,21 +26,21 @@ layout_mode = 2
 
 [node name="background_texture" type="TextureRect" parent="Control" unique_id=1947103247]
 layout_mode = 0
-offset_left = 26.0
-offset_top = 147.0
-offset_right = 92.0
-offset_bottom = 223.0
+offset_left = 8.0
+offset_top = 128.0
+offset_right = 72.0
+offset_bottom = 192.0
 offset_transform_enabled = true
 offset_transform_visual_only = false
-texture = ExtResource("2_jbmmi")
-stretch_mode = 2
+texture = SubResource("AtlasTexture_jbmmi")
+expand_mode = 1
 
 [node name="terrain_infantry_art" type="TextureRect" parent="Control" unique_id=1577902001]
 layout_mode = 0
-offset_left = 35.000023
-offset_top = 307.99997
-offset_right = 1689.0
-offset_bottom = 776.0
+offset_left = 22.999996
+offset_top = 263.9999
+offset_right = 1677.0
+offset_bottom = 731.9999
 scale = Vector2(0.05, 0.05)
 offset_transform_scale = Vector2(0.1, 0.1)
 offset_transform_visual_only = false
@@ -44,10 +48,10 @@ texture = ExtResource("3_2og8p")
 
 [node name="terrain_tank_art" type="TextureRect" parent="Control" unique_id=710385116]
 layout_mode = 0
-offset_left = 37.0
-offset_top = 339.0
-offset_right = 1691.0
-offset_bottom = 1126.0
+offset_left = 22.999996
+offset_top = 289.00003
+offset_right = 1677.0
+offset_bottom = 777.0
 scale = Vector2(0.05, 0.05)
 offset_transform_scale = Vector2(0.1, 0.1)
 texture = ExtResource("4_fpmyj")
@@ -64,11 +68,18 @@ autowrap_mode = 3
 
 [node name="description_label" type="Label" parent="Control" unique_id=248198948]
 layout_mode = 0
-offset_left = 95.0
-offset_top = 126.0
-offset_right = 336.0
-offset_bottom = 305.0
-text = "description_label"
+offset_left = 80.0
+offset_top = 128.0
+offset_right = 264.6154
+offset_bottom = 324.9231
+scale = Vector2(0.65, 0.65)
+text = "description_label_label
+description_label_label
+description_label_label
+description_label_label
+description_label_label
+description_label_label
+"
 autowrap_mode = 3
 
 [node name="effect_label" type="Label" parent="Control" unique_id=33350227]
@@ -86,18 +97,18 @@ autowrap_mode = 3
 
 [node name="infantry_negate_count" type="Label" parent="Control" unique_id=209782746]
 layout_mode = 0
-offset_left = 112.0
-offset_top = 305.0
-offset_right = 366.0
-offset_bottom = 331.0
+offset_left = 111.0
+offset_top = 261.0
+offset_right = 365.0
+offset_bottom = 287.0
 text = "infantry_negate_count"
 autowrap_mode = 3
 
 [node name="tank_negate_count" type="Label" parent="Control" unique_id=892040534]
 layout_mode = 0
-offset_left = 112.0
-offset_top = 339.0
-offset_right = 385.0
-offset_bottom = 375.0
+offset_left = 111.0
+offset_top = 290.0
+offset_right = 279.0
+offset_bottom = 313.0
 text = "tank_negate_count"
 autowrap_mode = 3
