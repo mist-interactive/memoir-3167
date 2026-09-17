@@ -11,7 +11,6 @@ func handle_right_click(hex: Vector2i) -> void:
 	if !controller.matchState.is_my_turn():
 		return
 	for unit: Unit in controller.unit_manager.units_by_id.values():
-		print("unit hex coord ", unit.hex_coord)
 		if unit.num_of_retreat > 0 && unit.hex_coord != hex:
 			var side: enums.Side
 			if controller.matchState.is_my_turn():
