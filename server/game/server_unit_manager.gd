@@ -7,7 +7,7 @@ var _unit_id_counter: int = 0
 var isDirty: bool = true
 var death_queue: Array[int]
 var logger: LogService
-var unit_is_attacking: bool = true
+var unit_is_attacking: bool = false
 
 func _ready() -> void:
 	logger = match_controller.logger.with_context({
@@ -108,21 +108,50 @@ func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, 
 
 func retreat_unit(owner: enums.Side, unit_id: int, destination: Vector2i, sides_peer_ids: Dictionary[enums.Side, int]) -> bool:
 	if !units_by_id.has(unit_id):
-		logger.info("could not find unit")
 		return false
 	var unit: UnitData = units_by_id[unit_id]
 	if unit.num_of_retreat <= 0:
-		logger.info("num of retreat is zero or bellow")
 		return false
-	var tree: BinaryTree = get_retreat_coords(unit.hex_coord, unit.num_of_retreat)
+	var tree: BinaryTree = get_retreat_coords(owner, unit.hex_coord, unit.num_of_retreat)
 	var level: int = tree.find_node_level(destination)
 	if level == -1:
-		logger.info("could not find level")
 		return false
 	var unit_path = BoardPathfinding.get_unit_path(unit, unit.hex_coord, destination, battlefield.map, get_occupied_coords())
+	if !move_unit(unit, unit.hex_coord, destination):
+		return false
 	Network.broadcast(Network.Actions.sync_unit_path.rpc_id,sides_peer_ids.values(),[unit_id, unit_path])
 	unit.num_of_retreat -= level
+	if unit.num_of_retreat <= 0:
+		unit.set_can_retreat(false)
 	return unit.num_of_retreat <= 0
+
+func retreat_randomly(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) -> void:
+	var unit: UnitData = get_retreating_unit()
+	if !unit || !unit.can_retreat() || unit.num_of_retreat <= 0:
+		return
+	var tree: BinaryTree = get_retreat_coords(side, unit.hex_coord, unit.num_of_retreat)
+	var retreats: Array = []
+	var max_retreatable_level: int = unit.num_of_retreat
+	while max_retreatable_level > 0:
+		retreats = tree.get_nodes_by_level(max_retreatable_level)
+		if !retreats.is_empty():
+			break
+		max_retreatable_level -= 1
+	if !retreats.is_empty():
+		var random_hex: Vector2i = retreats[randi_range(0, retreats.size() - 1)]
+		var unit_path = BoardPathfinding.get_unit_path(unit, unit.hex_coord, random_hex, battlefield.map, get_occupied_coords())
+		if !move_unit(unit, unit.hex_coord, random_hex):
+			logger.error("Failure to retreat to random hex", {"hex": random_hex})
+		else:
+			Network.broadcast(Network.Actions.sync_unit_path.rpc_id,sides_peer_ids.values(),[unit.uuid, unit_path])
+	# takes dmg based on number of fail retreats
+	unit.hit_point -= (unit.num_of_retreat - max_retreatable_level)
+	unit.num_of_retreat = 0
+	unit.set_can_retreat(false)
+	if unit.hit_point <= 0:
+		var attacker_side: enums.Side = enums.Side.GREEN if side == enums.Side.RED else enums.Side.RED
+		death_queue.append(unit.uuid)
+		matchState.scores[attacker_side] += 1
 
 func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer_ids: Dictionary[enums.Side, int]) -> bool:
 	if !units_by_id.has(unit_id) || !units_by_id.has(target_unit_id):
@@ -139,7 +168,7 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	unit_is_attacking = true
 	var d: int = battlefield.map.distance(unit.hex_coord, target.hex_coord)
 	var num_of_dice: int = UnitDatabase.get_stats(unit.type).attack_dice_by_distance[d - 1]
-	var rolled_dices: Array[enums.RolledDice] = [enums.RolledDice.RETREAT] #Dice.roll(num_of_dice)
+	var rolled_dices: Array[enums.RolledDice] = [enums.RolledDice.RETREAT, enums.RolledDice.RETREAT] #Dice.roll(num_of_dice)
 	var combat_result: CombatResult = CombatResult.new()
 	combat_result.initialize(unit, target, rolled_dices)
 	resolve_combat(combat_result, side, sides_peer_ids)
@@ -156,10 +185,9 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	player_logger.info("Unit(%d) attacked unit(%d)" % [unit_id, target_unit_id])
 	player_logger.info("Combat result ", combat_result.to_dict())
 	await get_tree().create_timer(2).timeout
+	unit_is_attacking = false
 	if combat_result.retreat > 0:
-		matchState.phase = enums.TurnPhase.RESOLVE_RETREAT
-		selected_unit_id = target_unit_id
-		matchState.current_turn = enums.Side.GREEN if side == enums.Side.RED else enums.Side.RED
+		match_controller.go_next_phase(side)
 		return false
 	return true
 
@@ -179,12 +207,12 @@ func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 			"owner_id": elem.owner_id,
 			"uuid": elem.uuid,
 			"type": elem.type,
-			"coord": coord,
+			"hex_coord": coord,
 			"hit_point": unit.hit_point
 		}
 		Network.broadcast(Network.Units.spawn_unit.rpc_id, sides_peer_ids.values(), [new_unit])
 		add_unit(unit, coord)
-
+	
 	for elem in battlefield.units_to_spawn_player_2:
 		var coord: Vector2i = Vector2i(elem.coord[0], elem.coord[1])
 		var unit: UnitData = UnitData.new(enums.Side.RED, elem.type, generate_server_unit_id(), coord)
@@ -194,7 +222,7 @@ func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 			"owner_id": elem.owner_id,
 			"uuid": elem.uuid,
 			"type": elem.type,
-			"coord": coord,
+			"hex_coord": coord,
 			"hit_point": unit.hit_point
 		}
 		Network.broadcast(Network.Units.spawn_unit.rpc_id, sides_peer_ids.values(), [new_unit])
@@ -219,8 +247,9 @@ func resolve_combat(result: CombatResult, side: enums.Side, sides_peer_ids: Dict
 		return
 	if  result.retreat > 0:
 		target.num_of_retreat = result.retreat
+		target.set_can_retreat(true)
 
-func next_phase(phase: enums.TurnPhase) -> void:
+func next_phase(phase: enums.TurnPhase, prev_phase: enums.TurnPhase = enums.TurnPhase.NONE) -> void:
 	if phase == enums.TurnPhase.PLAY_CARD:
 		for id in selected_units_ids:
 			units_by_id[id].unset_all()
@@ -230,7 +259,7 @@ func next_phase(phase: enums.TurnPhase) -> void:
 	elif phase == enums.TurnPhase.MOVE:
 		for id in selected_units_ids:
 			units_by_id[id].set_can_move(true)
-	elif phase == enums.TurnPhase.ATTACK:
+	elif phase == enums.TurnPhase.ATTACK && prev_phase == enums.TurnPhase.MOVE:
 		for id in selected_units_ids:
 			units_by_id[id].set_can_attack(true)
 	selected_unit_id = -1
