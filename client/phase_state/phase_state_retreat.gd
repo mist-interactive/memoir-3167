@@ -20,6 +20,3 @@ func handle_right_click(hex: Vector2i) -> void:
 			if coords.has(hex):
 				Network.Actions.retreat_unit.rpc_id(1, unit.uuid, hex)
 			break;
-
-func handle_mouse_motion(hex: Vector2i) -> void:
-	pass
