@@ -83,16 +83,12 @@ description_label_label
 autowrap_mode = 3
 
 [node name="effect_label" type="Label" parent="Control" unique_id=33350227]
-visible = false
-custom_minimum_size = Vector2(0, 87.975)
 layout_mode = 0
-offset_left = -699.0
-offset_top = 156.0
-offset_right = 955.0
-offset_bottom = 243.975
-text = "effect_label"
-horizontal_alignment = 1
-vertical_alignment = 2
+offset_left = 56.0
+offset_top = 230.0
+offset_right = 160.0
+offset_bottom = 253.0
+text = "EFFECT"
 autowrap_mode = 3
 
 [node name="infantry_negate_count" type="Label" parent="Control" unique_id=209782746]

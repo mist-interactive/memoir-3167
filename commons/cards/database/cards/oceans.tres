@@ -13,7 +13,7 @@ region = Rect2(768, 0, 128, 128)
 script = ExtResource("3_t2qdc")
 id = "002"
 title_label = "OCEANS"
-effect_label = "Effect"
+effect_label = "EFFECT"
 description_label = "Block line of sight
 Unit moving in must stop
 Unit moving in cannot battle"
