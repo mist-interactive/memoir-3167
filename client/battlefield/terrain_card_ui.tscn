@@ -27,9 +27,9 @@ layout_mode = 2
 [node name="background_texture" type="TextureRect" parent="Control" unique_id=1947103247]
 layout_mode = 0
 offset_left = 16.0
-offset_top = 128.0
+offset_top = 136.0
 offset_right = 80.0
-offset_bottom = 192.0
+offset_bottom = 200.0
 offset_transform_enabled = true
 offset_transform_visual_only = false
 texture = SubResource("AtlasTexture_jbmmi")
@@ -38,9 +38,9 @@ expand_mode = 1
 [node name="title_label" type="Label" parent="Control" unique_id=174640353]
 layout_mode = 0
 offset_left = 4.0
-offset_top = 98.0
+offset_top = 106.0
 offset_right = 205.0
-offset_bottom = 126.0
+offset_bottom = 134.0
 text = "title_label"
 horizontal_alignment = 1
 autowrap_mode = 3
@@ -48,9 +48,9 @@ autowrap_mode = 3
 [node name="description_label" type="Label" parent="Control" unique_id=248198948]
 layout_mode = 0
 offset_left = 8.000004
-offset_top = 200.0
+offset_top = 208.0
 offset_right = 328.00003
-offset_bottom = 396.9231
+offset_bottom = 404.9231
 scale = Vector2(0.65, 0.65)
 text = "description_label_label_label_label_label
 description_label_label_label_label_label
@@ -72,9 +72,9 @@ autowrap_mode = 3
 [node name="terrain_infantry_art" type="TextureRect" parent="Control" unique_id=1577902001]
 layout_mode = 0
 offset_left = 87.0
-offset_top = 135.9999
+offset_top = 143.99988
 offset_right = 1741.0
-offset_bottom = 603.9999
+offset_bottom = 611.9999
 scale = Vector2(0.05, 0.05)
 offset_transform_scale = Vector2(0.1, 0.1)
 offset_transform_visual_only = false
@@ -83,9 +83,9 @@ texture = ExtResource("3_2og8p")
 [node name="terrain_tank_art" type="TextureRect" parent="Control" unique_id=710385116]
 layout_mode = 0
 offset_left = 87.0
-offset_top = 161.00002
+offset_top = 169.0
 offset_right = 1741.0
-offset_bottom = 649.0
+offset_bottom = 657.0
 scale = Vector2(0.05, 0.05)
 offset_transform_scale = Vector2(0.1, 0.1)
 texture = ExtResource("4_fpmyj")
@@ -94,17 +94,17 @@ stretch_mode = 2
 [node name="infantry_negate_count" type="Label" parent="Control" unique_id=209782746]
 layout_mode = 0
 offset_left = 167.0
-offset_top = 133.0
+offset_top = 141.0
 offset_right = 421.0
-offset_bottom = 159.0
+offset_bottom = 167.0
 text = "infantry_negate_count"
 autowrap_mode = 3
 
 [node name="tank_negate_count" type="Label" parent="Control" unique_id=892040534]
 layout_mode = 0
 offset_left = 167.0
-offset_top = 162.0
+offset_top = 170.0
 offset_right = 335.0
-offset_bottom = 185.0
+offset_bottom = 193.0
 text = "tank_negate_count"
 autowrap_mode = 3
