@@ -72,6 +72,7 @@ enum CardTargetSector {
 
 enum TurnPhase
 {
+	NONE,
 	SPAWN_UNITS,
 	DRAW_HAND,
 	PLAY_CARD,
