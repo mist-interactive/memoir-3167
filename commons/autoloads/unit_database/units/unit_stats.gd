@@ -14,6 +14,12 @@ extends Resource
 ## Represents dice rolled at specific distances. 
 ## Index 0 = Range 1, Index 1 = Range 2, etc.
 @export var attack_dice_by_distance: Array[int] = []
+func get_attack_dice_by_distance(distance: int) -> int:
+	if distance > max_attack_range || distance <= 0:
+		return 0
+	distance -= 1
+	return attack_dice_by_distance[distance]
+
 @export var attacks_ignore_los: bool = false
 @export var attacks_ignore_terrain: bool = false
 @export var can_overrun: bool = false
