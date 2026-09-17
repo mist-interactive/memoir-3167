@@ -36,7 +36,7 @@ func _physics_process(delta: float) -> void:
 	unit_manager._sync_units(sides_peer_ids)
 	check_win_condition()
 	if matchState.has_phase_ended(Time.get_ticks_msec()) && !unit_manager.unit_is_attacking:
-		go_next_phase(matchState.current_turn)
+		go_next_phase(matchState.current_turn, true)
 	match matchState.phase:
 		enums.TurnPhase.DRAW_HAND:
 			var hands_drawn: bool = deckManager.player_hands[enums.Side.GREEN].is_hand_drawn && deckManager.player_hands[enums.Side.RED].is_hand_drawn
@@ -61,12 +61,7 @@ func handle_connect(uuid: int, peer_id: int) -> void:
 		return
 	var units: Array[Dictionary]
 	for unit: UnitData in unit_manager.units_by_id.values():
-		units.append({
-			"owner_id": unit.owner_id,
-			"uuid": unit.uuid,
-			"type": unit.type,
-			"coord": unit.hex_coord
-		})
+		units.append(unit.get_snapshot())
 	var peer_ids: Array[int]
 	var uuids: Array[int] = session_manager.get_uuids()
 	assert(uuids.size() == 2)
@@ -134,7 +129,7 @@ func handle_move_unit(side: enums.Side, unit_id: int, destination: Vector2i) -> 
 
 func handle_retreat_unit(side: enums.Side, unit_id: int, destination: Vector2i) -> void:
 	if unit_manager.retreat_unit(side, unit_id, destination, get_sides_peer_ids()):
-		logger.info("handle switching back to attack phase")
+		go_next_phase(side)
 
 func handle_attack_unit(side: enums.Side, unit_id: int, target_unit_id: int) -> void:
 	if await unit_manager.attack_unit(side, unit_id, target_unit_id, get_sides_peer_ids()):
@@ -183,26 +178,41 @@ func check_win_condition() -> void:
 	logger.info("match completed", result.to_dict())
 	match_completed.emit(result)
 
-func go_next_phase(side: enums.Side) -> void:
+func go_next_phase(side: enums.Side, ran_out_time: bool = false) -> void:
 	if matchState.is_phase(enums.TurnPhase.DRAW_HAND):
 		unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)
-		matchState.new_phase_timer(60)
+		matchState.new_phase_timer()
 	elif matchState.is_phase(enums.TurnPhase.PLAY_CARD):
 		var is_card_played: bool = deckManager.card_was_played(side)
 		unit_manager.next_phase(enums.TurnPhase.SELECT if is_card_played else enums.TurnPhase.PLAY_CARD)
-		matchState.new_phase_timer(60)
+		matchState.new_phase_timer()
 		if !is_card_played:
 			change_turn(side, false)
+	elif matchState.is_phase(enums.TurnPhase.ATTACK) && unit_manager.has_retreatable_unit():
+		matchState.pause_and_store_phase_timer()
+		unit_manager.next_phase(enums.TurnPhase.RESOLVE_RETREAT)
+		matchState.new_phase_timer(20)
+		change_turn(side, false)
 	elif matchState.is_phase(enums.TurnPhase.ATTACK) || (matchState.is_phase(enums.TurnPhase.SELECT) && unit_manager.selected_units_ids.is_empty()):
 		unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)
-		matchState.new_phase_timer(60)
+		matchState.new_phase_timer()
 		change_turn(side)
+	elif matchState.is_phase(enums.TurnPhase.RESOLVE_RETREAT):
+		if ran_out_time:
+			unit_manager.retreat_randomly(side, get_sides_peer_ids())
+		unit_manager.next_phase(enums.TurnPhase.ATTACK)
+		change_turn(side, false)
+		if !unit_manager.has_attackable_unit():
+			var attacker_side: enums.Side = enums.Side.GREEN if side == enums.Side.RED else enums.Side.RED
+			go_next_phase(attacker_side)
+		else:
+			matchState.continue_from_prev_phase_timer()
 	elif matchState.is_phase(enums.TurnPhase.SELECT):
 		unit_manager.next_phase(enums.TurnPhase.MOVE)
-		matchState.new_phase_timer(60)
+		matchState.new_phase_timer()
 	elif matchState.is_phase(enums.TurnPhase.MOVE):
-		unit_manager.next_phase(enums.TurnPhase.ATTACK)
-		matchState.new_phase_timer(60)
+		unit_manager.next_phase(enums.TurnPhase.ATTACK, enums.TurnPhase.MOVE)
+		matchState.new_phase_timer()
 
 func change_turn(side: enums.Side, should_draw_card: bool = true) -> void:
 	var next_side := enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
