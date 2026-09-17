@@ -49,7 +49,7 @@ func sync(peer_ids: Array[int]) -> void:
 func is_my_unit(side: enums.Side) -> bool:
 	return owner_id == side
 
-func unset_all() -> void:
+func set_default_actions() -> void:
 	actions = DEFAULT_ACTIONS
 
 func set_selected(value: bool) -> void:

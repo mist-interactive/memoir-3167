@@ -256,7 +256,7 @@ func resolve_combat(result: CombatResult, side: enums.Side, sides_peer_ids: Dict
 func next_phase(phase: enums.TurnPhase, prev_phase: enums.TurnPhase = enums.TurnPhase.NONE) -> void:
 	if phase == enums.TurnPhase.PLAY_CARD:
 		for id in selected_units_ids:
-			units_by_id[id].unset_all()
+			units_by_id[id].set_default_actions()
 		selected_units_ids.clear()
 		moved_units_ids.clear()
 		attacked_units_ids.clear()
