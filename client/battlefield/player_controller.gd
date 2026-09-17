@@ -116,9 +116,16 @@ func highlight_hovered_unit_enemies_within_range_and_los(unit: Unit) -> void:
 		hover_action_highlight_layer.highlight_cell(enemy_hex)
 
 func highlight_possible_retreats() -> void:
+	unit_selection_highlight_layer.clear()
+	hover_path_highlight_layer.clear()
 	for unit: Unit in unit_manager.units_by_id.values():
 		if unit.num_of_retreat > 0:
-			var tree: BinaryTree = unit_manager.get_retreat_coords(unit.hex_coord, unit.num_of_retreat)
+			var side: enums.Side
+			if matchState.is_my_turn():
+				side = matchState.mySide
+			else:
+				side = enums.Side.RED if matchState.mySide == enums.Side.GREEN else enums.Side.GREEN
+			var tree: BinaryTree = unit_manager.get_retreat_coords(side, unit.hex_coord, unit.num_of_retreat)
 			var coords: Array[Variant] = tree.to_array()
 			unit_selection_highlight_layer.highlight_cell(unit.hex_coord)
 			for i in range(1, coords.size()):
