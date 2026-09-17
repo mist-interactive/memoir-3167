@@ -69,9 +69,13 @@ func select_unit(owner: enums.Side, unit_id: int) -> bool:
 	return true
 
 func deselect_unit(owner: enums.Side, unit_id: int) -> bool:
-	if selected_unit_id == -1 || selected_by_peer != owner || selected_unit_id != unit_id:
+	if !units_by_id.has(unit_id) || !selected_units_ids.has(unit_id):
 		return false
-
+	var unit: UnitData = units_by_id[unit_id]
+	if unit.owner_id != owner:
+		return false
+	unit.set_selected(false)
+	selected_units_ids.erase(unit_id)
 	selected_unit_id = -1
 	selected_by_peer = -1
 	isDirty = true
