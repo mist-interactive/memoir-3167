@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://nvbbjemdw55k"
-path="res://.godot/imported/floor_hexAndRhombus.png-3de76491bac5041be3b2c1c0a00def80.ctex"
+uid="uid://bxwkjqkwc5a36"
+path="res://.godot/imported/Metal_10-512x512.png-2eba6b02d04a222c165bc7dfdef5864f.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/textures/floor_hexAndRhombus.png"
-dest_files=["res://.godot/imported/floor_hexAndRhombus.png-3de76491bac5041be3b2c1c0a00def80.ctex"]
+source_file="res://assets/ui/textures/Metal_10-512x512.png"
+dest_files=["res://.godot/imported/Metal_10-512x512.png-2eba6b02d04a222c165bc7dfdef5864f.ctex"]
 
 [params]
 
