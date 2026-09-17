@@ -12,11 +12,14 @@ var selected_by_peer: enums.Side = enums.Side.NONE
 var selected_units_ids: Array[int]
 var moved_units_ids: Array[int]
 var attacked_units_ids: Array[int]
+var base_dir: Dictionary[enums.Side, Vector2i]
 
 func _init(initialState: BattlefieldState) -> void:
 	name = "UnitManager"
 	battlefield = initialState
 	map = battlefield.map
+	base_dir[enums.Side.GREEN] = battlefield.base_dir_1
+	base_dir[enums.Side.RED] = battlefield.base_dir_2
 
 func add_unit(unit: Variant, coord: Vector2i) -> void:
 	if !map.cells.has(coord) || unit_grid.has(coord):
@@ -85,3 +88,49 @@ func get_enemies_within_range_and_los(unit: Variant) -> Dictionary:
 			valid_targets[other_unit.uuid] = coord
 			continue
 	return valid_targets
+
+func get_retreat_coords(side: enums.Side, coord: Vector2i, unit: Variant, retreat: int) -> BinaryTree:
+	if retreat < 0:
+		return null
+	var tree: BinaryTree = BinaryTree.new(coord);
+	var left_coord: Vector2i = Vector2i(coord.x if coord.y % 2 != 0 else coord.x - 1 , coord.y + base_dir[side].y)
+	var right_coord: Vector2i = Vector2i(coord.x if coord.y % 2 == 0 else coord.x + 1 , coord.y + base_dir[side].y)
+	var cell: HexCell = battlefield.map.get_cell(coord);
+	if is_traversable(unit, left_coord):
+		tree.left = get_retreat_coords(side, left_coord, unit, retreat - 1)
+	if is_traversable(unit, right_coord):
+		tree.right = get_retreat_coords(side, right_coord, unit, retreat - 1)
+	return tree
+
+func is_traversable(unit: Variant, coord: Vector2i) -> bool:
+	var cell: HexCell = battlefield.map.get_cell(coord)
+	if !cell || unit_grid.has(coord):
+		return false
+	var terrain_stats: TerrainStats = TerrainDatabase.get_stats(cell.ground)
+	if (!terrain_stats):
+		return false
+	return terrain_stats.get_unit_max_movement(unit.type) > 0
+
+func has_unit_that_can_attack() -> bool:
+	for id: int in selected_units_ids:
+		if units_by_id[id].can_attack():
+			return true
+	return false
+
+func has_movable_unit() -> bool:
+	for id: int in selected_units_ids:
+		if units_by_id[id].can_move():
+			return true
+	return false
+
+func has_retreatable_unit() -> bool:
+	for unit: UnitData in units_by_id.values():
+		if unit.must_retreat():
+			return true
+	return false
+
+func get_retreating_unit() -> Variant:
+	for unit: UnitData in units_by_id.values():
+		if unit.must_retreat():
+			return unit
+	return null

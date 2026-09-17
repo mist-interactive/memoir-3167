@@ -1,6 +1,5 @@
 extends Node
 class_name enums
-
 enum Side
 {
 	GREEN = 1,
@@ -15,6 +14,15 @@ enum UnitType
 	TANK = 1 << 1,
 	ARTILLERY = 1 << 2,
 	ANY = INFANTRY | TANK | ARTILLERY,
+}
+
+enum UnitActions
+{
+	NONE = 0,
+	IS_SELECTED = 1 << 0,
+	CAN_MOVE = 1 << 1,
+	CAN_ATTACK = 1 << 2,
+	MUST_RETREAT = 1 << 3
 }
 
 enum RolledDice
@@ -63,12 +71,14 @@ enum CardTargetSector {
 
 enum TurnPhase
 {
+	NONE,
 	SPAWN_UNITS,
 	DRAW_HAND,
 	PLAY_CARD,
 	SELECT,
 	MOVE,
 	ATTACK,
+	RESOLVE_RETREAT,
 	DRAW_CARD
 }
 

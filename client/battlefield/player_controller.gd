@@ -115,6 +115,23 @@ func highlight_hovered_unit_enemies_within_range_and_los(unit: Unit) -> void:
 	for enemy_hex in unit_manager.get_enemies_within_range_and_los(unit).values():
 		hover_action_highlight_layer.highlight_cell(enemy_hex)
 
+func highlight_possible_retreats() -> void:
+	unit_selection_highlight_layer.clear()
+	selected_unit_path_highlight_layer.clear()
+	for unit: Unit in unit_manager.units_by_id.values():
+		if unit.num_of_retreat > 0:
+			var side: enums.Side
+			if matchState.is_my_turn():
+				side = matchState.mySide
+			else:
+				side = enums.Side.RED if matchState.mySide == enums.Side.GREEN else enums.Side.GREEN
+			var tree: BinaryTree = unit_manager.get_retreat_coords(side, unit.hex_coord, unit, unit.num_of_retreat)
+			var coords: Array[Variant] = tree.to_array()
+			unit_selection_highlight_layer.highlight_cell(unit.hex_coord)
+			for i in range(1, coords.size()):
+				selected_unit_path_highlight_layer.highlight_cell(coords[i])
+			break
+	
 func clear_all_highlights() -> void:
 	unit_selection_highlight_layer.clear()
 	selected_unit_path_highlight_layer.clear()
@@ -134,6 +151,7 @@ func _initialize_states() -> void:
 	var select_state := PhaseStateSelect.new()
 	var move_state := PhaseStateMove.new()
 	var attack_state := PhaseStateAttack.new()
+	var retreat_state := PhaseStateRetreat.new()
 	
 	states[enums.TurnPhase.SPAWN_UNITS] = spawn_units_state
 	states[enums.TurnPhase.DRAW_HAND] = draw_hand_state
@@ -141,11 +159,14 @@ func _initialize_states() -> void:
 	states[enums.TurnPhase.SELECT] = select_state
 	states[enums.TurnPhase.MOVE] = move_state
 	states[enums.TurnPhase.ATTACK] = attack_state
+	states[enums.TurnPhase.RESOLVE_RETREAT] = retreat_state
+
 	
 	for state_key: int in states.keys():
 		var state: PhaseState = states[state_key]
 		state.name = enums.TurnPhase.find_key(state_key)
 		state_container.add_child(state)
+		state.set_process(false)
 		state.setup(self)
 
 func _on_phase_changed(new_phase: enums.TurnPhase) -> void:

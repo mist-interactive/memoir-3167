@@ -21,6 +21,7 @@ func initialize(active_container: Node, snapshot: Dictionary = {}) -> void:
 		print("snapshot.units", snapshot.units)
 		for unit: Dictionary in snapshot.units:
 			_on_spawn_unit_requested(unit)
+			_on_sync_unit_requested(unit)
 
 func _on_sync_unit_requested(snapshot: Dictionary) -> void:
 	var uuid: int = snapshot.uuid
@@ -42,8 +43,8 @@ func _on_spawn_unit_requested(unit: Dictionary) -> void:
 	var new_unit = UNIT_SCENE.instantiate() as Unit
 	new_unit.name = "unit_" + str(unit.uuid)
 	active_container.add_child(new_unit)
-	new_unit.setup(unit.owner_id, unit.type, unit.uuid, unit.coord)
-	add_unit(new_unit, unit.coord)
+	new_unit.setup(unit.owner_id, unit.type, unit.uuid, unit.hex_coord)
+	add_unit(new_unit, unit.hex_coord)
 	pass
 
 func _on_resolve_combat_result_requested(result: CombatResult) -> void:
