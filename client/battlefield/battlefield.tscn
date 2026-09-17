@@ -25,6 +25,7 @@
 [ext_resource type="Texture2D" uid="uid://vgleurc45wyk" path="res://assets/card_textures/aAAA_card_back.png" id="21_wygn3"]
 [ext_resource type="Script" uid="uid://d0i075tkk6mwe" path="res://client/battlefield/terrain_cards.gd" id="23_vln62"]
 [ext_resource type="Script" uid="uid://ctk6r7joynsl2" path="res://client/battlefield/card_play_area.gd" id="24_fpqqf"]
+[ext_resource type="Script" uid="uid://bmxdyxqcsc1dl" path="res://client/battlefield/info_screen.gd" id="26_axx1d"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_axx1d"]
 texture = ExtResource("5_fpqqf")
@@ -362,5 +363,29 @@ zoom = Vector2(0.305, 0.305)
 script = ExtResource("5_7nanj")
 target_map = NodePath("../MapVisuals/MapGround")
 map_manager = NodePath("../MapManager")
+
+[node name="InfoScreen" type="CanvasLayer" parent="." unique_id=2087776100 node_paths=PackedStringArray("info_text")]
+script = ExtResource("26_axx1d")
+info_text = NodePath("InfoBox/InfoText")
+
+[node name="InfoBox" type="Node2D" parent="InfoScreen" unique_id=83676762]
+
+[node name="InfoBG" type="ColorRect" parent="InfoScreen/InfoBox" unique_id=1616455175]
+offset_left = 495.0
+offset_top = 362.0
+offset_right = 622.0
+offset_bottom = 431.0
+color = Color(0.581033, 0.58103293, 0.5810329, 1)
+
+[node name="InfoText" type="RichTextLabel" parent="InfoScreen/InfoBox" unique_id=2025412000]
+modulate = Color(0, 0, 0, 1)
+offset_left = 495.0
+offset_top = 362.0
+offset_right = 622.0
+offset_bottom = 431.0
+text = "INFO TEXT"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="pressed" from="UICanvas/Button" to="UICanvas/Button" method="_on_pressed"]
