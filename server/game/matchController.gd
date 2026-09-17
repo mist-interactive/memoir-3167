@@ -202,7 +202,7 @@ func go_next_phase(side: enums.Side, ran_out_time: bool = false) -> void:
 			unit_manager.retreat_randomly(side, get_sides_peer_ids())
 		unit_manager.next_phase(enums.TurnPhase.ATTACK)
 		change_turn(side, false)
-		if !unit_manager.has_attackable_unit():
+		if !unit_manager.has_unit_that_can_attack():
 			var attacker_side: enums.Side = enums.Side.GREEN if side == enums.Side.RED else enums.Side.RED
 			go_next_phase(attacker_side)
 		else:

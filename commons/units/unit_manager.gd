@@ -111,7 +111,7 @@ func is_traversable(unit: Variant, coord: Vector2i) -> bool:
 		return false
 	return terrain_stats.get_unit_max_movement(unit.type) > 0
 
-func has_attackable_unit() -> bool:
+func has_unit_that_can_attack() -> bool:
 	for id: int in selected_units_ids:
 		if units_by_id[id].can_attack():
 			return true
