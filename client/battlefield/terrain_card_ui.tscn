@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bpenm2rqd2xau"]
 
 [ext_resource type="Script" uid="uid://dx0qkf2l3bufk" path="res://client/battlefield/terrain_card_ui.gd" id="1_gd3o8"]
-[ext_resource type="Texture2D" uid="uid://bwh1h68qbj0ld" path="res://assets/images/sea.png" id="2_jbmmi"]
+[ext_resource type="Texture2D" uid="uid://rtb43f6i1ud" path="res://assets/ui/dot-bold-highlight.svg" id="2_jbmmi"]
 [ext_resource type="Texture2D" uid="uid://cw5i8ef6l7e83" path="res://assets/terrainunits_infrantry.png" id="3_2og8p"]
 [ext_resource type="Texture2D" uid="uid://bqrote6s7ke10" path="res://assets/terrainunits_tank.png" id="4_fpmyj"]
 

@@ -297,21 +297,21 @@ offset_bottom = 976.0
 text = "NextPhase"
 horizontal_alignment = 1
 
-[node name="Control" type="Control" parent="ResizeUI" unique_id=1007110047 node_paths=PackedStringArray("leftBox", "leftBar")]
+[node name="Control" type="Control" parent="ResizeUI" unique_id=1007110047 node_paths=PackedStringArray("leftBox", "leftBar", "terrain_card_ui")]
 anchors_preset = 0
 mouse_filter = 2
 script = ExtResource("7_0psvw")
 leftBox = NodePath("left-box")
 leftBar = NodePath("left-bar")
+terrain_card_ui = NodePath("TerrainCardUI")
 
 [node name="TerrainCardUI" parent="ResizeUI/Control" unique_id=1384061792 instance=ExtResource("10_hpd0d")]
 layout_mode = 0
 anchors_preset = 0
 anchor_bottom = 0.0
-offset_left = 8.0
-offset_top = 178.0
-offset_right = 218.0
-offset_bottom = 503.0
+offset_top = 100.0
+offset_right = 200.0
+offset_bottom = 500.0
 grow_vertical = 1
 
 [node name="left-box" type="TextureRect" parent="ResizeUI/Control" unique_id=526610191]

@@ -7,6 +7,8 @@ extends Control
 @onready var bar_2: TextureRect = leftBar.get_child(1)
 @onready var bar_3: TextureRect = leftBar.get_child(2)
 
+@export var terrain_card_ui: TerrainCardUI
+
 var box_default_position: Vector2
 var box_default_scale: Vector2
 
@@ -46,3 +48,5 @@ func restore() -> void:
 	bar_1.position = bar_1_default_position
 	bar_2.position = bar_2_default_position
 	bar_3.position = bar_3_default_position
+	
+	terrain_card_ui.hide_elements()

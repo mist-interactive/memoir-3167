@@ -37,3 +37,6 @@ func setup_visuals(id: String) -> void:
 	background_texture.texture = card_data.card_art
 	terrain_infantry_art.texture = card_data.infantry_art
 	terrain_tank_art.texture = card_data.tank_art
+
+func hide_elements() -> void:
+	$Control.visible = false
