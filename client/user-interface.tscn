@@ -250,7 +250,7 @@ offset_bottom = 500.0
 grow_vertical = 1
 
 [node name="left-box" type="TextureRect" parent="ResizeUI/Control" unique_id=526610191]
-modulate = Color(0.14901961, 0.16470589, 0.12941177, 0.7411765)
+modulate = Color(0.14901961, 0.16470589, 0.12941177, 0.8235294)
 z_index = -65
 z_as_relative = false
 layout_mode = 0
@@ -264,7 +264,7 @@ expand_mode = 1
 stretch_mode = 1
 
 [node name="TextureRect7" type="TextureRect" parent="ResizeUI/Control" unique_id=347774657]
-modulate = Color(0.14901961, 0.16470589, 0.12941177, 0.7411765)
+modulate = Color(0.14901961, 0.16470589, 0.12941177, 0.8235294)
 z_index = -87
 z_as_relative = false
 layout_mode = 0
