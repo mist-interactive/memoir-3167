@@ -172,7 +172,7 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	unit_is_attacking = true
 	var d: int = battlefield.map.distance(unit.hex_coord, target.hex_coord)
 	var num_of_dice: int = UnitDatabase.get_stats(unit.type).attack_dice_by_distance[d - 1]
-	var rolled_dices: Array[enums.RolledDice] = [enums.RolledDice.RETREAT, enums.RolledDice.RETREAT] #Dice.roll(num_of_dice)
+	var rolled_dices: Array[enums.RolledDice] = Dice.roll(num_of_dice)
 	var combat_result: CombatResult = CombatResult.new()
 	combat_result.initialize(unit, target, rolled_dices)
 	resolve_combat(combat_result, side, sides_peer_ids)
