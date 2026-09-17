@@ -123,12 +123,12 @@ func has_movable_unit() -> bool:
 
 func has_retreatable_unit() -> bool:
 	for unit: UnitData in units_by_id.values():
-		if unit.can_retreat():
+		if unit.must_retreat():
 			return true
 	return false
 
 func get_retreating_unit() -> Variant:
 	for unit: UnitData in units_by_id.values():
-		if unit.can_retreat():
+		if unit.must_retreat():
 			return unit
 	return null

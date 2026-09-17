@@ -1,5 +1,6 @@
 class_name UnitData
 extends RefCounted
+const DEFAULT_ACTIONS: enums.UnitActions = enums.UnitActions.CAN_MOVE | enums.UnitActions.CAN_ATTACK
 
 var owner_id: enums.Side
 var uuid: int = -1
@@ -12,7 +13,7 @@ var hex_coord: Vector2i:
 		hex_coord = new_coord
 		isDirty = true
 var type: enums.UnitType
-var actions: enums.UnitActions = enums.UnitActions.NONE:
+var actions: enums.UnitActions = DEFAULT_ACTIONS:
 	set(new_val):
 		actions = new_val
 var num_of_retreat: int = -1:
@@ -49,7 +50,7 @@ func is_my_unit(side: enums.Side) -> bool:
 	return owner_id == side
 
 func unset_all() -> void:
-	actions = enums.UnitActions.NONE
+	actions = DEFAULT_ACTIONS
 
 func set_selected(value: bool) -> void:
 	if value:
@@ -58,22 +59,22 @@ func set_selected(value: bool) -> void:
 		actions &= ~enums.UnitActions.IS_SELECTED
 
 func set_can_move(value: bool) -> void:
-	actions &= ~(enums.UnitActions.CAN_MOVE | enums.UnitActions.CAN_ATTACK | enums.UnitActions.CAN_RETREAT)
-
 	if value:
 		actions |= enums.UnitActions.CAN_MOVE
+	else:
+		actions &= ~enums.UnitActions.CAN_MOVE
 
 func set_can_attack(value: bool) -> void:
-	actions &= ~(enums.UnitActions.CAN_MOVE | enums.UnitActions.CAN_ATTACK | enums.UnitActions.CAN_RETREAT)
-
 	if value:
 		actions |= enums.UnitActions.CAN_ATTACK
+	else:
+		actions &= ~enums.UnitActions.CAN_ATTACK
 
-func set_can_retreat(value: bool) -> void:
-	actions &= ~(enums.UnitActions.CAN_MOVE | enums.UnitActions.CAN_ATTACK | enums.UnitActions.CAN_RETREAT)
-
+func set_must_retreat(value: bool) -> void:
 	if value:
-		actions |= enums.UnitActions.CAN_RETREAT
+		actions |= enums.UnitActions.MUST_RETREAT
+	else:
+		actions &= ~enums.UnitActions.MUST_RETREAT
 
 func is_selected() -> bool:
 	return (actions & enums.UnitActions.IS_SELECTED) != 0
@@ -84,5 +85,5 @@ func can_move() -> bool:
 func can_attack() -> bool:
 	return (actions & enums.UnitActions.CAN_ATTACK) != 0
 
-func can_retreat() -> bool:
-	return (actions & enums.UnitActions.CAN_RETREAT) != 0
+func must_retreat() -> bool:
+	return (actions & enums.UnitActions.MUST_RETREAT) != 0
