@@ -35,7 +35,7 @@ func get_snapshot() -> Dictionary:
 		"type": type,
 		"owner_id": owner_id,
 		"hit_point": hit_point,
-		"actions": actions
+		"actions": actions,
 		"num_of_retreat": num_of_retreat
 	}
 
