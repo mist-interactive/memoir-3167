@@ -27,7 +27,7 @@ func highlight_movable_units() -> void:
 			continue
 		highlight_cell(unit.hex_coord)
 
-func highlight_attackable_units() -> void:
+func highlight_units_that_can_attack() -> void:
 	for unit_id in unit_manager.selected_units_ids:
 		var unit = unit_manager.get_unit_by_id(unit_id)
 		if unit == null:
