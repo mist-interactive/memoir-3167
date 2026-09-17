@@ -4,8 +4,8 @@ class_name BattlefieldState
 var map: HexGrid
 var units_to_spawn_player_1: Array[Dictionary]
 var units_to_spawn_player_2: Array[Dictionary]
-var player_1_dir: Vector2i = Vector2i(0, -1)
-var player_2_dir: Vector2i = Vector2i(0, 1)
+var base_dir_1: Vector2i = Vector2i(0, 1) # green
+var base_dir_2: Vector2i = Vector2i(0, -1) # red
 var left_sector_max: int
 var right_sector_min: int
 var loaded: bool
