@@ -106,14 +106,17 @@ func highlight_hovered_unit_reachable_hexes(unit: Unit) -> void:
 		hover_path_highlight_layer.highlight_cell(coord)
 
 func highlight_selected_unit_enemies_within_range_and_los(unit: Unit) -> void:
-	selected_unit_action_highlight_layer.clear()
-	for enemy_hex in unit_manager.get_enemies_within_range_and_los(unit).values():
-		selected_unit_action_highlight_layer.highlight_cell(enemy_hex)
+	highlight_attackable_enemies_on_layer(unit, selected_unit_action_highlight_layer)
+
 
 func highlight_hovered_unit_enemies_within_range_and_los(unit: Unit) -> void:
-	hover_action_highlight_layer.clear()
-	for enemy_hex in unit_manager.get_enemies_within_range_and_los(unit).values():
-		hover_action_highlight_layer.highlight_cell(enemy_hex)
+	highlight_attackable_enemies_on_layer(unit, hover_action_highlight_layer)
+
+func highlight_attackable_enemies_on_layer(unit: Unit, highlight_layer: TileMapLayer) -> void:
+	highlight_layer.clear()
+	for target in unit_manager.get_attackable_enemies(unit).values():
+		var enemy = target.get("enemy")
+		highlight_layer.highlight_cell(enemy.hex_coord)
 
 func highlight_possible_retreats() -> void:
 	unit_selection_highlight_layer.clear()

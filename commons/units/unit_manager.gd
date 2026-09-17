@@ -134,3 +134,21 @@ func get_retreating_unit() -> Variant:
 		if unit.must_retreat():
 			return unit
 	return null
+func get_attackable_enemies(unit: Variant) -> Dictionary:
+	var reachable_enemies: Dictionary = get_enemies_within_range_and_los(unit)
+	if !reachable_enemies || reachable_enemies.size() == 0:
+		return {}
+	# target uuid (int), unit (Variant)
+	var targets: Dictionary[int, Dictionary]
+	var unit_hex: HexCell = battlefield.map.get_cell(unit.hex_coord)
+	for enemy_uuid in reachable_enemies:
+		var enemy: Variant = get_unit_by_id(enemy_uuid)
+		var enemy_hex: HexCell = battlefield.map.get_cell(enemy.hex_coord)
+		var distance: int = battlefield.map.distance(unit.hex_coord, enemy.hex_coord)
+		var dice: int = CombatResolver.get_attack_dice_count(unit, unit_hex, enemy, enemy_hex, distance)
+		if dice > 0:
+			targets[enemy.uuid] = {
+				"enemy": enemy,
+				"dice": dice,
+			}
+	return targets
