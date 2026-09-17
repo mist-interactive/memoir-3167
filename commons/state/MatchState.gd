@@ -2,6 +2,8 @@ extends Node
 class_name MatchState
 
 signal phase_changed(new_phase: enums.TurnPhase)
+# constants
+const DEFAULT_DURATION_IN_SEC = 10
 
 var matchId: int
 var mySide: enums.Side
@@ -26,6 +28,7 @@ var phase_timer: PhaseTimer = PhaseTimer.new():
 	set(new_phase):
 		phase_timer = new_phase
 		should_sync = true
+var prev_phase_timer: PhaseTimer = PhaseTimer.new()
 enum STATE {INITIALIZING, READY, INITIALIZE_BOARD, IN_PROGRESS, PAUSED, ENDED}
 var should_sync: bool = true
 
@@ -95,7 +98,16 @@ func get_winner(min_score: int = 1) -> enums.Side:
 func is_paused() -> bool:
 	return state == STATE.PAUSED
 
-func new_phase_timer(duration_in_sec: float) -> void:
+func pause_and_store_phase_timer() -> void:
+	prev_phase_timer.sync(phase_timer.to_dict())
+	prev_phase_timer.paused_at = Time.get_ticks_msec()
+
+func continue_from_prev_phase_timer() -> void:
+	phase_timer.sync(prev_phase_timer.to_dict())
+	unpause()
+	should_sync = true
+
+func new_phase_timer(duration_in_sec: float = DEFAULT_DURATION_IN_SEC) -> void:
 	phase_timer.started_at = Time.get_ticks_msec()
 	phase_timer.ends_at = phase_timer.started_at + duration_in_sec * 1000
 	phase_timer.duration = duration_in_sec * 1000
