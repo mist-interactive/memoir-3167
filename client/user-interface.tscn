@@ -173,8 +173,8 @@ text = "scores: "
 layout_mode = 0
 offset_left = 24.0
 offset_top = 749.0
-offset_right = 124.0
-offset_bottom = 774.0
+offset_right = 121.0
+offset_bottom = 772.0
 text = "match state:"
 
 [node name="Winner" type="Label" parent="ResizeUI" unique_id=1570152226]

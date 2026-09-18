@@ -100,7 +100,7 @@ func _physics_process(delta: float) -> void:
 	next_phase.visible = is_my_turn
 
 	if is_my_turn:
-		phase.text = get_turn_phase_txt(matchState.phase)
+		phase.text = get_turn_phase_txt(matchState.phase) + "(%d)" % (count_down / 1000)
 		next_phase.text = "To " + get_turn_phase_txt(get_next_phase())
 		button.text = "Next"
 	else:
