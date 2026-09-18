@@ -1,25 +1,9 @@
 [gd_scene format=3 uid="uid://br53t6qvsase5"]
 
 [ext_resource type="Script" uid="uid://gitlphxxoobq" path="res://client/units/unit.gd" id="1_thmd4"]
-[ext_resource type="Texture2D" uid="uid://b36rlwjyo7k5n" path="res://icon.svg" id="2_gyfl6"]
-
-[sub_resource type="Animation" id="Animation_o1qvf"]
-resource_name = "idle"
-
-[sub_resource type="Animation" id="Animation_eu1se"]
-resource_name = "selected"
-
-[sub_resource type="AnimationLibrary" id="AnimationLibrary_v8lna"]
-_data = {
-&"idle": SubResource("Animation_o1qvf"),
-&"selected": SubResource("Animation_eu1se")
-}
+[ext_resource type="PackedScene" uid="uid://qdgisqspx2c0" path="res://client/units/UnitFigure.tscn" id="2_thmd4"]
 
 [node name="Unit" type="Node2D" unique_id=829278407]
 script = ExtResource("1_thmd4")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=500315773]
-texture = ExtResource("2_gyfl6")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1786416269]
-libraries/ = SubResource("AnimationLibrary_v8lna")
+[node name="UnitFigure" parent="." unique_id=1319011879 instance=ExtResource("2_thmd4")]

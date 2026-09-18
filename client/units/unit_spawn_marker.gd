@@ -1,7 +1,10 @@
 @tool
 
 class_name UnitSpawnMarker
-extends Sprite2D
+extends Node2D
+
+@onready var anim_sprite: AnimatedSprite2D = $AnimSprite
+@onready var base_sprite: Sprite2D = $BaseSprite
 
 var _hex_map: TileMapLayer = null
 var _is_snapping: bool = false

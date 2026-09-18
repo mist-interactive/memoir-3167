@@ -4,41 +4,46 @@ class_name UnitVisuals
 
 extends RefCounted
 
-static var TEXTURE_MAP: Dictionary = {
+const ANIMATION_MAP: Dictionary = {
 	1: {
-		enums.UnitType.INFANTRY: preload("res://assets/sprites/units/allied_infantry_idle_48x48.png"),	
-		enums.UnitType.TANK: preload("res://assets/sprites/units/allied_armor_idle_96x96.png"),	
-		enums.UnitType.ARTILLERY: preload("res://assets/sprites/units/allied_artillery_idle_96x96.png")
+		enums.UnitType.INFANTRY: {"anim": "allied_infantry_idle", "offset": Vector2(9, -15)},
+		enums.UnitType.TANK: {"anim": "allied_armor_idle", "offset": Vector2(4, 5)},
+		enums.UnitType.ARTILLERY: {"anim": "allied_artillery_idle", "offset": Vector2(4, -2)},
 	},
 	2: {
-		enums.UnitType.INFANTRY: preload("res://assets/sprites/units/axis_infantry_idle_48x48.png"),	
-		enums.UnitType.TANK: preload("res://assets/sprites/units/axis_armor_idle_96x96.png"),	
-		enums.UnitType.ARTILLERY: preload("res://assets/sprites/units/axis_artillery_96x96.png")
-	}
+		enums.UnitType.INFANTRY: {"anim": "axis_infantry_idle", "offset": Vector2(-9, -15)},
+		enums.UnitType.TANK: {"anim": "axis_armor_idle", "offset": Vector2(-4, 5)},
+		enums.UnitType.ARTILLERY: {"anim": "axis_artillery_idle", "offset": Vector2(-4, -2)},
+	},
 }
+
+const base_atlas: CompressedTexture2D = preload("res://assets/sprites/units/unit_bases.png")
+
 static var scale: Vector2 = Vector2(1, 1)
 
-static func apply_unit_visuals(sprite: Sprite2D, owner_id: int, unit_type: int) -> void:
-	if not TEXTURE_MAP.has(owner_id):
-		push_warning("Invalid owner_id: ", owner_id)
+static func apply_unit_visuals(unit_figure: Variant, owner_id: int, unit_type: int) -> void:
+	if not ANIMATION_MAP.has(owner_id):
+		push_warning("Invalid owner_id in apply_unit_visuals: ", owner_id)
 		return
-	if not TEXTURE_MAP[owner_id].has(unit_type):
-		push_warning("Invalid unit_type: ", unit_type)
+	if not ANIMATION_MAP[owner_id].has(unit_type):
+		push_warning("Invalid unit_type in apply_unit_visuals: ", unit_type)
 		return
-	sprite.texture = TEXTURE_MAP[owner_id][unit_type]
-	sprite.scale = scale
+	var visual_data: Dictionary = ANIMATION_MAP[owner_id][unit_type]
+	unit_figure.anim_sprite.offset = visual_data.get("offset")
+	unit_figure.anim_sprite.play(visual_data.get("anim"))
+	unit_figure.anim_sprite.flip_h = false
+	unit_figure.base_sprite.texture = base_atlas
+	unit_figure.base_sprite.hframes = 2
+	if owner_id == 2:
+		unit_figure.base_sprite.frame = 1
 	if unit_type == enums.UnitType.INFANTRY:
-		sprite.hframes = 13
-		sprite.frame = 0
 		if owner_id == 2:
-			sprite.scale.x *= -1
+			unit_figure.anim_sprite.flip_h = true
 	if unit_type == enums.UnitType.TANK:
-		sprite.hframes = 13
-		sprite.frame = 0
+		unit_figure.base_sprite.scale = Vector2(1.5, 1.5)
 		if owner_id == 1:
-			sprite.scale.x *= -1
+			unit_figure.anim_sprite.flip_h = true
 	if unit_type == enums.UnitType.ARTILLERY:
-		sprite.hframes = 13
-		sprite.frame = 0
+		unit_figure.base_sprite.scale = Vector2(1.5, 1.5)
 		if owner_id == 1:
-			sprite.scale.x *= -1
+			unit_figure.anim_sprite.flip_h = true
