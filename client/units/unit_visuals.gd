@@ -6,12 +6,12 @@ extends RefCounted
 
 const ANIMATION_MAP: Dictionary = {
 	1: {
-		enums.UnitType.INFANTRY: {"anim": "allied_infantry_idle", "offset": Vector2(9, -20)},
+		enums.UnitType.INFANTRY: {"anim": "allied_infantry_idle", "offset": Vector2(9, -15)},
 		enums.UnitType.TANK: {"anim": "allied_armor_idle", "offset": Vector2(4, 5)},
 		enums.UnitType.ARTILLERY: {"anim": "allied_artillery_idle", "offset": Vector2(4, -2)},
 	},
 	2: {
-		enums.UnitType.INFANTRY: {"anim": "axis_infantry_idle", "offset": Vector2(-9, -20)},
+		enums.UnitType.INFANTRY: {"anim": "axis_infantry_idle", "offset": Vector2(-9, -15)},
 		enums.UnitType.TANK: {"anim": "axis_armor_idle", "offset": Vector2(-4, 5)},
 		enums.UnitType.ARTILLERY: {"anim": "axis_artillery_idle", "offset": Vector2(-4, -2)},
 	},
