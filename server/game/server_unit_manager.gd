@@ -183,7 +183,7 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 
 	selected_unit_id = -1
 	selected_by_peer = enums.Side.NONE
-	unit.set_can_attack(false)
+	attacker.set_can_attack(false)
 	attacked_units_ids.append(unit_id)
 	var player_logger := logger.with_context({
 		"peer_id": sides_peer_ids[side],
