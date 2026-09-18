@@ -5,9 +5,9 @@ var draw_pile: Array[String] = []
 var discard_pile: Array[CardInstance] = []
 var player_hands: Dictionary[int, HandState] = {}
 var _next_instance_id: int = 1000 
-var initial_hand_size: int = 6
 var logger: LogService
 @onready var match_controller: matchController = $".."
+@onready var initial_hand_size: int = match_controller.config.match.hand_size
 
 func _ready() -> void:
 	logger = match_controller.logger.with_context({
@@ -145,4 +145,4 @@ func get_card() -> CommandCard:
 	return card
 
 func card_was_played(side: enums.Side):
-	return player_hands[side].card_ids.size() < 6
+	return player_hands[side].card_ids.size() < initial_hand_size
