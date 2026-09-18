@@ -6,7 +6,8 @@ var deckManager: DeckManager
 var unit_manager: ServerUnitManager
 var sides_uuid: Dictionary[enums.Side, int]
 var logger: LogService
-
+const CONFIG_PATH: String = "res://server/game/config.json"
+var config: Dictionary
 @onready var match_manager: MatchManager = $"../MatchManager"
 @onready var session_manager: SessionManager = $"./SessionManager"
 
@@ -15,6 +16,11 @@ signal match_completed(resut: MatchResult)
 func _ready() -> void:
 	assert(match_manager != null)
 	assert(session_manager != null)
+	var hearbeat: Timer = Timer.new()
+	hearbeat.timeout.connect(_send_heartbeat)
+	hearbeat.name = "heartbeat"
+	add_child(hearbeat)
+	hearbeat.start(config.match.heartbeat)
 
 func _init(matchId: int) -> void:
 	name = "Match_" + str(matchId)
@@ -28,6 +34,7 @@ func _init(matchId: int) -> void:
 	add_child(deckManager)
 	add_child(unit_manager)
 	add_child(SessionManager.new())
+	config = ConfigLoader.load_json(CONFIG_PATH)
 
 func _physics_process(delta: float) -> void:
 	var sides_peer_ids: Dictionary[enums.Side, int] = get_sides_peer_ids()
@@ -52,6 +59,10 @@ func _physics_process(delta: float) -> void:
 			unit_manager.spawn_units(get_sides_peer_ids())
 			for side in sides_uuid:
 				deckManager.draw_hand(side, get_sides_peer_ids())
+
+func _send_heartbeat() -> void:
+	logger.info("sending heartbeat...")
+	match_manager.memoir_api.send_heartbeat(matchState.matchId)
 
 # signal handlers
 func handle_connect(uuid: int, peer_id: int) -> void:
@@ -181,21 +192,21 @@ func check_win_condition() -> void:
 func go_next_phase(side: enums.Side, ran_out_time: bool = false) -> void:
 	if matchState.is_phase(enums.TurnPhase.DRAW_HAND):
 		unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)
-		matchState.new_phase_timer()
+		matchState.new_phase_timer(config.match.phase_duration.play_card)
 	elif matchState.is_phase(enums.TurnPhase.PLAY_CARD):
 		var is_card_played: bool = deckManager.card_was_played(side)
 		unit_manager.next_phase(enums.TurnPhase.SELECT if is_card_played else enums.TurnPhase.PLAY_CARD)
-		matchState.new_phase_timer()
+		matchState.new_phase_timer(config.match.phase_duration.select if is_card_played else config.match.phase_duration.play_card)
 		if !is_card_played:
 			change_turn(side, false)
 	elif matchState.is_phase(enums.TurnPhase.ATTACK) && unit_manager.has_retreatable_unit():
 		matchState.pause_and_store_phase_timer()
 		unit_manager.next_phase(enums.TurnPhase.RESOLVE_RETREAT)
-		matchState.new_phase_timer(20)
+		matchState.new_phase_timer(config.match.phase_duration.retreat)
 		change_turn(side, false)
 	elif matchState.is_phase(enums.TurnPhase.ATTACK) || (matchState.is_phase(enums.TurnPhase.SELECT) && unit_manager.selected_units_ids.is_empty()):
 		unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)
-		matchState.new_phase_timer()
+		matchState.new_phase_timer(config.match.phase_duration.play_card)
 		change_turn(side)
 	elif matchState.is_phase(enums.TurnPhase.RESOLVE_RETREAT):
 		if ran_out_time:
@@ -209,10 +220,10 @@ func go_next_phase(side: enums.Side, ran_out_time: bool = false) -> void:
 			matchState.continue_from_prev_phase_timer()
 	elif matchState.is_phase(enums.TurnPhase.SELECT):
 		unit_manager.next_phase(enums.TurnPhase.MOVE)
-		matchState.new_phase_timer()
+		matchState.new_phase_timer(config.match.phase_duration.move)
 	elif matchState.is_phase(enums.TurnPhase.MOVE):
 		unit_manager.next_phase(enums.TurnPhase.ATTACK, enums.TurnPhase.MOVE)
-		matchState.new_phase_timer()
+		matchState.new_phase_timer(config.match.phase_duration.attack)
 
 func change_turn(side: enums.Side, should_draw_card: bool = true) -> void:
 	var next_side := enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
@@ -222,6 +233,7 @@ func change_turn(side: enums.Side, should_draw_card: bool = true) -> void:
 			side,
 			get_sides_peer_ids()
 		)
+
 func get_match_result() -> MatchResult:
 	var result: MatchResult = MatchResult.new()
 	result.match_id = matchState.matchId
@@ -233,8 +245,3 @@ func get_match_result() -> MatchResult:
 	}
 	result.status = MatchState.STATE.ENDED
 	return result
-
-func go_resolve_retreat_phase(side: enums.Side) -> void:
-	matchState.phase = enums.TurnPhase.RESOLVE_RETREAT
-	change_turn(side)
-	
