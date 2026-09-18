@@ -209,26 +209,20 @@ default_color = Color(0.79613465, 0.22224942, 0.17009893, 1)
 
 [node name="UICanvas" type="CanvasLayer" parent="." unique_id=1086948552]
 
-[node name="Button" type="Button" parent="UICanvas" unique_id=721084783]
-offset_left = 4737.0
-offset_top = 1005.0
-offset_right = 5381.0
-offset_bottom = 1355.0
-theme_override_font_sizes/font_size = 54
-text = "Draw card"
-
 [node name="DiceView" type="SubViewportContainer" parent="UICanvas" unique_id=94270845]
+z_index = 100
 anchors_preset = 3
 anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 96.0
-offset_top = -657.0
-offset_right = 352.0
-offset_bottom = -401.0
+offset_left = -160.0
+offset_top = -640.0
+offset_right = 96.0
+offset_bottom = -384.0
 grow_horizontal = 0
 grow_vertical = 0
+scale = Vector2(0.7, 0.7)
 
 [node name="SubViewport" type="SubViewport" parent="UICanvas/DiceView" unique_id=443539317]
 transparent_bg = true
@@ -377,5 +371,3 @@ script = ExtResource("27_1ra3n")
 client_map_manager = NodePath("../MapManager")
 background_tilemap = NodePath(".")
 metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
-
-[connection signal="pressed" from="UICanvas/Button" to="UICanvas/Button" method="_on_pressed"]
