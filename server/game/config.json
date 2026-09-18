@@ -1,0 +1,14 @@
+{
+	"match": {
+		"max_score": 5,
+		"hand_size": 5,
+		"heartbeat": 20,
+		"phase_duration": {
+			"play_card": 60,
+			"select": 45,
+			"move": 45,
+			"attack": 120,
+			"retreat": 45
+		},
+	}
+}
