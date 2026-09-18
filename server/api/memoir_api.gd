@@ -38,6 +38,15 @@ func post_match_results(result: MatchResult) -> void:
 	}
 	var res: Response = await patch("/internal/matches/%d" % result.match_id, body, ["x-api-key: %s" % api_key])
 	if !res.success:
-		logger.error("failed to post match result, api key %s" % api_key, res.to_dict())
+		logger.error("failed to post match result", res.to_dict())
 		return
 	logger.info("response: ", res.to_dict())
+
+func send_heartbeat(match_id: int) -> void:
+	if OS.has_feature("editor"):
+		return
+	logger.info("sending heartbeat" % match_id)
+	var res: Response = await put("/internal/matches/%d/heartbeat" % match_id, {}, ["x-api-key: %s" % api_key])
+	if !res.success:
+		logger.error("Failed to send heartbeat" % api_key, res.to_dict())
+		return
