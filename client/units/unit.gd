@@ -1,7 +1,7 @@
 class_name Unit
 extends Node2D
 
-@onready var sprite: Sprite2D = $Sprite2D
+@onready var sprite: AnimatedSprite2D = $AnimatedSprite2D
 @onready var anim_player: AnimationPlayer = $AnimationPlayer
 
 @export var owner_id: enums.Side = enums.Side.NONE
