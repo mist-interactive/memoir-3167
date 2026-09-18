@@ -165,7 +165,7 @@ func get_sides_peer_ids() -> Dictionary[enums.Side, int]:
 func check_win_condition() -> void:
 	if matchState.winner != enums.Side.NONE:
 		return
-	match matchState.get_winner(1):
+	match matchState.get_winner(67):
 		enums.Side.GREEN:
 			matchState.state = MatchState.STATE.ENDED
 			matchState.winner = enums.Side.GREEN

@@ -1,0 +1,23 @@
+[gd_resource type="Resource" script_class="TerrainCard" format=3 uid="uid://ccsdvt6os4oka"]
+
+[ext_resource type="Texture2D" uid="uid://bklyrlmknh4ui" path="res://assets/sprites/hex/hex_tile_set_128x128.png" id="1_v1uob"]
+[ext_resource type="Texture2D" uid="uid://cw5i8ef6l7e83" path="res://assets/terrainunits_infrantry.png" id="2_mmbcg"]
+[ext_resource type="Script" uid="uid://bp4fu7qfy86hn" path="res://commons/cards/command_card/TerrainCard.gd" id="3_ue5tn"]
+[ext_resource type="Texture2D" uid="uid://bqrote6s7ke10" path="res://assets/terrainunits_tank.png" id="4_i68sp"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbmmi"]
+atlas = ExtResource("1_v1uob")
+region = Rect2(0, 0, 128, 128)
+
+[resource]
+script = ExtResource("3_ue5tn")
+id = "1"
+title_label = "PLAINS"
+effect_label = "Effect"
+description_label = "• "
+infantry_negate_count = "0"
+tank_negate_count = "0"
+card_art = SubResource("AtlasTexture_jbmmi")
+infantry_art = ExtResource("2_mmbcg")
+tank_art = ExtResource("4_i68sp")
+metadata/_custom_type_script = "uid://bp4fu7qfy86hn"

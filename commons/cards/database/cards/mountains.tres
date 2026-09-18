@@ -1,13 +1,32 @@
-[gd_resource type="Resource" script_class="CommandCard" format=3 uid="uid://4s2g1w73ufe"]
+[gd_resource type="Resource" script_class="TerrainCard" format=3 uid="uid://4s2g1w73ufe"]
 
-[ext_resource type="Texture2D" uid="uid://bw5l8qeq22m1p" path="res://assets/card_textures/terrain-cards/mountains.png" id="1_qms1c"]
-[ext_resource type="Script" uid="uid://brv7b2q4f6ws5" path="res://commons/cards/command_card/CommandCard.gd" id="2_738ng"]
+[ext_resource type="Texture2D" uid="uid://bklyrlmknh4ui" path="res://assets/sprites/hex/hex_tile_set_128x128.png" id="1_v2o2f"]
+[ext_resource type="Texture2D" uid="uid://cw5i8ef6l7e83" path="res://assets/terrainunits_infrantry.png" id="2_6ehlk"]
+[ext_resource type="Script" uid="uid://bp4fu7qfy86hn" path="res://commons/cards/command_card/TerrainCard.gd" id="3_elu1v"]
+[ext_resource type="Texture2D" uid="uid://bqrote6s7ke10" path="res://assets/terrainunits_tank.png" id="4_64gch"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbmmi"]
+atlas = ExtResource("1_v2o2f")
+region = Rect2(640, 0, 128, 128)
 
 [resource]
-script = ExtResource("2_738ng")
-id = "105"
-title_label = "mountains"
-deck_quantity = 0
-target_unit_limit = 0
-card_art = ExtResource("1_qms1c")
-metadata/_custom_type_script = "uid://brv7b2q4f6ws5"
+script = ExtResource("3_elu1v")
+id = "6"
+title_label = "MOUNTAINS"
+effect_label = "Effect"
+description_label = "• Infantry may only move up or retreat
+   onto a mountain from adjacent hill or
+   mountain. Infantry may only move
+   down or retreat from a mountain to
+   an adjacent hill or mountain
+• Impassable by armor & artillery
+• Artillery set on mountain fires at:
+   3  3  2  2  1  1  1
+• Block line of sight (except from
+   contiguous adjacent mountains)"
+infantry_negate_count = "-2"
+tank_negate_count = "-2"
+card_art = SubResource("AtlasTexture_jbmmi")
+infantry_art = ExtResource("2_6ehlk")
+tank_art = ExtResource("4_64gch")
+metadata/_custom_type_script = "uid://bp4fu7qfy86hn"

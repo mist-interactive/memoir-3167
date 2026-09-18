@@ -1,13 +1,27 @@
-[gd_resource type="Resource" script_class="CommandCard" format=3 uid="uid://bww225hvvr68l"]
+[gd_resource type="Resource" script_class="TerrainCard" format=3 uid="uid://bww225hvvr68l"]
 
-[ext_resource type="Texture2D" uid="uid://dijnigf4gbjcc" path="res://assets/card_textures/terrain-cards/forests.png" id="1_lxvtx"]
-[ext_resource type="Script" uid="uid://brv7b2q4f6ws5" path="res://commons/cards/command_card/CommandCard.gd" id="2_kcx4v"]
+[ext_resource type="Script" uid="uid://bp4fu7qfy86hn" path="res://commons/cards/command_card/TerrainCard.gd" id="1_2arv6"]
+[ext_resource type="Texture2D" uid="uid://bklyrlmknh4ui" path="res://assets/sprites/hex/hex_tile_set_128x128.png" id="1_2p0s7"]
+[ext_resource type="Texture2D" uid="uid://cw5i8ef6l7e83" path="res://assets/terrainunits_infrantry.png" id="2_sui88"]
+[ext_resource type="Texture2D" uid="uid://bqrote6s7ke10" path="res://assets/terrainunits_tank.png" id="4_578q6"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbmmi"]
+atlas = ExtResource("1_2p0s7")
+region = Rect2(256, 0, 128, 128)
 
 [resource]
-script = ExtResource("2_kcx4v")
-id = "103"
-title_label = "forests"
-deck_quantity = 0
-target_unit_limit = 0
-card_art = ExtResource("1_lxvtx")
-metadata/_custom_type_script = "uid://brv7b2q4f6ws5"
+script = ExtResource("1_2arv6")
+id = "3"
+title_label = "FORESTS"
+effect_label = "Effect"
+description_label = "• Unit moving in must stop
+   and may move no further
+   on that turn
+• Unit moving in cannot battle
+• Block line of sight"
+infantry_negate_count = "-1"
+tank_negate_count = "-2"
+card_art = SubResource("AtlasTexture_jbmmi")
+infantry_art = ExtResource("2_sui88")
+tank_art = ExtResource("4_578q6")
+metadata/_custom_type_script = "uid://bp4fu7qfy86hn"

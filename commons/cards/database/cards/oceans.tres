@@ -1,13 +1,26 @@
-[gd_resource type="Resource" script_class="CommandCard" format=3 uid="uid://b5jbncffqelnd"]
+[gd_resource type="Resource" script_class="TerrainCard" format=3 uid="uid://c2sr1fmlhqkhj"]
 
-[ext_resource type="Texture2D" uid="uid://iyiii2ntj15x" path="res://assets/card_textures/terrain-cards/oceans.png" id="1_vxqsm"]
-[ext_resource type="Script" uid="uid://brv7b2q4f6ws5" path="res://commons/cards/command_card/CommandCard.gd" id="2_o0ihd"]
+[ext_resource type="Texture2D" uid="uid://bklyrlmknh4ui" path="res://assets/sprites/hex/hex_tile_set_128x128.png" id="1_l1a1x"]
+[ext_resource type="Texture2D" uid="uid://cw5i8ef6l7e83" path="res://assets/terrainunits_infrantry.png" id="2_psw5p"]
+[ext_resource type="Script" uid="uid://bp4fu7qfy86hn" path="res://commons/cards/command_card/TerrainCard.gd" id="3_t2qdc"]
+[ext_resource type="Texture2D" uid="uid://bqrote6s7ke10" path="res://assets/terrainunits_tank.png" id="4_2s81h"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jbmmi"]
+atlas = ExtResource("1_l1a1x")
+region = Rect2(768, 0, 128, 128)
 
 [resource]
-script = ExtResource("2_o0ihd")
-id = "107"
-title_label = "oceans"
-deck_quantity = 0
-target_unit_limit = 0
-card_art = ExtResource("1_vxqsm")
-metadata/_custom_type_script = "uid://brv7b2q4f6ws5"
+script = ExtResource("3_t2qdc")
+id = "7"
+title_label = "OCEANS & SHORELINES"
+effect_label = "Effect"
+description_label = "• Maximum movement in ocean
+   and or shoreline is 1 hex*
+• Unit cannot battle when in ocean
+   or on shoreline
+• Unit cannot retreat on ocean hex*
+• Do not block line of sight"
+card_art = SubResource("AtlasTexture_jbmmi")
+infantry_art = ExtResource("2_psw5p")
+tank_art = ExtResource("4_2s81h")
+metadata/_custom_type_script = "uid://bp4fu7qfy86hn"
