@@ -17,10 +17,18 @@ func post(path: String, data: Dictionary) -> Response:
 		path,
 		data
 	)
-
+	
 func patch(path: String, data: Dictionary, 	custom_headers: Array[String] = []) -> Response:
 	return await _request(
 		HTTPClient.METHOD_PATCH,
+		path,
+		data,
+		custom_headers
+	)
+
+func put(path: String, data: Dictionary, custom_headers: Array[String] = []) -> Response:
+	return await _request(
+		HTTPClient.METHOD_PUT,
 		path,
 		data,
 		custom_headers
