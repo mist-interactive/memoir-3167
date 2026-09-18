@@ -160,27 +160,29 @@ func retreat_randomly(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, i
 func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer_ids: Dictionary[enums.Side, int]) -> bool:
 	if !units_by_id.has(unit_id) || !units_by_id.has(target_unit_id):
 		return false
-	var unit: UnitData = units_by_id[unit_id]
+	var attacker: UnitData = units_by_id[unit_id]
 	var target: UnitData = units_by_id[target_unit_id]
-	if !unit.is_my_unit(side) || target.is_my_unit(side):
+	if !attacker.is_my_unit(side) || target.is_my_unit(side):
 		return false
-	if unit.uuid != selected_unit_id || side != selected_by_peer:
+	if attacker.uuid != selected_unit_id || side != selected_by_peer:
 		return false
-	var targets: Dictionary[int, Vector2i] = get_enemies_within_range_and_los(unit)
+	var targets: Dictionary[int, Vector2i] = get_enemies_within_range_and_los(attacker)
 	if !targets.has(target_unit_id):
 		return false
 	unit_is_attacking = true
-	var d: int = battlefield.map.distance(unit.hex_coord, target.hex_coord)
-	var num_of_dice: int = UnitDatabase.get_stats(unit.type).attack_dice_by_distance[d - 1]
+	var distance: int = battlefield.map.distance(attacker.hex_coord, target.hex_coord)
+	var attacker_hex: HexCell = battlefieldState.map.get_cell(attacker.hex_coord)
+	var target_hex: HexCell = battlefieldState.map.get_cell(target.hex_coord)
+	var num_of_dice: int = CombatResolver.get_attack_dice_count(attacker, attacker_hex, target, target_hex, distance)
 	var rolled_dices: Array[enums.RolledDice] = Dice.roll(num_of_dice)
 	var combat_result: CombatResult = CombatResult.new()
-	combat_result.initialize(unit, target, rolled_dices)
+	combat_result.initialize(attacker, target, rolled_dices)
 	resolve_combat(combat_result, side, sides_peer_ids)
 	Network.broadcast(Network.Actions.resolve_combat_result.rpc_id, sides_peer_ids.values(), [combat_result.to_dict()])
 
 	selected_unit_id = -1
 	selected_by_peer = enums.Side.NONE
-	unit.set_can_attack(false)
+	attacker.set_can_attack(false)
 	attacked_units_ids.append(unit_id)
 	var player_logger := logger.with_context({
 		"peer_id": sides_peer_ids[side],
