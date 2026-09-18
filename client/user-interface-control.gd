@@ -40,6 +40,8 @@ const AXIS := "Axis"
 	$ResizeUI/ScorePipsEnemy/BoxContainer/TextureRect5,
 ]
 
+const ally_color: Color = Color(0.329, 0.42, 0.31, 1.0)
+const enemy_color: Color = Color(0.596, 0.263, 0.247, 1.0)
 
 func _ready() -> void:
 	get_viewport().size_changed.connect(update_ui)
@@ -52,20 +54,16 @@ func update_player_color() -> void:
 			my_faction.text = AXIS
 			enemy_faction.text = ALLIES
 			var style = my_faction.get_theme_stylebox("normal") as StyleBoxFlat
-			style.bg_color = Color(0.429, 0.07, 0.08, 1.0)
+			style.bg_color = enemy_color
 			style = enemy_faction.get_theme_stylebox("normal") as StyleBoxFlat
-			style.bg_color = Color(0.029, 0.37, 0.08, 1.0)
-			#bottom_colored_bar.modulate = Color(0.429, 0.07, 0.08, 1.0)
-			#top_colored_bar.modulate = Color(0.029, 0.37, 0.08, 1.0)
+			style.bg_color = ally_color
 		enums.Side.GREEN:
 			my_faction.text = ALLIES
 			enemy_faction.text = AXIS
 			var style = my_faction.get_theme_stylebox("normal") as StyleBoxFlat
-			style.bg_color = Color(0.029, 0.37, 0.08, 1.0)
+			style.bg_color = ally_color
 			style = enemy_faction.get_theme_stylebox("normal") as StyleBoxFlat
-			style.bg_color = Color(0.429, 0.07, 0.08, 1.0)
-			#bottom_colored_bar.modulate = Color(0.029, 0.37, 0.08, 1.0)
-			#top_colored_bar.modulate = Color(0.429, 0.07, 0.08, 1.0)
+			style.bg_color = enemy_color
 		enums.Side.NONE:
 			return
 
