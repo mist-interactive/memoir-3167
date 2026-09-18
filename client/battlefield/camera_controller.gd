@@ -10,8 +10,8 @@ extends Camera2D
 
 @export var map_manager: ClientMapManager
 
-@export var horizontal_padding_tiles: int = 2
-@export var vertical_padding_tiles: int = 3
+@export var horizontal_padding_tiles: int = 4
+@export var vertical_padding_tiles: int = 5
 
 var is_middlemouse_down: bool = false
 
@@ -84,8 +84,8 @@ func _set_zoom_and_center_camera_on_map() -> void:
 	var y_ratio = viewport_size.y / map_height_px
 	var fit_ratio = min(x_ratio, y_ratio)
 	min_zoom = fit_ratio
-	zoom.x = min_zoom
-	zoom.y = min_zoom
+	zoom.x = max(x_ratio, y_ratio)
+	zoom.y = max(x_ratio, y_ratio)
 	position.x = (limit_left + limit_right) / 2
 	position.y = (limit_top + limit_bottom) / 2
 	pass
