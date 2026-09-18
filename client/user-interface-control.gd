@@ -93,7 +93,7 @@ func _physics_process(delta: float) -> void:
 	turn.text = "player_turn: " + player_id_text(matchState.current_turn)
 	winner.text = "winner: " + player_id_text(matchState.winner)
 
-	var is_my_turn := matchState.current_turn == matchState.mySide
+	var is_my_turn := matchState.is_my_turn()
 
 	# Only show phase information during your turn.
 	phase.visible = is_my_turn
