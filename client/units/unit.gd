@@ -1,7 +1,7 @@
 class_name Unit
 extends Node2D
 
-@onready var unit_figure: UnitFigure = $UnitFigure
+@export var unit_figures: Array[UnitFigure]
 
 @export var owner_id: enums.Side = enums.Side.NONE
 @export var hex_coord: Vector2i = Vector2i.ZERO:
@@ -24,7 +24,8 @@ var _move_tween: Tween
 var num_of_retreat: int = -1
 
 func _ready() -> void:
-	UnitVisuals.apply_unit_visuals(unit_figure, owner_id, type)
+	for unit_figure in unit_figures:
+		UnitVisuals.apply_unit_visuals(unit_figures, owner_id, type, hit_point)
 
 func setup(new_owner: enums.Side, new_type: enums.UnitType, new_uuid:int, new_hex_coord: Vector2i) -> void:
 	owner_id = new_owner
@@ -32,7 +33,8 @@ func setup(new_owner: enums.Side, new_type: enums.UnitType, new_uuid:int, new_he
 	uuid = new_uuid
 	hex_coord = new_hex_coord
 	hit_point = UnitDatabase.get_stats(type).max_health
-	UnitVisuals.apply_unit_visuals(unit_figure, owner_id, type)
+	for unit_figure in unit_figures:
+		UnitVisuals.apply_unit_visuals(unit_figures, owner_id, type, hit_point)
 
 func move_along_path(path: Array[Vector2i]) -> void:
 	if path.is_empty():

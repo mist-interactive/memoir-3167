@@ -37,7 +37,8 @@ func serialize(coord: Vector2i) -> Dictionary:
 func _update_visual() -> void:
 	if !Engine.is_editor_hint():
 		return
-	UnitVisuals.apply_unit_visuals(self, owner_id, unit_type)
+	var array: Array[UnitSpawnMarker]
+	UnitVisuals.apply_figure_visuals(self, owner_id, unit_type, 1, 0)
 
 func _get_hex_map() -> TileMapLayer:
 	if _hex_map != null:
