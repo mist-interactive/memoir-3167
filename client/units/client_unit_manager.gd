@@ -28,6 +28,7 @@ func _on_sync_unit_requested(snapshot: Dictionary) -> void:
 	var unit_to_sync: Unit = units_by_id[uuid]
 	unit_to_sync.sync_with_snapshot(snapshot)
 	unit_grid[unit_to_sync.hex_coord] = uuid
+	UnitVisuals.update_unit_visuals(unit_to_sync)
 
 func _on_sync_all_requested(snapshot: Dictionary):
 	selected_unit_id = snapshot.selected_unit_id
@@ -38,6 +39,7 @@ func _on_sync_all_requested(snapshot: Dictionary):
 	unit_grid.clear()
 	for unit: Unit in units_by_id.values():
 		unit_grid[unit.hex_coord] = unit.uuid
+		UnitVisuals.update_unit_visuals(unit)
 
 func _on_spawn_unit_requested(unit: Dictionary) -> void:
 	var new_unit = UNIT_SCENE.instantiate() as Unit

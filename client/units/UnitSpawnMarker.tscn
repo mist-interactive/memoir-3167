@@ -587,11 +587,9 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Player2_Infantry_1" type="Node2D" unique_id=961487229 node_paths=PackedStringArray("anim_sprite", "base_sprite")]
+[node name="Player2_Infantry_1" type="Node2D" unique_id=961487229]
 scale = Vector2(-1, 1)
 script = ExtResource("2_lsefl")
-anim_sprite = NodePath("AnimSprite")
-base_sprite = NodePath("BaseSprite")
 
 [node name="BaseSprite" type="Sprite2D" parent="." unique_id=373820754]
 
