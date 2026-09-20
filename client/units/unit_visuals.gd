@@ -79,6 +79,7 @@ static func apply_figure_visuals(unit_figure: Variant, owner_id: int, unit_type:
 	if owner_id == 2:
 		unit_figure.base_sprite.frame = 1
 	if unit_type == enums.UnitType.INFANTRY:
+		unit_figure.base_sprite.scale = Vector2(1, 1)
 		if owner_id == 2:
 			unit_figure.anim_sprite.flip_h = true
 	if unit_type == enums.UnitType.TANK:
