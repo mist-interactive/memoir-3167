@@ -38,11 +38,12 @@ const FORMATIONS: Dictionary = {
 	}
 }
 
-const base_atlas: CompressedTexture2D = preload("res://assets/sprites/units/unit_bases.png")
+const BASE_ATLAS: CompressedTexture2D = preload("res://assets/sprites/units/unit_bases.png")
 
 static var scale: Vector2 = Vector2(1, 1)
 
 static func update_unit_visuals(unit: Unit) -> void:
+	unit.z_index = unit.hex_coord.y * 10
 	apply_unit_visuals(unit.unit_figures, unit.owner_id, unit.type, unit.hit_point)
 
 static func apply_unit_visuals(unit_figures: Array[Variant], owner_id: int, unit_type: int, unit_health: int) -> void:
@@ -75,7 +76,7 @@ static func apply_figure_visuals(unit_figure: Variant, owner_id: int, unit_type:
 	unit_figure.anim_sprite.offset = visual_data.get("offset")
 	unit_figure.anim_sprite.play(visual_data.get("anim"))
 	unit_figure.anim_sprite.flip_h = false
-	unit_figure.base_sprite.texture = base_atlas
+	unit_figure.base_sprite.texture = BASE_ATLAS
 	unit_figure.base_sprite.hframes = 2
 	if owner_id == 2:
 		unit_figure.base_sprite.frame = 1

@@ -25,7 +25,7 @@ var num_of_retreat: int = -1
 
 func _ready() -> void:
 	for unit_figure in unit_figures:
-		UnitVisuals.apply_unit_visuals(unit_figures, owner_id, type, hit_point)
+		UnitVisuals.update_unit_visuals(self)
 
 func setup(new_owner: enums.Side, new_type: enums.UnitType, new_uuid:int, new_hex_coord: Vector2i) -> void:
 	owner_id = new_owner
@@ -33,8 +33,7 @@ func setup(new_owner: enums.Side, new_type: enums.UnitType, new_uuid:int, new_he
 	uuid = new_uuid
 	hex_coord = new_hex_coord
 	hit_point = UnitDatabase.get_stats(type).max_health
-	for unit_figure in unit_figures:
-		UnitVisuals.apply_unit_visuals(unit_figures, owner_id, type, hit_point)
+	UnitVisuals.update_unit_visuals(self)
 
 func move_along_path(path: Array[Vector2i]) -> void:
 	if path.is_empty():
