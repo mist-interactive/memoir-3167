@@ -68,8 +68,7 @@ static func apply_figure_visuals(unit_figure: Variant, owner_id: int, unit_type:
 		return
 	var visual_data: Dictionary = ANIMATION_MAP[owner_id][unit_type]
 	var figure_offset = FORMATIONS.get(unit_type).get(unit_health)
-	if unit_figure is Unit:
-		unit_figure.position = figure_offset[index]
+	unit_figure.position = figure_offset[index]
 	unit_figure.z_index = index
 	unit_figure.anim_sprite.offset = visual_data.get("offset")
 	unit_figure.anim_sprite.play(visual_data.get("anim"))

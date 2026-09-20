@@ -3,13 +3,15 @@
 class_name UnitSpawnMarker
 extends Node2D
 
-@onready var anim_sprite: AnimatedSprite2D = $AnimSprite
-@onready var base_sprite: Sprite2D = $BaseSprite
+@onready var unit_figure: UnitFigure = $UnitFigure
+
+var unit_figures: Array[UnitFigure]
 
 var _hex_map: TileMapLayer = null
 var _is_snapping: bool = false
 
 func _ready() -> void:
+	unit_figures.append(unit_figure)
 	_update_visual()
 	_update_node_name()
 	if Engine.is_editor_hint():
@@ -37,8 +39,7 @@ func serialize(coord: Vector2i) -> Dictionary:
 func _update_visual() -> void:
 	if !Engine.is_editor_hint():
 		return
-	var array: Array[UnitSpawnMarker]
-	UnitVisuals.apply_figure_visuals(self, owner_id, unit_type, 1, 0)
+	UnitVisuals.apply_unit_visuals(unit_figures, owner_id, unit_type, 1)
 
 func _get_hex_map() -> TileMapLayer:
 	if _hex_map != null:
