@@ -1,6 +1,7 @@
 [gd_scene format=4 uid="uid://ct57afg2bcg0e"]
 
 [ext_resource type="Script" uid="uid://chagsifi7w8n6" path="res://client/battlefield/battlefield.gd" id="1_u0eng"]
+[ext_resource type="PackedScene" uid="uid://dleof7c8x6ujk" path="res://client/combat_manager/combat_manager.tscn" id="2_kys61"]
 [ext_resource type="Script" uid="uid://cgtpxpasdke04" path="res://client/battlefield/client_map_manager.gd" id="2_ynl45"]
 [ext_resource type="PackedScene" uid="uid://br53t6qvsase5" path="res://client/units/Unit.tscn" id="3_0hlkx"]
 [ext_resource type="Script" uid="uid://doeqye6s2a65e" path="res://client/battlefield/map_controller.gd" id="3_stskl"]
@@ -122,6 +123,9 @@ point_count = 3
 [node name="Battlefield" type="Node2D" unique_id=1534648312 node_paths=PackedStringArray("unit_container")]
 script = ExtResource("1_u0eng")
 unit_container = NodePath("UnitContainer")
+
+[node name="CombatManager" parent="." unique_id=994602235 node_paths=PackedStringArray("dice_roller") instance=ExtResource("2_kys61")]
+dice_roller = NodePath("../UICanvas/DiceView/SubViewport/Node3D")
 
 [node name="PlayerController" type="Node" parent="." unique_id=1795203478 node_paths=PackedStringArray("terrain_cards", "map_ground_layer", "map_feature_layer", "unit_selection_highlight_layer", "selected_unit_path_highlight_layer", "selected_unit_action_highlight_layer", "hover_path_highlight_layer", "hover_action_highlight_layer", "sector_highlight_layer")]
 script = ExtResource("4_eq063")

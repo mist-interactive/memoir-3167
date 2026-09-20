@@ -4,6 +4,8 @@ extends Node3D
 @export var min_spins: int = 6
 @export var max_spins: int = 10
 
+signal dice_roll_finised
+
 var rolling := false
 
 var face_rotations := {
@@ -26,17 +28,11 @@ var result_to_face := {
 
 
 func _ready() -> void:
-	Network.Actions.resolve_combat_result_requested.connect(_on_resolve_combat_result)
 	randomize()
 
 	# Hide all dice initially.
 	for die in $Dice.get_children():
 		die.visible = false
-
-
-func _on_resolve_combat_result(result: CombatResult) -> void:
-	roll_dice(result.rolled_dices)
-
 
 func roll_dice(results: Array[enums.RolledDice]) -> void:
 	if rolling or results.is_empty():
@@ -112,3 +108,4 @@ func roll_dice(results: Array[enums.RolledDice]) -> void:
 		die.rotation = face_rotations[face]
 
 	rolling = false
+	dice_roll_finised.emit()
