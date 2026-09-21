@@ -5,14 +5,13 @@ extends Control
 
 @onready var ui = $ResizeUI
 
-@onready var phase = $ResizeUI/Phase
 @onready var turn = $ResizeUI/Turn
-@onready var peer_ids = $ResizeUI/Peer_ids
 @onready var state = $ResizeUI/State
 @onready var scores = $ResizeUI/Scores
 @onready var winner = $ResizeUI/Winner
-@onready var button = $ResizeUI/Button
-@onready var next_phase = $ResizeUI/NextPhase
+@onready var phase = $ResizeUI/PlayButton/Phase
+@onready var button = $ResizeUI/PlayButton/Button
+@onready var next_phase = $ResizeUI/PlayButton/NextPhase
 
 @onready var P1faction = $ResizeUI/UiPlayerOne/Faction
 @onready var P1name = $ResizeUI/UiPlayerOne/Name

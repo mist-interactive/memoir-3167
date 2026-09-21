@@ -2,7 +2,7 @@ extends MarginContainer
 class_name TerrainCards
 
 @onready var battlefieldState: BattlefieldState = $"../../../BattlefieldState"
-@onready var ui_control: Control = $"../UI/ResizeUI/Control"
+@onready var ui_control: Control = $"../UI/ResizeUI/Borders"
 @export var card_ui_scene: PackedScene
 @export var map_ground_layer: TileMapLayer
 var _current_terrain_card: TerrainCardUI = null

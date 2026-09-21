@@ -43,8 +43,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_wayox")
-bottom_colored_bar = NodePath("ResizeUI/Control/bottom/TextureRect2")
-top_colored_bar = NodePath("ResizeUI/Control/top/TextureRect2")
+bottom_colored_bar = NodePath("ResizeUI/Borders/bottom/TextureRect2")
+top_colored_bar = NodePath("ResizeUI/Borders/top/TextureRect2")
 
 [node name="ResizeUI" type="Control" parent="." unique_id=853599000]
 anchors_preset = 0
@@ -234,7 +234,12 @@ text = "Faction"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Button" type="Button" parent="ResizeUI" unique_id=1001220325]
+[node name="PlayButton" type="Control" parent="ResizeUI" unique_id=1975845979]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button" type="Button" parent="ResizeUI/PlayButton" unique_id=1001220325]
 layout_mode = 0
 offset_left = 1704.0
 offset_top = 888.0
@@ -243,7 +248,7 @@ offset_bottom = 928.0
 theme_override_constants/outline_size = 3
 text = "Confirm"
 
-[node name="Phase" type="Label" parent="ResizeUI" unique_id=1511377127]
+[node name="Phase" type="Label" parent="ResizeUI/PlayButton" unique_id=1511377127]
 modulate = Color(0.5627562, 0.92917436, 0.25355616, 1)
 layout_mode = 0
 offset_left = 1696.0
@@ -253,7 +258,7 @@ offset_bottom = 888.0
 text = "Phase"
 horizontal_alignment = 1
 
-[node name="NextPhase" type="Label" parent="ResizeUI" unique_id=1615537071]
+[node name="NextPhase" type="Label" parent="ResizeUI/PlayButton" unique_id=1615537071]
 modulate = Color(0.5636256, 0.5636255, 0.5636255, 1)
 layout_mode = 0
 offset_left = 1696.0
@@ -272,18 +277,18 @@ offset_right = 200.0
 offset_bottom = 500.0
 grow_vertical = 1
 
-[node name="Control" type="Control" parent="ResizeUI" unique_id=1007110047 node_paths=PackedStringArray("terrain_card_ui")]
+[node name="Borders" type="Control" parent="ResizeUI" unique_id=1007110047 node_paths=PackedStringArray("terrain_card_ui")]
 anchors_preset = 0
 mouse_filter = 2
 script = ExtResource("6_8n8tu")
 terrain_card_ui = NodePath("../TerrainCardUI")
 
-[node name="left" type="Control" parent="ResizeUI/Control" unique_id=564779542]
+[node name="left" type="Control" parent="ResizeUI/Borders" unique_id=564779542]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="left-box" type="TextureRect" parent="ResizeUI/Control/left" unique_id=526610191]
+[node name="left-box" type="TextureRect" parent="ResizeUI/Borders/left" unique_id=526610191]
 modulate = Color(0.14901961, 0.16470589, 0.12941177, 0.8235294)
 z_index = -65
 z_as_relative = false
@@ -297,7 +302,7 @@ texture = ExtResource("8_idgig")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="TextureRect13" type="TextureRect" parent="ResizeUI/Control/left" unique_id=242430284]
+[node name="TextureRect13" type="TextureRect" parent="ResizeUI/Borders/left" unique_id=242430284]
 modulate = Color(0.53410035, 0.62836266, 0.8008638, 1)
 z_index = -40
 z_as_relative = false
@@ -312,12 +317,12 @@ texture = ExtResource("9_idgig")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="top" type="Control" parent="ResizeUI/Control" unique_id=576459681]
+[node name="top" type="Control" parent="ResizeUI/Borders" unique_id=576459681]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="TextureRect12" type="TextureRect" parent="ResizeUI/Control/top" unique_id=1053627838]
+[node name="TextureRect12" type="TextureRect" parent="ResizeUI/Borders/top" unique_id=1053627838]
 z_index = -19
 z_as_relative = false
 layout_mode = 0
@@ -330,7 +335,7 @@ expand_mode = 1
 stretch_mode = 1
 flip_h = true
 
-[node name="TextureRect2" type="TextureRect" parent="ResizeUI/Control/top" unique_id=1629147125]
+[node name="TextureRect2" type="TextureRect" parent="ResizeUI/Borders/top" unique_id=1629147125]
 z_index = -99
 z_as_relative = false
 layout_mode = 0
@@ -342,7 +347,7 @@ texture = ExtResource("9_pdhvi")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="TextureRect8" type="TextureRect" parent="ResizeUI/Control/top" unique_id=911400461]
+[node name="TextureRect8" type="TextureRect" parent="ResizeUI/Borders/top" unique_id=911400461]
 layout_mode = 0
 offset_right = 19199.998
 offset_bottom = 80.00122
@@ -352,12 +357,12 @@ expand_mode = 1
 stretch_mode = 1
 flip_h = true
 
-[node name="bottom" type="Control" parent="ResizeUI/Control" unique_id=1026706104]
+[node name="bottom" type="Control" parent="ResizeUI/Borders" unique_id=1026706104]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="TextureRect2" type="TextureRect" parent="ResizeUI/Control/bottom" unique_id=433934365]
+[node name="TextureRect2" type="TextureRect" parent="ResizeUI/Borders/bottom" unique_id=433934365]
 z_index = -99
 z_as_relative = false
 layout_mode = 0
@@ -370,7 +375,7 @@ texture = ExtResource("9_pdhvi")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="TextureRect8" type="TextureRect" parent="ResizeUI/Control/bottom" unique_id=616215393]
+[node name="TextureRect8" type="TextureRect" parent="ResizeUI/Borders/bottom" unique_id=616215393]
 layout_mode = 0
 offset_top = 1072.0
 offset_right = 19199.998
@@ -380,7 +385,7 @@ texture = ExtResource("11_77ma2")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="TextureRect12" type="TextureRect" parent="ResizeUI/Control/bottom" unique_id=1792730711]
+[node name="TextureRect12" type="TextureRect" parent="ResizeUI/Borders/bottom" unique_id=1792730711]
 z_index = -19
 z_as_relative = false
 layout_mode = 0
@@ -394,12 +399,12 @@ stretch_mode = 1
 flip_h = true
 flip_v = true
 
-[node name="right" type="Control" parent="ResizeUI/Control" unique_id=745114157]
+[node name="right" type="Control" parent="ResizeUI/Borders" unique_id=745114157]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="TextureRect7" type="TextureRect" parent="ResizeUI/Control/right" unique_id=347774657]
+[node name="TextureRect7" type="TextureRect" parent="ResizeUI/Borders/right" unique_id=347774657]
 modulate = Color(0.14901961, 0.16470589, 0.12941177, 0.8235294)
 z_index = -87
 z_as_relative = false
@@ -414,7 +419,7 @@ texture = ExtResource("8_idgig")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="TextureRect17" type="TextureRect" parent="ResizeUI/Control/right" unique_id=363503036]
+[node name="TextureRect17" type="TextureRect" parent="ResizeUI/Borders/right" unique_id=363503036]
 modulate = Color(0.53410035, 0.62836266, 0.8008638, 1)
 z_index = -76
 z_as_relative = false
@@ -429,4 +434,4 @@ texture = ExtResource("9_idgig")
 expand_mode = 1
 stretch_mode = 1
 
-[connection signal="button_down" from="ResizeUI/Button" to="." method="_on_confirm"]
+[connection signal="button_down" from="ResizeUI/PlayButton/Button" to="." method="_on_confirm"]
