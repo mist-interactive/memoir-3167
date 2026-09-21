@@ -2,9 +2,9 @@
 
 [ext_resource type="Script" uid="uid://c88k0hjunqjjr" path="res://client/user-interface-control.gd" id="1_wayox"]
 [ext_resource type="Texture2D" uid="uid://rtb43f6i1ud" path="res://assets/ui/dot-bold-highlight.svg" id="2_xaod4"]
-[ext_resource type="StyleBox" uid="uid://klk0yuqvu6tw" path="res://assets/ui/CommonStyleBoxes/BorderlessDefaultPanelCornerRadius8/glassmorphism_borderless_default_panel_alpha_40.tres" id="3_evymp"]
-[ext_resource type="StyleBox" uid="uid://bsln3s8gxg0uc" path="res://assets/ui/CommonStyleBoxes/BorderlessDefaultPanelCornerRadius8/glassmorphism_borderless_default_panel_alpha_third.tres" id="4_c5k7n"]
-[ext_resource type="StyleBox" uid="uid://usfs55q161cf" path="res://assets/ui/CommonStyleBoxes/BorderlessDefaultPanel/glassmorphism_borderless_default_panel_alpha_third.tres" id="5_jo5ee"]
+[ext_resource type="StyleBox" path="res://assets/ui/CommonStyleBoxes/BorderlessDefaultPanelCornerRadius8/glassmorphism_borderless_default_panel_alpha_40.tres" id="3_evymp"]
+[ext_resource type="StyleBox" path="res://assets/ui/CommonStyleBoxes/BorderlessDefaultPanelCornerRadius8/glassmorphism_borderless_default_panel_alpha_third.tres" id="4_c5k7n"]
+[ext_resource type="StyleBox" path="res://assets/ui/CommonStyleBoxes/BorderlessDefaultPanelCornerRadius8/glassmorphism_borderless_default_panel_alpha_half.tres" id="4_idgig"]
 [ext_resource type="Script" uid="uid://duqmnmc7syyvk" path="res://client/ui-control.gd" id="6_8n8tu"]
 [ext_resource type="PackedScene" uid="uid://bpenm2rqd2xau" path="res://client/battlefield/terrain_card_ui.tscn" id="7_0mc4w"]
 [ext_resource type="Texture2D" uid="uid://duaxy38nhengf" path="res://assets/ui/textures/metal_materialdark.png" id="8_idgig"]
@@ -210,8 +210,8 @@ offset_top = 888.0
 offset_right = 1888.0
 offset_bottom = 928.0
 theme_override_styles/normal = ExtResource("3_evymp")
-theme_override_styles/pressed = ExtResource("4_c5k7n")
-theme_override_styles/hover = ExtResource("5_jo5ee")
+theme_override_styles/pressed = ExtResource("4_idgig")
+theme_override_styles/hover = ExtResource("4_c5k7n")
 text = "Confirm"
 
 [node name="Phase" type="Label" parent="ResizeUI" unique_id=1511377127]
