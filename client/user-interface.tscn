@@ -7,7 +7,6 @@
 [ext_resource type="Texture2D" uid="uid://duaxy38nhengf" path="res://assets/ui/textures/metal_materialdark.png" id="8_idgig"]
 [ext_resource type="Texture2D" uid="uid://dfu4j71hl2fin" path="res://assets/ui/textures/stepfaces_cementBrown.png" id="9_idgig"]
 [ext_resource type="Texture2D" uid="uid://c4ttu3hxl1uxl" path="res://assets/ui/textures/floor_treadplate.png" id="9_pdhvi"]
-[ext_resource type="Texture2D" uid="uid://d3mqbmm218t2f" path="res://assets/ui/textures/stepfaces_cementDark.png" id="9_ywmym"]
 [ext_resource type="Texture2D" uid="uid://dsqky0t0wu17" path="res://assets/ui/textures/stepFaces_metal.png" id="11_77ma2"]
 
 [sub_resource type="Theme" id="Theme_eu3yq"]
@@ -44,8 +43,8 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("1_wayox")
-bottom_colored_bar = NodePath("ResizeUI/Control/bottom-bar/TextureRect2")
-top_colored_bar = NodePath("ResizeUI/Control/top-bar/TextureRect2")
+bottom_colored_bar = NodePath("ResizeUI/Control/bottom/TextureRect2")
+top_colored_bar = NodePath("ResizeUI/Control/top/TextureRect2")
 
 [node name="ResizeUI" type="Control" parent="." unique_id=853599000]
 anchors_preset = 0
@@ -55,85 +54,53 @@ offset_right = 1504.0
 offset_bottom = 960.0
 mouse_filter = 2
 
-[node name="ScorePips" type="MarginContainer" parent="ResizeUI" unique_id=2112857008]
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -504.0
-offset_top = -116.0
-offset_right = -328.0
-offset_bottom = -84.0
-grow_horizontal = 0
-grow_vertical = 0
-
-[node name="BoxContainer" type="HBoxContainer" parent="ResizeUI/ScorePips" unique_id=340862218]
-layout_mode = 2
-
-[node name="TextureRect1" type="TextureRect" parent="ResizeUI/ScorePips/BoxContainer" unique_id=2067447044]
-layout_mode = 2
-texture = ExtResource("2_xaod4")
-
-[node name="TextureRect2" type="TextureRect" parent="ResizeUI/ScorePips/BoxContainer" unique_id=389831737]
-layout_mode = 2
-texture = ExtResource("2_xaod4")
-
-[node name="TextureRect3" type="TextureRect" parent="ResizeUI/ScorePips/BoxContainer" unique_id=444964470]
-layout_mode = 2
-texture = ExtResource("2_xaod4")
-
-[node name="TextureRect4" type="TextureRect" parent="ResizeUI/ScorePips/BoxContainer" unique_id=1978110536]
-layout_mode = 2
-texture = ExtResource("2_xaod4")
-
-[node name="TextureRect5" type="TextureRect" parent="ResizeUI/ScorePips/BoxContainer" unique_id=1151708755]
-layout_mode = 2
-texture = ExtResource("2_xaod4")
-
-[node name="ScorePipsEnemy" type="MarginContainer" parent="ResizeUI" unique_id=1773795061]
-z_index = 50
-layout_mode = 1
-anchors_preset = 3
-anchor_left = 1.0
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -504.0
-offset_top = -988.0
-offset_right = -328.0
-offset_bottom = -956.0
-grow_horizontal = 0
-grow_vertical = 0
-
-[node name="BoxContainer" type="HBoxContainer" parent="ResizeUI/ScorePipsEnemy" unique_id=279185606]
-layout_mode = 2
-
-[node name="TextureRect1" type="TextureRect" parent="ResizeUI/ScorePipsEnemy/BoxContainer" unique_id=2018023485]
-layout_mode = 2
-texture = ExtResource("2_xaod4")
-
-[node name="TextureRect2" type="TextureRect" parent="ResizeUI/ScorePipsEnemy/BoxContainer" unique_id=1463592112]
-layout_mode = 2
-texture = ExtResource("2_xaod4")
-
-[node name="TextureRect3" type="TextureRect" parent="ResizeUI/ScorePipsEnemy/BoxContainer" unique_id=1730851166]
-layout_mode = 2
-texture = ExtResource("2_xaod4")
-
-[node name="TextureRect4" type="TextureRect" parent="ResizeUI/ScorePipsEnemy/BoxContainer" unique_id=1003635735]
-layout_mode = 2
-texture = ExtResource("2_xaod4")
-
-[node name="TextureRect5" type="TextureRect" parent="ResizeUI/ScorePipsEnemy/BoxContainer" unique_id=1283414423]
-layout_mode = 2
-texture = ExtResource("2_xaod4")
-
 [node name="UiPlayerOne" type="Control" parent="ResizeUI" unique_id=2122534677]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="ScorePips" type="MarginContainer" parent="ResizeUI/UiPlayerOne" unique_id=2112857008]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1374.0
+offset_top = 924.0
+offset_right = 1550.0
+offset_bottom = 956.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="BoxContainer" type="HBoxContainer" parent="ResizeUI/UiPlayerOne/ScorePips" unique_id=340862218]
+texture_filter = 1
+layout_mode = 2
+
+[node name="TextureRect1" type="TextureRect" parent="ResizeUI/UiPlayerOne/ScorePips/BoxContainer" unique_id=2067447044]
+z_index = -10
+layout_mode = 2
+texture = ExtResource("2_xaod4")
+
+[node name="TextureRect2" type="TextureRect" parent="ResizeUI/UiPlayerOne/ScorePips/BoxContainer" unique_id=389831737]
+z_index = -11
+layout_mode = 2
+texture = ExtResource("2_xaod4")
+
+[node name="TextureRect3" type="TextureRect" parent="ResizeUI/UiPlayerOne/ScorePips/BoxContainer" unique_id=444964470]
+z_index = -12
+layout_mode = 2
+texture = ExtResource("2_xaod4")
+
+[node name="TextureRect4" type="TextureRect" parent="ResizeUI/UiPlayerOne/ScorePips/BoxContainer" unique_id=1978110536]
+z_index = -13
+layout_mode = 2
+texture = ExtResource("2_xaod4")
+
+[node name="TextureRect5" type="TextureRect" parent="ResizeUI/UiPlayerOne/ScorePips/BoxContainer" unique_id=1151708755]
+z_index = -14
+layout_mode = 2
+texture = ExtResource("2_xaod4")
 
 [node name="Name" type="Label" parent="ResizeUI/UiPlayerOne" unique_id=1287425533]
 z_index = -48
@@ -165,7 +132,7 @@ vertical_alignment = 1
 clip_text = true
 
 [node name="Faction" type="Label" parent="ResizeUI/UiPlayerOne" unique_id=1036222434]
-z_index = -13
+z_index = -20
 layout_mode = 0
 offset_left = 1584.0
 offset_top = 960.0
@@ -183,6 +150,45 @@ vertical_alignment = 1
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+
+[node name="ScorePips" type="MarginContainer" parent="ResizeUI/UiPlayerTwo" unique_id=1773795061]
+z_index = 50
+texture_filter = 1
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 1376.0
+offset_top = 52.0
+offset_right = 1552.0
+offset_bottom = 84.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="BoxContainer" type="HBoxContainer" parent="ResizeUI/UiPlayerTwo/ScorePips" unique_id=279185606]
+layout_mode = 2
+
+[node name="TextureRect1" type="TextureRect" parent="ResizeUI/UiPlayerTwo/ScorePips/BoxContainer" unique_id=2018023485]
+layout_mode = 2
+texture = ExtResource("2_xaod4")
+
+[node name="TextureRect2" type="TextureRect" parent="ResizeUI/UiPlayerTwo/ScorePips/BoxContainer" unique_id=1463592112]
+layout_mode = 2
+texture = ExtResource("2_xaod4")
+
+[node name="TextureRect3" type="TextureRect" parent="ResizeUI/UiPlayerTwo/ScorePips/BoxContainer" unique_id=1730851166]
+layout_mode = 2
+texture = ExtResource("2_xaod4")
+
+[node name="TextureRect4" type="TextureRect" parent="ResizeUI/UiPlayerTwo/ScorePips/BoxContainer" unique_id=1003635735]
+layout_mode = 2
+texture = ExtResource("2_xaod4")
+
+[node name="TextureRect5" type="TextureRect" parent="ResizeUI/UiPlayerTwo/ScorePips/BoxContainer" unique_id=1283414423]
+layout_mode = 2
+texture = ExtResource("2_xaod4")
 
 [node name="Name" type="Label" parent="ResizeUI/UiPlayerTwo" unique_id=2096575138]
 z_index = -48
@@ -257,13 +263,7 @@ offset_bottom = 952.0
 text = "NextPhase"
 horizontal_alignment = 1
 
-[node name="Control" type="Control" parent="ResizeUI" unique_id=1007110047 node_paths=PackedStringArray("terrain_card_ui")]
-anchors_preset = 0
-mouse_filter = 2
-script = ExtResource("6_8n8tu")
-terrain_card_ui = NodePath("TerrainCardUI")
-
-[node name="TerrainCardUI" parent="ResizeUI/Control" unique_id=1384061792 instance=ExtResource("7_0mc4w")]
+[node name="TerrainCardUI" parent="ResizeUI" unique_id=1384061792 instance=ExtResource("7_0mc4w")]
 layout_mode = 0
 anchors_preset = 0
 anchor_bottom = 0.0
@@ -272,7 +272,18 @@ offset_right = 200.0
 offset_bottom = 500.0
 grow_vertical = 1
 
-[node name="left-box" type="TextureRect" parent="ResizeUI/Control" unique_id=526610191]
+[node name="Control" type="Control" parent="ResizeUI" unique_id=1007110047 node_paths=PackedStringArray("terrain_card_ui")]
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("6_8n8tu")
+terrain_card_ui = NodePath("../TerrainCardUI")
+
+[node name="left" type="Control" parent="ResizeUI/Control" unique_id=564779542]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="left-box" type="TextureRect" parent="ResizeUI/Control/left" unique_id=526610191]
 modulate = Color(0.14901961, 0.16470589, 0.12941177, 0.8235294)
 z_index = -65
 z_as_relative = false
@@ -286,27 +297,7 @@ texture = ExtResource("8_idgig")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="TextureRect7" type="TextureRect" parent="ResizeUI/Control" unique_id=347774657]
-modulate = Color(0.14901961, 0.16470589, 0.12941177, 0.8235294)
-z_index = -87
-z_as_relative = false
-layout_mode = 0
-offset_left = 1920.0
-offset_top = 104.0
-offset_right = 2794.0
-offset_bottom = 360.0
-rotation = 1.5707964
-mouse_filter = 2
-texture = ExtResource("8_idgig")
-expand_mode = 1
-stretch_mode = 1
-
-[node name="left-bar" type="Control" parent="ResizeUI/Control" unique_id=564779542]
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="TextureRect13" type="TextureRect" parent="ResizeUI/Control/left-bar" unique_id=242430284]
+[node name="TextureRect13" type="TextureRect" parent="ResizeUI/Control/left" unique_id=242430284]
 modulate = Color(0.53410035, 0.62836266, 0.8008638, 1)
 z_index = -40
 z_as_relative = false
@@ -321,12 +312,12 @@ texture = ExtResource("9_idgig")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="top-bar" type="Control" parent="ResizeUI/Control" unique_id=576459681]
+[node name="top" type="Control" parent="ResizeUI/Control" unique_id=576459681]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="TextureRect12" type="TextureRect" parent="ResizeUI/Control/top-bar" unique_id=1053627838]
+[node name="TextureRect12" type="TextureRect" parent="ResizeUI/Control/top" unique_id=1053627838]
 z_index = -19
 z_as_relative = false
 layout_mode = 0
@@ -339,7 +330,7 @@ expand_mode = 1
 stretch_mode = 1
 flip_h = true
 
-[node name="TextureRect2" type="TextureRect" parent="ResizeUI/Control/top-bar" unique_id=1629147125]
+[node name="TextureRect2" type="TextureRect" parent="ResizeUI/Control/top" unique_id=1629147125]
 z_index = -99
 z_as_relative = false
 layout_mode = 0
@@ -351,22 +342,22 @@ texture = ExtResource("9_pdhvi")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="TextureRect8" type="TextureRect" parent="ResizeUI/Control/top-bar" unique_id=911400461]
+[node name="TextureRect8" type="TextureRect" parent="ResizeUI/Control/top" unique_id=911400461]
 layout_mode = 0
 offset_right = 19199.998
 offset_bottom = 80.00122
 scale = Vector2(0.1, 0.1)
-texture = ExtResource("9_ywmym")
+texture = ExtResource("11_77ma2")
 expand_mode = 1
 stretch_mode = 1
 flip_h = true
 
-[node name="bottom-bar" type="Control" parent="ResizeUI/Control" unique_id=1026706104]
+[node name="bottom" type="Control" parent="ResizeUI/Control" unique_id=1026706104]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="TextureRect2" type="TextureRect" parent="ResizeUI/Control/bottom-bar" unique_id=433934365]
+[node name="TextureRect2" type="TextureRect" parent="ResizeUI/Control/bottom" unique_id=433934365]
 z_index = -99
 z_as_relative = false
 layout_mode = 0
@@ -379,7 +370,7 @@ texture = ExtResource("9_pdhvi")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="TextureRect8" type="TextureRect" parent="ResizeUI/Control/bottom-bar" unique_id=616215393]
+[node name="TextureRect8" type="TextureRect" parent="ResizeUI/Control/bottom" unique_id=616215393]
 layout_mode = 0
 offset_top = 1072.0
 offset_right = 19199.998
@@ -389,7 +380,7 @@ texture = ExtResource("11_77ma2")
 expand_mode = 1
 stretch_mode = 1
 
-[node name="TextureRect12" type="TextureRect" parent="ResizeUI/Control/bottom-bar" unique_id=1792730711]
+[node name="TextureRect12" type="TextureRect" parent="ResizeUI/Control/bottom" unique_id=1792730711]
 z_index = -19
 z_as_relative = false
 layout_mode = 0
@@ -403,12 +394,27 @@ stretch_mode = 1
 flip_h = true
 flip_v = true
 
-[node name="right-bar" type="Control" parent="ResizeUI/Control" unique_id=745114157]
+[node name="right" type="Control" parent="ResizeUI/Control" unique_id=745114157]
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="TextureRect17" type="TextureRect" parent="ResizeUI/Control/right-bar" unique_id=363503036]
+[node name="TextureRect7" type="TextureRect" parent="ResizeUI/Control/right" unique_id=347774657]
+modulate = Color(0.14901961, 0.16470589, 0.12941177, 0.8235294)
+z_index = -87
+z_as_relative = false
+layout_mode = 0
+offset_left = 1920.0
+offset_top = 104.0
+offset_right = 2794.0
+offset_bottom = 360.0
+rotation = 1.5707964
+mouse_filter = 2
+texture = ExtResource("8_idgig")
+expand_mode = 1
+stretch_mode = 1
+
+[node name="TextureRect17" type="TextureRect" parent="ResizeUI/Control/right" unique_id=363503036]
 modulate = Color(0.53410035, 0.62836266, 0.8008638, 1)
 z_index = -76
 z_as_relative = false
