@@ -13,8 +13,13 @@ extends Control
 @onready var winner = $ResizeUI/Winner
 @onready var button = $ResizeUI/Button
 @onready var next_phase = $ResizeUI/NextPhase
-@onready var my_faction = $ResizeUI/MyFaction
-@onready var enemy_faction = $ResizeUI/EnemyFaction
+
+@onready var P1faction = $ResizeUI/UiPlayerOne/Faction
+@onready var P1name = $ResizeUI/UiPlayerOne/Name
+@onready var P1box = $ResizeUI/UiPlayerOne/Box
+@onready var P2faction = $ResizeUI/UiPlayerTwo/Faction
+@onready var P2name = $ResizeUI/UiPlayerTwo/Name
+@onready var P2box = $ResizeUI/UiPlayerTwo/Box
 
 @export var bottom_colored_bar: TextureRect
 @export var top_colored_bar: TextureRect
@@ -51,21 +56,34 @@ func _ready() -> void:
 func update_player_color() -> void:
 	match matchState.mySide:
 		enums.Side.RED:
-			my_faction.text = AXIS
-			enemy_faction.text = ALLIES
-			var style = my_faction.get_theme_stylebox("normal") as StyleBoxFlat
-			style.bg_color = enemy_color
-			style = enemy_faction.get_theme_stylebox("normal") as StyleBoxFlat
-			style.bg_color = ally_color
+			P1faction.text = AXIS
+			P2faction.text = ALLIES
+
+			set_box_color(P1faction, enemy_color)
+			set_box_color(P1name, enemy_color)
+			set_box_color(P1box, enemy_color)
+			set_box_color(P2faction, ally_color)
+			set_box_color(P2name, ally_color)
+			set_box_color(P2box, ally_color)
+
 		enums.Side.GREEN:
-			my_faction.text = ALLIES
-			enemy_faction.text = AXIS
-			var style = my_faction.get_theme_stylebox("normal") as StyleBoxFlat
-			style.bg_color = ally_color
-			style = enemy_faction.get_theme_stylebox("normal") as StyleBoxFlat
-			style.bg_color = enemy_color
+			P1faction.text = ALLIES
+			P2faction.text = AXIS
+
+			set_box_color(P1faction, ally_color)
+			set_box_color(P1name, ally_color)
+			set_box_color(P1box, ally_color)
+			set_box_color(P2faction, enemy_color)
+			set_box_color(P2name, enemy_color)
+			set_box_color(P2box, enemy_color)
+
 		enums.Side.NONE:
 			return
+
+func set_box_color(control: Control, color: Color) -> void:
+	var style := control.get_theme_stylebox("normal").duplicate() as StyleBoxFlat
+	style.bg_color = color
+	control.add_theme_stylebox_override("normal", style)
 
 func update_ui():
 	var viewport_size := get_viewport_rect().size
@@ -79,27 +97,15 @@ func update_ui():
 func _physics_process(delta: float) -> void:
 	var server_now: float = clock.get_server_time()
 	var count_down: float = matchState.phase_timer.get_time_left_ms(matchState.state, server_now)
-	scores.text = "scores: Red %d - %d Green" % [
-		matchState.scores[enums.Side.RED],
-		matchState.scores[enums.Side.GREEN]
-	]
 	
 	if matchState.mySide != enums.Side.NONE:
 		update_player_color()
 
-	peer_ids.text = "Side: " + player_id_text(matchState.mySide)
-	phase.text = "turn phase: " + get_turn_phase_txt(matchState.phase) + "(%d)" % (count_down / 1000)
-	state.text = "match state: " + get_game_state_txt(matchState.state)
-	turn.text = "player_turn: " + player_id_text(matchState.current_turn)
-	winner.text = "winner: " + player_id_text(matchState.winner)
-
 	var is_my_turn := matchState.is_my_turn()
 
-	# Only show phase information during your turn.
 	phase.visible = is_my_turn
 	next_phase.visible = is_my_turn
 
-	# Enable button interaction only during your turn.
 	button.disabled = not is_my_turn
 
 	if is_my_turn:

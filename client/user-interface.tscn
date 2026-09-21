@@ -7,18 +7,32 @@
 [ext_resource type="Texture2D" uid="uid://duaxy38nhengf" path="res://assets/ui/textures/metal_materialdark.png" id="8_idgig"]
 [ext_resource type="Texture2D" uid="uid://dfu4j71hl2fin" path="res://assets/ui/textures/stepfaces_cementBrown.png" id="9_idgig"]
 [ext_resource type="Texture2D" uid="uid://c4ttu3hxl1uxl" path="res://assets/ui/textures/floor_treadplate.png" id="9_pdhvi"]
+[ext_resource type="Texture2D" uid="uid://d3mqbmm218t2f" path="res://assets/ui/textures/stepfaces_cementDark.png" id="9_ywmym"]
 [ext_resource type="Texture2D" uid="uid://dsqky0t0wu17" path="res://assets/ui/textures/stepFaces_metal.png" id="11_77ma2"]
-[ext_resource type="Texture2D" uid="uid://bxwkjqkwc5a36" path="res://assets/ui/textures/Metal_10-512x512.png" id="11_imkui"]
 
 [sub_resource type="Theme" id="Theme_eu3yq"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_77ma2"]
+content_margin_right = 31.0
+corner_radius_top_left = 48
+corner_detail = 1
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wayox"]
 corner_radius_top_left = 10
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
 corner_radius_bottom_left = 10
+corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_xaod4"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3mjco"]
 corner_radius_top_left = 10
 corner_radius_bottom_left = 10
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ywmym"]
+content_margin_right = 31.0
+corner_radius_bottom_left = 48
+corner_detail = 1
 
 [node name="UI" type="Control" unique_id=1744084876 node_paths=PackedStringArray("bottom_colored_bar", "top_colored_bar")]
 z_index = 100
@@ -79,7 +93,7 @@ layout_mode = 2
 texture = ExtResource("2_xaod4")
 
 [node name="ScorePipsEnemy" type="MarginContainer" parent="ResizeUI" unique_id=1773795061]
-z_index = -95
+z_index = 50
 layout_mode = 1
 anchors_preset = 3
 anchor_left = 1.0
@@ -116,89 +130,103 @@ texture = ExtResource("2_xaod4")
 layout_mode = 2
 texture = ExtResource("2_xaod4")
 
-[node name="Turn" type="Label" parent="ResizeUI" unique_id=425633101]
-layout_mode = 0
-offset_left = 24.0
-offset_top = 725.0
-offset_right = 124.0
-offset_bottom = 750.0
-theme = SubResource("Theme_eu3yq")
-text = "Player turn:"
+[node name="UiPlayerOne" type="Control" parent="ResizeUI" unique_id=2122534677]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
 
-[node name="MyFaction" type="Label" parent="ResizeUI" unique_id=1036222434]
+[node name="Name" type="Label" parent="ResizeUI/UiPlayerOne" unique_id=1287425533]
+z_index = -48
 layout_mode = 0
-offset_left = 1607.0
-offset_top = 968.0
-offset_right = 1664.0
-offset_bottom = 992.0
+offset_left = 1664.0
+offset_top = 1032.0
+offset_right = 1920.0
+offset_bottom = 1072.0
 theme = SubResource("Theme_eu3yq")
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_77ma2")
+text = "Player_name"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Box" type="Label" parent="ResizeUI/UiPlayerOne" unique_id=982990984]
+z_index = -58
+layout_mode = 0
+offset_left = 1400.0
+offset_top = 972.0
+offset_right = 1664.0
+offset_bottom = 988.0
+theme = SubResource("Theme_eu3yq")
+theme_override_font_sizes/font_size = 1
 theme_override_styles/normal = SubResource("StyleBoxFlat_wayox")
-text = "Faction"
-horizontal_alignment = 1
+horizontal_alignment = 2
 vertical_alignment = 1
+clip_text = true
 
-[node name="EnemyFaction" type="Label" parent="ResizeUI" unique_id=1226145506]
+[node name="Faction" type="Label" parent="ResizeUI/UiPlayerOne" unique_id=1036222434]
+z_index = -13
 layout_mode = 0
-offset_left = 1607.0
-offset_top = 97.0
+offset_left = 1584.0
+offset_top = 960.0
 offset_right = 1664.0
-offset_bottom = 120.0
+offset_bottom = 984.0
 theme = SubResource("Theme_eu3yq")
-theme_override_styles/normal = SubResource("StyleBoxFlat_xaod4")
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_3mjco")
 text = "Faction"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Peer_ids" type="Label" parent="ResizeUI" unique_id=1089954271]
+[node name="UiPlayerTwo" type="Control" parent="ResizeUI" unique_id=156207839]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Name" type="Label" parent="ResizeUI/UiPlayerTwo" unique_id=2096575138]
+z_index = -48
 layout_mode = 0
-offset_left = 24.0
-offset_top = 773.0
-offset_right = 124.0
-offset_bottom = 798.0
+offset_left = 1664.0
+offset_top = 8.0
+offset_right = 1920.0
+offset_bottom = 48.0
 theme = SubResource("Theme_eu3yq")
-text = "player_ids:"
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_ywmym")
+text = "Player_name"
+horizontal_alignment = 2
+vertical_alignment = 1
 
-[node name="Scores" type="Label" parent="ResizeUI" unique_id=2064108454]
+[node name="Box" type="Label" parent="ResizeUI/UiPlayerTwo" unique_id=1143586772]
+z_index = -58
 layout_mode = 0
-offset_left = 24.0
-offset_top = 799.0
-offset_right = 82.0
-offset_bottom = 822.0
-text = "scores: "
+offset_left = 1400.0
+offset_top = 100.0
+offset_right = 1664.0
+offset_bottom = 116.0
+theme = SubResource("Theme_eu3yq")
+theme_override_font_sizes/font_size = 1
+theme_override_styles/normal = SubResource("StyleBoxFlat_wayox")
+horizontal_alignment = 2
+vertical_alignment = 1
+clip_text = true
 
-[node name="State" type="Label" parent="ResizeUI" unique_id=550106070]
+[node name="Faction" type="Label" parent="ResizeUI/UiPlayerTwo" unique_id=1026636383]
+z_index = -13
 layout_mode = 0
-offset_left = 24.0
-offset_top = 749.0
-offset_right = 121.0
-offset_bottom = 772.0
-text = "match state:"
-
-[node name="Winner" type="Label" parent="ResizeUI" unique_id=1570152226]
-layout_mode = 0
-offset_left = 24.0
-offset_top = 701.0
-offset_right = 124.0
-offset_bottom = 726.0
-text = "winner: "
-
-[node name="ColorRect" type="ColorRect" parent="ResizeUI" unique_id=886609679]
-visible = false
-z_index = -1
-layout_mode = 0
-offset_left = 12.0
-offset_top = 37.0
-offset_right = 387.0
-offset_bottom = 199.0
-color = Color(0, 0, 0, 0.2)
-
-[node name="label" type="Label" parent="ResizeUI/ColorRect" unique_id=1730657490]
-layout_mode = 0
-offset_left = 254.0
-offset_top = 118.0
-offset_right = 367.0
-offset_bottom = 141.0
-text = "crt+d to toggle"
+offset_left = 1584.0
+offset_top = 104.0
+offset_right = 1664.0
+offset_bottom = 128.0
+theme = SubResource("Theme_eu3yq")
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_3mjco")
+text = "Faction"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Button" type="Button" parent="ResizeUI" unique_id=1001220325]
 layout_mode = 0
@@ -206,6 +234,7 @@ offset_left = 1704.0
 offset_top = 888.0
 offset_right = 1888.0
 offset_bottom = 928.0
+theme_override_constants/outline_size = 3
 text = "Confirm"
 
 [node name="Phase" type="Label" parent="ResizeUI" unique_id=1511377127]
@@ -323,15 +352,14 @@ expand_mode = 1
 stretch_mode = 1
 
 [node name="TextureRect8" type="TextureRect" parent="ResizeUI/Control/top-bar" unique_id=911400461]
-modulate = Color(0.45490196, 0.45490196, 0.45490196, 1)
 layout_mode = 0
-offset_top = -2.0
 offset_right = 19199.998
-offset_bottom = 98.00122
+offset_bottom = 80.00122
 scale = Vector2(0.1, 0.1)
-texture = ExtResource("11_imkui")
+texture = ExtResource("9_ywmym")
 expand_mode = 1
 stretch_mode = 1
+flip_h = true
 
 [node name="bottom-bar" type="Control" parent="ResizeUI/Control" unique_id=1026706104]
 anchors_preset = 0
@@ -344,7 +372,7 @@ z_as_relative = false
 layout_mode = 0
 offset_top = 984.0
 offset_right = 2742.857
-offset_bottom = 1124.0
+offset_bottom = 1121.1428
 scale = Vector2(0.7, 0.7)
 mouse_filter = 2
 texture = ExtResource("9_pdhvi")
@@ -352,13 +380,12 @@ expand_mode = 1
 stretch_mode = 1
 
 [node name="TextureRect8" type="TextureRect" parent="ResizeUI/Control/bottom-bar" unique_id=616215393]
-modulate = Color(0.45490196, 0.45490196, 0.45490196, 1)
 layout_mode = 0
 offset_top = 1072.0
 offset_right = 19199.998
-offset_bottom = 1172.0
+offset_bottom = 1152.0
 scale = Vector2(0.1, 0.1)
-texture = ExtResource("11_imkui")
+texture = ExtResource("11_77ma2")
 expand_mode = 1
 stretch_mode = 1
 
