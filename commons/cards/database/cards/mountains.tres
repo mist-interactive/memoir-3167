@@ -20,8 +20,6 @@ description_label = "• Infantry may only move up or retreat
    down or retreat from a mountain to
    an adjacent hill or mountain
 • Impassable by armor & artillery
-• Artillery set on mountain fires at:
-   3  3  2  2  1  1  1
 • Block line of sight (except from
    contiguous adjacent mountains)"
 infantry_negate_count = "-2"
