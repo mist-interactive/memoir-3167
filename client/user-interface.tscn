@@ -33,6 +33,14 @@ content_margin_right = 31.0
 corner_radius_bottom_left = 48
 corner_detail = 1
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vq0sq"]
+bg_color = Color(0.20392157, 0.972549, 0.34117648, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 20
+
 [node name="UI" type="Control" unique_id=1744084876 node_paths=PackedStringArray("bottom_colored_bar", "top_colored_bar")]
 z_index = 100
 layout_mode = 3
@@ -268,15 +276,6 @@ offset_bottom = 952.0
 text = "NextPhase"
 horizontal_alignment = 1
 
-[node name="TerrainCardUI" parent="ResizeUI" unique_id=1384061792 instance=ExtResource("7_0mc4w")]
-layout_mode = 0
-anchors_preset = 0
-anchor_bottom = 0.0
-offset_top = 100.0
-offset_right = 200.0
-offset_bottom = 500.0
-grow_vertical = 1
-
 [node name="Borders" type="Control" parent="ResizeUI" unique_id=1007110047 node_paths=PackedStringArray("terrain_card_ui")]
 anchors_preset = 0
 mouse_filter = 2
@@ -433,5 +432,34 @@ scale = Vector2(0.1, 0.1)
 texture = ExtResource("9_idgig")
 expand_mode = 1
 stretch_mode = 1
+
+[node name="TerrainCardUI" parent="ResizeUI" unique_id=1384061792 instance=ExtResource("7_0mc4w")]
+layout_mode = 0
+anchors_preset = 0
+anchor_bottom = 0.0
+offset_top = 100.0
+offset_right = 200.0
+offset_bottom = 500.0
+grow_vertical = 1
+
+[node name="Timer" type="Control" parent="ResizeUI" unique_id=108342922]
+anchors_preset = 0
+offset_left = 128.0
+offset_top = -40.0
+offset_right = 168.0
+
+[node name="Time" type="Label" parent="ResizeUI/Timer" unique_id=716560512]
+layout_mode = 0
+offset_left = 1568.0
+offset_top = 820.0
+offset_right = 1760.0
+offset_bottom = 840.0
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/font_size = 14
+theme_override_styles/normal = SubResource("StyleBoxFlat_vq0sq")
+text = "00:00"
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
 
 [connection signal="button_down" from="ResizeUI/PlayButton/Button" to="." method="_on_confirm"]
