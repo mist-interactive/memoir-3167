@@ -137,7 +137,6 @@ func _recalculate_layout() -> void:
 			target_rot,
 			0.2
 		).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-		
 
 func _clear_hand() -> void:
 	for child: Node in get_children():
