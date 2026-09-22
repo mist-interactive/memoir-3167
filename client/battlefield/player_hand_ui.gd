@@ -81,28 +81,11 @@ func _recalculate_layout() -> void:
 		return
 
 	var container_width: float = size.x
-	
-	var calculated_width: float = container_width / 3.0
-	var min_hand_width: float = 600.0
-	var max_hand_width: float = 1000.0
-	var available_hand_width: float = clamp(calculated_width, min_hand_width, max_hand_width)
-	
-	var separation: float = default_separation
-	var total_unscaled_width: float = card_count * base_card_size.x
-	var start_x: float = 0.0
-
-	if total_unscaled_width > available_hand_width and card_count > 1:
-		separation = (available_hand_width - base_card_size.x) / float(card_count - 1) - base_card_size.x
-		start_x = (container_width - available_hand_width) / 2.0
-	else:
-		var total_footprint: float = (card_count * base_card_size.x) + ((card_count - 1) * separation)
-		start_x = (container_width - total_footprint) / 2.0
+	var hand_width: float = base_card_size.x + (card_count - 1) * (base_card_size.x / 2.0)
+	var start_x: float = (container_width - hand_width) / 2.0
 
 	for i in range(card_count):
 		var card := cards[i]
-		
-		card.custom_minimum_size = base_card_size
-		card.size = base_card_size
 		card.pivot_offset = Vector2(base_card_size.x / 2.0, base_card_size.y)
 
 		var sample_point := (
@@ -127,7 +110,7 @@ func _recalculate_layout() -> void:
 			y_multiplier = 0.0
 			rot_multiplier = 0.0
 
-		var target_x: float = start_x + float(i) * (base_card_size.x + separation)
+		var target_x: float = start_x + (float(i) * base_card_size.x) / 2.0
 		
 		var target_y: float = (
 			size.y
