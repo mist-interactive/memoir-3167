@@ -12,7 +12,7 @@ extends Control
 @export var hand_vertical_offset: float = 30.0
 @onready var handState: HandState = $"../../../../HandState"
 @export var discard_pile_ui: DiscardPileUI
-@export var player_controller: PlayerController 
+@export var player_controller: PlayerController
 
 func _ready() -> void:
 	handState.enemy_hand_drawn.connect(_on_enemy_draw_hand)
@@ -38,9 +38,11 @@ func _add_card_node(instance_id: int) -> void:
 
 func _on_enemy_played_card(instance_id: int, card_id: String) -> void:
 	var card_node := get_node_or_null(str(instance_id)) as CardUI
+
 	if not card_node:
 		_add_card_node(instance_id)
 		card_node = get_node_or_null(str(instance_id)) as CardUI
+
 	card_node.is_discarded = true
 	card_node.setup_visuals(instance_id, card_id)
 	_remove_card_node_and_animate(card_node, instance_id)
@@ -48,7 +50,12 @@ func _on_enemy_played_card(instance_id: int, card_id: String) -> void:
 	return
 
 func _remove_card_node_and_animate(card_node: CardUI, instance_id: int) -> void:
-	var target_pos: Vector2 = discard_pile_ui.get_discard_target_position() if discard_pile_ui else Vector2.ZERO
+	var target_pos: Vector2 = (
+		discard_pile_ui.get_discard_target_position()
+		if discard_pile_ui
+		else Vector2.ZERO
+	)
+
 	card_node.animate_to_discard(target_pos, func():
 		if discard_pile_ui:
 			discard_pile_ui.add_card_node(card_node)
@@ -59,47 +66,58 @@ func _notification(what: int) -> void:
 		_recalculate_layout()
 
 func _recalculate_layout() -> void:
-	var card_count: int = get_child_count()
+	var cards: Array[CardUI] = []
+
+	for child in get_children():
+		if child is CardUI:
+			if child.is_discarded:
+				continue
+			cards.append(child)
+
+	var card_count := cards.size()
 	if card_count == 0:
 		return
-		
+
 	var container_width: float = size.x
-	var calculated_width: float = container_width / 3.0
-	var min_hand_width: float = 600.0
-	var max_hand_width: float = 1000.0
-	var available_hand_width: float = clamp(calculated_width, min_hand_width, max_hand_width)
-	
-	var separation: float = default_separation
-	var total_unscaled_width: float = card_count * base_card_size.x
-	var start_x: float = 0.0
-	
-	if total_unscaled_width > available_hand_width and card_count > 1:
-		separation = (available_hand_width - base_card_size.x) / float(card_count - 1) - base_card_size.x
-		start_x = (container_width - available_hand_width) / 2.0
-	else:
-		var total_footprint: float = (card_count * base_card_size.x) + ((card_count - 1) * separation)
-		start_x = (container_width - total_footprint) / 2.0
-		
-	for i: int in range(card_count):
-		var card: Control = get_child(i) as Control
-		if not card:
-			continue
-			
-		# Lock size & center pivot point for rotational transform
+
+	var hand_width: float = (
+		base_card_size.x
+		+ (card_count - 1) * (base_card_size.x / 2.0)
+	)
+
+	var start_x: float = (container_width - hand_width) / 2.0
+
+	for i in range(card_count):
+		var card := cards[i]
+
 		card.custom_minimum_size = base_card_size
 		card.size = base_card_size
 		card.pivot_offset = base_card_size / 2.0
-		
-		# Safe curve sampling
-		var sample_point: float = 0.5 if card_count == 1 else float(i) / float(card_count - 1)
-		var y_multiplier: float = hand_curve.sample(sample_point) if hand_curve else 0.0
-		var rot_multiplier: float = rotation_curve.sample(sample_point) if rotation_curve else 0.0
-		
+
+		var sample_point := (
+			0.5
+			if card_count == 1
+			else float(i) / float(card_count - 1)
+		)
+
+		var y_multiplier := (
+			hand_curve.sample(sample_point)
+			if hand_curve
+			else 0.0
+		)
+
+		var rot_multiplier := (
+			rotation_curve.sample(sample_point)
+			if rotation_curve
+			else 0.0
+		)
+
 		if card_count == 1:
 			y_multiplier = 0.0
 			rot_multiplier = 0.0
-			
-		var target_x: float = start_x + float(i) * (base_card_size.x + separation)
+
+		var target_x: float = start_x + (float(i) * base_card_size.x) / 2.0
+
 		var target_y: float = (
 			y_min
 			+ (y_max * y_multiplier)
@@ -108,9 +126,7 @@ func _recalculate_layout() -> void:
 
 		card.position = Vector2(
 			target_x,
-			target_y - base_card_size.y / 2
+			target_y - base_card_size.y / 2.0
 		)
-		
-		var canvas_size: Vector2 = get_viewport_rect().size
-		
+
 		card.rotation_degrees = max_rotation_degrees * rot_multiplier
