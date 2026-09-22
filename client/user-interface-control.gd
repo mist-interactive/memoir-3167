@@ -13,6 +13,7 @@ extends Control
 @onready var button = $ResizeUI/PlayButton/Button
 @onready var next_phase = $ResizeUI/PlayButton/NextPhase
 
+@onready var time_progress_bar = $ResizeUI/Timer/ProgressBar
 @onready var time = $ResizeUI/Timer/Time
 
 @onready var P1faction = $ResizeUI/UiPlayerOne/Faction
@@ -113,20 +114,26 @@ func _physics_process(delta: float) -> void:
 
 	button.disabled = not is_my_turn
 
-	var timer_style := time.get_theme_stylebox("normal").duplicate() as StyleBoxFlat
+	var timer_style := time_progress_bar.get_theme_stylebox("normal").duplicate() as StyleBoxFlat
+
 	var max_time := 60.0
 	var remaining := count_down / 1000.0
-	var progress :Variant= clamp(remaining / max_time, 0.0, 1.0)
-	var border_width := int(progress * time.size.x)
-	timer_style.border_width_left = border_width
-	time.add_theme_stylebox_override("normal", timer_style)
+	remaining = clamp(remaining, 0.0, max_time)
+
+	# Starts at 0 and increases to full width as time runs out
+	var progress := 1.0 - (remaining / max_time)
+	var border_width := int(progress * time_progress_bar.size.x)
+
+	timer_style.border_width_right = border_width
+	time_progress_bar.add_theme_stylebox_override("normal", timer_style)
+
 	if is_my_turn:
-		time.text = "(%d)" % int(remaining)
+		time.text = "%d" % int(remaining)
 		phase.text = get_turn_phase_txt(matchState.phase)
 		next_phase.text = "To " + get_turn_phase_txt(get_next_phase())
 		button.text = "Next"
 	else:
-		time.text = "(%d)" % int(remaining)
+		time.text = "%d" % int(remaining)
 		button.text = "Opponent's Turn"
 
 	update_score_pips()
