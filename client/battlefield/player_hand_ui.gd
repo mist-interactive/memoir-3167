@@ -16,6 +16,8 @@ extends Control
 @export var play_area: Control
 
 func _ready() -> void:
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+
 	_clear_hand()
 	handState.hand_drawn.connect(_on_hand_drawn)
 	handState.card_played.connect(_on_card_played)
