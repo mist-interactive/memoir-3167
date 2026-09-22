@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c88k0hjunqjjr" path="res://client/user-interface-control.gd" id="1_wayox"]
 [ext_resource type="Texture2D" uid="uid://rtb43f6i1ud" path="res://assets/ui/dot-bold-highlight.svg" id="2_xaod4"]
-[ext_resource type="FontFile" uid="uid://bhrjj241jpfqx" path="res://assets/fonts/Godot-Fontpack-d244bf6170b399a6d4d26a0d906058ddf2dafdf1/fonts/poco/Poco.ttf" id="3_3mjco"]
+[ext_resource type="FontFile" uid="uid://bhrjj241jpfqx" path="res://assets/fonts/poco/Poco.ttf" id="3_3mjco"]
 [ext_resource type="Script" uid="uid://duqmnmc7syyvk" path="res://client/ui-control.gd" id="6_8n8tu"]
 [ext_resource type="PackedScene" uid="uid://bpenm2rqd2xau" path="res://client/battlefield/terrain_card_ui.tscn" id="7_0mc4w"]
 [ext_resource type="Texture2D" uid="uid://duaxy38nhengf" path="res://assets/ui/textures/metal_materialdark.png" id="8_idgig"]

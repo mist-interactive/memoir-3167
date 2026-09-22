@@ -45,9 +45,6 @@ func display_terrain_card(hex: Vector2) -> void:
 	new_card.size = Vector2(HandUI.card_size.y, HandUI.card_size.x)
 	new_card.scale = Vector2.ONE
 
-	# Resize the TextureRect
-	ui_control.resize()
-
 func clear_terrain_card() -> void:
 	if is_instance_valid(_current_terrain_card):
 		_current_terrain_card.queue_free()

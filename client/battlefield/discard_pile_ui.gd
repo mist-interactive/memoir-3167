@@ -2,6 +2,8 @@ class_name DiscardPileUI
 extends Control
 
 func _ready() -> void:
+	position.x = get_viewport_rect().size.x
+	position.y = get_viewport_rect().size.y / 2
 	set_anchors_preset(Control.PRESET_CENTER_LEFT)
 
 func get_discard_target_position() -> Vector2:

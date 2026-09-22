@@ -267,6 +267,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="Control" type="Control" parent="UICanvas/PlayerHandUI" unique_id=1348647858 node_paths=PackedStringArray("player_controller", "discard_pile_ui", "play_area")]
 layout_mode = 2
@@ -284,6 +285,7 @@ anchor_right = 1.0
 grow_horizontal = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+mouse_filter = 2
 
 [node name="Control" type="Control" parent="UICanvas/EnemyHandUI" unique_id=1002495451 node_paths=PackedStringArray("discard_pile_ui", "player_controller")]
 layout_mode = 2
@@ -296,11 +298,7 @@ player_controller = NodePath("../../../PlayerController")
 
 [node name="DiscardPileUI" type="Control" parent="UICanvas" unique_id=1834357906]
 layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
 mouse_filter = 2
 script = ExtResource("15_eq063")
 
@@ -318,9 +316,8 @@ layout_mode = 2
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_top = 3.0
 offset_right = -0.16003418
-offset_bottom = -179.0
+offset_bottom = -182.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
