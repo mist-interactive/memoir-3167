@@ -12,7 +12,7 @@ region = Rect2(384, 0, 128, 128)
 [resource]
 script = ExtResource("3_fdy8h")
 id = "4"
-title_label = "TOWNS & VILLAGES"
+title_label = "TOWNS"
 effect_label = "Effect"
 description_label = "• Unit moving in must stop and 
    may move no further on  that turn
