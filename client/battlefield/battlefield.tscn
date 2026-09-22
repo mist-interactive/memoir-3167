@@ -302,9 +302,12 @@ anchors_preset = 0
 mouse_filter = 2
 script = ExtResource("15_eq063")
 
-[node name="UI" parent="UICanvas" unique_id=1503541458 instance=ExtResource("19_3y24m")]
+[node name="UI" parent="UICanvas" unique_id=1503541458 node_paths=PackedStringArray("bottom_colored_bar", "top_colored_bar") instance=ExtResource("19_3y24m")]
+bottom_colored_bar = NodePath("ResizeUI/Control/bottom-bar/TextureRect2")
+top_colored_bar = NodePath("ResizeUI/Control/top-bar/TextureRect2")
 
 [node name="TerrainCards" type="MarginContainer" parent="UICanvas" unique_id=549801023 node_paths=PackedStringArray("map_ground_layer")]
+mouse_default_cursor_shape = 2
 script = ExtResource("23_vln62")
 card_ui_scene = ExtResource("25_kys61")
 map_ground_layer = NodePath("../../MapVisuals/MapGround")

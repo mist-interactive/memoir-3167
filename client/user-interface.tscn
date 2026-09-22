@@ -255,6 +255,7 @@ offset_left = 1704.0
 offset_top = 888.0
 offset_right = 1888.0
 offset_bottom = 928.0
+mouse_default_cursor_shape = 2
 theme_override_constants/outline_size = 3
 text = "Confirm"
 
@@ -413,6 +414,7 @@ offset_top = 1072.0
 offset_right = 19199.998
 offset_bottom = 1152.0
 scale = Vector2(0.1, 0.1)
+mouse_filter = 2
 texture = ExtResource("11_77ma2")
 expand_mode = 1
 stretch_mode = 1
