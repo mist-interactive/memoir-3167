@@ -302,9 +302,7 @@ anchors_preset = 0
 mouse_filter = 2
 script = ExtResource("15_eq063")
 
-[node name="UI" parent="UICanvas" unique_id=1503541458 node_paths=PackedStringArray("bottom_colored_bar", "top_colored_bar") instance=ExtResource("19_3y24m")]
-bottom_colored_bar = NodePath("ResizeUI/Control/bottom-bar/TextureRect2")
-top_colored_bar = NodePath("ResizeUI/Control/top-bar/TextureRect2")
+[node name="UI" parent="UICanvas" unique_id=1503541458 instance=ExtResource("19_3y24m")]
 
 [node name="TerrainCards" type="MarginContainer" parent="UICanvas" unique_id=549801023 node_paths=PackedStringArray("map_ground_layer")]
 mouse_default_cursor_shape = 2
@@ -319,8 +317,7 @@ layout_mode = 2
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = -0.16003418
-offset_bottom = -182.0
+offset_bottom = -200.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
