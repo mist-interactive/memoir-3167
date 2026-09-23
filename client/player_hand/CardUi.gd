@@ -53,7 +53,10 @@ func setup_enemy_visuals(instance_id: int) -> void:
 	_instance_id = instance_id
 	background_texture.texture = card_data.card_art
 
-func animate_to_discard(target_global_pos: Vector2, on_complete_callback: Callable) -> void:
+func animate_to_discard(
+	target_global_pos: Vector2,
+	on_complete_callback: Callable
+) -> void:
 	is_discarded = true
 	is_interactive = false
 
@@ -70,11 +73,10 @@ func animate_to_discard(target_global_pos: Vector2, on_complete_callback: Callab
 	z_index = 100
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-	var final_pos := target_global_pos - (size / 2.0)
 	var target_scale := get_discard_scale()
+	var final_pos := target_global_pos - (size * target_scale) / 2.0
 
 	var tween := create_tween()
-
 	tween.set_parallel(true)
 
 	tween.tween_property(
