@@ -5,7 +5,7 @@ var SIZE := HandUI.card_size
 var BASE_SCALE := HandUI.card_scale
 const DISCARD_BASE_SCALE := Vector2(1.0, 1.0)
 const DRAG_THRESHOLD := 8.0
-var CLICK_SCALE := BASE_SCALE * 2.0
+var CLICK_SCALE := BASE_SCALE
 var HOVER_SCALE := BASE_SCALE * 1.35
 
 @export var background_texture: TextureRect
@@ -28,7 +28,6 @@ var _instance_id: int
 var _card_id: String
 var is_interactive: bool = true
 var is_discarded: bool = false
-var is_selected: bool = false
 
 signal card_hovered(target_sector: enums.MapSector)
 signal card_unhovered
@@ -57,6 +56,7 @@ func animate_to_discard(
 	target_global_pos: Vector2,
 	on_complete_callback: Callable
 ) -> void:
+	
 	is_discarded = true
 	is_interactive = false
 
@@ -120,7 +120,7 @@ func _on_mouse_exited() -> void:
 	if is_discarded:
 		return _animate_discard_pile_hover(0)
 
-	if not is_dragging and not is_mouse_pressed and not is_selected:
+	if not is_dragging and not is_mouse_pressed:
 		z_index = 0
 		scale = BASE_SCALE
 
@@ -184,7 +184,6 @@ func _gui_input(event: InputEvent) -> void:
 		else:
 			if not is_dragging:
 				is_mouse_pressed = false
-				is_selected = not is_selected
 				accept_event()
 
 	elif event is InputEventMouseMotion:
@@ -219,7 +218,6 @@ func _start_drag() -> void:
 	original_position = global_position
 	z_index = 10
 
-	is_selected = false
 	scale = BASE_SCALE
 
 	drag_offset = get_global_mouse_position() - global_position
