@@ -17,26 +17,71 @@ const ANIMATION_MAP: Dictionary = {
 	},
 }
 
-const base_atlas: CompressedTexture2D = preload("res://assets/sprites/units/unit_bases.png")
+const FORMATIONS: Dictionary = {
+	enums.UnitType.INFANTRY: {
+		4: [Vector2(-24, -32), Vector2(24, -32), Vector2(24, 16), Vector2(-24, 16)],
+		3: [Vector2(-24, -32), Vector2(24, -32), Vector2(0, 16)],
+		2: [Vector2(-24, 0), Vector2(24, 0)],
+		1: [Vector2(0, 0)],
+	},
+	enums.UnitType.TANK: {
+		4: [Vector2(-36, -36), Vector2(36, -36), Vector2(36, 36), Vector2(-36, 36)],
+		3: [Vector2(4, -50), Vector2(-28, -10), Vector2(25, 9)],
+		2: [Vector2(-32, -14), Vector2(32, -14)],
+		1: [Vector2(0, 0)],
+	},
+	enums.UnitType.ARTILLERY: {
+		4: [Vector2(-36, -36), Vector2(36, -36), Vector2(36, 36), Vector2(-36, 36)],
+		3: [Vector2(4, -50), Vector2(-28, -10), Vector2(25, 9)],
+		2: [Vector2(-32, -14), Vector2(32, -14)],
+		1: [Vector2(0, 0)],
+	}
+}
+
+const BASE_ATLAS: CompressedTexture2D = preload("res://assets/sprites/units/unit_bases.png")
 
 static var scale: Vector2 = Vector2(1, 1)
 
-static func apply_unit_visuals(unit_figure: Variant, owner_id: int, unit_type: int) -> void:
+static func update_unit_visuals(unit: Unit) -> void:
+	unit.z_index = unit.hex_coord.y * 10
+	apply_unit_visuals(unit.unit_figures, unit.owner_id, unit.type, unit.hit_point)
+
+static func apply_unit_visuals(unit_figures: Array[Variant], owner_id: int, unit_type: int, unit_health: int) -> void:
 	if not ANIMATION_MAP.has(owner_id):
 		push_warning("Invalid owner_id in apply_unit_visuals: ", owner_id)
 		return
 	if not ANIMATION_MAP[owner_id].has(unit_type):
 		push_warning("Invalid unit_type in apply_unit_visuals: ", unit_type)
 		return
+	for i in range(unit_figures.size()):
+		apply_figure_visuals(unit_figures[i], owner_id, unit_type, unit_health, i)
+
+
+static func apply_figure_visuals(unit_figure: Variant, owner_id: int, unit_type: int, unit_health: int, index: int) -> void:
+	if not ANIMATION_MAP.has(owner_id):
+		push_warning("Invalid owner_id in apply_unit_visuals: ", owner_id)
+		return
+	if not ANIMATION_MAP[owner_id].has(unit_type):
+		push_warning("Invalid unit_type in apply_unit_visuals: ", unit_type)
+		return
+	if index >= unit_health:
+		unit_figure.visible = false
+		return
 	var visual_data: Dictionary = ANIMATION_MAP[owner_id][unit_type]
+	var figure_offset = FORMATIONS.get(unit_type).get(unit_health)[index]
+	if owner_id == 1:
+		figure_offset.x *= -1
+	unit_figure.position = figure_offset
+	unit_figure.z_index = index
 	unit_figure.anim_sprite.offset = visual_data.get("offset")
 	unit_figure.anim_sprite.play(visual_data.get("anim"))
 	unit_figure.anim_sprite.flip_h = false
-	unit_figure.base_sprite.texture = base_atlas
+	unit_figure.base_sprite.texture = BASE_ATLAS
 	unit_figure.base_sprite.hframes = 2
 	if owner_id == 2:
 		unit_figure.base_sprite.frame = 1
 	if unit_type == enums.UnitType.INFANTRY:
+		unit_figure.base_sprite.scale = Vector2(1, 1)
 		if owner_id == 2:
 			unit_figure.anim_sprite.flip_h = true
 	if unit_type == enums.UnitType.TANK:

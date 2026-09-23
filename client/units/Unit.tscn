@@ -3,7 +3,14 @@
 [ext_resource type="Script" uid="uid://gitlphxxoobq" path="res://client/units/unit.gd" id="1_thmd4"]
 [ext_resource type="PackedScene" uid="uid://qdgisqspx2c0" path="res://client/units/UnitFigure.tscn" id="2_thmd4"]
 
-[node name="Unit" type="Node2D" unique_id=829278407]
+[node name="Unit" type="Node2D" unique_id=829278407 node_paths=PackedStringArray("unit_figures")]
 script = ExtResource("1_thmd4")
+unit_figures = [NodePath("UnitFigure1"), NodePath("UnitFigure2"), NodePath("UnitFigure3"), NodePath("UnitFigure4")]
 
-[node name="UnitFigure" parent="." unique_id=1319011879 instance=ExtResource("2_thmd4")]
+[node name="UnitFigure1" parent="." unique_id=1319011879 instance=ExtResource("2_thmd4")]
+
+[node name="UnitFigure2" parent="." unique_id=695169359 instance=ExtResource("2_thmd4")]
+
+[node name="UnitFigure3" parent="." unique_id=546188130 instance=ExtResource("2_thmd4")]
+
+[node name="UnitFigure4" parent="." unique_id=610407521 instance=ExtResource("2_thmd4")]
