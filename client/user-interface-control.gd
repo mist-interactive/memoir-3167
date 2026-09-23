@@ -51,10 +51,16 @@ const ally_color: Color = Color(0.329, 0.42, 0.31, 1.0)
 const enemy_color: Color = Color(0.596, 0.263, 0.247, 1.0)
 
 func _ready() -> void:
+	load_cursor()
 	get_viewport().size_changed.connect(update_ui)
 	update_ui()
 	update_score_pips()
 
+func load_cursor() -> void:
+	var image = load("res://assets/ui/icons/cursor09_gb.png").get_image()
+	image.resize(32, 32, Image.INTERPOLATE_NEAREST)
+	var cursor_texture = ImageTexture.create_from_image(image)
+	Input.set_custom_mouse_cursor(cursor_texture)
 
 func update_player_color() -> void:
 	match matchState.mySide:

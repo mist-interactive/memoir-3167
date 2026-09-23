@@ -255,7 +255,6 @@ offset_left = 1704.0
 offset_top = 888.0
 offset_right = 1888.0
 offset_bottom = 928.0
-mouse_default_cursor_shape = 2
 theme_override_constants/outline_size = 3
 text = "Confirm"
 
