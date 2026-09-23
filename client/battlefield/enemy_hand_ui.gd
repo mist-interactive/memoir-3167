@@ -48,6 +48,10 @@ func _add_card_node(instance_id: int) -> void:
 
 	new_card.custom_minimum_size = base_card_size
 	new_card.size = base_card_size
+	
+	# flip the art
+	new_card.background_texture.flip_v = true
+	new_card.background_texture.flip_h = true
 
 
 func _on_enemy_played_card(instance_id: int, card_id: String) -> void:
