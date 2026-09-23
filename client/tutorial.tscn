@@ -1,0 +1,264 @@
+[gd_scene format=3 uid="uid://chpts1xx3dkee"]
+
+[ext_resource type="Script" uid="uid://bgndi18hwb1i6" path="res://client/tutorial.gd" id="1_tu1sw"]
+[ext_resource type="Texture2D" uid="uid://e540m44l5f10" path="res://assets/ui/icons/book_open.png" id="2_tu1sw"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ik1hn"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 12
+border_width_top = 36
+border_width_right = 12
+border_width_bottom = 12
+border_color = Color(0, 0, 0, 0)
+border_blend = true
+
+[node name="UI" type="Control" unique_id=1744084876 node_paths=PackedStringArray("minimize_button", "tutorial_button", "panel", "text", "tutorial_pages", "page_buttons")]
+z_index = 100
+layout_mode = 3
+anchors_preset = 0
+mouse_filter = 2
+script = ExtResource("1_tu1sw")
+minimize_button = NodePath("MinimizeButton")
+tutorial_button = NodePath("TutorialButton")
+panel = NodePath("Panel")
+text = NodePath("Page1/Text")
+tutorial_pages = [NodePath("Page1"), NodePath("Page2"), NodePath("Page3"), NodePath("Page4")]
+page_buttons = [NodePath("HBoxContainer/Button"), NodePath("HBoxContainer/Button2"), NodePath("HBoxContainer/Button3"), NodePath("HBoxContainer/Button4"), NodePath("HBoxContainer/Button5"), NodePath("HBoxContainer/Button6"), NodePath("HBoxContainer/Button7"), NodePath("HBoxContainer/Button8")]
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=571821803]
+z_index = 1
+layout_mode = 0
+offset_left = 16.0
+offset_right = 464.0
+offset_bottom = 32.0
+alignment = 1
+
+[node name="Button" type="Button" parent="HBoxContainer" unique_id=1955560250]
+layout_mode = 2
+text = "Start"
+
+[node name="Button2" type="Button" parent="HBoxContainer" unique_id=705580722]
+layout_mode = 2
+text = "About"
+
+[node name="Button3" type="Button" parent="HBoxContainer" unique_id=838478141]
+layout_mode = 2
+text = "Info"
+
+[node name="Button4" type="Button" parent="HBoxContainer" unique_id=1556924499]
+layout_mode = 2
+text = "Goal"
+
+[node name="Button5" type="Button" parent="HBoxContainer" unique_id=2021901553]
+layout_mode = 2
+text = "Goal"
+
+[node name="Button6" type="Button" parent="HBoxContainer" unique_id=742477322]
+layout_mode = 2
+text = "Goal"
+
+[node name="Button7" type="Button" parent="HBoxContainer" unique_id=105942333]
+layout_mode = 2
+text = "Goal"
+
+[node name="Button8" type="Button" parent="HBoxContainer" unique_id=1028137066]
+layout_mode = 2
+text = "Goal"
+
+[node name="Panel" type="ColorRect" parent="." unique_id=1343958231]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 512.0
+offset_bottom = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.12093841, 0.13853851, 0.16314322, 1)
+
+[node name="MinimizeButton" type="Button" parent="." unique_id=553180294]
+layout_mode = 0
+offset_left = 480.0
+offset_right = 512.0
+offset_bottom = 32.0
+text = "─"
+
+[node name="TutorialButton" type="Button" parent="." unique_id=1384915526]
+visible = false
+layout_mode = 0
+offset_left = 8.0
+offset_top = 16.0
+offset_right = 40.0
+offset_bottom = 48.0
+icon = ExtResource("2_tu1sw")
+expand_icon = true
+
+[node name="Page1" type="Control" parent="." unique_id=1146651962]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="Label" parent="Page1" unique_id=27026813]
+custom_minimum_size = Vector2(512, 256)
+custom_maximum_size = Vector2(512, 256)
+layout_mode = 0
+offset_right = 512.0
+offset_bottom = 256.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+text = "Let's learn how to play Memoir '67!
+Tips:
+
+• You can press the SPACE key to make the tutorial progress
+instead of using buttons.
+
+• You can use [─] to minimize tutorial explanations if needed."
+autowrap_mode = 1
+
+[node name="Page2" type="Control" parent="." unique_id=1144873852]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Text" type="Label" parent="Page2" unique_id=565065572]
+custom_minimum_size = Vector2(512, 256)
+custom_maximum_size = Vector2(512, 256)
+layout_mode = 0
+offset_right = 512.0
+offset_bottom = 256.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+text = "Memoir '67 is an unique historical game that allows players to
+effectively portray stylized WWII battles. Lead the axis or allies to victory"
+autowrap_mode = 1
+
+[node name="Page3" type="Control" parent="." unique_id=1662929342]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Text" type="Label" parent="Page3" unique_id=1883234843]
+custom_minimum_size = Vector2(512, 256)
+custom_maximum_size = Vector2(512, 256)
+layout_mode = 0
+offset_right = 512.0
+offset_bottom = 256.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+text = "Memoir '67 is intentionally designed with simple general
+mechanics.
+
+This tutorial will mostly focus on the general mechanics.
+Most scenario-specific mechanics have to do with terrain,
+which you can easily see by hovering over them with your
+mouse."
+autowrap_mode = 1
+
+[node name="Page4" type="Control" parent="." unique_id=1379314264]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Text" type="Label" parent="Page4" unique_id=577282084]
+custom_minimum_size = Vector2(512, 256)
+custom_maximum_size = Vector2(512, 256)
+layout_mode = 0
+offset_right = 512.0
+offset_bottom = 256.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+text = "Your goal is to be the first to get a certain number of medals.
+The number required varies from scenario to scenario, but
+this one, NAME OF THE SCENARIO, requires 5.
+
+You get medals by destroying enemy units."
+autowrap_mode = 1
+
+[node name="Page5" type="Control" parent="." unique_id=1971898202]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Text" type="Label" parent="Page5" unique_id=1450936752]
+custom_minimum_size = Vector2(512, 256)
+custom_maximum_size = Vector2(512, 256)
+layout_mode = 0
+offset_right = 512.0
+offset_bottom = 256.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+text = "Each turn, you must play one Comman card from your hand.
+
+The cards in your hand are called section cards.
+They issue orders to units in certain sections of the
+map, which are separated by the red vertical lines."
+autowrap_mode = 1
+
+[node name="Page6" type="Control" parent="." unique_id=1102722765]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Text" type="Label" parent="Page6" unique_id=1629836839]
+custom_minimum_size = Vector2(512, 256)
+custom_maximum_size = Vector2(512, 256)
+layout_mode = 0
+offset_right = 512.0
+offset_bottom = 256.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+text = "After playing a comman card, we must follow this sequence:
+1. Announce which units we intend to move. Left click
+2. Move them, one at a time. Left click -> right click
+3. Battle, one at a time. Left click -> right click
+4. Draw a new comman card to end the turn. 
+
+"
+autowrap_mode = 1
+
+[node name="Page7" type="Control" parent="." unique_id=1363077334]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Text" type="Label" parent="Page7" unique_id=669531582]
+custom_minimum_size = Vector2(512, 256)
+custom_maximum_size = Vector2(512, 256)
+layout_mode = 0
+offset_right = 512.0
+offset_bottom = 256.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+text = "Your goal is to be the first to get a certain number of medals.
+The number required varies from scenario to scenario, but
+this one, NAME OF THE SCENARIO, requires 5.
+
+You get medals by destroying enemy units."
+autowrap_mode = 1
+
+[node name="Page8" type="Control" parent="." unique_id=1937720087]
+visible = false
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Text" type="Label" parent="Page8" unique_id=3700196]
+custom_minimum_size = Vector2(512, 256)
+custom_maximum_size = Vector2(512, 256)
+layout_mode = 0
+offset_right = 512.0
+offset_bottom = 256.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+text = "Your goal is to be the first to get a certain number of medals.
+The number required varies from scenario to scenario, but
+this one, NAME OF THE SCENARIO, requires 5.
+
+You get medals by destroying enemy units."
+autowrap_mode = 1
