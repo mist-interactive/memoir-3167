@@ -2,17 +2,13 @@ class_name CardUI
 extends Control
 
 var SIZE := HandUI.card_size
-const BASE_SCALE := Vector2(0.5, 0.5)
+var BASE_SCALE := HandUI.card_scale
 const DISCARD_BASE_SCALE := Vector2(1.0, 1.0)
-
 const DRAG_THRESHOLD := 8.0
-const CLICK_SCALE := BASE_SCALE * 2.0
-const HOVER_SCALE := BASE_SCALE * 1.35
+var CLICK_SCALE := BASE_SCALE * 2.0
+var HOVER_SCALE := BASE_SCALE * 1.35
 
-@export var title_label: Label
-@export var description_label: Label
-@export var description_label_bottom: Label
-@onready var background_texture: TextureRect
+@export var background_texture: TextureRect
 @export var play_area: Control
 @export var discard_target: Control
 @onready var handState: HandState = $"../../../../../HandState"
@@ -38,27 +34,24 @@ signal card_hovered(target_sector: enums.MapSector)
 signal card_unhovered
 
 func _ready() -> void:
-	get_child(1).expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	size = HandUI.card_size
+	scale = HandUI.card_scale
 
 func setup_visuals(instance_id: int, id: String) -> void:
 	_instance_id = instance_id
 	_card_id = id
-	texture_filter = CanvasItem.TEXTURE_FILTER_LINEAR
 
 	var card_data: CommandCard = CardDatabase.get_card(id)
 	if not card_data:
 		push_error("Card UI: Database missing definition for ", id)
 		return
 
-	title_label.text = card_data.title_label
-	description_label.text = card_data.description_label
-	description_label_bottom.text = card_data.description_label_bottom
-	$background_texture.texture = card_data.card_art
+	background_texture.texture = card_data.card_art
 
 func setup_enemy_visuals(instance_id: int) -> void:
 	var card_data: CommandCard = CardDatabase.get_card("000")
 	_instance_id = instance_id
-	$background_texture.texture = card_data.card_art
+	background_texture.texture = card_data.card_art
 
 func animate_to_discard(target_global_pos: Vector2, on_complete_callback: Callable) -> void:
 	is_discarded = true
@@ -189,14 +182,7 @@ func _gui_input(event: InputEvent) -> void:
 		else:
 			if not is_dragging:
 				is_mouse_pressed = false
-
 				is_selected = not is_selected
-
-				if is_selected:
-					scale = CLICK_SCALE
-				else:
-					scale = BASE_SCALE
-
 				accept_event()
 
 	elif event is InputEventMouseMotion:
