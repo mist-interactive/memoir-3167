@@ -22,6 +22,7 @@
 [ext_resource type="Script" uid="uid://cm4a8di22xvu3" path="res://client/battlefield/hover_action_highlight.gd" id="14_vln62"]
 [ext_resource type="Script" uid="uid://cl0168wcrdlf1" path="res://client/battlefield/discard_pile_ui.gd" id="15_eq063"]
 [ext_resource type="PackedScene" uid="uid://c3nofdwjiv8vk" path="res://client/user-interface.tscn" id="19_3y24m"]
+[ext_resource type="PackedScene" uid="uid://chpts1xx3dkee" path="res://client/tutorial.tscn" id="22_1ra3n"]
 [ext_resource type="Script" uid="uid://d0i075tkk6mwe" path="res://client/battlefield/terrain_cards.gd" id="23_vln62"]
 [ext_resource type="Script" uid="uid://ctk6r7joynsl2" path="res://client/battlefield/card_play_area.gd" id="24_fpqqf"]
 [ext_resource type="PackedScene" uid="uid://bpenm2rqd2xau" path="res://client/battlefield/terrain_card_ui.tscn" id="25_kys61"]
@@ -303,6 +304,8 @@ mouse_filter = 2
 script = ExtResource("15_eq063")
 
 [node name="UI" parent="UICanvas" unique_id=1503541458 instance=ExtResource("19_3y24m")]
+
+[node name="Tutorial" parent="UICanvas" unique_id=1744084876 instance=ExtResource("22_1ra3n")]
 
 [node name="TerrainCards" type="MarginContainer" parent="UICanvas" unique_id=549801023 node_paths=PackedStringArray("map_ground_layer")]
 mouse_default_cursor_shape = 2
