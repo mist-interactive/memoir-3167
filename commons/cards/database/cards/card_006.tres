@@ -6,12 +6,6 @@
 [resource]
 script = ExtResource("2_muwj0")
 id = "006"
-title_label = "RECON"
-description_label = "Issue an order to 1 unit
-in the Center"
-description_label_bottom = "Order 1 Unit
-When drawing a new Command card, draw
-two, choose one and discard the other."
 target_sector = 2
 deck_quantity = 20
 card_art = ExtResource("1_ph2j4")
