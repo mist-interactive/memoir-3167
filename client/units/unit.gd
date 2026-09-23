@@ -2,6 +2,7 @@ class_name Unit
 extends Node2D
 
 @export var unit_figures: Array[UnitFigure]
+@export var explosion_animation: AnimatedSprite2D
 
 @export var owner_id: enums.Side = enums.Side.NONE
 @export var hex_coord: Vector2i = Vector2i.ZERO:
@@ -22,8 +23,10 @@ var hit_point: int = -1
 var _is_initialized: bool = false
 var _move_tween: Tween
 var num_of_retreat: int = -1
+var is_in_combat: bool = false
 
 func _ready() -> void:
+	explosion_animation.visible = false
 	for unit_figure in unit_figures:
 		UnitVisuals.update_unit_visuals(self)
 
@@ -56,7 +59,8 @@ func sync_with_snapshot(snapshot: Dictionary) -> void:
 	self.uuid = snapshot.uuid
 	self.type = snapshot.type
 	self.owner_id = snapshot.owner_id
-	self.hit_point = snapshot.hit_point
+	if !is_in_combat:
+		self.hit_point = snapshot.hit_point
 	self.hex_coord = snapshot.hex_coord
 	self.actions = snapshot.actions
 	self.num_of_retreat = snapshot.num_of_retreat

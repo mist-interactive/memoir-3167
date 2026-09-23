@@ -28,13 +28,13 @@ const FORMATIONS: Dictionary = {
 		4: [Vector2(-36, -36), Vector2(36, -36), Vector2(36, 36), Vector2(-36, 36)],
 		3: [Vector2(4, -50), Vector2(-28, -10), Vector2(25, 9)],
 		2: [Vector2(-32, -14), Vector2(32, -14)],
-		1: [Vector2(0, 0)],
+		1: [Vector2(0, -14)],
 	},
 	enums.UnitType.ARTILLERY: {
 		4: [Vector2(-36, -36), Vector2(36, -36), Vector2(36, 36), Vector2(-36, 36)],
 		3: [Vector2(4, -50), Vector2(-28, -10), Vector2(25, 9)],
 		2: [Vector2(-32, -14), Vector2(32, -14)],
-		1: [Vector2(0, 0)],
+		1: [Vector2(0, -14)],
 	}
 }
 
