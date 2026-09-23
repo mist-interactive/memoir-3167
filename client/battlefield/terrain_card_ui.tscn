@@ -12,7 +12,8 @@ region = Rect2(0, 0, 128, 128)
 [node name="TerrainCardUI" type="MarginContainer" unique_id=1384061792 node_paths=PackedStringArray("title_label", "description_label", "effect_label", "infantry_negate_count", "tank_negate_count")]
 anchors_preset = 9
 anchor_bottom = 1.0
-offset_bottom = -648.0
+offset_right = 160.0
+offset_bottom = 152.0
 grow_vertical = 2
 script = ExtResource("1_gd3o8")
 title_label = NodePath("Control/title_label")
@@ -26,10 +27,10 @@ layout_mode = 2
 
 [node name="background_texture" type="TextureRect" parent="Control" unique_id=1947103247]
 layout_mode = 0
-offset_left = 16.0
-offset_top = 136.0
-offset_right = 80.0
-offset_bottom = 200.0
+offset_left = 8.0
+offset_top = 112.0
+offset_right = 64.0
+offset_bottom = 168.0
 offset_transform_enabled = true
 offset_transform_visual_only = false
 texture = SubResource("AtlasTexture_jbmmi")
@@ -37,21 +38,19 @@ expand_mode = 1
 
 [node name="title_label" type="Label" parent="Control" unique_id=174640353]
 layout_mode = 0
-offset_left = 4.0
-offset_top = 106.0
-offset_right = 205.0
-offset_bottom = 134.0
+offset_top = 80.0
+offset_right = 144.0
+offset_bottom = 108.0
 text = "title_label"
 horizontal_alignment = 1
 autowrap_mode = 3
 
 [node name="description_label" type="Label" parent="Control" unique_id=248198948]
 layout_mode = 0
-offset_left = 8.000004
-offset_top = 208.0
-offset_right = 328.00003
-offset_bottom = 404.9231
-scale = Vector2(0.65, 0.65)
+offset_top = 176.0
+offset_right = 184.0
+offset_bottom = 304.0
+theme_override_font_sizes/font_size = 8
 text = "description_label_label_label_label_label
 description_label_label_label_label_label
 description_label_label_label_label_label
@@ -71,40 +70,41 @@ autowrap_mode = 3
 
 [node name="terrain_infantry_art" type="TextureRect" parent="Control" unique_id=1577902001]
 layout_mode = 0
-offset_left = 87.0
-offset_top = 143.99988
-offset_right = 1741.0
-offset_bottom = 611.9999
+offset_left = 64.0
+offset_top = 115.99988
+offset_right = 1343.9999
+offset_bottom = 596.0021
 scale = Vector2(0.05, 0.05)
 offset_transform_scale = Vector2(0.1, 0.1)
 offset_transform_visual_only = false
 texture = ExtResource("3_2og8p")
+expand_mode = 1
 
 [node name="terrain_tank_art" type="TextureRect" parent="Control" unique_id=710385116]
 layout_mode = 0
-offset_left = 87.0
-offset_top = 169.0
-offset_right = 1741.0
-offset_bottom = 657.0
+offset_left = 64.0
+offset_top = 140.0
+offset_right = 1343.9999
+offset_bottom = 620.00024
 scale = Vector2(0.05, 0.05)
 offset_transform_scale = Vector2(0.1, 0.1)
 texture = ExtResource("4_fpmyj")
-stretch_mode = 2
+expand_mode = 1
 
 [node name="infantry_negate_count" type="Label" parent="Control" unique_id=209782746]
 layout_mode = 0
-offset_left = 167.0
-offset_top = 141.0
-offset_right = 421.0
-offset_bottom = 167.0
+offset_left = 128.0
+offset_top = 115.99999
+offset_right = 382.0
+offset_bottom = 140.0
 text = "infantry_negate_count"
 autowrap_mode = 3
 
 [node name="tank_negate_count" type="Label" parent="Control" unique_id=892040534]
 layout_mode = 0
-offset_left = 167.0
-offset_top = 170.0
-offset_right = 335.0
-offset_bottom = 193.0
+offset_left = 128.0
+offset_top = 140.0
+offset_right = 296.0
+offset_bottom = 164.0
 text = "tank_negate_count"
 autowrap_mode = 3

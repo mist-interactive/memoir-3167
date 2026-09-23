@@ -5,16 +5,23 @@ extends Control
 
 @onready var ui = $ResizeUI
 
-@onready var phase = $ResizeUI/Phase
 @onready var turn = $ResizeUI/Turn
-@onready var peer_ids = $ResizeUI/Peer_ids
 @onready var state = $ResizeUI/State
 @onready var scores = $ResizeUI/Scores
 @onready var winner = $ResizeUI/Winner
-@onready var button = $ResizeUI/Button
-@onready var next_phase = $ResizeUI/NextPhase
-@onready var my_faction = $ResizeUI/MyFaction
-@onready var enemy_faction = $ResizeUI/EnemyFaction
+@onready var phase = $ResizeUI/PlayButton/Phase
+@onready var button = $ResizeUI/PlayButton/Button
+@onready var next_phase = $ResizeUI/PlayButton/NextPhase
+
+@onready var time_progress_bar = $ResizeUI/Timer/ProgressBar
+@onready var time = $ResizeUI/Timer/Time
+
+@onready var P1faction = $ResizeUI/UiPlayerOne/Faction
+@onready var P1name = $ResizeUI/UiPlayerOne/Name
+@onready var P1box = $ResizeUI/UiPlayerOne/Box
+@onready var P2faction = $ResizeUI/UiPlayerTwo/Faction
+@onready var P2name = $ResizeUI/UiPlayerTwo/Name
+@onready var P2box = $ResizeUI/UiPlayerTwo/Box
 
 @export var bottom_colored_bar: TextureRect
 @export var top_colored_bar: TextureRect
@@ -25,19 +32,19 @@ const ALLIES := "Allies"
 const AXIS := "Axis"
 
 @onready var score_pips: Array[TextureRect] = [
-	$ResizeUI/ScorePips/BoxContainer/TextureRect1,
-	$ResizeUI/ScorePips/BoxContainer/TextureRect2,
-	$ResizeUI/ScorePips/BoxContainer/TextureRect3,
-	$ResizeUI/ScorePips/BoxContainer/TextureRect4,
-	$ResizeUI/ScorePips/BoxContainer/TextureRect5,
+	$ResizeUI/UiPlayerOne/ScorePips/BoxContainer/TextureRect1,
+	$ResizeUI/UiPlayerOne/ScorePips/BoxContainer/TextureRect2,
+	$ResizeUI/UiPlayerOne/ScorePips/BoxContainer/TextureRect3,
+	$ResizeUI/UiPlayerOne/ScorePips/BoxContainer/TextureRect4,
+	$ResizeUI/UiPlayerOne/ScorePips/BoxContainer/TextureRect5,
 ]
 
 @onready var score_pips_enemy: Array[TextureRect] = [
-	$ResizeUI/ScorePipsEnemy/BoxContainer/TextureRect1,
-	$ResizeUI/ScorePipsEnemy/BoxContainer/TextureRect2,
-	$ResizeUI/ScorePipsEnemy/BoxContainer/TextureRect3,
-	$ResizeUI/ScorePipsEnemy/BoxContainer/TextureRect4,
-	$ResizeUI/ScorePipsEnemy/BoxContainer/TextureRect5,
+	$ResizeUI/UiPlayerTwo/ScorePips/BoxContainer/TextureRect1,
+	$ResizeUI/UiPlayerTwo/ScorePips/BoxContainer/TextureRect2,
+	$ResizeUI/UiPlayerTwo/ScorePips/BoxContainer/TextureRect3,
+	$ResizeUI/UiPlayerTwo/ScorePips/BoxContainer/TextureRect4,
+	$ResizeUI/UiPlayerTwo/ScorePips/BoxContainer/TextureRect5,
 ]
 
 const ally_color: Color = Color(0.329, 0.42, 0.31, 1.0)
@@ -48,24 +55,40 @@ func _ready() -> void:
 	update_ui()
 	update_score_pips()
 
+
 func update_player_color() -> void:
 	match matchState.mySide:
 		enums.Side.RED:
-			my_faction.text = AXIS
-			enemy_faction.text = ALLIES
-			var style = my_faction.get_theme_stylebox("normal") as StyleBoxFlat
-			style.bg_color = enemy_color
-			style = enemy_faction.get_theme_stylebox("normal") as StyleBoxFlat
-			style.bg_color = ally_color
+			P1faction.text = AXIS
+			P2faction.text = ALLIES
+
+			set_box_color(P1faction, enemy_color)
+			set_box_color(P1name, enemy_color)
+			set_box_color(P1box, enemy_color)
+			set_box_color(P2faction, ally_color)
+			set_box_color(P2name, ally_color)
+			set_box_color(P2box, ally_color)
+
 		enums.Side.GREEN:
-			my_faction.text = ALLIES
-			enemy_faction.text = AXIS
-			var style = my_faction.get_theme_stylebox("normal") as StyleBoxFlat
-			style.bg_color = ally_color
-			style = enemy_faction.get_theme_stylebox("normal") as StyleBoxFlat
-			style.bg_color = enemy_color
+			P1faction.text = ALLIES
+			P2faction.text = AXIS
+
+			set_box_color(P1faction, ally_color)
+			set_box_color(P1name, ally_color)
+			set_box_color(P1box, ally_color)
+			set_box_color(P2faction, enemy_color)
+			set_box_color(P2name, enemy_color)
+			set_box_color(P2box, enemy_color)
+
 		enums.Side.NONE:
 			return
+
+
+func set_box_color(control: Control, color: Color) -> void:
+	var style := control.get_theme_stylebox("normal").duplicate() as StyleBoxFlat
+	style.bg_color = color
+	control.add_theme_stylebox_override("normal", style)
+
 
 func update_ui():
 	var viewport_size := get_viewport_rect().size
@@ -76,34 +99,41 @@ func update_ui():
 	ui.scale = Vector2.ONE * scale_factor
 	ui.position = (viewport_size - DESIGN_SIZE * scale_factor) / 2.0
 
+
 func _physics_process(delta: float) -> void:
 	var server_now: float = clock.get_server_time()
 	var count_down: float = matchState.phase_timer.get_time_left_ms(matchState.state, server_now)
-	scores.text = "scores: Red %d - %d Green" % [
-		matchState.scores[enums.Side.RED],
-		matchState.scores[enums.Side.GREEN]
-	]
 	
 	if matchState.mySide != enums.Side.NONE:
 		update_player_color()
 
-	peer_ids.text = "Side: " + player_id_text(matchState.mySide)
-	phase.text = "turn phase: " + get_turn_phase_txt(matchState.phase) + "(%d)" % (count_down / 1000)
-	state.text = "match state: " + get_game_state_txt(matchState.state)
-	turn.text = "player_turn: " + player_id_text(matchState.current_turn)
-	winner.text = "winner: " + player_id_text(matchState.winner)
-
 	var is_my_turn := matchState.is_my_turn()
 
-	# Only show phase information during your turn.
 	phase.visible = is_my_turn
 	next_phase.visible = is_my_turn
 
+	button.disabled = not is_my_turn
+
+	var timer_style := time_progress_bar.get_theme_stylebox("normal").duplicate() as StyleBoxFlat
+
+	var max_time := 60.0
+	var remaining := count_down / 1000.0
+	remaining = clamp(remaining, 0.0, max_time)
+
+	# Starts at 0 and increases to full width as time runs out
+	var progress := 1.0 - (remaining / max_time)
+	var border_width := int(progress * time_progress_bar.size.x)
+
+	timer_style.border_width_right = border_width
+	time_progress_bar.add_theme_stylebox_override("normal", timer_style)
+
 	if is_my_turn:
-		phase.text = get_turn_phase_txt(matchState.phase) + "(%d)" % (count_down / 1000)
+		time.text = "%d" % int(remaining)
+		phase.text = get_turn_phase_txt(matchState.phase)
 		next_phase.text = "To " + get_turn_phase_txt(get_next_phase())
 		button.text = "Next"
 	else:
+		time.text = "%d" % int(remaining)
 		button.text = "Opponent's Turn"
 
 	update_score_pips()
@@ -177,7 +207,6 @@ func update_score_pips() -> void:
 			score_pips_enemy[i].modulate = enemy_active_color
 		else:
 			score_pips_enemy[i].modulate = Color(0.722, 0.722, 0.722, 1.0)
-
 
 func player_id_text(side: enums.Side) -> String:
 	if side == enums.Side.GREEN:

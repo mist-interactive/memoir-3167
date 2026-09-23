@@ -12,17 +12,15 @@ shadow_color = Color(0.0627451, 0.0627451, 0.0627451, 0.42352942)
 shadow_size = 1
 shadow_offset = Vector2(-4, 24.36)
 
-[node name="CardUI" type="MarginContainer" unique_id=1384061792 node_paths=PackedStringArray("title_label", "description_label", "description_label_bottom", "effect_label", "infantry_negate_count", "tank_negate_count")]
+[node name="CardUI" type="MarginContainer" unique_id=1384061792 node_paths=PackedStringArray("title_label", "description_label", "description_label_bottom")]
 offset_right = 210.0
 offset_bottom = 325.0
 scale = Vector2(0.5, 0.5)
+mouse_default_cursor_shape = 2
 script = ExtResource("1_ii6mt")
 title_label = NodePath("title_label")
 description_label = NodePath("description_label")
 description_label_bottom = NodePath("description_label_bottom")
-effect_label = NodePath("effect_label")
-infantry_negate_count = NodePath("infantry_negate_count")
-tank_negate_count = NodePath("tank_negate_count")
 
 [node name="canvas" type="Panel" parent="." unique_id=1347091456]
 visible = false

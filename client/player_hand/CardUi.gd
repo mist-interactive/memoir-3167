@@ -69,36 +69,48 @@ func animate_to_discard(target_global_pos: Vector2, on_complete_callback: Callab
 
 	_reset_hover_state()
 
-	var start_global_pos: Vector2 = global_position
+	var start_global_pos := global_position
 
 	top_level = true
 	global_position = start_global_pos
-	
-	z_index = 100
 
+	z_index = 100
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
-	var tween := create_tween().set_parallel(true)
 	var final_pos := target_global_pos - (size / 2.0)
-
-	tween.tween_property(self, "global_position", final_pos, 0.4)\
-		.set_trans(Tween.TRANS_CUBIC)\
-		.set_ease(Tween.EASE_IN_OUT)
-
 	var target_scale := get_discard_scale()
 
-	tween.tween_property(self, "scale", target_scale, 0.4)\
-		.set_trans(Tween.TRANS_CUBIC)
+	var tween := create_tween()
 
-	tween.tween_property(self, "rotation_degrees", 0.0, 0.4)
+	tween.set_parallel(true)
 
-	tween.chain().tween_callback(func():
+	tween.tween_property(
+		self,
+		"global_position",
+		final_pos,
+		0.4
+	).set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_IN_OUT)
+
+	tween.tween_property(
+		self,
+		"scale",
+		target_scale,
+		0.4
+	).set_trans(Tween.TRANS_CUBIC)
+
+	tween.tween_property(
+		self,
+		"rotation_degrees",
+		0.0,
+		0.4
+	).set_trans(Tween.TRANS_CUBIC)
+
+	tween.set_parallel(false)
+
+	tween.tween_callback(func():
 		if on_complete_callback.is_valid():
 			on_complete_callback.call()
 	)
-
-	is_interactive = true
-	mouse_filter = Control.MOUSE_FILTER_PASS
 
 func _reset_hover_state() -> void:
 	z_index = 0

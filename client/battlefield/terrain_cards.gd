@@ -2,13 +2,10 @@ extends MarginContainer
 class_name TerrainCards
 
 @onready var battlefieldState: BattlefieldState = $"../../../BattlefieldState"
-@onready var ui_control: Control = $"../UI/ResizeUI/Control"
+@onready var ui_control: Control = $"../UI/ResizeUI/Borders"
 @export var card_ui_scene: PackedScene
 @export var map_ground_layer: TileMapLayer
 var _current_terrain_card: TerrainCardUI = null
-
-func _ready() -> void:
-	size = Vector2(HandUI.card_size.y, HandUI.card_size.x)
 
 func restore_size() ->void:
 	ui_control.restore()
@@ -42,11 +39,6 @@ func display_terrain_card(hex: Vector2) -> void:
 		new_card.setup_visuals(str(terrain_id))
 
 	new_card.global_position = Vector2.ZERO
-	new_card.size = Vector2(HandUI.card_size.y, HandUI.card_size.x)
-	new_card.scale = Vector2.ONE
-
-	# Resize the TextureRect
-	ui_control.resize()
 
 func clear_terrain_card() -> void:
 	if is_instance_valid(_current_terrain_card):

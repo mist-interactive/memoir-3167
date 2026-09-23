@@ -12,13 +12,9 @@ region = Rect2(768, 0, 128, 128)
 [resource]
 script = ExtResource("3_t2qdc")
 id = "7"
-title_label = "OCEANS & SHORELINES"
+title_label = "OCEANS"
 effect_label = "Effect"
-description_label = "• Maximum movement in ocean
-   and or shoreline is 1 hex*
-• Unit cannot battle when in ocean
-   or on shoreline
-• Unit cannot retreat on ocean hex*
+description_label = "• Unit cannot retreat on ocean hex
 • Do not block line of sight"
 card_art = SubResource("AtlasTexture_jbmmi")
 infantry_art = ExtResource("2_psw5p")
