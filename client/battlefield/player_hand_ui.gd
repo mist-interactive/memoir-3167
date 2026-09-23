@@ -59,6 +59,8 @@ func _remove_card_node_and_animate(card_node: CardUI, instance_id: int) -> void:
 
 func _instantiate_card_node(instance_id: int, card_id: String) -> void:
 	var new_card: CardUI = card_ui_scene.instantiate() as CardUI
+	new_card.position.x = get_viewport_rect().size.x / 2
+	new_card.position.y = get_viewport_rect().size.y
 	new_card.name = str(instance_id)
 	new_card.card_hovered.connect(player_controller._on_card_hovered)
 	new_card.card_unhovered.connect(player_controller._on_card_unhovered)
