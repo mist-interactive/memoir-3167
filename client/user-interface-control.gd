@@ -62,8 +62,7 @@ func _unhandled_input(event: InputEvent) -> void:
 			_on_confirm()
 
 func load_cursor() -> void:
-	var image = load("res://assets/ui/icons/cursor09_gb.png").get_image()
-	image.resize(32, 32, Image.INTERPOLATE_NEAREST)
+	var image = load("res://assets/ui/icons/cursor09_gbx32.png").get_image()
 	var cursor_texture = ImageTexture.create_from_image(image)
 	Input.set_custom_mouse_cursor(cursor_texture)
 
