@@ -8,6 +8,7 @@ func setup(player_controller: PlayerController) -> void:
 
 ## Called when the server transitions the client INTO this phase.
 func enter() -> void:
+	controller.unit_retreat_highlight_layer.clear()
 	controller.unit_selection_highlight_layer.clear()
 	controller.selected_unit_path_highlight_layer.clear()
 	controller.selected_unit_action_highlight_layer.clear()
@@ -20,6 +21,7 @@ func enter() -> void:
 
 ## Called when the server transitions the client OUT of this phase.
 func exit() -> void:
+	controller.unit_retreat_highlight_layer.clear()
 	controller.unit_selection_highlight_layer.clear()
 	controller.selected_unit_path_highlight_layer.clear()
 	controller.selected_unit_action_highlight_layer.clear()

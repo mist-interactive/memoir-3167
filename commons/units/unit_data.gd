@@ -16,6 +16,7 @@ var type: enums.UnitType
 var actions: enums.UnitActions = DEFAULT_ACTIONS:
 	set(new_val):
 		actions = new_val
+		isDirty = true
 var num_of_retreat: int = -1:
 	set(new_val):
 		num_of_retreat = new_val

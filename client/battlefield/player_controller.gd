@@ -11,6 +11,7 @@ class_name PlayerController
 @export var selected_unit_action_highlight_layer: TileMapLayer
 @export var hover_path_highlight_layer: TileMapLayer
 @export var hover_action_highlight_layer: TileMapLayer
+@export var unit_retreat_highlight_layer: TileMapLayer
 @export var sector_highlight_layer: TileMapLayer
 @export var dice_indicator_container: Node2D
 @onready var unit_manager: ClientUnitManager = $"../../UnitManager"
@@ -145,7 +146,7 @@ func _show_attack_dice_count(enemy: Unit, dice: int) -> void:
 	dice_indicator_container.add_child(dice_indicator)
 
 func highlight_possible_retreats() -> void:
-	unit_selection_highlight_layer.clear()
+	unit_retreat_highlight_layer.clear()
 	selected_unit_path_highlight_layer.clear()
 	for unit: Unit in unit_manager.units_by_id.values():
 		if unit.num_of_retreat > 0:
@@ -158,7 +159,7 @@ func highlight_possible_retreats() -> void:
 			var coords: Array[Variant] = tree.to_array()
 			unit_selection_highlight_layer.highlight_cell(unit.hex_coord)
 			for i in range(1, coords.size()):
-				selected_unit_path_highlight_layer.highlight_cell(coords[i])
+				unit_retreat_highlight_layer.highlight_cell(coords[i])
 			break
 	
 func clear_all_highlights() -> void:

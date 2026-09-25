@@ -79,3 +79,15 @@ func can_attack() -> bool:
 
 func must_retreat() -> bool:
 	return (actions & enums.UnitActions.MUST_RETREAT) != 0
+
+func can_act_in_current_phase(turn_phase: enums.TurnPhase) -> bool:
+	match turn_phase:
+		enums.TurnPhase.MOVE:
+			return can_move()
+		enums.TurnPhase.ATTACK:
+			return can_attack()
+		enums.TurnPhase.RESOLVE_RETREAT:
+			return can_attack()
+		_:
+			return true
+	pass

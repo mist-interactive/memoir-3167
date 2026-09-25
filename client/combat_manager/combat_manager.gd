@@ -31,5 +31,4 @@ func _on_resolve_combat_result_requested(result: CombatResult) -> void:
 	pass
 
 func _handle_unit_death(unit: Unit) -> void:
-	
 	unit.queue_free()

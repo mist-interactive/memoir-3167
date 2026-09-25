@@ -1,9 +1,6 @@
 class_name PhaseStateAttack
 extends PhaseState
 
-func _process(delta: float) -> void:
-	controller.unit_selection_highlight_layer.highlight_units_that_can_attack()
-
 func handle_left_click(hex: Vector2i) -> void:
 	super.handle_left_click(hex)
 	controller.selected_unit_path_highlight_layer.clear()
