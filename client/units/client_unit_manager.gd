@@ -10,7 +10,6 @@ func _init(initialState: BattlefieldState) -> void:
 	Network.Units.sync_unit_requested.connect(_on_sync_unit_requested)
 	Network.Units.sync_all_requested.connect(_on_sync_all_requested)
 	Network.Units.spawn_unit_requested.connect(_on_spawn_unit_requested)
-	Network.Actions.resolve_combat_result_requested.connect(_on_resolve_combat_result_requested)
 	Network.Actions.sync_unit_path_received.connect(_on_sync_unit_path_received)
 	Network.Units.unit_destroyed_requested.connect(_on_unit_destroyed)
 	
@@ -28,7 +27,8 @@ func _on_sync_unit_requested(snapshot: Dictionary) -> void:
 	var unit_to_sync: Unit = units_by_id[uuid]
 	unit_to_sync.sync_with_snapshot(snapshot)
 	unit_grid[unit_to_sync.hex_coord] = uuid
-	UnitVisuals.update_unit_visuals(unit_to_sync)
+	if not unit_to_sync.is_in_combat:
+		UnitVisuals.update_unit_visuals(unit_to_sync)
 
 func _on_sync_all_requested(snapshot: Dictionary):
 	selected_unit_id = snapshot.selected_unit_id
@@ -49,9 +49,6 @@ func _on_spawn_unit_requested(unit: Dictionary) -> void:
 	add_unit(new_unit, unit.hex_coord)
 	pass
 
-func _on_resolve_combat_result_requested(result: CombatResult) -> void:
-	print("Combat result: ", result.to_dict())
-
 func _on_sync_unit_path_received(unit_id: int, path: Array[Vector2i]) -> void:
 	var unit: Unit = units_by_id[unit_id]
 	if !unit:
@@ -60,6 +57,9 @@ func _on_sync_unit_path_received(unit_id: int, path: Array[Vector2i]) -> void:
 	
 func _on_unit_destroyed(unit_id: int) -> void:
 	var unit: Unit = units_by_id[unit_id]
-	unit.queue_free()
+	if !unit:
+		return
 	unit_grid.erase(unit.hex_coord)
 	units_by_id.erase(unit_id)
+	if not unit.is_in_combat:
+		unit.queue_free()
