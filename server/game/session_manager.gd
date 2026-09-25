@@ -14,12 +14,14 @@ func register_new_session(uuid: int, peer_id: int) -> void:
 		session = player_sessions[uuid]
 	session.peer_id = peer_id
 	session.set_status(enums.ConnectionStatus.Connected)
+	session.remove_status(enums.ConnectionStatus.Disconnected)
 
 func client_is_ready(uuid: int) -> void:
 	player_sessions[uuid].set_status(enums.ConnectionStatus.Ready)
 
 func client_disconnected(uuid: int) -> void:
 	player_sessions[uuid].set_status(enums.ConnectionStatus.Disconnected)
+	player_sessions[uuid].last_seen = Time.get_ticks_msec()
 
 func client_is_playing(uuid: int) -> void:
 	player_sessions[uuid].set_status(enums.ConnectionStatus.Playing)
@@ -62,3 +64,15 @@ func get_sides_peer_ids(sides_uuid: Dictionary[enums.Side, int]) -> Dictionary[e
 		}
 func get_sessions() -> Dictionary[int, PlayerSession]:
 	return player_sessions
+
+func get_disconnected_players(uuid_sides: Dictionary[int, enums.Side]) -> Array[Dictionary]:
+	var disconnected: Array[Dictionary] = []
+	for uuid in player_sessions:
+		var session: PlayerSession = player_sessions[uuid]
+		if session.is_status_set(enums.ConnectionStatus.Disconnected):
+			disconnected.append({
+				"uuid": uuid, 
+				"side": uuid_sides[uuid],
+				"last_seen": session.last_seen
+			})
+	return disconnected
