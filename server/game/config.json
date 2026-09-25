@@ -3,6 +3,7 @@
 		"max_score": 5,
 		"hand_size": 5,
 		"heartbeat": 20,
+		"player_rejoin_window": 45,
 		"phase_duration": {
 			"play_card": 60,
 			"select": 45,
