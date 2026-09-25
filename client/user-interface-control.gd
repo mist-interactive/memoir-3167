@@ -103,7 +103,7 @@ func update_ui():
 func _physics_process(delta: float) -> void:
 	var server_now: float = clock.get_server_time()
 	var count_down: float = matchState.phase_timer.get_time_left_ms(matchState.state, server_now)
-	
+
 	if matchState.mySide != enums.Side.NONE:
 		update_player_color()
 
@@ -115,8 +115,7 @@ func _physics_process(delta: float) -> void:
 	button.disabled = not is_my_turn
 
 	var timer_style := time_progress_bar.get_theme_stylebox("normal").duplicate() as StyleBoxFlat
-
-	var max_time := 60.0
+	var max_time := matchState.phase_timer.duration / 1000.0
 	var remaining := count_down / 1000.0
 	remaining = clamp(remaining, 0.0, max_time)
 
