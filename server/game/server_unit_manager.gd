@@ -97,7 +97,6 @@ func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, 
 	var old_coord := unit.hex_coord
 	if !move_unit(unit, old_coord, destination):
 		return false
-
 	Network.broadcast(Network.Actions.sync_unit_path.rpc_id, sides_peer_ids.values(),[unit_id, unit_path] )
 	selected_unit_id = -1
 	selected_by_peer = enums.Side.NONE
@@ -108,6 +107,7 @@ func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, 
 		"side": owner
 	})
 	player_logger.info("Unit(%d) moved from %v to %v" % [unit_id, old_coord, destination])
+	isDirty = true
 	return true
 
 func retreat_unit(owner: enums.Side, unit_id: int, destination: Vector2i, sides_peer_ids: Dictionary[enums.Side, int]) -> bool:
@@ -177,6 +177,7 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	var rolled_dices: Array[enums.RolledDice] = Dice.roll(num_of_dice)
 	var combat_result: CombatResult = CombatResult.new()
 	combat_result.initialize(attacker, target, rolled_dices)
+	
 	resolve_combat(combat_result, side, sides_peer_ids)
 	Network.broadcast(Network.Actions.resolve_combat_result.rpc_id, sides_peer_ids.values(), [combat_result.to_dict()])
 
@@ -246,6 +247,13 @@ func resolve_combat(result: CombatResult, side: enums.Side, sides_peer_ids: Dict
 			result.dmg += 1
 		elif (target.type == enums.UnitType.TANK || target.type == enums.UnitType.ARTILLERY) && rolled_dice == enums.RolledDice.ARMOR:
 			result.dmg += 1
+	if result.retreat > 0:
+		var other_side = enums.Side.RED if side == enums.Side.GREEN else enums.Side.RED
+		var tree: BinaryTree = get_retreat_coords(other_side, target.hex_coord, target, result.retreat)
+		tree.print_tree()
+		if tree.left == null && tree.right == null:
+			result.dmg += result.retreat
+			result.retreat = 0
 	target.hit_point -= result.dmg
 	if target.hit_point <= 0:
 		death_queue.append(target_id)
