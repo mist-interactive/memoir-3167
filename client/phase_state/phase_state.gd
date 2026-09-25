@@ -14,6 +14,8 @@ func enter() -> void:
 	controller.hover_path_highlight_layer.clear()
 	controller.hover_action_highlight_layer.clear()
 	controller.sector_highlight_layer.clear()
+	controller.clear_dice_indicators()
+	controller.clear_selection()
 	set_process(true)
 
 ## Called when the server transitions the client OUT of this phase.
@@ -24,6 +26,8 @@ func exit() -> void:
 	controller.hover_path_highlight_layer.clear()
 	controller.hover_action_highlight_layer.clear()
 	controller.sector_highlight_layer.clear()
+	controller.clear_dice_indicators()
+	controller.clear_selection()
 	set_process(false)
 
 func handle_left_click(hex: Vector2i) -> void:
@@ -36,6 +40,7 @@ func handle_left_click(hex: Vector2i) -> void:
 		controller.hover_path_highlight_layer.clear()
 		controller.hover_action_highlight_layer.clear()
 		controller.select_unit(unit)
+		controller.show_attackable_enemies_dice_count(unit)
 		controller.highlight_selected_unit_reachable_hexes(unit)
 		controller.highlight_selected_unit_enemies_within_range_and_los(unit)
 	else:
@@ -53,10 +58,15 @@ func handle_mouse_motion(hex: Vector2i) -> void:
 	controller.terrain_cards.display_terrain_card(hex)
 	var unit: Unit = controller.unit_manager.get_unit_at(hex)
 	if not unit:
+		if not controller.selected_unit:
+			controller.clear_dice_indicators()
+		else:
+			controller.show_attackable_enemies_dice_count(controller.selected_unit)
 		controller.hover_path_highlight_layer.modulate.a = 0.20
 		controller.hover_path_highlight_layer.highlight_cell(hex)
 		return
 	else:
+		controller.show_attackable_enemies_dice_count(unit)
 		if !controller.selected_unit || controller.selected_unit.hex_coord != hex:
 			controller.hover_path_highlight_layer.modulate.a = 0.50
 			controller.hover_path_highlight_layer.highlight_cell(hex)

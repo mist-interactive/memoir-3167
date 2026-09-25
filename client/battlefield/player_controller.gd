@@ -12,7 +12,10 @@ class_name PlayerController
 @export var hover_path_highlight_layer: TileMapLayer
 @export var hover_action_highlight_layer: TileMapLayer
 @export var sector_highlight_layer: TileMapLayer
+@export var dice_indicator_container: Node2D
 @onready var unit_manager: ClientUnitManager = $"../../UnitManager"
+
+const DAMAGE_FONT: Font = preload("res://assets/fonts/PixelArmy/PixelArmy.ttf")
 
 var active_came_from: Dictionary = {}
 var active_reachable: Dictionary = {}
@@ -90,6 +93,7 @@ func clear_selection() -> void:
 	active_reachable.clear()
 	selected_unit_path_highlight_layer.clear()
 	selected_unit_action_highlight_layer.clear()
+	clear_dice_indicators()
 
 func highlight_selected_unit_reachable_hexes(unit: Unit) -> void:
 	selected_unit_path_highlight_layer.clear()
@@ -108,7 +112,6 @@ func highlight_hovered_unit_reachable_hexes(unit: Unit) -> void:
 func highlight_selected_unit_enemies_within_range_and_los(unit: Unit) -> void:
 	highlight_attackable_enemies_on_layer(unit, selected_unit_action_highlight_layer)
 
-
 func highlight_hovered_unit_enemies_within_range_and_los(unit: Unit) -> void:
 	highlight_attackable_enemies_on_layer(unit, hover_action_highlight_layer)
 
@@ -116,8 +119,30 @@ func highlight_attackable_enemies_on_layer(unit: Unit, highlight_layer: TileMapL
 	highlight_layer.clear()
 	for target in unit_manager.get_attackable_enemies(unit).values():
 		var enemy = target.get("enemy")
-		var dice = target.get("dice")
 		highlight_layer.highlight_cell(enemy.hex_coord)
+
+func show_attackable_enemies_dice_count(unit: Unit) -> void:
+	clear_dice_indicators()
+	for target in unit_manager.get_attackable_enemies(unit).values():
+		var enemy = target.get("enemy")
+		var dice = target.get("dice")
+		_show_attack_dice_count(enemy, dice)
+	
+
+func _show_attack_dice_count(enemy: Unit, dice: int) -> void:
+	var dice_indicator: Label = Label.new()
+	dice_indicator.text = str(dice)
+	dice_indicator.add_theme_font_override("font", DAMAGE_FONT)
+	dice_indicator.add_theme_color_override("font_color", Color.ALICE_BLUE)
+	dice_indicator.add_theme_color_override("font_outline_color", Color.BLACK)
+	dice_indicator.add_theme_constant_override("outline_size", 6)
+	dice_indicator.add_theme_font_size_override("font_size", 48)
+	dice_indicator.position = enemy.position + Vector2(HexGrid.TILE_WIDTH / 2, HexGrid.TILE_HEIGHT / 2)
+	dice_indicator.grow_horizontal = Control.GROW_DIRECTION_BOTH
+	dice_indicator.grow_vertical = Control.GROW_DIRECTION_BOTH
+	dice_indicator.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
+	dice_indicator.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	dice_indicator_container.add_child(dice_indicator)
 
 func highlight_possible_retreats() -> void:
 	unit_selection_highlight_layer.clear()
@@ -189,3 +214,7 @@ func _transition_to_phase(new_phase: enums.TurnPhase) -> void:
 		current_state = PhaseState.new()
 		current_state.setup(self)
 	current_state.enter()
+
+func clear_dice_indicators() -> void:
+	for child in dice_indicator_container.get_children():
+		child.queue_free()
