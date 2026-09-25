@@ -73,9 +73,10 @@ enum TurnPhase
 
 enum ConnectionStatus
 {
-	Disconnected = 0,
-	Connected = 1 << 0,
-	Authenticated = 1 << 1,
-	Ready = 1 << 2,
-	Playing = 1 << 3,
+	NONE = 0,
+	Disconnected = 1 << 0,
+	Connected = 1 << 1,
+	Authenticated = 1 << 2,
+	Ready = 1 << 3,
+	Playing = 1 << 4,
 }
