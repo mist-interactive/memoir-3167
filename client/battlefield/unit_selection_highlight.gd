@@ -7,34 +7,19 @@ var player_hex := {}
 func _ready() -> void:
 	pass
 
-func _physics_process(delta: float) -> void:
+func _process(delta: float) -> void:
 	clear()
-	#highlight_selected_units()
+	highlight_selected_units()
 
 func highlight_selected_units() -> void:
 	for unit_id in unit_manager.selected_units_ids:
-		var unit = unit_manager.get_unit_by_id(unit_id)
+		var unit: Unit = unit_manager.get_unit_by_id(unit_id)
 		if unit == null:
 			continue
-		highlight_cell(unit.hex_coord)
+		var highlight_atlas_coordinate := Vector2i(2, 0)
+		if !unit.can_act_in_current_phase(matchState.phase):
+			highlight_atlas_coordinate = Vector2i(3, 0)
+		highlight_cell(unit.hex_coord, highlight_atlas_coordinate)
 
-func highlight_movable_units() -> void:
-	for unit_id in unit_manager.selected_units_ids:
-		var unit = unit_manager.get_unit_by_id(unit_id)
-		if unit == null:
-			continue
-		if unit_id in unit_manager.moved_units_ids:
-			continue
-		highlight_cell(unit.hex_coord)
-
-func highlight_units_that_can_attack() -> void:
-	for unit_id in unit_manager.selected_units_ids:
-		var unit = unit_manager.get_unit_by_id(unit_id)
-		if unit == null:
-			continue
-		if unit_id in unit_manager.attacked_units_ids:
-			continue
-		highlight_cell(unit.hex_coord)
-
-func highlight_cell(coord: Vector2i) -> void:
-	set_cell(coord, 2, Vector2i(0, 0))
+func highlight_cell(coord: Vector2i, atlas_coordinate: Vector2i = Vector2i(0, 0)) -> void:
+	set_cell(coord, 2, atlas_coordinate)
