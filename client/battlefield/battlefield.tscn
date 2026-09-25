@@ -127,7 +127,7 @@ unit_container = NodePath("UnitContainer")
 [node name="CombatManager" parent="." unique_id=994602235 node_paths=PackedStringArray("dice_roller") instance=ExtResource("2_kys61")]
 dice_roller = NodePath("../UICanvas/DiceView/SubViewport/Node3D")
 
-[node name="PlayerController" type="Node" parent="." unique_id=1795203478 node_paths=PackedStringArray("terrain_cards", "map_ground_layer", "map_feature_layer", "unit_selection_highlight_layer", "selected_unit_path_highlight_layer", "selected_unit_action_highlight_layer", "hover_path_highlight_layer", "hover_action_highlight_layer", "sector_highlight_layer")]
+[node name="PlayerController" type="Node" parent="." unique_id=1795203478 node_paths=PackedStringArray("terrain_cards", "map_ground_layer", "map_feature_layer", "unit_selection_highlight_layer", "selected_unit_path_highlight_layer", "selected_unit_action_highlight_layer", "hover_path_highlight_layer", "hover_action_highlight_layer", "sector_highlight_layer", "dice_indicator_container")]
 script = ExtResource("4_eq063")
 terrain_cards = NodePath("../UICanvas/TerrainCards")
 map_ground_layer = NodePath("../MapVisuals/MapGround")
@@ -138,6 +138,7 @@ selected_unit_action_highlight_layer = NodePath("../MapVisuals/SelectedUnitActio
 hover_path_highlight_layer = NodePath("../MapVisuals/HoverPathHighlight")
 hover_action_highlight_layer = NodePath("../MapVisuals/HoverActionHighlight")
 sector_highlight_layer = NodePath("../MapVisuals/SectorHighlight")
+dice_indicator_container = NodePath("../MapVisuals/DiceIndicatorContainer")
 
 [node name="MapManager" type="Node" parent="." unique_id=225508304 node_paths=PackedStringArray("map_ground_layer", "map_features_layer", "map_highlight_layer", "map_visuals_node", "unit_container", "left_sector_divider", "right_sector_divider")]
 script = ExtResource("2_ynl45")
@@ -207,6 +208,9 @@ default_color = Color(0.79607844, 0.22352941, 0.16862746, 1)
 [node name="RightSectorDivider" type="Line2D" parent="MapVisuals" unique_id=479535643]
 width = 5.0
 default_color = Color(0.79613465, 0.22224942, 0.17009893, 1)
+
+[node name="DiceIndicatorContainer" type="Node2D" parent="MapVisuals" unique_id=102868072]
+z_index = 1000
 
 [node name="UnitContainer" type="Node2D" parent="." unique_id=1804487023]
 

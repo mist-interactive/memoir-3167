@@ -53,10 +53,15 @@ func handle_mouse_motion(hex: Vector2i) -> void:
 	controller.terrain_cards.display_terrain_card(hex)
 	var unit: Unit = controller.unit_manager.get_unit_at(hex)
 	if not unit:
+		if not controller.selected_unit:
+			controller.clear_dice_indicators()
+		else:
+			controller.show_attackable_enemies_dice_count(controller.selected_unit)
 		controller.hover_path_highlight_layer.modulate.a = 0.20
 		controller.hover_path_highlight_layer.highlight_cell(hex)
 		return
 	else:
+		controller.show_attackable_enemies_dice_count(unit)
 		if !controller.selected_unit || controller.selected_unit.hex_coord != hex:
 			controller.hover_path_highlight_layer.modulate.a = 0.50
 			controller.hover_path_highlight_layer.highlight_cell(hex)
