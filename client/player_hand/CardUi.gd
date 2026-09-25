@@ -59,6 +59,8 @@ func setup_enemy_visuals(instance_id: int) -> void:
 	is_interactive = false
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 	$background_texture.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	$background_texture.flip_h = true
+	$background_texture.flip_v = true
 
 func animate_to_discard(
 	target_global_pos: Vector2,
