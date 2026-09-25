@@ -6,6 +6,8 @@ func _process(delta: float) -> void:
 
 func handle_left_click(hex: Vector2i) -> void:
 	super.handle_left_click(hex)
+	controller.selected_unit_path_highlight_layer.clear()
+	controller.selected_unit_path_highlight_layer.highlight_cell(hex)
 	if controller.matchState.is_my_turn():
 		var selected_unit: Unit = controller.selected_unit
 		if not selected_unit:
@@ -48,10 +50,3 @@ func handle_mouse_motion(hex: Vector2i) -> void:
 		controller.hover_path_highlight_layer.modulate.a = 0.20
 		controller.hover_path_highlight_layer.highlight_cell(hex)
 		return
-	if !controller.selected_unit || controller.selected_unit.hex_coord != hex:
-		if controller.unit_manager.selected_units_ids.has(unit.uuid):
-			controller.hover_path_highlight_layer.modulate.a = 0.20
-		else:
-			controller.hover_path_highlight_layer.modulate.a = 0.50
-		controller.highlight_hovered_unit_enemies_within_range_and_los(unit)
-		controller.highlight_hovered_unit_reachable_hexes(unit)
