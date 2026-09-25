@@ -59,6 +59,8 @@ func setup_enemy_visuals(instance_id: int) -> void:
 	var card_data: CommandCard = CardDatabase.get_card("000")
 	_instance_id = instance_id
 	$background_texture.texture = card_data.card_art
+	$background_texture.flip_h = true
+	$background_texture.flip_v = true
 
 func animate_to_discard(target_global_pos: Vector2, on_complete_callback: Callable) -> void:
 	is_discarded = true
