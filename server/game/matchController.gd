@@ -5,6 +5,7 @@ var battlefield: BattlefieldState
 var deckManager: DeckManager
 var unit_manager: ServerUnitManager
 var sides_uuid: Dictionary[enums.Side, int]
+var uuid_sides: Dictionary[int, enums.Side]
 var logger: LogService
 const CONFIG_PATH: String = "res://server/game/config.json"
 var config: Dictionary
@@ -42,6 +43,8 @@ func _physics_process(delta: float) -> void:
 	deckManager._sync_hands(sides_peer_ids)
 	unit_manager._sync_units(sides_peer_ids)
 	check_win_condition()
+	if matchState.state == matchState.STATE.ENDED:
+		return
 	if matchState.has_phase_ended(Time.get_ticks_msec()) && !unit_manager.unit_is_attacking:
 		go_next_phase(matchState.current_turn, true)
 	match matchState.phase:
@@ -54,6 +57,7 @@ func _physics_process(delta: float) -> void:
 		MatchState.STATE.PAUSED:
 			if session_manager.players_are_playing():
 				matchState.unpause()
+			monitor_game_abandonment()
 		MatchState.STATE.INITIALIZE_BOARD:
 			logger.info("Initializing board")
 			unit_manager.spawn_units(get_sides_peer_ids())
@@ -78,6 +82,7 @@ func handle_connect(uuid: int, peer_id: int) -> void:
 	assert(uuids.size() == 2)
 	if matchState.state == MatchState.STATE.INITIALIZING:
 		sides_uuid = {enums.Side.GREEN: uuids[0], enums.Side.RED: uuids[1]}
+		uuid_sides = {uuids[0]: enums.Side.GREEN, uuids[1]: enums.Side.RED}
 	var snapshot: Dictionary = {
 		"match_state": matchState.get_snapshot(get_side(peer_id)),
 		"map_name": battlefield.mapName,
@@ -176,7 +181,7 @@ func get_sides_peer_ids() -> Dictionary[enums.Side, int]:
 func check_win_condition() -> void:
 	if matchState.winner != enums.Side.NONE:
 		return
-	match matchState.get_winner(67):
+	match matchState.get_winner(config.match.max_score):
 		enums.Side.GREEN:
 			matchState.state = MatchState.STATE.ENDED
 			matchState.winner = enums.Side.GREEN
@@ -245,3 +250,20 @@ func get_match_result() -> MatchResult:
 	}
 	result.status = MatchState.STATE.ENDED
 	return result
+
+func monitor_game_abandonment() -> void:
+	var disconnected_players: Array[Dictionary] = session_manager.get_disconnected_players(uuid_sides)
+
+	if disconnected_players.is_empty():
+		return
+
+	var player_who_abandoned_game: Dictionary = disconnected_players[0]
+
+	for player: Dictionary in disconnected_players:
+		if player.last_seen < player_who_abandoned_game.last_seen:
+			player_who_abandoned_game = player
+	var time_elased_since_last_seen: float = (Time.get_ticks_msec() - player_who_abandoned_game.last_seen) / 1000
+	var has_player_abandoned_game: bool = time_elased_since_last_seen > config.match.player_rejoin_window
+	if has_player_abandoned_game:
+		var other_side: enums.Side = enums.Side.GREEN if player_who_abandoned_game.side == enums.Side.RED else enums.Side.RED
+		matchState.scores[other_side] = config.match.max_score

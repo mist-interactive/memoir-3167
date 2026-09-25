@@ -35,8 +35,10 @@ func _on_match_completed(result: MatchResult) -> void:
 	match_result[result.match_id] = result
 	for uuid: int in result.uuids:
 		var peer_id: int = get_peer_id(uuid)
-		uuid_to_peer.erase(uuid)
-		peer_to_match.erase(peer_id)
+		if peer_id != -1:
+			uuid_to_peer.erase(uuid)
+		if peer_id != -1:
+			peer_to_match.erase(peer_id)
 	await get_tree().create_timer(2).timeout
 	matches[result.match_id].queue_free()
 	matches.erase(result.match_id)
@@ -126,7 +128,7 @@ func _on_draw_card(peer_id: int) -> void:
 
 # helpers
 func get_peer_id(uuid: int) -> int:
-	return uuid_to_peer[uuid]
+	return uuid_to_peer[uuid] if uuid_to_peer.has(uuid) else -1
 
 func get_uuid(peer_id: int) -> int:
 	for uuid in uuid_to_peer:
