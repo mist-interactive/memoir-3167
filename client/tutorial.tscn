@@ -1,7 +1,29 @@
 [gd_scene format=3 uid="uid://chpts1xx3dkee"]
 
 [ext_resource type="Script" uid="uid://bgndi18hwb1i6" path="res://client/tutorial.gd" id="1_tu1sw"]
+[ext_resource type="StyleBox" uid="uid://dlp0a77syspn5" path="res://assets/ui/tutorial/new_style_box_flat.tres" id="2_a5l5i"]
 [ext_resource type="Texture2D" uid="uid://e540m44l5f10" path="res://assets/ui/icons/book_open.png" id="2_tu1sw"]
+[ext_resource type="StyleBox" uid="uid://xn0vb05g38cy" path="res://assets/ui/tutorial/new_style_box_flat_pressed.tres" id="3_vxbt3"]
+[ext_resource type="StyleBox" uid="uid://dd43wx8xrmgkn" path="res://assets/ui/tutorial/new_style_box_flat_hover.tres" id="4_j52qd"]
+[ext_resource type="StyleBox" uid="uid://bvm1c0r1aq8kl" path="res://assets/ui/tutorial/minimize_button.tres" id="5_wm025"]
+[ext_resource type="StyleBox" uid="uid://dqcuyiwe2762i" path="res://assets/ui/tutorial/minimize_button_pressed.tres" id="6_tka10"]
+[ext_resource type="StyleBox" uid="uid://coxriq677sheq" path="res://assets/ui/tutorial/minimize_button_hover.tres" id="7_hr0is"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_764ab"]
+bg_color = Color(0.105882354, 0.14117648, 0.14509805, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+corner_detail = 1
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_ik1hn"]
+color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_764ab"]
+color = Color(1, 1, 1, 1)
+thickness = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ik1hn"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -9,80 +31,260 @@ border_width_left = 12
 border_width_top = 36
 border_width_right = 12
 border_width_bottom = 12
-border_color = Color(0, 0, 0, 0)
+border_color = Color(0.96035105, 0.96035105, 0.96035093, 0)
 border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tu1sw"]
+bg_color = Color(0.003921569, 0.003921569, 0.003921569, 0.2901961)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
 
 [node name="UI" type="Control" unique_id=1744084876 node_paths=PackedStringArray("minimize_button", "tutorial_button", "panel", "text", "tutorial_pages", "page_buttons")]
 z_index = 100
 layout_mode = 3
 anchors_preset = 0
-mouse_filter = 2
 script = ExtResource("1_tu1sw")
 minimize_button = NodePath("MinimizeButton")
 tutorial_button = NodePath("TutorialButton")
 panel = NodePath("Panel")
 text = NodePath("Page1/Text")
-tutorial_pages = [NodePath("Page1"), NodePath("Page2"), NodePath("Page3"), NodePath("Page4")]
-page_buttons = [NodePath("HBoxContainer/Button"), NodePath("HBoxContainer/Button2"), NodePath("HBoxContainer/Button3"), NodePath("HBoxContainer/Button4"), NodePath("HBoxContainer/Button5"), NodePath("HBoxContainer/Button6"), NodePath("HBoxContainer/Button7"), NodePath("HBoxContainer/Button8")]
+tutorial_pages = [NodePath("Page1"), NodePath("Page2"), NodePath("Page3"), NodePath("Page4"), NodePath("Page5"), NodePath("Page6"), NodePath("Page7"), NodePath("Page8"), NodePath("Page9"), NodePath("Page10")]
+page_buttons = [NodePath("HBoxContainer/Button"), NodePath("HBoxContainer/Button2"), NodePath("HBoxContainer/Button3"), NodePath("HBoxContainer/Button4"), NodePath("HBoxContainer/Button5"), NodePath("HBoxContainer/Button6"), NodePath("HBoxContainer/Button7"), NodePath("HBoxContainer/Button8"), NodePath("HBoxContainer/Button9"), NodePath("HBoxContainer/Button10")]
 
-[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=571821803]
-z_index = 1
-layout_mode = 0
-offset_left = 16.0
-offset_right = 464.0
-offset_bottom = 32.0
-alignment = 1
-
-[node name="Button" type="Button" parent="HBoxContainer" unique_id=1955560250]
-layout_mode = 2
-text = "Start"
-
-[node name="Button2" type="Button" parent="HBoxContainer" unique_id=705580722]
-layout_mode = 2
-text = "About"
-
-[node name="Button3" type="Button" parent="HBoxContainer" unique_id=838478141]
-layout_mode = 2
-text = "Info"
-
-[node name="Button4" type="Button" parent="HBoxContainer" unique_id=1556924499]
-layout_mode = 2
-text = "Goal"
-
-[node name="Button5" type="Button" parent="HBoxContainer" unique_id=2021901553]
-layout_mode = 2
-text = "Goal"
-
-[node name="Button6" type="Button" parent="HBoxContainer" unique_id=742477322]
-layout_mode = 2
-text = "Goal"
-
-[node name="Button7" type="Button" parent="HBoxContainer" unique_id=105942333]
-layout_mode = 2
-text = "Goal"
-
-[node name="Button8" type="Button" parent="HBoxContainer" unique_id=1028137066]
-layout_mode = 2
-text = "Goal"
-
-[node name="Panel" type="ColorRect" parent="." unique_id=1343958231]
+[node name="Panel" type="Panel" parent="." unique_id=698563448]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_right = 512.0
-offset_bottom = 256.0
+offset_right = 560.0
+offset_bottom = 251.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-color = Color(0.12093841, 0.13853851, 0.16314322, 1)
+theme_override_styles/panel = SubResource("StyleBoxFlat_764ab")
+
+[node name="HBoxContainer" type="VBoxContainer" parent="." unique_id=1235104262]
+z_index = 1
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1.0
+offset_right = 48.0
+offset_bottom = 251.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="Button" type="Button" parent="HBoxContainer" unique_id=1955560250]
+custom_minimum_size = Vector2(32, 24)
+layout_mode = 2
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_a5l5i")
+theme_override_styles/pressed = ExtResource("3_vxbt3")
+theme_override_styles/hover = ExtResource("4_j52qd")
+text = "Start"
+icon_alignment = 1
+
+[node name="VSeparator" type="HSeparator" parent="HBoxContainer" unique_id=406231262]
+z_index = 6
+custom_maximum_size = Vector2(46, 1)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ik1hn")
+
+[node name="Button2" type="Button" parent="HBoxContainer" unique_id=909655298]
+custom_minimum_size = Vector2(32, 24)
+layout_mode = 2
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_a5l5i")
+theme_override_styles/pressed = ExtResource("3_vxbt3")
+theme_override_styles/hover = ExtResource("4_j52qd")
+text = "About
+"
+icon_alignment = 1
+
+[node name="VSeparator2" type="HSeparator" parent="HBoxContainer" unique_id=1170213349]
+z_index = 6
+custom_maximum_size = Vector2(46, 1)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ik1hn")
+
+[node name="Button3" type="Button" parent="HBoxContainer" unique_id=523214745]
+custom_minimum_size = Vector2(32, 24)
+layout_mode = 2
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_a5l5i")
+theme_override_styles/pressed = ExtResource("3_vxbt3")
+theme_override_styles/hover = ExtResource("4_j52qd")
+text = "About
+"
+icon_alignment = 1
+
+[node name="VSeparator3" type="HSeparator" parent="HBoxContainer" unique_id=1627592224]
+z_index = 6
+custom_maximum_size = Vector2(46, 1)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ik1hn")
+
+[node name="Button4" type="Button" parent="HBoxContainer" unique_id=417217557]
+custom_minimum_size = Vector2(32, 24)
+layout_mode = 2
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_a5l5i")
+theme_override_styles/pressed = ExtResource("3_vxbt3")
+theme_override_styles/hover = ExtResource("4_j52qd")
+text = "About
+"
+icon_alignment = 1
+
+[node name="VSeparator4" type="HSeparator" parent="HBoxContainer" unique_id=180085521]
+z_index = 6
+custom_maximum_size = Vector2(46, 1)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ik1hn")
+
+[node name="Button5" type="Button" parent="HBoxContainer" unique_id=1964274663]
+custom_minimum_size = Vector2(32, 24)
+layout_mode = 2
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_a5l5i")
+theme_override_styles/pressed = ExtResource("3_vxbt3")
+theme_override_styles/hover = ExtResource("4_j52qd")
+text = "About
+"
+icon_alignment = 1
+
+[node name="VSeparator5" type="HSeparator" parent="HBoxContainer" unique_id=1040982453]
+z_index = 6
+custom_maximum_size = Vector2(46, 1)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ik1hn")
+
+[node name="Button6" type="Button" parent="HBoxContainer" unique_id=1194121295]
+custom_minimum_size = Vector2(32, 24)
+layout_mode = 2
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_a5l5i")
+theme_override_styles/pressed = ExtResource("3_vxbt3")
+theme_override_styles/hover = ExtResource("4_j52qd")
+text = "About
+"
+icon_alignment = 1
+
+[node name="VSeparator6" type="HSeparator" parent="HBoxContainer" unique_id=879320981]
+z_index = 6
+custom_maximum_size = Vector2(46, 1)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ik1hn")
+
+[node name="Button7" type="Button" parent="HBoxContainer" unique_id=1026025137]
+custom_minimum_size = Vector2(32, 24)
+layout_mode = 2
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_a5l5i")
+theme_override_styles/pressed = ExtResource("3_vxbt3")
+theme_override_styles/hover = ExtResource("4_j52qd")
+text = "About
+"
+icon_alignment = 1
+
+[node name="VSeparator7" type="HSeparator" parent="HBoxContainer" unique_id=482439113]
+z_index = 6
+custom_maximum_size = Vector2(46, 1)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ik1hn")
+
+[node name="Button8" type="Button" parent="HBoxContainer" unique_id=145483691]
+custom_minimum_size = Vector2(32, 24)
+layout_mode = 2
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_a5l5i")
+theme_override_styles/pressed = ExtResource("3_vxbt3")
+theme_override_styles/hover = ExtResource("4_j52qd")
+text = "About
+"
+icon_alignment = 1
+
+[node name="VSeparator8" type="HSeparator" parent="HBoxContainer" unique_id=670201268]
+z_index = 6
+custom_maximum_size = Vector2(46, 1)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ik1hn")
+
+[node name="Button9" type="Button" parent="HBoxContainer" unique_id=1731987274]
+custom_minimum_size = Vector2(32, 24)
+layout_mode = 2
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_a5l5i")
+theme_override_styles/pressed = ExtResource("3_vxbt3")
+theme_override_styles/hover = ExtResource("4_j52qd")
+text = "About
+"
+icon_alignment = 1
+
+[node name="VSeparator9" type="HSeparator" parent="HBoxContainer" unique_id=1207596446]
+z_index = 6
+custom_maximum_size = Vector2(46, 1)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ik1hn")
+
+[node name="Button10" type="Button" parent="HBoxContainer" unique_id=130477070]
+custom_minimum_size = Vector2(32, 24)
+layout_mode = 2
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_a5l5i")
+theme_override_styles/pressed = ExtResource("3_vxbt3")
+theme_override_styles/hover = ExtResource("4_j52qd")
+text = "About
+"
+icon_alignment = 1
+
+[node name="VSeparator10" type="HSeparator" parent="HBoxContainer" unique_id=23330398]
+z_index = 6
+custom_maximum_size = Vector2(46, 1)
+layout_mode = 2
+mouse_filter = 2
+theme_override_styles/separator = SubResource("StyleBoxLine_ik1hn")
 
 [node name="MinimizeButton" type="Button" parent="." unique_id=553180294]
 layout_mode = 0
-offset_left = 480.0
-offset_right = 512.0
-offset_bottom = 32.0
-text = "─"
+offset_left = 536.0
+offset_top = 8.0
+offset_right = 552.0
+offset_bottom = 24.0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = ExtResource("5_wm025")
+theme_override_styles/pressed = ExtResource("6_tka10")
+theme_override_styles/hover = ExtResource("7_hr0is")
+
+[node name="HSeparator" type="HSeparator" parent="MinimizeButton" unique_id=548472942]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 6.0
+offset_right = 12.0
+offset_bottom = 10.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+theme_override_styles/separator = SubResource("StyleBoxLine_764ab")
 
 [node name="TutorialButton" type="Button" parent="." unique_id=1384915526]
 visible = false
@@ -95,55 +297,65 @@ icon = ExtResource("2_tu1sw")
 expand_icon = true
 
 [node name="Page1" type="Control" parent="." unique_id=1146651962]
-visible = false
 anchors_preset = 0
 
 [node name="Text" type="Label" parent="Page1" unique_id=27026813]
 custom_minimum_size = Vector2(512, 256)
 custom_maximum_size = Vector2(512, 256)
 layout_mode = 0
-offset_right = 512.0
+offset_left = 48.0
+offset_right = 560.0
 offset_bottom = 256.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 text = "Let's learn how to play Memoir '67!
 Tips:
 
-• You can press the SPACE key to make the tutorial progress
-instead of using buttons.
-
-• You can use [─] to minimize tutorial explanations if needed."
+• Use       to minimize tutorial explanations if needed.
+• Navigate tutorial pages with the buttons on left"
 autowrap_mode = 1
+
+[node name="MinimizeButton" type="Button" parent="Page1" unique_id=1554298463]
+clip_contents = true
+layout_mode = 0
+offset_left = 106.142944
+offset_top = 120.0
+offset_right = 138.14294
+offset_bottom = 151.0
+scale = Vector2(0.5, 0.5)
+theme_override_styles/normal = SubResource("StyleBoxFlat_tu1sw")
+text = "─"
+clip_text = true
 
 [node name="Page2" type="Control" parent="." unique_id=1144873852]
 visible = false
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
 
-[node name="Text" type="Label" parent="Page2" unique_id=565065572]
+[node name="Text" type="RichTextLabel" parent="Page2" unique_id=1934843559]
 custom_minimum_size = Vector2(512, 256)
 custom_maximum_size = Vector2(512, 256)
 layout_mode = 0
-offset_right = 512.0
+offset_left = 48.0
+offset_right = 560.0
 offset_bottom = 256.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
 text = "Memoir '67 is an unique historical game that allows players to
-effectively portray stylized WWII battles. Lead the axis or allies to victory"
+effectively portray stylized WWII battles.
+Lead the [color=#98433F]axis[/color] or [color=#546B4F]allies[/color] to victory"
 autowrap_mode = 1
 
 [node name="Page3" type="Control" parent="." unique_id=1662929342]
 visible = false
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
 
 [node name="Text" type="Label" parent="Page3" unique_id=1883234843]
 custom_minimum_size = Vector2(512, 256)
 custom_maximum_size = Vector2(512, 256)
 layout_mode = 0
-offset_right = 512.0
+offset_left = 48.0
+offset_right = 560.0
 offset_bottom = 256.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
@@ -159,14 +371,13 @@ autowrap_mode = 1
 [node name="Page4" type="Control" parent="." unique_id=1379314264]
 visible = false
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
 
 [node name="Text" type="Label" parent="Page4" unique_id=577282084]
 custom_minimum_size = Vector2(512, 256)
 custom_maximum_size = Vector2(512, 256)
 layout_mode = 0
-offset_right = 512.0
+offset_left = 48.0
+offset_right = 560.0
 offset_bottom = 256.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
@@ -180,14 +391,13 @@ autowrap_mode = 1
 [node name="Page5" type="Control" parent="." unique_id=1971898202]
 visible = false
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
 
 [node name="Text" type="Label" parent="Page5" unique_id=1450936752]
 custom_minimum_size = Vector2(512, 256)
 custom_maximum_size = Vector2(512, 256)
 layout_mode = 0
-offset_right = 512.0
+offset_left = 48.0
+offset_right = 560.0
 offset_bottom = 256.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
@@ -201,14 +411,13 @@ autowrap_mode = 1
 [node name="Page6" type="Control" parent="." unique_id=1102722765]
 visible = false
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
 
 [node name="Text" type="Label" parent="Page6" unique_id=1629836839]
 custom_minimum_size = Vector2(512, 256)
 custom_maximum_size = Vector2(512, 256)
 layout_mode = 0
-offset_right = 512.0
+offset_left = 48.0
+offset_right = 560.0
 offset_bottom = 256.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
@@ -224,14 +433,13 @@ autowrap_mode = 1
 [node name="Page7" type="Control" parent="." unique_id=1363077334]
 visible = false
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
 
 [node name="Text" type="Label" parent="Page7" unique_id=669531582]
 custom_minimum_size = Vector2(512, 256)
 custom_maximum_size = Vector2(512, 256)
 layout_mode = 0
-offset_right = 512.0
+offset_left = 48.0
+offset_right = 560.0
 offset_bottom = 256.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
@@ -245,14 +453,53 @@ autowrap_mode = 1
 [node name="Page8" type="Control" parent="." unique_id=1937720087]
 visible = false
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
 
 [node name="Text" type="Label" parent="Page8" unique_id=3700196]
 custom_minimum_size = Vector2(512, 256)
 custom_maximum_size = Vector2(512, 256)
 layout_mode = 0
-offset_right = 512.0
+offset_left = 48.0
+offset_right = 560.0
+offset_bottom = 256.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+text = "Your goal is to be the first to get a certain number of medals.
+The number required varies from scenario to scenario, but
+this one, NAME OF THE SCENARIO, requires 5.
+
+You get medals by destroying enemy units."
+autowrap_mode = 1
+
+[node name="Page9" type="Control" parent="." unique_id=220172786]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="Label" parent="Page9" unique_id=1211983445]
+custom_minimum_size = Vector2(512, 256)
+custom_maximum_size = Vector2(512, 256)
+layout_mode = 0
+offset_left = 48.0
+offset_right = 560.0
+offset_bottom = 256.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+text = "Your goal is to be the first to get a certain number of medals.
+The number required varies from scenario to scenario, but
+this one, NAME OF THE SCENARIO, requires 5.
+
+You get medals by destroying enemy units."
+autowrap_mode = 1
+
+[node name="Page10" type="Control" parent="." unique_id=1317684370]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="Label" parent="Page10" unique_id=1513355805]
+custom_minimum_size = Vector2(512, 256)
+custom_maximum_size = Vector2(512, 256)
+layout_mode = 0
+offset_left = 48.0
+offset_right = 560.0
 offset_bottom = 256.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
