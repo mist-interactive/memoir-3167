@@ -114,12 +114,11 @@ grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_vxa7d")
 
 [node name="HelpMenuButton" type="Button" parent="." unique_id=41334009]
-z_index = 2
+z_index = 3
 layout_mode = 0
-offset_left = 16.0
-offset_top = 8.0
-offset_right = 40.0
-offset_bottom = 24.0
+offset_left = 8.0
+offset_right = 48.0
+offset_bottom = 32.0
 theme_override_font_sizes/font_size = 8
 theme_override_styles/normal = ExtResource("5_1olk6")
 theme_override_styles/pressed = ExtResource("6_xgmmi")
@@ -128,23 +127,26 @@ flat = true
 
 [node name="Panel" type="Panel" parent="HelpMenuButton" unique_id=1728842736]
 layout_mode = 0
-offset_top = 6.0
-offset_right = 24.0
-offset_bottom = 10.0
+offset_left = 8.0
+offset_top = 14.0
+offset_right = 32.0
+offset_bottom = 18.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ekcev")
 
 [node name="Panel2" type="Panel" parent="HelpMenuButton" unique_id=114426201]
 layout_mode = 0
-offset_top = -1.0
-offset_right = 24.0
-offset_bottom = 3.0
+offset_left = 8.0
+offset_top = 7.0
+offset_right = 32.0
+offset_bottom = 11.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ekcev")
 
 [node name="Panel3" type="Panel" parent="HelpMenuButton" unique_id=176248063]
 layout_mode = 0
-offset_top = 13.0
-offset_right = 24.0
-offset_bottom = 17.0
+offset_left = 8.0
+offset_top = 21.0
+offset_right = 32.0
+offset_bottom = 25.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_ekcev")
 
 [node name="GridContainer" type="GridContainer" parent="." unique_id=1248784971]
@@ -417,6 +419,7 @@ theme_override_constants/separation = 0
 theme_override_styles/separator = SubResource("StyleBoxLine_764ab")
 
 [node name="TutorialButton" type="Button" parent="." unique_id=1384915526]
+z_index = -1
 layout_mode = 0
 offset_right = 32.0
 offset_bottom = 32.0
