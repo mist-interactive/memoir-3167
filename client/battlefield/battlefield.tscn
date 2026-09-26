@@ -27,6 +27,7 @@
 [ext_resource type="Script" uid="uid://ctk6r7joynsl2" path="res://client/battlefield/card_play_area.gd" id="24_fpqqf"]
 [ext_resource type="PackedScene" uid="uid://bpenm2rqd2xau" path="res://client/battlefield/terrain_card_ui.tscn" id="25_kys61"]
 [ext_resource type="Script" uid="uid://byr2vmwobfbys" path="res://client/battlefield/background.gd" id="27_1ra3n"]
+[ext_resource type="Script" uid="uid://bmxdyxqcsc1dl" path="res://client/battlefield/info_screen.gd" id="28_kys61"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_axx1d"]
 texture = ExtResource("5_fpqqf")
@@ -360,3 +361,35 @@ script = ExtResource("27_1ra3n")
 client_map_manager = NodePath("../MapManager")
 background_tilemap = NodePath(".")
 metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
+
+[node name="InfoScreen" type="CanvasLayer" parent="." unique_id=1750566238 node_paths=PackedStringArray("info_pane", "info_bg", "info_text", "timer")]
+script = ExtResource("28_kys61")
+info_pane = NodePath("InfoPane")
+info_bg = NodePath("InfoPane/InfoBG")
+info_text = NodePath("InfoPane/InfoText")
+timer = NodePath("InfoPane/Timer")
+
+[node name="InfoPane" type="Node2D" parent="InfoScreen" unique_id=758314268]
+
+[node name="InfoBG" type="ColorRect" parent="InfoScreen/InfoPane" unique_id=1459822813]
+offset_right = 40.0
+offset_bottom = 40.0
+offset_transform_enabled = true
+
+[node name="InfoText" type="RichTextLabel" parent="InfoScreen/InfoPane" unique_id=206877490]
+offset_right = 40.0
+offset_bottom = 40.0
+offset_transform_enabled = true
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Timer" type="RichTextLabel" parent="InfoScreen/InfoPane" unique_id=947980633]
+offset_right = 40.0
+offset_bottom = 40.0
+offset_transform_enabled = true
+fit_content = true
+autowrap_mode = 0
+horizontal_alignment = 1
+vertical_alignment = 1
