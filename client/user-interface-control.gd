@@ -192,11 +192,11 @@ func update_score_pips() -> void:
 
 	# Your pips use the enemy's color
 	if matchState.mySide == enums.Side.RED:
-		my_active_color = Color.GREEN
-		enemy_active_color = Color.RED
+		my_active_color = ally_color
+		enemy_active_color = enemy_color
 	elif matchState.mySide == enums.Side.GREEN:
-		my_active_color = Color.RED
-		enemy_active_color = Color.GREEN
+		my_active_color = enemy_color
+		enemy_active_color = ally_color
 	else:
 		my_active_color = Color.WHITE
 		enemy_active_color = Color.WHITE
