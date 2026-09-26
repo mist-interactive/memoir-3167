@@ -25,7 +25,9 @@ func _process(_delta: float) -> void:
 		var server_now: float = network_clock.get_server_time()
 		var count_down: int = ceili(((pause_time + REJOIN_WINDOW * 1000) - server_now )/ 1000)
 		clampi(count_down, 0, REJOIN_WINDOW)
-		timer.text = str(count_down)
+		timer.text = "Victory in: " + str(count_down)
+		timer.offset_transform_position = -Vector2(timer.size.x / 2, -timer.size.y / 3)
+
 
 func on_match_state_changed(new_state: MatchState.STATE):
 	if new_state == MatchState.STATE.ENDED:
@@ -40,7 +42,7 @@ func on_match_state_changed(new_state: MatchState.STATE):
 	elif new_state == MatchState.STATE.PAUSED:
 		pause_time = match_state.phase_timer.paused_at
 		info_bg.color = Color.DIM_GRAY
-		info_text.text = "Game paused"
+		info_text.text = "Opponent disconnected"
 		visible = true
 	elif new_state == MatchState.STATE.IN_PROGRESS:
 		info_text.clear()
@@ -51,17 +53,17 @@ func _center_info_pane() -> void:
 	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
 	info_pane.position = (viewport_size / 2)
 	info_text.offset_transform_position = -Vector2(info_text.size.x / 2, info_text.size.y / 2)
-	info_bg.size = viewport_size / 6
+	info_bg.size = viewport_size / 4
 	info_bg.offset_transform_position = -Vector2(info_bg.size.x / 2, info_bg.size.y / 2)
 	timer.offset_transform_position = -Vector2(timer.size.x / 2, -timer.size.y / 3)
 	
 func _setup_info_text() -> void:
 	info_text.clear()
-	info_text.add_theme_font_override("font", FONT)
-	info_text.add_theme_color_override("font_color", Color.WHITE_SMOKE)
+	info_text.add_theme_font_override("normal_font", FONT)
+	info_text.add_theme_color_override("default_color", Color.WHITE_SMOKE)
 	info_text.add_theme_color_override("font_outline_color", Color.BLACK)
-	info_text.add_theme_constant_override("outline_size", 6)
-	info_text.add_theme_font_size_override("font_size", 64)
+	info_text.add_theme_constant_override("outline_size", 4)
+	info_text.add_theme_font_size_override("normal_font_size", 24)
 	info_text.set_anchors_preset(Control.PRESET_CENTER)
 	info_text.offset_transform_enabled = true
 	info_text.fit_content = true
@@ -69,11 +71,11 @@ func _setup_info_text() -> void:
 	
 func _setup_timer() -> void:
 	timer.clear()
-	timer.add_theme_font_override("font", FONT)
-	timer.add_theme_color_override("font_color", Color.WHITE_SMOKE)
+	timer.add_theme_font_override("normal_font", FONT)
+	timer.add_theme_color_override("default_color", Color.WHITE_SMOKE)
 	timer.add_theme_color_override("font_outline_color", Color.BLACK)
-	timer.add_theme_constant_override("outline_size", 6)
-	timer.add_theme_font_size_override("font_size", 24)
+	timer.add_theme_constant_override("outline_size", 3)
+	timer.add_theme_font_size_override("normal_font_size", 16)
 	timer.set_anchors_preset(Control.PRESET_CENTER)
 	timer.offset_transform_enabled = true
 	timer.fit_content = true
