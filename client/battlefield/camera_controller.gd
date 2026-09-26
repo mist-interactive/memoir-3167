@@ -44,6 +44,13 @@ func _unhandled_input(event: InputEvent) -> void:
 				is_middlemouse_down = true
 			if event.is_released():
 				is_middlemouse_down = false
+	elif event is InputEventMagnifyGesture:
+		zoom *= event.factor
+		zoom.x = clamp(zoom.x, min_zoom, max_zoom)
+		zoom.y = clamp(zoom.y, min_zoom, max_zoom)
+	elif event is InputEventPanGesture:
+		var pan_speed_multiplier: float = 10.0
+		position += (event.delta * pan_speed_multiplier) / zoom
 	if event is InputEventMouseMotion and is_middlemouse_down:
 		position -= event.relative / zoom
 	pass

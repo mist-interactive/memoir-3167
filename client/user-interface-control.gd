@@ -55,6 +55,10 @@ func _ready() -> void:
 	update_ui()
 	update_score_pips()
 
+func _unhandled_input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		if event.keycode == KEY_SPACE and event.pressed and not event.echo:
+			_on_confirm()
 
 func update_player_color() -> void:
 	match matchState.mySide:
