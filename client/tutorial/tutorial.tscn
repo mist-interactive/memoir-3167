@@ -6,11 +6,12 @@
 [ext_resource type="StyleBox" uid="uid://xn0vb05g38cy" path="res://assets/ui/tutorial/new_style_box_flat_pressed.tres" id="3_tof3e"]
 [ext_resource type="StyleBox" uid="uid://dd43wx8xrmgkn" path="res://assets/ui/tutorial/new_style_box_flat_hover.tres" id="4_yod4y"]
 [ext_resource type="StyleBox" uid="uid://bvm1c0r1aq8kl" path="res://assets/ui/tutorial/minimize_button.tres" id="5_1olk6"]
+[ext_resource type="Texture2D" uid="uid://b38hdgbvl7a1i" path="res://assets/ui/icons/grid.png" id="6_tof3e"]
 [ext_resource type="StyleBox" uid="uid://dqcuyiwe2762i" path="res://assets/ui/tutorial/minimize_button_pressed.tres" id="6_xgmmi"]
 [ext_resource type="StyleBox" uid="uid://coxriq677sheq" path="res://assets/ui/tutorial/minimize_button_hover.tres" id="7_adm3a"]
 [ext_resource type="Texture2D" uid="uid://e540m44l5f10" path="res://assets/ui/icons/book_open.png" id="8_xpfqi"]
 [ext_resource type="Texture2D" uid="uid://bklyrlmknh4ui" path="res://assets/sprites/hex/hex_tile_set_128x128.png" id="9_ld8p5"]
-[ext_resource type="Texture2D" uid="uid://rtb43f6i1ud" path="res://assets/ui/dot-bold-highlight.svg" id="10_6gdf7"]
+[ext_resource type="Texture2D" path="res://assets/ui/dot-bold-highlight.svg" id="10_6gdf7"]
 [ext_resource type="Script" uid="uid://btu6vlirbmya1" path="res://client/tutorial/dashed_rectangle.gd" id="11_ay5pt"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxa7d"]
@@ -85,16 +86,21 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_vxa7d")
 [node name="HelpMenuButton" type="Button" parent="." unique_id=41334009]
 z_index = 3
 layout_mode = 0
-offset_left = 8.0
-offset_right = 48.0
-offset_bottom = 32.0
+offset_left = 4.0
+offset_top = 4.0
+offset_right = 28.0
+offset_bottom = 28.0
 theme_override_font_sizes/font_size = 8
 theme_override_styles/normal = ExtResource("5_1olk6")
 theme_override_styles/pressed = ExtResource("6_xgmmi")
 theme_override_styles/hover = ExtResource("7_adm3a")
+icon = ExtResource("6_tof3e")
 flat = true
+icon_alignment = 1
+expand_icon = true
 
 [node name="Panel" type="Panel" parent="HelpMenuButton" unique_id=1728842736]
+visible = false
 layout_mode = 0
 offset_left = 8.0
 offset_top = 14.0
@@ -104,6 +110,7 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ekcev")
 
 [node name="Panel2" type="Panel" parent="HelpMenuButton" unique_id=114426201]
+visible = false
 layout_mode = 0
 offset_left = 8.0
 offset_top = 7.0
@@ -113,6 +120,7 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ekcev")
 
 [node name="Panel3" type="Panel" parent="HelpMenuButton" unique_id=176248063]
+visible = false
 layout_mode = 0
 offset_left = 8.0
 offset_top = 21.0
@@ -122,6 +130,7 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ekcev")
 
 [node name="GridContainer" type="GridContainer" parent="." unique_id=1248784971]
+visible = false
 z_index = 1
 layout_mode = 0
 offset_top = 32.0
@@ -401,7 +410,6 @@ icon = ExtResource("8_xpfqi")
 expand_icon = true
 
 [node name="Page1" type="Control" parent="." unique_id=1146651962]
-visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Page1" unique_id=499704849]
