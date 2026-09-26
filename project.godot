@@ -13,6 +13,9 @@ config_version=5
 config/name="Memoir 3167"
 run/main_scene="uid://2qyum6urv8ru"
 config/features=PackedStringArray("4.7", "GL Compatibility")
+boot_splash/bg_color=Color(0.121880956, 0.14217147, 0.13741449, 1)
+boot_splash/stretch_mode=2
+boot_splash/image="uid://cxjjcwpjupbk2"
 config/icon="res://icon.svg"
 
 [autoload]
