@@ -45,7 +45,7 @@ script = ExtResource("1_01d67")
 minimize_button = NodePath("MinimizeButton")
 tutorial_button = NodePath("TutorialButton")
 panel = NodePath("Panel")
-text = NodePath("Page1/Text")
+text = NodePath("")
 page_buttons_container = NodePath("HBoxContainer")
 tutorial_pages = [NodePath("Page1"), NodePath("Page2"), NodePath("Page3"), NodePath("Page4"), NodePath("Page5"), NodePath("Page6"), NodePath("Page7"), NodePath("Page8"), NodePath("Page9"), NodePath("Page10")]
 page_buttons = [NodePath("HBoxContainer/Button"), NodePath("HBoxContainer/Button2"), NodePath("HBoxContainer/Button3"), NodePath("HBoxContainer/Button4"), NodePath("HBoxContainer/Button5"), NodePath("HBoxContainer/Button6"), NodePath("HBoxContainer/Button7"), NodePath("HBoxContainer/Button8"), NodePath("HBoxContainer/Button9"), NodePath("HBoxContainer/Button10")]
@@ -286,13 +286,13 @@ expand_icon = true
 visible = false
 anchors_preset = 0
 
-[node name="Text" type="Label" parent="Page1" unique_id=27026813]
-custom_minimum_size = Vector2(512, 256)
-custom_maximum_size = Vector2(512, 256)
+[node name="Text" type="RichTextLabel" parent="Page1" unique_id=499704849]
+custom_minimum_size = Vector2(432, 250)
+custom_maximum_size = Vector2(432, 250)
 layout_mode = 0
 offset_left = 48.0
-offset_right = 560.0
-offset_bottom = 256.0
+offset_right = 480.0
+offset_bottom = 250.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 text = "Let's learn how to play Memoir '67!
@@ -328,8 +328,8 @@ visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Page2" unique_id=1934843559]
-custom_minimum_size = Vector2(432, 256)
-custom_maximum_size = Vector2(432, 256)
+custom_minimum_size = Vector2(432, 250)
+custom_maximum_size = Vector2(432, 250)
 layout_mode = 0
 offset_left = 48.0
 offset_right = 560.0
@@ -346,8 +346,8 @@ visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Page3" unique_id=2147230938]
-custom_minimum_size = Vector2(432, 256)
-custom_maximum_size = Vector2(432, 256)
+custom_minimum_size = Vector2(432, 250)
+custom_maximum_size = Vector2(432, 250)
 layout_mode = 0
 offset_left = 48.0
 offset_right = 560.0
@@ -378,8 +378,8 @@ visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Page4" unique_id=1079395697]
-custom_minimum_size = Vector2(432, 256)
-custom_maximum_size = Vector2(432, 256)
+custom_minimum_size = Vector2(432, 250)
+custom_maximum_size = Vector2(432, 250)
 layout_mode = 0
 offset_left = 48.0
 offset_right = 560.0
@@ -452,8 +452,8 @@ visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Page5" unique_id=338040542]
-custom_minimum_size = Vector2(432, 256)
-custom_maximum_size = Vector2(432, 256)
+custom_minimum_size = Vector2(432, 250)
+custom_maximum_size = Vector2(432, 250)
 layout_mode = 0
 offset_left = 48.0
 offset_right = 480.0
@@ -461,7 +461,7 @@ offset_bottom = 256.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Each turn, you must play one [b]Comman card[/b] from
+text = "Each turn, you must play one [b]Command card[/b] from
 your hand.
 
 The cards in your hand are called [color=green]section cards[/color].
@@ -474,8 +474,8 @@ visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Page6" unique_id=1904845988]
-custom_minimum_size = Vector2(432, 256)
-custom_maximum_size = Vector2(432, 256)
+custom_minimum_size = Vector2(432, 250)
+custom_maximum_size = Vector2(432, 250)
 layout_mode = 0
 offset_left = 48.0
 offset_right = 560.0
@@ -497,9 +497,9 @@ autowrap_mode = 1
 visible = false
 anchors_preset = 0
 
-[node name="Text" type="Label" parent="Page7" unique_id=669531582]
-custom_minimum_size = Vector2(512, 256)
-custom_maximum_size = Vector2(512, 256)
+[node name="Text" type="RichTextLabel" parent="Page7" unique_id=1518700950]
+custom_minimum_size = Vector2(432, 250)
+custom_maximum_size = Vector2(432, 250)
 layout_mode = 0
 offset_left = 48.0
 offset_right = 560.0
@@ -510,11 +510,12 @@ text = "Attack distance"
 autowrap_mode = 1
 
 [node name="Page8" type="Control" parent="." unique_id=1937720087]
+visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Page8" unique_id=831090113]
-custom_minimum_size = Vector2(432, 256)
-custom_maximum_size = Vector2(432, 256)
+custom_minimum_size = Vector2(432, 250)
+custom_maximum_size = Vector2(432, 250)
 layout_mode = 0
 offset_left = 48.0
 offset_right = 560.0
@@ -532,15 +533,16 @@ autowrap_mode = 1
 visible = false
 anchors_preset = 0
 
-[node name="Text" type="Label" parent="Page9" unique_id=1211983445]
-custom_minimum_size = Vector2(512, 256)
-custom_maximum_size = Vector2(512, 256)
+[node name="Text" type="RichTextLabel" parent="Page9" unique_id=2111594563]
+custom_minimum_size = Vector2(432, 250)
+custom_maximum_size = Vector2(432, 250)
 layout_mode = 0
 offset_left = 48.0
 offset_right = 560.0
 offset_bottom = 256.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
 text = "Your goal is to be the first to get a certain number of medals.
 The number required varies from scenario to scenario, but
 this one, NAME OF THE SCENARIO, requires 5.
@@ -553,11 +555,11 @@ visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Page10" unique_id=1864963729]
-custom_minimum_size = Vector2(512, 256)
-custom_maximum_size = Vector2(512, 256)
+custom_minimum_size = Vector2(432, 250)
+custom_maximum_size = Vector2(432, 250)
 layout_mode = 0
 offset_left = 48.0
-offset_right = 560.0
+offset_right = 480.0
 offset_bottom = 256.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
