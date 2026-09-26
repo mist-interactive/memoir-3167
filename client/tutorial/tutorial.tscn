@@ -283,7 +283,6 @@ icon = ExtResource("8_xpfqi")
 expand_icon = true
 
 [node name="Page1" type="Control" parent="." unique_id=1146651962]
-visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Page1" unique_id=499704849]
@@ -295,6 +294,7 @@ offset_right = 480.0
 offset_bottom = 250.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
 text = "Let's learn how to play Memoir '67!
 Tips:
 
@@ -305,9 +305,9 @@ autowrap_mode = 1
 [node name="MinimizeButton" type="Button" parent="Page1" unique_id=2070763863]
 layout_mode = 0
 offset_left = 105.0
-offset_top = 120.0
+offset_top = 112.0
 offset_right = 121.0
-offset_bottom = 136.0
+offset_bottom = 128.0
 theme_override_font_sizes/font_size = 8
 theme_override_styles/normal = ExtResource("5_1olk6")
 theme_override_styles/pressed = ExtResource("6_xgmmi")
