@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://chpts1xx3dkee"]
 
 [ext_resource type="Script" uid="uid://bgndi18hwb1i6" path="res://client/tutorial/tutorial.gd" id="1_01d67"]
+[ext_resource type="StyleBox" uid="uid://cwi2mp0dqvrrp" path="res://assets/ui/tutorial/panel_style_box_transparent.tres" id="2_tof3e"]
 [ext_resource type="StyleBox" uid="uid://dlp0a77syspn5" path="res://assets/ui/tutorial/new_style_box_flat.tres" id="2_vxa7d"]
 [ext_resource type="StyleBox" uid="uid://xn0vb05g38cy" path="res://assets/ui/tutorial/new_style_box_flat_pressed.tres" id="3_tof3e"]
 [ext_resource type="StyleBox" uid="uid://dd43wx8xrmgkn" path="res://assets/ui/tutorial/new_style_box_flat_hover.tres" id="4_yod4y"]
@@ -11,18 +12,6 @@
 [ext_resource type="Texture2D" uid="uid://bklyrlmknh4ui" path="res://assets/sprites/hex/hex_tile_set_128x128.png" id="9_ld8p5"]
 [ext_resource type="Texture2D" uid="uid://rtb43f6i1ud" path="res://assets/ui/dot-bold-highlight.svg" id="10_6gdf7"]
 [ext_resource type="Script" uid="uid://btu6vlirbmya1" path="res://client/tutorial/dashed_rectangle.gd" id="11_ay5pt"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_01d67"]
-bg_color = Color(0.020126104, 0.032526605, 0.03412146, 1)
-border_color = Color(1, 1, 1, 1)
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_764ab"]
-bg_color = Color(0, 0, 0, 1)
-border_width_top = 558
-border_width_bottom = 2600
-border_color = Color(0, 0, 0, 0.4745098)
-border_blend = true
-corner_detail = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxa7d"]
 bg_color = Color(0.34781694, 0.34781697, 0.3478169, 0.6862745)
@@ -55,7 +44,7 @@ border_width_bottom = 12
 border_color = Color(0.96035105, 0.96035105, 0.96035093, 0)
 border_blend = true
 
-[node name="Tutorial" type="Control" unique_id=1744084876 node_paths=PackedStringArray("minimize_button", "tutorial_button", "menu_button", "panel", "menu_panel", "top_bar", "page_buttons_container", "tutorial_pages", "page_buttons")]
+[node name="Tutorial" type="Control" unique_id=1744084876 node_paths=PackedStringArray("minimize_button", "tutorial_button", "menu_button", "panel", "top_bar", "page_buttons_container", "tutorial_pages", "page_buttons")]
 z_index = 100
 layout_mode = 3
 anchors_preset = 0
@@ -64,25 +53,10 @@ minimize_button = NodePath("MinimizeButton")
 tutorial_button = NodePath("TutorialButton")
 menu_button = NodePath("HelpMenuButton")
 panel = NodePath("Panel")
-menu_panel = NodePath("MenuPanel")
 top_bar = NodePath("TopBar")
 page_buttons_container = NodePath("GridContainer")
-tutorial_pages = [NodePath("Page1"), NodePath("Page2"), NodePath("Page3"), NodePath("Page4"), NodePath("Page5"), NodePath("Page6"), NodePath("Page7"), NodePath("Page8"), NodePath("Page9"), NodePath("Page10")]
+tutorial_pages = [NodePath("Page1"), NodePath("Page2"), NodePath("Page3"), NodePath("Page4"), NodePath("Page5"), NodePath("Page6"), NodePath("Page8"), NodePath("Page7"), NodePath("Page9"), NodePath("Page10")]
 page_buttons = [NodePath("GridContainer/Button1"), NodePath("GridContainer/Button2"), NodePath("GridContainer/Button3"), NodePath("GridContainer/Button4"), NodePath("GridContainer/Button5"), NodePath("GridContainer/Button6"), NodePath("GridContainer/Button7"), NodePath("GridContainer/Button8"), NodePath("GridContainer/Button9"), NodePath("GridContainer/Button10"), NodePath("GridContainer/Button11"), NodePath("GridContainer/Button12"), NodePath("GridContainer/Button13"), NodePath("GridContainer/Button14"), NodePath("GridContainer/Button15"), NodePath("GridContainer/Button16"), NodePath("GridContainer/Button17"), NodePath("GridContainer/Button18")]
-
-[node name="MenuPanel" type="Panel" parent="." unique_id=2009945443]
-visible = false
-z_index = 1
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_right = 480.0
-offset_bottom = 256.0
-grow_horizontal = 2
-grow_vertical = 2
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_01d67")
 
 [node name="Panel" type="Panel" parent="." unique_id=698563448]
 layout_mode = 1
@@ -94,7 +68,7 @@ offset_bottom = 256.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_764ab")
+theme_override_styles/panel = ExtResource("2_tof3e")
 
 [node name="TopBar" type="Panel" parent="." unique_id=569886929]
 z_index = 1
@@ -148,7 +122,6 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ekcev")
 
 [node name="GridContainer" type="GridContainer" parent="." unique_id=1248784971]
-visible = false
 z_index = 1
 layout_mode = 0
 offset_top = 32.0
@@ -182,7 +155,7 @@ theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Start"
+text = "About"
 icon_alignment = 1
 
 [node name="Button3" type="Button" parent="GridContainer" unique_id=708698516]
@@ -195,7 +168,7 @@ theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Start"
+text = "Info"
 icon_alignment = 1
 
 [node name="Button4" type="Button" parent="GridContainer" unique_id=972347071]
@@ -208,7 +181,7 @@ theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Start"
+text = "Goal"
 icon_alignment = 1
 
 [node name="Button5" type="Button" parent="GridContainer" unique_id=258594844]
@@ -221,7 +194,7 @@ theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Start"
+text = "Cards"
 icon_alignment = 1
 
 [node name="Button6" type="Button" parent="GridContainer" unique_id=794168869]
@@ -234,7 +207,7 @@ theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Start"
+text = "Turn"
 icon_alignment = 1
 
 [node name="Button7" type="Button" parent="GridContainer" unique_id=1413540167]
@@ -247,7 +220,7 @@ theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Start"
+text = "Selecting units"
 icon_alignment = 1
 
 [node name="Button8" type="Button" parent="GridContainer" unique_id=162367697]
@@ -260,7 +233,7 @@ theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Start"
+text = "Moving units"
 icon_alignment = 1
 
 [node name="Button9" type="Button" parent="GridContainer" unique_id=1049593327]
@@ -273,7 +246,7 @@ theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Start"
+text = "Attacking"
 icon_alignment = 1
 
 [node name="Button10" type="Button" parent="GridContainer" unique_id=198499186]
@@ -286,7 +259,7 @@ theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Start"
+text = "Dice"
 icon_alignment = 1
 
 [node name="Button11" type="Button" parent="GridContainer" unique_id=1859511656]
@@ -299,7 +272,7 @@ theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Start"
+text = "Retreat"
 icon_alignment = 1
 
 [node name="Button12" type="Button" parent="GridContainer" unique_id=2103025049]
@@ -312,7 +285,7 @@ theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Start"
+text = "Units"
 icon_alignment = 1
 
 [node name="Button13" type="Button" parent="GridContainer" unique_id=1150482153]
@@ -325,7 +298,7 @@ theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Start"
+text = "Infantry"
 icon_alignment = 1
 
 [node name="Button14" type="Button" parent="GridContainer" unique_id=277113990]
@@ -338,7 +311,7 @@ theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Start"
+text = "Tanks"
 icon_alignment = 1
 
 [node name="Button15" type="Button" parent="GridContainer" unique_id=1792824274]
@@ -351,7 +324,7 @@ theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Start"
+text = "Artillery"
 icon_alignment = 1
 
 [node name="Button16" type="Button" parent="GridContainer" unique_id=931681832]
@@ -364,7 +337,7 @@ theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Start"
+text = "Terrain"
 icon_alignment = 1
 
 [node name="Button17" type="Button" parent="GridContainer" unique_id=1115210823]
@@ -377,7 +350,7 @@ theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Start"
+text = "Line of sight"
 icon_alignment = 1
 
 [node name="Button18" type="Button" parent="GridContainer" unique_id=1062811598]
@@ -390,7 +363,7 @@ theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Start"
+text = "Turn end"
 icon_alignment = 1
 
 [node name="MinimizeButton" type="Button" parent="." unique_id=553180294]
@@ -515,6 +488,7 @@ theme_override_constants/separation = 0
 theme_override_styles/separator = SubResource("StyleBoxLine_764ab")
 
 [node name="Page2" type="Control" parent="." unique_id=1144873852]
+visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Page2" unique_id=1934843559]
@@ -685,27 +659,11 @@ Turn ends.
 "
 autowrap_mode = 1
 
-[node name="Page7" type="Control" parent="." unique_id=1363077334]
+[node name="Page7" type="Control" parent="." unique_id=1937720087]
 visible = false
 anchors_preset = 0
 
-[node name="Text" type="RichTextLabel" parent="Page7" unique_id=1518700950]
-custom_minimum_size = Vector2(432, 224)
-custom_maximum_size = Vector2(432, 224)
-layout_mode = 0
-offset_left = 48.0
-offset_right = 560.0
-offset_bottom = 256.0
-theme_override_constants/outline_size = 3
-theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
-text = "Attack distance"
-autowrap_mode = 1
-
-[node name="Page8" type="Control" parent="." unique_id=1937720087]
-visible = false
-anchors_preset = 0
-
-[node name="Text" type="RichTextLabel" parent="Page8" unique_id=831090113]
+[node name="Text" type="RichTextLabel" parent="Page7" unique_id=831090113]
 custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 224)
 layout_mode = 0
@@ -719,6 +677,22 @@ text = "Next, we have to move our units. Each unit moves
 a little differently.
 [b]Armor units[/b] can move up to 3 hexes and can battle after that
 (once all movement orders have been carried out)."
+autowrap_mode = 1
+
+[node name="Page8" type="Control" parent="." unique_id=1363077334]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Page8" unique_id=1518700950]
+custom_minimum_size = Vector2(432, 224)
+custom_maximum_size = Vector2(432, 224)
+layout_mode = 0
+offset_left = 48.0
+offset_right = 560.0
+offset_bottom = 256.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+text = "Attack distance"
 autowrap_mode = 1
 
 [node name="Page9" type="Control" parent="." unique_id=220172786]

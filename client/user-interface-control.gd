@@ -50,8 +50,16 @@ const AXIS := "Axis"
 const ally_color: Color = Color(0.329, 0.42, 0.31, 1.0)
 const enemy_color: Color = Color(0.596, 0.263, 0.247, 1.0)
 
+var cursor_normal: Texture2D
+var cursor_clickable: Texture2D
+
+
 func _ready() -> void:
 	load_cursor()
+
+	button.mouse_entered.connect(_on_button_mouse_entered)
+	button.mouse_exited.connect(_on_button_mouse_exited)
+
 	get_viewport().size_changed.connect(update_ui)
 	update_ui()
 	update_score_pips()
@@ -62,9 +70,36 @@ func _unhandled_input(event: InputEvent) -> void:
 			_on_confirm()
 
 func load_cursor() -> void:
-	var image = load("res://assets/ui/icons/cursor09_gbx32.png").get_image()
-	var cursor_texture = ImageTexture.create_from_image(image)
-	Input.set_custom_mouse_cursor(cursor_texture)
+	cursor_normal = load("res://assets/sprites/cursor/Normal-3.png")
+	cursor_clickable = load("res://assets/sprites/cursor/Link-3.png")
+
+	set_cursor_normal()
+
+
+func set_cursor_normal() -> void:
+	Input.set_custom_mouse_cursor(
+		cursor_normal,
+		Input.CURSOR_ARROW,
+		Vector2(8, 8)
+	)
+
+
+func set_cursor_clickable() -> void:
+	Input.set_custom_mouse_cursor(
+		cursor_clickable,
+		Input.CURSOR_ARROW,
+		Vector2(32, 8)
+	)
+
+
+func _on_button_mouse_entered() -> void:
+	if not button.disabled:
+		set_cursor_clickable()
+
+
+func _on_button_mouse_exited() -> void:
+	set_cursor_normal()
+
 
 func update_player_color() -> void:
 	match matchState.mySide:
@@ -100,12 +135,13 @@ func set_box_color(control: Control, color: Color) -> void:
 	control.add_theme_stylebox_override("normal", style)
 
 
-func update_ui():
+func update_ui() -> void:
 	var viewport_size := get_viewport_rect().size
 	var scale_factor := minf(
 		viewport_size.x / DESIGN_SIZE.x,
 		viewport_size.y / DESIGN_SIZE.y
 	)
+
 	ui.scale = Vector2.ONE * scale_factor
 	ui.position = (viewport_size - DESIGN_SIZE * scale_factor) / 2.0
 
@@ -129,7 +165,6 @@ func _physics_process(delta: float) -> void:
 	var remaining := count_down / 1000.0
 	remaining = clamp(remaining, 0.0, max_time)
 
-	# Starts at 0 and increases to full width as time runs out
 	var progress := 1.0 - (remaining / max_time)
 	var border_width := int(progress * time_progress_bar.size.x)
 
@@ -194,7 +229,6 @@ func update_score_pips() -> void:
 	var my_active_color: Color
 	var enemy_active_color: Color
 
-	# Your pips use the enemy's color
 	if matchState.mySide == enums.Side.RED:
 		my_active_color = ally_color
 		enemy_active_color = enemy_color
@@ -216,6 +250,7 @@ func update_score_pips() -> void:
 			score_pips_enemy[i].modulate = enemy_active_color
 		else:
 			score_pips_enemy[i].modulate = Color(0.722, 0.722, 0.722, 1.0)
+
 
 func player_id_text(side: enums.Side) -> String:
 	if side == enums.Side.GREEN:

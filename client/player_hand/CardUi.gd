@@ -10,6 +10,7 @@ var HOVER_SCALE := BASE_SCALE * 1.35
 const CARD_Z_INDEX := 1000
 const DRAG_Z_INDEX := 100000
 @export var background_texture: TextureRect
+
 @export var play_area: Control
 @export var discard_target: Control
 @onready var handState: HandState = $"../../../../../HandState"
@@ -21,6 +22,7 @@ var just_returned_to_hand: bool = false
 var is_dragging: bool = false
 var is_mouse_pressed: bool = false
 var press_position: Vector2 = Vector2.ZERO
+var is_mouse_over: bool = false
 
 var drag_offset: Vector2 = Vector2.ZERO
 var base_position_x: float
@@ -29,6 +31,10 @@ var _instance_id: int
 var _card_id: String
 var is_interactive: bool = true
 var is_discarded: bool = false
+
+var cursor_normal: Texture2D
+var cursor_hover: Texture2D
+var cursor_drag: Texture2D
 
 signal card_hovered(target_sector: enums.MapSector)
 signal card_unhovered
@@ -40,6 +46,44 @@ func _ready() -> void:
 	# Always render above other Controls in the same CanvasLayer.
 	z_as_relative = false
 	z_index = CARD_Z_INDEX
+
+	cursor_normal = load("res://assets/sprites/cursor/Normal-3.png")
+	cursor_hover = load("res://assets/sprites/cursor/Move_2-3.png")
+	cursor_drag = load("res://assets/sprites/cursor/Move_1-3.png")
+
+
+func set_cursor_normal() -> void:
+	Input.set_custom_mouse_cursor(
+		cursor_normal,
+		Input.CURSOR_ARROW,
+		Vector2(8, 8)
+	)
+
+
+func set_cursor_hover() -> void:
+	Input.set_custom_mouse_cursor(
+		cursor_hover,
+		Input.CURSOR_ARROW,
+		Vector2(32, 32)
+	)
+
+
+func set_cursor_drag() -> void:
+	Input.set_custom_mouse_cursor(
+		cursor_drag,
+		Input.CURSOR_ARROW,
+		Vector2(32, 32)
+	)
+
+
+func update_cursor() -> void:
+	if is_dragging:
+		set_cursor_drag()
+	elif is_mouse_over and is_interactive and not is_discarded:
+		set_cursor_hover()
+	else:
+		set_cursor_normal()
+
 
 func setup_visuals(instance_id: int, id: String) -> void:
 	_instance_id = instance_id
@@ -69,6 +113,8 @@ func animate_to_discard(
 	
 	is_discarded = true
 	is_interactive = false
+	is_mouse_over = false
+	set_cursor_normal()
 
 	if is_dragging:
 		_end_drag()
@@ -125,7 +171,10 @@ func _reset_hover_state() -> void:
 	card_unhovered.emit()
 
 func _on_mouse_exited() -> void:
+	is_mouse_over = false
+
 	if not is_interactive:
+		set_cursor_normal()
 		return
 
 	# While dragging, the mouse leaving the card is expected.
@@ -134,17 +183,26 @@ func _on_mouse_exited() -> void:
 		return
 
 	if is_discarded:
+		set_cursor_normal()
 		return _animate_discard_pile_hover(0)
 
 	just_returned_to_hand = false
 
-	z_index = 0
-	scale = BASE_SCALE
+	if not is_dragging and not is_mouse_pressed:
+		z_index = 0
+		scale = BASE_SCALE
 
+	if not is_dragging:
+		set_cursor_normal()
+
+	position.y = position.y + SIZE.y / 10
 	card_unhovered.emit()
 
 func _on_mouse_entered() -> void:
+	is_mouse_over = true
+
 	if not is_interactive:
+		set_cursor_normal()
 		return
 
 	if is_dragging:
@@ -153,8 +211,10 @@ func _on_mouse_entered() -> void:
 	if is_discarded:
 		return _animate_discard_pile_hover(1)
 
-	if just_returned_to_hand:
-		return
+	if not is_dragging:
+		z_index = 10
+		scale = HOVER_SCALE
+		set_cursor_hover()
 
 	z_index = CARD_Z_INDEX + 1
 	scale = HOVER_SCALE
@@ -261,6 +321,17 @@ func _start_drag() -> void:
 
 	drag_offset = get_global_mouse_position() - global_position
 
+	set_cursor_drag()
+
+	var hand = get_parent()
+
+	if hand:
+		for card in hand.get_children():
+			if card is CardUI and card != self:
+				card.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
+	card_drag_started.emit(self)
+
 func _end_drag() -> void:
 	if not is_dragging:
 		return
@@ -280,15 +351,12 @@ func _end_drag() -> void:
 		active_drag_card = null
 
 	if is_over_play_area():
-		# 1. Freeze card at drop location
 		var drop_pos := global_position
 		top_level = true
 		global_position = drop_pos
 
-		# 2. Fire RPC
 		Network.Actions.play_card.rpc(_instance_id)
 
-		# 3. Wait for confirmation signal with a 3.0 second timeout
 		var confirmed := await _wait_for_card_confirmation(0.1)
 
 		if confirmed:
@@ -303,11 +371,11 @@ func _end_drag() -> void:
 					hand._recalculate_layout()
 			)
 		else:
-			# Server rejected or connection timed out: snap back to hand
 			return_to_hand()
 	else:
 		return_to_hand()
 
+	update_cursor()
 	card_drag_ended.emit(self)
 
 func _unlock_cards() -> void:
@@ -335,7 +403,6 @@ func _wait_for_card_confirmation(timeout_seconds: float) -> bool:
 
 	var timer := get_tree().create_timer(timeout_seconds)
 
-	# Loop until either confirmed or timer expires
 	while not confirmed and timer.time_left > 0:
 		await get_tree().process_frame
 

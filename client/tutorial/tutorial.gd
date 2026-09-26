@@ -5,7 +5,6 @@ extends Control
 @export var menu_button: Button
 
 @export var panel: Panel
-@export var menu_panel: Panel
 @export var top_bar: Panel
 
 @export var page_buttons_container: Container
@@ -32,14 +31,30 @@ var menu_open := false
 var dragging := false
 var drag_offset := Vector2.ZERO
 
+var cursor_normal: Texture2D
+var cursor_hover: Texture2D
+var cursor_drag: Texture2D
+var cursor_clickable: Texture2D
+
 
 func _ready() -> void:
 	minimize_button.pressed.connect(_on_minimize_pressed)
 	tutorial_button.pressed.connect(_on_tutorial_pressed)
 	menu_button.pressed.connect(_on_menu_pressed)
 
+	minimize_button.mouse_entered.connect(set_cursor_clickable)
+	minimize_button.mouse_exited.connect(set_cursor_normal)
+
+	tutorial_button.mouse_entered.connect(set_cursor_clickable)
+	tutorial_button.mouse_exited.connect(set_cursor_normal)
+
+	menu_button.mouse_entered.connect(set_cursor_clickable)
+	menu_button.mouse_exited.connect(set_cursor_normal)
+
 	for i in range(page_buttons.size()):
 		page_buttons[i].pressed.connect(_on_page_button_pressed.bind(i))
+		page_buttons[i].mouse_entered.connect(set_cursor_clickable)
+		page_buttons[i].mouse_exited.connect(set_cursor_normal)
 
 	for page in tutorial_pages:
 		page.mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -50,9 +65,59 @@ func _ready() -> void:
 		rich_text_label.custom_minimum_size = PAGE_CUSTOM_MIN
 		rich_text_label.custom_maximum_size = PAGE_CUSTOM_MAX
 
-	top_bar.gui_input.connect(_on_top_bar_input)
+	cursor_normal = load("res://assets/sprites/cursor/Normal-3.png")
+	cursor_hover = load("res://assets/sprites/cursor/Move_2-3.png")
+	cursor_drag = load("res://assets/sprites/cursor/Move_1-3.png")
+	cursor_clickable = load("res://assets/sprites/cursor/Link-3.png")
 
+	top_bar.gui_input.connect(_on_top_bar_input)
+	top_bar.mouse_entered.connect(_on_top_bar_mouse_entered)
+	top_bar.mouse_exited.connect(_on_top_bar_mouse_exited)
+
+	set_cursor_normal()
 	set_ui_state(UIState.TUTORIAL)
+
+
+func set_cursor_normal() -> void:
+	Input.set_custom_mouse_cursor(
+		cursor_normal,
+		Input.CURSOR_ARROW,
+		Vector2(8, 8)
+	)
+
+
+func set_cursor_hover() -> void:
+	Input.set_custom_mouse_cursor(
+		cursor_hover,
+		Input.CURSOR_ARROW,
+		Vector2(32, 32)
+	)
+
+
+func set_cursor_drag() -> void:
+	Input.set_custom_mouse_cursor(
+		cursor_drag,
+		Input.CURSOR_ARROW,
+		Vector2(32, 32)
+	)
+
+
+func set_cursor_clickable() -> void:
+	Input.set_custom_mouse_cursor(
+		cursor_clickable,
+		Input.CURSOR_ARROW,
+		Vector2(32, 8)
+	)
+
+
+func _on_top_bar_mouse_entered() -> void:
+	if not dragging:
+		set_cursor_hover()
+
+
+func _on_top_bar_mouse_exited() -> void:
+	if not dragging:
+		set_cursor_normal()
 
 
 func set_ui_state(new_state: UIState) -> void:
@@ -93,7 +158,6 @@ func _apply_minimized_state() -> void:
 	menu_button.disabled = true
 
 	page_buttons_container.visible = false
-	menu_panel.visible = false
 
 	menu_open = false
 
@@ -104,10 +168,11 @@ func _apply_minimized_state() -> void:
 	for button in page_buttons:
 		button.visible = false
 
+	set_cursor_normal()
+
 
 func apply_menu_state() -> void:
 	if current_state != UIState.TUTORIAL:
-		menu_panel.visible = false
 		page_buttons_container.visible = false
 
 		for page in tutorial_pages:
@@ -116,7 +181,6 @@ func apply_menu_state() -> void:
 
 		return
 
-	menu_panel.visible = menu_open
 	page_buttons_container.visible = menu_open
 
 	for i in range(tutorial_pages.size()):
@@ -170,8 +234,10 @@ func _on_top_bar_input(event: InputEvent) -> void:
 			if event.pressed:
 				dragging = true
 				drag_offset = global_position - event.global_position
+				set_cursor_drag()
 			else:
 				dragging = false
+				set_cursor_hover()
 
 	elif event is InputEventMouseMotion and dragging:
 		global_position = event.global_position + drag_offset
