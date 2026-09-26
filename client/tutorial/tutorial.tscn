@@ -23,11 +23,17 @@ corner_detail = 1
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_764ab"]
 bg_color = Color(0.105882354, 0.14117648, 0.14509805, 1)
-border_width_left = 1
-border_width_top = 1
-border_width_right = 1
-border_width_bottom = 1
-border_color = Color(1, 1, 1, 1)
+border_width_top = 400
+border_width_bottom = 2600
+border_color = Color(0.3647059, 0.69803923, 0.64705884, 0.3019608)
+border_blend = true
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxa7d"]
+bg_color = Color(0.20807177, 0.2644376, 0.2706986, 0.6862745)
+border_width_top = 34
+border_color = Color(0.3647059, 0.69803923, 0.64705884, 0.3019608)
+border_blend = true
 corner_detail = 1
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_764ab"]
@@ -83,47 +89,58 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_764ab")
 
+[node name="TopBar" type="Panel" parent="." unique_id=569886929]
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 480.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vxa7d")
+
 [node name="HelpMenuButton" type="Button" parent="." unique_id=41334009]
 z_index = 2
 layout_mode = 0
-offset_left = 8.0
+offset_left = 16.0
 offset_top = 8.0
-offset_right = 24.0
+offset_right = 40.0
 offset_bottom = 24.0
 theme_override_font_sizes/font_size = 8
 theme_override_styles/normal = ExtResource("5_1olk6")
 theme_override_styles/pressed = ExtResource("6_xgmmi")
 theme_override_styles/hover = ExtResource("7_adm3a")
+flat = true
 
 [node name="HSeparator" type="HSeparator" parent="HelpMenuButton" unique_id=1405071417]
-clip_contents = true
 layout_mode = 0
-offset_left = 3.0
-offset_top = 8.0
-offset_right = 13.0
+offset_left = 1.0
+offset_top = 7.0
+offset_right = 23.0
 offset_bottom = 9.0
 mouse_filter = 2
 theme_override_constants/separation = 0
 theme_override_styles/separator = SubResource("StyleBoxLine_764ab")
 
-[node name="HSeparator2" type="HSeparator" parent="HelpMenuButton" unique_id=561873527]
-clip_contents = true
+[node name="HSeparator2" type="HSeparator" parent="HelpMenuButton" unique_id=1968702681]
 layout_mode = 0
-offset_left = 4.0
-offset_top = 5.0
-offset_right = 12.0
-offset_bottom = 6.0
+offset_left = 1.0
+offset_top = 15.0
+offset_right = 23.0
+offset_bottom = 17.0
 mouse_filter = 2
 theme_override_constants/separation = 0
 theme_override_styles/separator = SubResource("StyleBoxLine_764ab")
 
-[node name="HSeparator3" type="HSeparator" parent="HelpMenuButton" unique_id=102467935]
-clip_contents = true
+[node name="HSeparator3" type="HSeparator" parent="HelpMenuButton" unique_id=1888669069]
 layout_mode = 0
-offset_left = 4.0
-offset_top = 11.0
-offset_right = 12.0
-offset_bottom = 12.0
+offset_left = 1.0
+offset_top = -1.0
+offset_right = 23.0
+offset_bottom = 1.0
 mouse_filter = 2
 theme_override_constants/separation = 0
 theme_override_styles/separator = SubResource("StyleBoxLine_764ab")
@@ -375,6 +392,7 @@ text = "Start"
 icon_alignment = 1
 
 [node name="MinimizeButton" type="Button" parent="." unique_id=553180294]
+z_index = 1
 layout_mode = 0
 offset_left = 456.0
 offset_top = 8.0
@@ -405,7 +423,6 @@ icon = ExtResource("8_xpfqi")
 expand_icon = true
 
 [node name="Page1" type="Control" parent="." unique_id=1146651962]
-visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Page1" unique_id=499704849]
@@ -447,7 +464,6 @@ theme_override_constants/separation = 0
 theme_override_styles/separator = SubResource("StyleBoxLine_764ab")
 
 [node name="HelpMenuButton" type="Button" parent="Page1" unique_id=1237745245]
-z_index = 2
 layout_mode = 0
 offset_left = 105.0
 offset_top = 134.0
