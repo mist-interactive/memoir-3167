@@ -12,6 +12,15 @@
 [ext_resource type="Texture2D" uid="uid://rtb43f6i1ud" path="res://assets/ui/dot-bold-highlight.svg" id="10_6gdf7"]
 [ext_resource type="Script" uid="uid://btu6vlirbmya1" path="res://client/tutorial/dashed_rectangle.gd" id="11_ay5pt"]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_01d67"]
+bg_color = Color(0.020126104, 0.032526605, 0.03412146, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 1, 1, 1)
+corner_detail = 1
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_764ab"]
 bg_color = Color(0.105882354, 0.14117648, 0.14509805, 1)
 border_width_left = 1
@@ -20,9 +29,6 @@ border_width_right = 1
 border_width_bottom = 1
 border_color = Color(1, 1, 1, 1)
 corner_detail = 1
-
-[sub_resource type="StyleBoxLine" id="StyleBoxLine_ik1hn"]
-color = Color(1, 1, 1, 1)
 
 [sub_resource type="StyleBoxLine" id="StyleBoxLine_764ab"]
 color = Color(1, 1, 1, 1)
@@ -37,18 +43,33 @@ border_width_bottom = 12
 border_color = Color(0.96035105, 0.96035105, 0.96035093, 0)
 border_blend = true
 
-[node name="Tutorial" type="Control" unique_id=1744084876 node_paths=PackedStringArray("minimize_button", "tutorial_button", "panel", "text", "page_buttons_container", "tutorial_pages", "page_buttons")]
+[node name="Tutorial" type="Control" unique_id=1744084876 node_paths=PackedStringArray("minimize_button", "tutorial_button", "menu_button", "panel", "menu_panel", "page_buttons_container", "tutorial_pages", "page_buttons")]
 z_index = 100
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_01d67")
 minimize_button = NodePath("MinimizeButton")
 tutorial_button = NodePath("TutorialButton")
+menu_button = NodePath("HelpMenuButton")
 panel = NodePath("Panel")
-text = NodePath("")
-page_buttons_container = NodePath("HBoxContainer")
+menu_panel = NodePath("MenuPanel")
+page_buttons_container = NodePath("GridContainer")
 tutorial_pages = [NodePath("Page1"), NodePath("Page2"), NodePath("Page3"), NodePath("Page4"), NodePath("Page5"), NodePath("Page6"), NodePath("Page7"), NodePath("Page8"), NodePath("Page9"), NodePath("Page10")]
-page_buttons = [NodePath("HBoxContainer/Button"), NodePath("HBoxContainer/Button2"), NodePath("HBoxContainer/Button3"), NodePath("HBoxContainer/Button4"), NodePath("HBoxContainer/Button5"), NodePath("HBoxContainer/Button6"), NodePath("HBoxContainer/Button7"), NodePath("HBoxContainer/Button8"), NodePath("HBoxContainer/Button9"), NodePath("HBoxContainer/Button10")]
+page_buttons = [NodePath("GridContainer/Button1"), NodePath("GridContainer/Button2"), NodePath("GridContainer/Button3"), NodePath("GridContainer/Button4"), NodePath("GridContainer/Button5"), NodePath("GridContainer/Button6"), NodePath("GridContainer/Button7"), NodePath("GridContainer/Button8"), NodePath("GridContainer/Button9"), NodePath("GridContainer/Button10"), NodePath("GridContainer/Button11"), NodePath("GridContainer/Button12"), NodePath("GridContainer/Button13"), NodePath("GridContainer/Button14"), NodePath("GridContainer/Button15"), NodePath("GridContainer/Button16"), NodePath("GridContainer/Button17"), NodePath("GridContainer/Button18")]
+
+[node name="MenuPanel" type="Panel" parent="." unique_id=2009945443]
+visible = false
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 480.0
+offset_bottom = 251.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_01d67")
 
 [node name="Panel" type="Panel" parent="." unique_id=698563448]
 layout_mode = 1
@@ -62,19 +83,68 @@ grow_vertical = 2
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_764ab")
 
-[node name="HBoxContainer" type="VBoxContainer" parent="." unique_id=1235104262]
-z_index = 1
+[node name="HelpMenuButton" type="Button" parent="." unique_id=41334009]
+z_index = 2
 layout_mode = 0
-offset_left = 1.0
-offset_top = 1.0
-offset_right = 48.0
-offset_bottom = 251.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 24.0
+offset_bottom = 24.0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = ExtResource("5_1olk6")
+theme_override_styles/pressed = ExtResource("6_xgmmi")
+theme_override_styles/hover = ExtResource("7_adm3a")
+
+[node name="HSeparator" type="HSeparator" parent="HelpMenuButton" unique_id=1405071417]
+clip_contents = true
+layout_mode = 0
+offset_left = 3.0
+offset_top = 8.0
+offset_right = 13.0
+offset_bottom = 9.0
 mouse_filter = 2
 theme_override_constants/separation = 0
+theme_override_styles/separator = SubResource("StyleBoxLine_764ab")
 
-[node name="Button" type="Button" parent="HBoxContainer" unique_id=1955560250]
-custom_minimum_size = Vector2(32, 24)
+[node name="HSeparator2" type="HSeparator" parent="HelpMenuButton" unique_id=561873527]
+clip_contents = true
+layout_mode = 0
+offset_left = 4.0
+offset_top = 5.0
+offset_right = 12.0
+offset_bottom = 6.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+theme_override_styles/separator = SubResource("StyleBoxLine_764ab")
+
+[node name="HSeparator3" type="HSeparator" parent="HelpMenuButton" unique_id=102467935]
+clip_contents = true
+layout_mode = 0
+offset_left = 4.0
+offset_top = 11.0
+offset_right = 12.0
+offset_bottom = 12.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+theme_override_styles/separator = SubResource("StyleBoxLine_764ab")
+
+[node name="GridContainer" type="GridContainer" parent="." unique_id=1248784971]
+visible = false
+z_index = 1
+layout_mode = 0
+offset_left = 32.0
+offset_right = 480.0
+offset_bottom = 250.0
+mouse_filter = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 3
+
+[node name="Button1" type="Button" parent="GridContainer" unique_id=1955560250]
+custom_minimum_size = Vector2(64, 24)
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 offset_transform_enabled = true
 theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
@@ -83,174 +153,226 @@ theme_override_styles/hover = ExtResource("4_yod4y")
 text = "Start"
 icon_alignment = 1
 
-[node name="VSeparator" type="HSeparator" parent="HBoxContainer" unique_id=406231262]
-z_index = 6
-custom_maximum_size = Vector2(46, 1)
+[node name="Button2" type="Button" parent="GridContainer" unique_id=1363031225]
+custom_minimum_size = Vector2(64, 24)
 layout_mode = 2
-mouse_filter = 2
-theme_override_styles/separator = SubResource("StyleBoxLine_ik1hn")
-
-[node name="Button2" type="Button" parent="HBoxContainer" unique_id=909655298]
-custom_minimum_size = Vector2(32, 24)
-layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 offset_transform_enabled = true
 theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "About"
+text = "Start"
 icon_alignment = 1
 
-[node name="VSeparator2" type="HSeparator" parent="HBoxContainer" unique_id=1170213349]
-z_index = 6
-custom_maximum_size = Vector2(46, 1)
+[node name="Button3" type="Button" parent="GridContainer" unique_id=708698516]
+custom_minimum_size = Vector2(64, 24)
 layout_mode = 2
-mouse_filter = 2
-theme_override_styles/separator = SubResource("StyleBoxLine_ik1hn")
-
-[node name="Button3" type="Button" parent="HBoxContainer" unique_id=523214745]
-custom_minimum_size = Vector2(32, 24)
-layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 offset_transform_enabled = true
 theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Info"
+text = "Start"
 icon_alignment = 1
 
-[node name="VSeparator3" type="HSeparator" parent="HBoxContainer" unique_id=1627592224]
-z_index = 6
-custom_maximum_size = Vector2(46, 1)
+[node name="Button4" type="Button" parent="GridContainer" unique_id=972347071]
+custom_minimum_size = Vector2(64, 24)
 layout_mode = 2
-mouse_filter = 2
-theme_override_styles/separator = SubResource("StyleBoxLine_ik1hn")
-
-[node name="Button4" type="Button" parent="HBoxContainer" unique_id=417217557]
-custom_minimum_size = Vector2(32, 24)
-layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 offset_transform_enabled = true
 theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Goal"
+text = "Start"
 icon_alignment = 1
 
-[node name="VSeparator4" type="HSeparator" parent="HBoxContainer" unique_id=180085521]
-z_index = 6
-custom_maximum_size = Vector2(46, 1)
+[node name="Button5" type="Button" parent="GridContainer" unique_id=258594844]
+custom_minimum_size = Vector2(64, 24)
 layout_mode = 2
-mouse_filter = 2
-theme_override_styles/separator = SubResource("StyleBoxLine_ik1hn")
-
-[node name="Button5" type="Button" parent="HBoxContainer" unique_id=1964274663]
-custom_minimum_size = Vector2(32, 24)
-layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 offset_transform_enabled = true
 theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Cards"
+text = "Start"
 icon_alignment = 1
 
-[node name="VSeparator5" type="HSeparator" parent="HBoxContainer" unique_id=1040982453]
-z_index = 6
-custom_maximum_size = Vector2(46, 1)
+[node name="Button6" type="Button" parent="GridContainer" unique_id=794168869]
+custom_minimum_size = Vector2(64, 24)
 layout_mode = 2
-mouse_filter = 2
-theme_override_styles/separator = SubResource("StyleBoxLine_ik1hn")
-
-[node name="Button6" type="Button" parent="HBoxContainer" unique_id=1194121295]
-custom_minimum_size = Vector2(32, 24)
-layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 offset_transform_enabled = true
 theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Turn"
+text = "Start"
 icon_alignment = 1
 
-[node name="VSeparator6" type="HSeparator" parent="HBoxContainer" unique_id=879320981]
-z_index = 6
-custom_maximum_size = Vector2(46, 1)
+[node name="Button7" type="Button" parent="GridContainer" unique_id=1413540167]
+custom_minimum_size = Vector2(64, 24)
 layout_mode = 2
-mouse_filter = 2
-theme_override_styles/separator = SubResource("StyleBoxLine_ik1hn")
-
-[node name="Button7" type="Button" parent="HBoxContainer" unique_id=1026025137]
-custom_minimum_size = Vector2(32, 24)
-layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 offset_transform_enabled = true
 theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Select"
+text = "Start"
 icon_alignment = 1
 
-[node name="VSeparator7" type="HSeparator" parent="HBoxContainer" unique_id=482439113]
-z_index = 6
-custom_maximum_size = Vector2(46, 1)
+[node name="Button8" type="Button" parent="GridContainer" unique_id=162367697]
+custom_minimum_size = Vector2(64, 24)
 layout_mode = 2
-mouse_filter = 2
-theme_override_styles/separator = SubResource("StyleBoxLine_ik1hn")
-
-[node name="Button8" type="Button" parent="HBoxContainer" unique_id=145483691]
-custom_minimum_size = Vector2(32, 24)
-layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 offset_transform_enabled = true
 theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Move"
+text = "Start"
 icon_alignment = 1
 
-[node name="VSeparator8" type="HSeparator" parent="HBoxContainer" unique_id=670201268]
-z_index = 6
-custom_maximum_size = Vector2(46, 1)
+[node name="Button9" type="Button" parent="GridContainer" unique_id=1049593327]
+custom_minimum_size = Vector2(64, 24)
 layout_mode = 2
-mouse_filter = 2
-theme_override_styles/separator = SubResource("StyleBoxLine_ik1hn")
-
-[node name="Button9" type="Button" parent="HBoxContainer" unique_id=1731987274]
-custom_minimum_size = Vector2(32, 24)
-layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 offset_transform_enabled = true
 theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Attack"
+text = "Start"
 icon_alignment = 1
 
-[node name="VSeparator9" type="HSeparator" parent="HBoxContainer" unique_id=1207596446]
-z_index = 6
-custom_maximum_size = Vector2(46, 1)
+[node name="Button10" type="Button" parent="GridContainer" unique_id=198499186]
+custom_minimum_size = Vector2(64, 24)
 layout_mode = 2
-mouse_filter = 2
-theme_override_styles/separator = SubResource("StyleBoxLine_ik1hn")
-
-[node name="Button10" type="Button" parent="HBoxContainer" unique_id=130477070]
-custom_minimum_size = Vector2(32, 24)
-layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 offset_transform_enabled = true
 theme_override_font_sizes/font_size = 12
 theme_override_styles/normal = ExtResource("2_vxa7d")
 theme_override_styles/pressed = ExtResource("3_tof3e")
 theme_override_styles/hover = ExtResource("4_yod4y")
-text = "Retreat"
+text = "Start"
 icon_alignment = 1
 
-[node name="VSeparator10" type="HSeparator" parent="HBoxContainer" unique_id=23330398]
-z_index = 6
-custom_maximum_size = Vector2(46, 1)
+[node name="Button11" type="Button" parent="GridContainer" unique_id=1859511656]
+custom_minimum_size = Vector2(64, 24)
 layout_mode = 2
-mouse_filter = 2
-theme_override_styles/separator = SubResource("StyleBoxLine_ik1hn")
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Start"
+icon_alignment = 1
+
+[node name="Button12" type="Button" parent="GridContainer" unique_id=2103025049]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Start"
+icon_alignment = 1
+
+[node name="Button13" type="Button" parent="GridContainer" unique_id=1150482153]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Start"
+icon_alignment = 1
+
+[node name="Button14" type="Button" parent="GridContainer" unique_id=277113990]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Start"
+icon_alignment = 1
+
+[node name="Button15" type="Button" parent="GridContainer" unique_id=1792824274]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Start"
+icon_alignment = 1
+
+[node name="Button16" type="Button" parent="GridContainer" unique_id=931681832]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Start"
+icon_alignment = 1
+
+[node name="Button17" type="Button" parent="GridContainer" unique_id=1115210823]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Start"
+icon_alignment = 1
+
+[node name="Button18" type="Button" parent="GridContainer" unique_id=1062811598]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Start"
+icon_alignment = 1
 
 [node name="MinimizeButton" type="Button" parent="." unique_id=553180294]
 layout_mode = 0
@@ -283,6 +405,7 @@ icon = ExtResource("8_xpfqi")
 expand_icon = true
 
 [node name="Page1" type="Control" parent="." unique_id=1146651962]
+visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Page1" unique_id=499704849]
@@ -299,15 +422,15 @@ text = "Let's learn how to play Memoir '67!
 Tips:
 
 • Use       to minimize tutorial explanations if needed.
-• Navigate tutorial pages with the buttons on left"
+• Use       to open a menu with all tutorial buttons."
 autowrap_mode = 1
 
 [node name="MinimizeButton" type="Button" parent="Page1" unique_id=2070763863]
 layout_mode = 0
 offset_left = 105.0
-offset_top = 112.0
+offset_top = 110.0
 offset_right = 121.0
-offset_bottom = 128.0
+offset_bottom = 126.0
 theme_override_font_sizes/font_size = 8
 theme_override_styles/normal = ExtResource("5_1olk6")
 theme_override_styles/pressed = ExtResource("6_xgmmi")
@@ -319,6 +442,51 @@ offset_left = 4.0
 offset_top = 6.0
 offset_right = 12.0
 offset_bottom = 10.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+theme_override_styles/separator = SubResource("StyleBoxLine_764ab")
+
+[node name="HelpMenuButton" type="Button" parent="Page1" unique_id=1237745245]
+z_index = 2
+layout_mode = 0
+offset_left = 105.0
+offset_top = 134.0
+offset_right = 121.0
+offset_bottom = 150.0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = ExtResource("5_1olk6")
+theme_override_styles/pressed = ExtResource("6_xgmmi")
+theme_override_styles/hover = ExtResource("7_adm3a")
+
+[node name="HSeparator" type="HSeparator" parent="Page1/HelpMenuButton" unique_id=1949212032]
+clip_contents = true
+layout_mode = 0
+offset_left = 3.0
+offset_top = 8.0
+offset_right = 13.0
+offset_bottom = 9.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+theme_override_styles/separator = SubResource("StyleBoxLine_764ab")
+
+[node name="HSeparator2" type="HSeparator" parent="Page1/HelpMenuButton" unique_id=651918985]
+clip_contents = true
+layout_mode = 0
+offset_left = 4.0
+offset_top = 5.0
+offset_right = 12.0
+offset_bottom = 6.0
+mouse_filter = 2
+theme_override_constants/separation = 0
+theme_override_styles/separator = SubResource("StyleBoxLine_764ab")
+
+[node name="HSeparator3" type="HSeparator" parent="Page1/HelpMenuButton" unique_id=1210730455]
+clip_contents = true
+layout_mode = 0
+offset_left = 4.0
+offset_top = 11.0
+offset_right = 12.0
+offset_bottom = 12.0
 mouse_filter = 2
 theme_override_constants/separation = 0
 theme_override_styles/separator = SubResource("StyleBoxLine_764ab")
