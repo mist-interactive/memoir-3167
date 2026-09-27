@@ -11,30 +11,50 @@
 [ext_resource type="StyleBox" uid="uid://coxriq677sheq" path="res://assets/ui/tutorial/minimize_button_hover.tres" id="7_adm3a"]
 [ext_resource type="Texture2D" uid="uid://e540m44l5f10" path="res://assets/ui/icons/book_open.png" id="8_xpfqi"]
 [ext_resource type="Texture2D" uid="uid://bklyrlmknh4ui" path="res://assets/sprites/hex/hex_tile_set_128x128.png" id="9_ld8p5"]
-[ext_resource type="Texture2D" path="res://assets/ui/dot-bold-highlight.svg" id="10_6gdf7"]
+[ext_resource type="Texture2D" uid="uid://barrtf6onnmos" path="res://assets/ui/dot-bold-highlight.svg" id="10_6gdf7"]
 [ext_resource type="Script" uid="uid://btu6vlirbmya1" path="res://client/tutorial/dashed_rectangle.gd" id="11_ay5pt"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxa7d"]
-bg_color = Color(0.34781694, 0.34781697, 0.3478169, 0.6862745)
+bg_color = Color(0.39308554, 0.3930855, 0.39308548, 0.85490197)
 border_width_top = 34
-border_color = Color(0.23137255, 0.23137255, 0.23137255, 0.5058824)
+border_color = Color(0.28235295, 0.28235295, 0.28235295, 0.9098039)
 border_blend = true
 corner_detail = 1
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ekcev"]
-border_width_left = 12
-border_width_right = 12
-border_color = Color(0.75377923, 0.81788945, 0.7787571, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tof3e"]
+bg_color = Color(0.22745098, 0.22745098, 0.22745098, 0.6862745)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.09019608, 0.09019608, 0.09019608, 0.44313726)
 border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yod4y"]
+bg_color = Color(0.60392326, 0.60392326, 0.6039232, 0.56078434)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(1, 1, 1, 1)
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1olk6"]
+bg_color = Color(0.20751238, 0.20751238, 0.20751238, 0.56078434)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ekcev"]
+bg_color = Color(1, 1, 1, 1)
 corner_radius_top_left = 10
 corner_radius_top_right = 10
 corner_radius_bottom_right = 10
 corner_radius_bottom_left = 10
 corner_detail = 20
-
-[sub_resource type="StyleBoxLine" id="StyleBoxLine_764ab"]
-color = Color(1, 1, 1, 0.37254903)
-thickness = 2
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ik1hn"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -45,14 +65,18 @@ border_width_bottom = 12
 border_color = Color(0.96035105, 0.96035105, 0.96035093, 0)
 border_blend = true
 
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_764ab"]
+color = Color(1, 1, 1, 0.37254903)
+thickness = 2
+
 [node name="Tutorial" type="Control" unique_id=1744084876 node_paths=PackedStringArray("minimize_button", "tutorial_button", "menu_button", "panel", "top_bar", "page_buttons_container", "tutorial_pages", "page_buttons")]
 z_index = 100
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_01d67")
-minimize_button = NodePath("MinimizeButton")
+minimize_button = NodePath("TopBar/MinimizeButton")
 tutorial_button = NodePath("TutorialButton")
-menu_button = NodePath("HelpMenuButton")
+menu_button = NodePath("TopBar/HelpMenuButton")
 panel = NodePath("Panel")
 top_bar = NodePath("TopBar")
 page_buttons_container = NodePath("GridContainer")
@@ -78,62 +102,49 @@ anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_right = 480.0
-offset_bottom = 32.0
+offset_bottom = 24.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_vxa7d")
 
-[node name="HelpMenuButton" type="Button" parent="." unique_id=41334009]
+[node name="HelpMenuButton" type="Button" parent="TopBar" unique_id=41334009]
 z_index = 3
 layout_mode = 0
-offset_left = 4.0
-offset_top = 4.0
-offset_right = 28.0
-offset_bottom = 28.0
+offset_right = 24.0
+offset_bottom = 24.0
 theme_override_font_sizes/font_size = 8
-theme_override_styles/normal = ExtResource("5_1olk6")
-theme_override_styles/pressed = ExtResource("6_xgmmi")
-theme_override_styles/hover = ExtResource("7_adm3a")
+theme_override_styles/normal = SubResource("StyleBoxFlat_tof3e")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_yod4y")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1olk6")
 icon = ExtResource("6_tof3e")
 flat = true
 icon_alignment = 1
 expand_icon = true
 
-[node name="Panel" type="Panel" parent="HelpMenuButton" unique_id=1728842736]
-visible = false
+[node name="MinimizeButton" type="Button" parent="TopBar" unique_id=553180294]
+z_index = 1
 layout_mode = 0
-offset_left = 8.0
-offset_top = 14.0
-offset_right = 32.0
-offset_bottom = 18.0
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ekcev")
+offset_left = 456.0
+offset_right = 480.0
+offset_bottom = 24.0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = ExtResource("5_1olk6")
+theme_override_styles/pressed = ExtResource("6_xgmmi")
+theme_override_styles/hover = ExtResource("7_adm3a")
 
-[node name="Panel2" type="Panel" parent="HelpMenuButton" unique_id=114426201]
-visible = false
+[node name="Panel" type="Panel" parent="TopBar/MinimizeButton" unique_id=755935779]
 layout_mode = 0
-offset_left = 8.0
-offset_top = 7.0
-offset_right = 32.0
-offset_bottom = 11.0
-mouse_filter = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_ekcev")
-
-[node name="Panel3" type="Panel" parent="HelpMenuButton" unique_id=176248063]
-visible = false
-layout_mode = 0
-offset_left = 8.0
-offset_top = 21.0
-offset_right = 32.0
-offset_bottom = 25.0
+offset_left = 4.0
+offset_top = 11.0
+offset_right = 20.0
+offset_bottom = 13.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ekcev")
 
 [node name="GridContainer" type="GridContainer" parent="." unique_id=1248784971]
-visible = false
 z_index = 1
 layout_mode = 0
-offset_top = 32.0
+offset_top = 24.0
 offset_right = 480.0
 offset_bottom = 256.0
 mouse_filter = 2
@@ -375,29 +386,6 @@ theme_override_styles/hover = ExtResource("4_yod4y")
 text = "Turn end"
 icon_alignment = 1
 
-[node name="MinimizeButton" type="Button" parent="." unique_id=553180294]
-z_index = 1
-layout_mode = 0
-offset_left = 456.0
-offset_top = 8.0
-offset_right = 472.0
-offset_bottom = 24.0
-theme_override_font_sizes/font_size = 8
-theme_override_styles/normal = ExtResource("5_1olk6")
-theme_override_styles/pressed = ExtResource("6_xgmmi")
-theme_override_styles/hover = ExtResource("7_adm3a")
-flat = true
-
-[node name="HSeparator2" type="HSeparator" parent="MinimizeButton" unique_id=773835473]
-layout_mode = 0
-offset_left = 1.0
-offset_top = 7.0
-offset_right = 15.0
-offset_bottom = 9.0
-mouse_filter = 2
-theme_override_constants/separation = 0
-theme_override_styles/separator = SubResource("StyleBoxLine_764ab")
-
 [node name="TutorialButton" type="Button" parent="." unique_id=1384915526]
 top_level = true
 z_index = -1
@@ -410,6 +398,7 @@ icon = ExtResource("8_xpfqi")
 expand_icon = true
 
 [node name="Page1" type="Control" parent="." unique_id=1146651962]
+visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Page1" unique_id=499704849]
@@ -417,9 +406,9 @@ custom_minimum_size = Vector2(448, 224)
 custom_maximum_size = Vector2(448, 224)
 layout_mode = 0
 offset_left = 16.0
-offset_top = 32.0
-offset_right = 448.0
-offset_bottom = 256.0
+offset_top = 24.0
+offset_right = 464.0
+offset_bottom = 248.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
@@ -427,7 +416,10 @@ text = "Let's learn how to play Memoir '67!
 Tips:
 
 • Use       to minimize tutorial explanations if needed.
-• Use       to open a menu with all tutorial buttons."
+• Use       to open a menu with all tutorial buttons.
+• Press [b]M[/b] to open the tutorial for your current
+situation
+"
 autowrap_mode = 1
 
 [node name="MinimizeButton" type="Button" parent="Page1" unique_id=2070763863]

@@ -1,5 +1,7 @@
 extends Control
 
+@onready var matchState: MatchState = $"../../../matchState"
+
 @export var minimize_button: Button
 @export var tutorial_button: Button
 @export var menu_button: Button
@@ -77,6 +79,39 @@ func _ready() -> void:
 	set_cursor_normal()
 	set_ui_state(UIState.TUTORIAL)
 
+func _unhandled_key_input(event: InputEvent) -> void:
+	if event is InputEventKey:
+		if event.pressed and not event.echo and event.keycode == KEY_M:
+			open_tutorial_for_current_phase()
+			get_viewport().set_input_as_handled()
+
+func open_tutorial_for_current_phase() -> void:
+	var page_index := get_tutorial_page_for_phase()
+	if page_index < 0 or page_index >= tutorial_pages.size():
+		return
+	current_page = page_index
+	menu_open = false
+	set_ui_state(UIState.TUTORIAL)
+
+func get_tutorial_page_for_phase() -> int:
+	match matchState.phase:
+		enums.TurnPhase.SPAWN_UNITS:
+			return 0
+		enums.TurnPhase.DRAW_HAND:
+			return 1
+		enums.TurnPhase.PLAY_CARD:
+			return 2
+		enums.TurnPhase.SELECT:
+			return 3
+		enums.TurnPhase.MOVE:
+			return 4
+		enums.TurnPhase.ATTACK:
+			return 5
+		enums.TurnPhase.RESOLVE_RETREAT:
+			return 5
+		enums.TurnPhase.DRAW_CARD:
+			return 6
+	return 0
 
 func set_cursor_normal() -> void:
 	Input.set_custom_mouse_cursor(
@@ -85,14 +120,12 @@ func set_cursor_normal() -> void:
 		Vector2(8, 8)
 	)
 
-
 func set_cursor_hover() -> void:
 	Input.set_custom_mouse_cursor(
 		cursor_hover,
 		Input.CURSOR_ARROW,
 		Vector2(32, 32)
 	)
-
 
 func set_cursor_drag() -> void:
 	Input.set_custom_mouse_cursor(
@@ -101,7 +134,6 @@ func set_cursor_drag() -> void:
 		Vector2(32, 32)
 	)
 
-
 func set_cursor_clickable() -> void:
 	Input.set_custom_mouse_cursor(
 		cursor_clickable,
@@ -109,16 +141,13 @@ func set_cursor_clickable() -> void:
 		Vector2(32, 8)
 	)
 
-
 func _on_top_bar_mouse_entered() -> void:
 	if not dragging:
 		set_cursor_hover()
 
-
 func _on_top_bar_mouse_exited() -> void:
 	if not dragging:
 		set_cursor_normal()
-
 
 func set_ui_state(new_state: UIState) -> void:
 	current_state = new_state
@@ -129,7 +158,6 @@ func set_ui_state(new_state: UIState) -> void:
 
 		UIState.MINIMIZED:
 			_apply_minimized_state()
-
 
 func _apply_tutorial_state() -> void:
 	panel.visible = true
@@ -145,7 +173,6 @@ func _apply_tutorial_state() -> void:
 		button.visible = true
 
 	apply_menu_state()
-
 
 func _apply_minimized_state() -> void:
 	panel.visible = false
@@ -170,7 +197,6 @@ func _apply_minimized_state() -> void:
 
 	set_cursor_normal()
 
-
 func apply_menu_state() -> void:
 	if current_state != UIState.TUTORIAL:
 		page_buttons_container.visible = false
@@ -194,39 +220,29 @@ func apply_menu_state() -> void:
 		else:
 			page.process_mode = Node.PROCESS_MODE_DISABLED
 
-
 func show_page() -> void:
 	apply_menu_state()
-
 
 func _on_page_button_pressed(page_index: int) -> void:
 	if page_index >= 0 and page_index < tutorial_pages.size():
 		current_page = page_index
 		menu_open = false
-
 		apply_menu_state()
-
 
 func _on_minimize_pressed() -> void:
 	set_ui_state(UIState.MINIMIZED)
 
-
 func _on_tutorial_pressed() -> void:
 	set_ui_state(UIState.TUTORIAL)
-
 	menu_open = false
-
 	for page in tutorial_pages:
 		page.visible = false
 		page.process_mode = Node.PROCESS_MODE_DISABLED
-
 	apply_menu_state()
-
 
 func _on_menu_pressed() -> void:
 	menu_open = !menu_open
 	apply_menu_state()
-
 
 func _on_top_bar_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
@@ -238,6 +254,5 @@ func _on_top_bar_input(event: InputEvent) -> void:
 			else:
 				dragging = false
 				set_cursor_hover()
-
 	elif event is InputEventMouseMotion and dragging:
 		global_position = event.global_position + drag_offset
