@@ -36,7 +36,6 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if !current_state:
-		print("here")
 		return
 	if event is InputEventMouseButton and event.pressed and !attack_in_progress:
 		var click_position: Vector2 = map_ground_layer.get_global_mouse_position()
