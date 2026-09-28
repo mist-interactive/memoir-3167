@@ -8,7 +8,6 @@ type = 2
 blocks_line_of_sight = true
 infantry_max_movement_on_terrain = 1
 armor_max_movement_on_terrain = 1
-can_move_in_and_fight = 3
 infantry_defense_modifier = -1
 armor_defense_modifier = -2
 metadata/_custom_type_script = "uid://u76o6qpu8r0"
