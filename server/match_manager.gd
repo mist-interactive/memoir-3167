@@ -30,7 +30,20 @@ func create_new_match(match_id: int) -> void:
 	matches[match_id] = matchNode
 	matchNode.logger.info("Created match")
 	matchNode.match_completed.connect(_on_match_completed)
+	matchNode.match_abandoned.connect(_on_match_abandoned)
 
+func _on_match_abandoned(match_id: int, uuids: Array):
+	for uuid: int in uuids:
+		var peer_id: int = get_peer_id(uuid)
+		if peer_id != -1:
+			uuid_to_peer.erase(uuid)
+		if peer_id != -1:
+			peer_to_match.erase(peer_id)
+	matches[match_id].queue_free()
+	matches.erase(match_id)
+	memoir_api.match_abandoned(match_id)
+
+	
 func _on_match_completed(result: MatchResult) -> void:
 	match_result[result.match_id] = result
 	for uuid: int in result.uuids:
