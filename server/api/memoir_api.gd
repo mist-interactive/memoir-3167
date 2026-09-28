@@ -42,6 +42,17 @@ func post_match_results(result: MatchResult) -> void:
 		return
 	logger.info("response: ", res.to_dict())
 
+func match_abandoned(match_id: int) -> void:
+	if OS.has_feature("editor"):
+		return
+	var body: Dictionary = {
+		"status": "abandoned"
+	}
+	var res: Response = await patch("/internal/matches/%d" % match_id, body, ["x-api-key: %s" % api_key])
+	if !res.success:
+		logger.error("failed to post match result", res.to_dict())
+		return
+
 func send_heartbeat(match_id: int) -> void:
 	if OS.has_feature("editor"):
 		return

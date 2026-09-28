@@ -13,6 +13,7 @@ var config: Dictionary
 @onready var session_manager: SessionManager = $"./SessionManager"
 
 signal match_completed(resut: MatchResult)
+signal match_abandoned(match_id: int, uuids: Array)
 
 func _ready() -> void:
 	assert(match_manager != null)
@@ -22,6 +23,9 @@ func _ready() -> void:
 	hearbeat.name = "heartbeat"
 	add_child(hearbeat)
 	hearbeat.start(config.match.heartbeat)
+	var abandonment_timer = get_tree().create_timer(config.match.player_rejoin_window)
+	abandonment_timer.timeout.connect(_on_abandonment_timer_expired)
+	abandonment_timer.timeout
 
 func _init(matchId: int) -> void:
 	name = "Match_" + str(matchId)
@@ -282,3 +286,7 @@ func monitor_game_abandonment() -> void:
 	if has_player_abandoned_game:
 		var other_side: enums.Side = enums.Side.GREEN if player_who_abandoned_game.side == enums.Side.RED else enums.Side.RED
 		matchState.scores[other_side] = config.match.max_score
+
+func _on_abandonment_timer_expired() -> void:
+	if session_manager.get_sessions().size() != 2 || matchState.state != matchState.STATE.PAUSED && matchState.state != matchState.STATE.IN_PROGRESS:
+		match_abandoned.emit(matchState.matchId, session_manager.get_sessions().keys())
