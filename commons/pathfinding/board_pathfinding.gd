@@ -127,6 +127,10 @@ static func _hex_line_epsilon(a: Vector2i, b: Vector2i, epsilon: Vector3) -> Arr
 	return result
 
 static func _is_line_clear(line: Array[Vector2i], from_hex: Vector2i, to_hex: Vector2i, max_sight_elevation: float, map: HexGrid, occupied_coords: Dictionary) -> bool:
+	var from_hex_cell: HexCell = map.get_cell(from_hex)
+	if !from_hex_cell:
+		return false
+	var from_hex_type: HexCell.Ground = from_hex_cell.ground
 	for coord in line:
 		if coord == from_hex || coord == to_hex:
 			continue
@@ -140,5 +144,9 @@ static func _is_line_clear(line: Array[Vector2i], from_hex: Vector2i, to_hex: Ve
 			return false
 		var current_elevation = terrain_stats.elevation
 		if current_elevation > max_sight_elevation:
+			return false
+		if from_hex_type == HexCell.Ground.HILL && terrain_stats.get_type() == HexCell.Ground.HILL:
+			continue
+		if terrain_stats.blocks_line_of_sight:
 			return false
 	return true

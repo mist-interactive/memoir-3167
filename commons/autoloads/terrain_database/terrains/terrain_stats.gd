@@ -5,6 +5,8 @@ extends Resource
 
 @export_group("Type and LOS")
 @export var type: HexCell.Ground
+func get_type() -> HexCell.Ground:
+	return type
 
 @export_range(0, 2) var elevation: int = 0
 
