@@ -8,7 +8,9 @@
 [ext_resource type="StyleBox" uid="uid://bvm1c0r1aq8kl" path="res://assets/ui/tutorial/minimize_button.tres" id="5_1olk6"]
 [ext_resource type="Texture2D" uid="uid://b38hdgbvl7a1i" path="res://assets/ui/icons/grid.png" id="6_tof3e"]
 [ext_resource type="StyleBox" uid="uid://dqcuyiwe2762i" path="res://assets/ui/tutorial/minimize_button_pressed.tres" id="6_xgmmi"]
+[ext_resource type="Texture2D" uid="uid://che41u85asu1a" path="res://assets/ui/icons/arrow-right-02.png" id="7_1olk6"]
 [ext_resource type="StyleBox" uid="uid://coxriq677sheq" path="res://assets/ui/tutorial/minimize_button_hover.tres" id="7_adm3a"]
+[ext_resource type="Texture2D" uid="uid://cbhnpuse8knwx" path="res://assets/ui/icons/arrow-left-02.png" id="8_xgmmi"]
 [ext_resource type="Texture2D" uid="uid://e540m44l5f10" path="res://assets/ui/icons/book_open.png" id="8_xpfqi"]
 [ext_resource type="Texture2D" uid="uid://bklyrlmknh4ui" path="res://assets/sprites/hex/hex_tile_set_128x128.png" id="9_ld8p5"]
 [ext_resource type="Texture2D" uid="uid://barrtf6onnmos" path="res://assets/ui/dot-bold-highlight.svg" id="10_6gdf7"]
@@ -59,13 +61,13 @@ corner_detail = 20
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ik1hn"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
 border_width_left = 12
-border_width_top = 36
+border_width_top = 12
 border_width_right = 12
 border_width_bottom = 12
 border_color = Color(0.96035105, 0.96035105, 0.96035093, 0)
 border_blend = true
 
-[node name="Tutorial" type="Control" unique_id=1744084876 node_paths=PackedStringArray("minimize_button", "tutorial_button", "menu_button", "panel", "top_bar", "page_buttons_container", "tutorial_pages", "page_buttons")]
+[node name="Tutorial" type="Control" unique_id=1744084876 node_paths=PackedStringArray("minimize_button", "tutorial_button", "menu_button", "previous_page_button", "next_page_button", "panel", "top_bar", "page_buttons_container", "tutorial_pages", "page_buttons", "page_moving_units_buttons", "page_moving_units_page_targets", "page_moving_units_return_pages", "help_button_target_pages")]
 z_index = 100
 layout_mode = 3
 anchors_preset = 0
@@ -73,11 +75,17 @@ script = ExtResource("1_01d67")
 minimize_button = NodePath("TopBar/MinimizeButton")
 tutorial_button = NodePath("TutorialButton")
 menu_button = NodePath("TopBar/HelpMenuButton")
+previous_page_button = NodePath("TopBar/PreviousPageButton")
+next_page_button = NodePath("TopBar/NextPageButton")
 panel = NodePath("Panel")
 top_bar = NodePath("TopBar")
 page_buttons_container = NodePath("GridContainer")
 tutorial_pages = [NodePath("Pages/Start"), NodePath("Pages/About"), NodePath("Pages/Info"), NodePath("Pages/Goal"), NodePath("Pages/Cards"), NodePath("Pages/Turn"), NodePath("Pages/Selecting units"), NodePath("Pages/Moving units"), NodePath("Pages/Attacking"), NodePath("Pages/Dice"), NodePath("Pages/Retreat"), NodePath("Pages/Units"), NodePath("Pages/Infantry"), NodePath("Pages/Tanks"), NodePath("Pages/Artillery"), NodePath("Pages/Terrain"), NodePath("Pages/Line of sight"), NodePath("Pages/Turn end")]
 page_buttons = [NodePath("GridContainer/Button1"), NodePath("GridContainer/Button2"), NodePath("GridContainer/Button3"), NodePath("GridContainer/Button4"), NodePath("GridContainer/Button5"), NodePath("GridContainer/Button6"), NodePath("GridContainer/Button7"), NodePath("GridContainer/Button8"), NodePath("GridContainer/Button9"), NodePath("GridContainer/Button10"), NodePath("GridContainer/Button11"), NodePath("GridContainer/Button12"), NodePath("GridContainer/Button13"), NodePath("GridContainer/Button14"), NodePath("GridContainer/Button15"), NodePath("GridContainer/Button16"), NodePath("GridContainer/Button17"), NodePath("GridContainer/Button18")]
+page_moving_units_buttons = [NodePath("Pages/Moving units/Infantry"), NodePath("Pages/Moving units/Tanks"), NodePath("Pages/Moving units/Artillery")]
+page_moving_units_page_targets = [NodePath("Pages/Infantry"), NodePath("Pages/Tanks"), NodePath("Pages/Artillery")]
+page_moving_units_return_pages = [NodePath("Pages/Moving units"), NodePath("Pages/Moving units"), NodePath("Pages/Moving units")]
+help_button_target_pages = [NodePath("Pages/Cards"), NodePath("Pages/Selecting units"), NodePath("Pages/Moving units"), NodePath("Pages/Attacking"), NodePath("Pages/Retreat"), NodePath("Pages/Turn end")]
 
 [node name="Panel" type="Panel" parent="." unique_id=698563448]
 layout_mode = 1
@@ -136,6 +144,36 @@ offset_right = 20.0
 offset_bottom = 13.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ekcev")
+
+[node name="NextPageButton" type="Button" parent="TopBar" unique_id=1276541451]
+z_index = 3
+layout_mode = 0
+offset_left = 248.0
+offset_right = 272.0
+offset_bottom = 24.0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_tof3e")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_yod4y")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1olk6")
+icon = ExtResource("7_1olk6")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="PreviousPageButton" type="Button" parent="TopBar" unique_id=1283273046]
+z_index = 3
+layout_mode = 0
+offset_left = 208.0
+offset_right = 232.0
+offset_bottom = 24.0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_tof3e")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_yod4y")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1olk6")
+icon = ExtResource("8_xgmmi")
+flat = true
+icon_alignment = 1
+expand_icon = true
 
 [node name="GridContainer" type="GridContainer" parent="." unique_id=1248784971]
 visible = false
@@ -417,6 +455,7 @@ Tips:
 
 • Use       to minimize tutorial explanations if needed.
 • Use       to open a menu with all tutorial buttons.
+• Use        to navigate tutorial pages
 • Press [b]M[/b] to open the tutorial for your current
 situation
 "
@@ -426,9 +465,9 @@ autowrap_mode = 1
 z_index = 3
 layout_mode = 0
 offset_left = 70.0
-offset_top = 128.0
+offset_top = 130.0
 offset_right = 94.0
-offset_bottom = 152.0
+offset_bottom = 154.0
 theme_override_font_sizes/font_size = 8
 theme_override_styles/normal = SubResource("StyleBoxFlat_tof3e")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_yod4y")
@@ -442,9 +481,9 @@ expand_icon = true
 z_index = 1
 layout_mode = 0
 offset_left = 70.0
-offset_top = 152.0
+offset_top = 107.0
 offset_right = 94.0
-offset_bottom = 176.0
+offset_bottom = 131.0
 theme_override_font_sizes/font_size = 8
 theme_override_styles/normal = ExtResource("5_1olk6")
 theme_override_styles/pressed = ExtResource("6_xgmmi")
@@ -459,6 +498,38 @@ offset_bottom = 13.0
 mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ekcev")
 
+[node name="NextPageButton" type="Button" parent="Pages/Start" unique_id=1676985876]
+z_index = 3
+layout_mode = 0
+offset_left = 80.0
+offset_top = 152.0
+offset_right = 104.0
+offset_bottom = 176.0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_tof3e")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_yod4y")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1olk6")
+icon = ExtResource("7_1olk6")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="PreviousPageButton" type="Button" parent="Pages/Start" unique_id=969889907]
+z_index = 3
+layout_mode = 0
+offset_left = 64.0
+offset_top = 152.0
+offset_right = 88.0
+offset_bottom = 176.0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_tof3e")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_yod4y")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1olk6")
+icon = ExtResource("8_xgmmi")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
 [node name="About" type="Control" parent="Pages" unique_id=1144873852]
 visible = false
 anchors_preset = 0
@@ -468,9 +539,9 @@ custom_minimum_size = Vector2(448, 224)
 custom_maximum_size = Vector2(448, 224)
 layout_mode = 0
 offset_left = 32.0
-offset_top = 6.0
-offset_right = 464.0
-offset_bottom = 256.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 248.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
@@ -487,8 +558,9 @@ custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 224)
 layout_mode = 0
 offset_left = 48.0
-offset_right = 560.0
-offset_bottom = 256.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 248.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
@@ -503,10 +575,10 @@ autowrap_mode = 1
 
 [node name="TextureRect" type="TextureRect" parent="Pages/Info" unique_id=1604452279]
 layout_mode = 0
-offset_left = 232.0
-offset_top = 200.0
-offset_right = 464.0
-offset_bottom = 232.0
+offset_left = 240.0
+offset_top = 216.0
+offset_right = 472.0
+offset_bottom = 248.0
 texture = ExtResource("9_ld8p5")
 expand_mode = 1
 
@@ -519,14 +591,16 @@ custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 224)
 layout_mode = 0
 offset_left = 48.0
-offset_right = 560.0
-offset_bottom = 256.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 248.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
 text = "Your goal is to be the first to get a certain number of
 [color=red]points[/color]. The number required varies from scenario
-to scenario, but this one, BLANK, requires 5.
+to scenario, but this one,
+Invasion Of The Mist Forest, requires 5.
 
 You get points by destroying enemy units."
 autowrap_mode = 1
@@ -539,10 +613,10 @@ anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 280.0
-offset_top = 192.0
-offset_right = 456.0
-offset_bottom = 224.0
+offset_left = 296.0
+offset_top = 216.0
+offset_right = 472.0
+offset_bottom = 248.0
 grow_horizontal = 0
 grow_vertical = 0
 
@@ -595,8 +669,9 @@ custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 224)
 layout_mode = 0
 offset_left = 48.0
+offset_top = 24.0
 offset_right = 480.0
-offset_bottom = 256.0
+offset_bottom = 248.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
@@ -619,8 +694,9 @@ custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 224)
 layout_mode = 0
 offset_left = 48.0
-offset_right = 560.0
-offset_bottom = 256.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 248.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
@@ -643,8 +719,9 @@ custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 224)
 layout_mode = 0
 offset_left = 48.0
-offset_right = 560.0
-offset_bottom = 256.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 248.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
@@ -663,15 +740,69 @@ custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 224)
 layout_mode = 0
 offset_left = 48.0
-offset_right = 560.0
-offset_bottom = 256.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 248.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
 text = "Next, we have to move our units. Each unit moves
 a little differently.
-[b]Armor units[/b] can move up to 3 hexes and can battle after that
-(once all movement orders have been carried out)."
+(see individual unit pages for reference)
+Attacking commences once all movement orders
+have been carried out."
 autowrap_mode = 1
+
+[node name="Infantry" type="Button" parent="Pages/Moving units" unique_id=279453091]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 0
+offset_left = 144.0
+offset_top = 176.0
+offset_right = 208.0
+offset_bottom = 216.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Infantry"
+icon_alignment = 1
+
+[node name="Tanks" type="Button" parent="Pages/Moving units" unique_id=140972645]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 0
+offset_left = 208.0
+offset_top = 176.0
+offset_right = 272.0
+offset_bottom = 216.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Tanks"
+icon_alignment = 1
+
+[node name="Artillery" type="Button" parent="Pages/Moving units" unique_id=772337076]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 0
+offset_left = 272.0
+offset_top = 176.0
+offset_right = 336.0
+offset_bottom = 216.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Artillery"
+icon_alignment = 1
 
 [node name="Attacking" type="Control" parent="Pages" unique_id=220172786]
 visible = false
@@ -682,8 +813,9 @@ custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 224)
 layout_mode = 0
 offset_left = 48.0
-offset_right = 560.0
-offset_bottom = 256.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 248.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
@@ -703,8 +835,9 @@ custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 250)
 layout_mode = 0
 offset_left = 48.0
+offset_top = 24.0
 offset_right = 480.0
-offset_bottom = 256.0
+offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
@@ -724,8 +857,9 @@ custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 250)
 layout_mode = 0
 offset_left = 48.0
+offset_top = 24.0
 offset_right = 480.0
-offset_bottom = 256.0
+offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
@@ -745,8 +879,9 @@ custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 250)
 layout_mode = 0
 offset_left = 48.0
+offset_top = 24.0
 offset_right = 480.0
-offset_bottom = 256.0
+offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
@@ -766,8 +901,9 @@ custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 250)
 layout_mode = 0
 offset_left = 48.0
+offset_top = 24.0
 offset_right = 480.0
-offset_bottom = 256.0
+offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
@@ -787,8 +923,9 @@ custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 250)
 layout_mode = 0
 offset_left = 48.0
+offset_top = 24.0
 offset_right = 480.0
-offset_bottom = 256.0
+offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
@@ -808,8 +945,9 @@ custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 250)
 layout_mode = 0
 offset_left = 48.0
+offset_top = 24.0
 offset_right = 480.0
-offset_bottom = 256.0
+offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
@@ -829,8 +967,9 @@ custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 250)
 layout_mode = 0
 offset_left = 48.0
+offset_top = 24.0
 offset_right = 480.0
-offset_bottom = 256.0
+offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
@@ -850,8 +989,9 @@ custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 250)
 layout_mode = 0
 offset_left = 48.0
+offset_top = 24.0
 offset_right = 480.0
-offset_bottom = 256.0
+offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
@@ -871,8 +1011,9 @@ custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 250)
 layout_mode = 0
 offset_left = 48.0
+offset_top = 24.0
 offset_right = 480.0
-offset_bottom = 256.0
+offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true

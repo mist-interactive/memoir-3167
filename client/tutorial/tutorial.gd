@@ -5,6 +5,8 @@ extends Control
 @export var minimize_button: Button
 @export var tutorial_button: Button
 @export var menu_button: Button
+@export var previous_page_button: Button
+@export var next_page_button: Button
 
 @export var panel: Panel
 @export var top_bar: Panel
@@ -13,6 +15,14 @@ extends Control
 
 @export var tutorial_pages: Array[Control]
 @export var page_buttons: Array[Button]
+
+@export var page_moving_units_buttons: Array[Button]
+@export var page_moving_units_page_targets: Array[Control]
+@export var page_moving_units_return_pages: Array[Control]
+
+@export var help_button_target_pages: Array[Control]
+
+var navigation_return_page: Control = null
 
 const DESIGN_SIZE := Vector2(1920, 1080)
 
@@ -38,7 +48,6 @@ var cursor_hover: Texture2D
 var cursor_drag: Texture2D
 var cursor_clickable: Texture2D
 
-
 func _ready() -> void:
 	minimize_button.pressed.connect(_on_minimize_pressed)
 	tutorial_button.pressed.connect(_on_tutorial_pressed)
@@ -52,6 +61,15 @@ func _ready() -> void:
 
 	menu_button.mouse_entered.connect(set_cursor_clickable)
 	menu_button.mouse_exited.connect(set_cursor_normal)
+	
+	previous_page_button.pressed.connect(_on_previous_page_button_pressed)
+	next_page_button.pressed.connect(_on_next_page_button_pressed)
+
+	previous_page_button.mouse_entered.connect(set_cursor_clickable)
+	previous_page_button.mouse_exited.connect(set_cursor_normal)
+
+	next_page_button.mouse_entered.connect(set_cursor_clickable)
+	next_page_button.mouse_exited.connect(set_cursor_normal)
 
 	for i in range(page_buttons.size()):
 		page_buttons[i].pressed.connect(_on_page_button_pressed.bind(i))
@@ -66,6 +84,14 @@ func _ready() -> void:
 		rich_text_label.position = PAGE_POSITION
 		rich_text_label.custom_minimum_size = PAGE_CUSTOM_MIN
 		rich_text_label.custom_maximum_size = PAGE_CUSTOM_MAX
+		
+	for i in range(page_moving_units_buttons.size()):
+		var button := page_moving_units_buttons[i]
+		button.pressed.connect(
+			_on_page_moving_units_button_pressed.bind(i)
+		)
+		button.mouse_entered.connect(set_cursor_clickable)
+		button.mouse_exited.connect(set_cursor_normal)
 
 	cursor_normal = load("res://assets/sprites/cursor/Normal-3.png")
 	cursor_hover = load("res://assets/sprites/cursor/Move_2-3.png")
@@ -79,6 +105,66 @@ func _ready() -> void:
 	set_cursor_normal()
 	set_ui_state(UIState.TUTORIAL)
 
+func _on_page_moving_units_button_pressed(button_index: int) -> void:
+	if button_index < 0:
+		return
+
+	if button_index >= page_moving_units_page_targets.size():
+		return
+
+	if button_index >= page_moving_units_return_pages.size():
+		return
+
+	var target_page := page_moving_units_page_targets[button_index]
+	var return_page := page_moving_units_return_pages[button_index]
+
+	if target_page == null or return_page == null:
+		return
+
+	if not tutorial_pages.has(target_page):
+		return
+
+	if not tutorial_pages.has(return_page):
+		return
+
+	# Remember where this button came from.
+	navigation_return_page = return_page
+
+	# Jump to the manually assigned target page.
+	current_page = tutorial_pages.find(target_page)
+	menu_open = false
+	apply_menu_state()
+
+func _on_previous_page_button_pressed() -> void:
+	if navigation_return_page != null:
+		var return_index := tutorial_pages.find(navigation_return_page)
+
+		if return_index != -1:
+			current_page = return_index
+
+		navigation_return_page = null
+		apply_menu_state()
+		return
+
+	if current_page > 0:
+		current_page -= 1
+		apply_menu_state()
+
+func _on_next_page_button_pressed() -> void:
+	if navigation_return_page != null:
+		var return_index := tutorial_pages.find(navigation_return_page)
+
+		if return_index != -1:
+			current_page = return_index
+
+		navigation_return_page = null
+		apply_menu_state()
+		return
+
+	if current_page < tutorial_pages.size() - 1:
+		current_page += 1
+		apply_menu_state()
+
 func _unhandled_key_input(event: InputEvent) -> void:
 	if event is InputEventKey:
 		if event.pressed and not event.echo and event.keycode == KEY_M:
@@ -86,32 +172,26 @@ func _unhandled_key_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 func open_tutorial_for_current_phase() -> void:
-	var page_index := get_tutorial_page_for_phase()
-	if page_index < 0 or page_index >= tutorial_pages.size():
+	var target_page := get_help_page_for_phase()
+
+	if target_page == null:
 		return
-	current_page = page_index
+
+	if not tutorial_pages.has(target_page):
+		return
+
+	current_page = tutorial_pages.find(target_page)
+	navigation_return_page = null
 	menu_open = false
 	set_ui_state(UIState.TUTORIAL)
 
-func get_tutorial_page_for_phase() -> int:
-	match matchState.phase:
-		enums.TurnPhase.SPAWN_UNITS:
-			return 0
-		enums.TurnPhase.DRAW_HAND:
-			return 1
-		enums.TurnPhase.PLAY_CARD:
-			return 2
-		enums.TurnPhase.SELECT:
-			return 3
-		enums.TurnPhase.MOVE:
-			return 4
-		enums.TurnPhase.ATTACK:
-			return 5
-		enums.TurnPhase.RESOLVE_RETREAT:
-			return 5
-		enums.TurnPhase.DRAW_CARD:
-			return 6
-	return 0
+func get_help_page_for_phase() -> Control:
+	var phase_index := int(matchState.phase)
+
+	if phase_index < 0 or phase_index >= help_button_target_pages.size():
+		return null
+
+	return help_button_target_pages[phase_index]
 
 func set_cursor_normal() -> void:
 	Input.set_custom_mouse_cursor(
@@ -226,6 +306,7 @@ func show_page() -> void:
 func _on_page_button_pressed(page_index: int) -> void:
 	if page_index >= 0 and page_index < tutorial_pages.size():
 		current_page = page_index
+		navigation_return_page = null
 		menu_open = false
 		apply_menu_state()
 
