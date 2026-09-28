@@ -65,10 +65,6 @@ border_width_bottom = 12
 border_color = Color(0.96035105, 0.96035105, 0.96035093, 0)
 border_blend = true
 
-[sub_resource type="StyleBoxLine" id="StyleBoxLine_764ab"]
-color = Color(1, 1, 1, 0.37254903)
-thickness = 2
-
 [node name="Tutorial" type="Control" unique_id=1744084876 node_paths=PackedStringArray("minimize_button", "tutorial_button", "menu_button", "panel", "top_bar", "page_buttons_container", "tutorial_pages", "page_buttons")]
 z_index = 100
 layout_mode = 3
@@ -80,7 +76,7 @@ menu_button = NodePath("TopBar/HelpMenuButton")
 panel = NodePath("Panel")
 top_bar = NodePath("TopBar")
 page_buttons_container = NodePath("GridContainer")
-tutorial_pages = [NodePath("Page1"), NodePath("Page2"), NodePath("Page3"), NodePath("Page4"), NodePath("Page5"), NodePath("Page6"), NodePath("Page8"), NodePath("Page7"), NodePath("Page9"), NodePath("Page10")]
+tutorial_pages = [NodePath("Pages/Start"), NodePath("Pages/About"), NodePath("Pages/Info"), NodePath("Pages/Goal"), NodePath("Pages/Cards"), NodePath("Pages/Turn"), NodePath("Pages/Selecting units"), NodePath("Pages/Moving units"), NodePath("Pages/Attacking"), NodePath("Pages/Dice"), NodePath("Pages/Retreat"), NodePath("Pages/Units"), NodePath("Pages/Infantry"), NodePath("Pages/Tanks"), NodePath("Pages/Artillery"), NodePath("Pages/Terrain"), NodePath("Pages/Line of sight"), NodePath("Pages/Turn end")]
 page_buttons = [NodePath("GridContainer/Button1"), NodePath("GridContainer/Button2"), NodePath("GridContainer/Button3"), NodePath("GridContainer/Button4"), NodePath("GridContainer/Button5"), NodePath("GridContainer/Button6"), NodePath("GridContainer/Button7"), NodePath("GridContainer/Button8"), NodePath("GridContainer/Button9"), NodePath("GridContainer/Button10"), NodePath("GridContainer/Button11"), NodePath("GridContainer/Button12"), NodePath("GridContainer/Button13"), NodePath("GridContainer/Button14"), NodePath("GridContainer/Button15"), NodePath("GridContainer/Button16"), NodePath("GridContainer/Button17"), NodePath("GridContainer/Button18")]
 
 [node name="Panel" type="Panel" parent="." unique_id=698563448]
@@ -142,6 +138,7 @@ mouse_filter = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_ekcev")
 
 [node name="GridContainer" type="GridContainer" parent="." unique_id=1248784971]
+visible = false
 z_index = 1
 layout_mode = 0
 offset_top = 24.0
@@ -397,11 +394,16 @@ offset_bottom = 50.0
 icon = ExtResource("8_xpfqi")
 expand_icon = true
 
-[node name="Page1" type="Control" parent="." unique_id=1146651962]
+[node name="Pages" type="Control" parent="." unique_id=1832416652]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Start" type="Control" parent="Pages" unique_id=1146651962]
 visible = false
 anchors_preset = 0
 
-[node name="Text" type="RichTextLabel" parent="Page1" unique_id=499704849]
+[node name="Text" type="RichTextLabel" parent="Pages/Start" unique_id=499704849]
 custom_minimum_size = Vector2(448, 224)
 custom_maximum_size = Vector2(448, 224)
 layout_mode = 0
@@ -422,76 +424,48 @@ situation
 "
 autowrap_mode = 1
 
-[node name="MinimizeButton" type="Button" parent="Page1" unique_id=2070763863]
+[node name="HelpMenuButton" type="Button" parent="Pages/Start" unique_id=779086282]
+z_index = 3
 layout_mode = 0
-offset_left = 73.0
-offset_top = 142.0
-offset_right = 89.0
-offset_bottom = 158.0
+offset_left = 70.0
+offset_top = 128.0
+offset_right = 94.0
+offset_bottom = 152.0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_tof3e")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_yod4y")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1olk6")
+icon = ExtResource("6_tof3e")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="MinimizeButton" type="Button" parent="Pages/Start" unique_id=112363696]
+z_index = 1
+layout_mode = 0
+offset_left = 70.0
+offset_top = 152.0
+offset_right = 94.0
+offset_bottom = 176.0
 theme_override_font_sizes/font_size = 8
 theme_override_styles/normal = ExtResource("5_1olk6")
 theme_override_styles/pressed = ExtResource("6_xgmmi")
 theme_override_styles/hover = ExtResource("7_adm3a")
 
-[node name="HSeparator" type="HSeparator" parent="Page1/MinimizeButton" unique_id=1900545848]
-layout_mode = 0
-offset_left = 4.0
-offset_top = 6.0
-offset_right = 12.0
-offset_bottom = 10.0
-mouse_filter = 2
-theme_override_constants/separation = 0
-theme_override_styles/separator = SubResource("StyleBoxLine_764ab")
-
-[node name="HelpMenuButton" type="Button" parent="Page1" unique_id=1237745245]
-layout_mode = 0
-offset_left = 73.0
-offset_top = 166.0
-offset_right = 89.0
-offset_bottom = 182.0
-theme_override_font_sizes/font_size = 8
-theme_override_styles/normal = ExtResource("5_1olk6")
-theme_override_styles/pressed = ExtResource("6_xgmmi")
-theme_override_styles/hover = ExtResource("7_adm3a")
-
-[node name="HSeparator" type="HSeparator" parent="Page1/HelpMenuButton" unique_id=1949212032]
-clip_contents = true
-layout_mode = 0
-offset_left = 3.0
-offset_top = 8.0
-offset_right = 13.0
-offset_bottom = 9.0
-mouse_filter = 2
-theme_override_constants/separation = 0
-theme_override_styles/separator = SubResource("StyleBoxLine_764ab")
-
-[node name="HSeparator2" type="HSeparator" parent="Page1/HelpMenuButton" unique_id=651918985]
-clip_contents = true
-layout_mode = 0
-offset_left = 4.0
-offset_top = 5.0
-offset_right = 12.0
-offset_bottom = 6.0
-mouse_filter = 2
-theme_override_constants/separation = 0
-theme_override_styles/separator = SubResource("StyleBoxLine_764ab")
-
-[node name="HSeparator3" type="HSeparator" parent="Page1/HelpMenuButton" unique_id=1210730455]
-clip_contents = true
+[node name="Panel" type="Panel" parent="Pages/Start/MinimizeButton" unique_id=1978950260]
 layout_mode = 0
 offset_left = 4.0
 offset_top = 11.0
-offset_right = 12.0
-offset_bottom = 12.0
+offset_right = 20.0
+offset_bottom = 13.0
 mouse_filter = 2
-theme_override_constants/separation = 0
-theme_override_styles/separator = SubResource("StyleBoxLine_764ab")
+theme_override_styles/panel = SubResource("StyleBoxFlat_ekcev")
 
-[node name="Page2" type="Control" parent="." unique_id=1144873852]
+[node name="About" type="Control" parent="Pages" unique_id=1144873852]
 visible = false
 anchors_preset = 0
 
-[node name="Text" type="RichTextLabel" parent="Page2" unique_id=1934843559]
+[node name="Text" type="RichTextLabel" parent="Pages/About" unique_id=1934843559]
 custom_minimum_size = Vector2(448, 224)
 custom_maximum_size = Vector2(448, 224)
 layout_mode = 0
@@ -506,11 +480,11 @@ text = "Memoir '67 is an unique historical game that allows players to effective
 Lead the [color=#98433F]axis[/color] or [color=#546B4F]allies[/color] to victory"
 autowrap_mode = 1
 
-[node name="Page3" type="Control" parent="." unique_id=1662929342]
+[node name="Info" type="Control" parent="Pages" unique_id=1662929342]
 visible = false
 anchors_preset = 0
 
-[node name="Text" type="RichTextLabel" parent="Page3" unique_id=2147230938]
+[node name="Text" type="RichTextLabel" parent="Pages/Info" unique_id=2147230938]
 custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 224)
 layout_mode = 0
@@ -529,7 +503,7 @@ to do with terrain, which you can easily see
 by hovering over them with your mouse."
 autowrap_mode = 1
 
-[node name="TextureRect" type="TextureRect" parent="Page3" unique_id=1604452279]
+[node name="TextureRect" type="TextureRect" parent="Pages/Info" unique_id=1604452279]
 layout_mode = 0
 offset_left = 232.0
 offset_top = 200.0
@@ -538,11 +512,11 @@ offset_bottom = 232.0
 texture = ExtResource("9_ld8p5")
 expand_mode = 1
 
-[node name="Page4" type="Control" parent="." unique_id=1379314264]
+[node name="Goal" type="Control" parent="Pages" unique_id=1379314264]
 visible = false
 anchors_preset = 0
 
-[node name="Text" type="RichTextLabel" parent="Page4" unique_id=1079395697]
+[node name="Text" type="RichTextLabel" parent="Pages/Goal" unique_id=1079395697]
 custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 224)
 layout_mode = 0
@@ -559,7 +533,7 @@ to scenario, but this one, BLANK, requires 5.
 You get points by destroying enemy units."
 autowrap_mode = 1
 
-[node name="ScorePips" type="MarginContainer" parent="Page4" unique_id=875274473]
+[node name="ScorePips" type="MarginContainer" parent="Pages/Goal" unique_id=875274473]
 z_index = 15
 layout_mode = 1
 anchors_preset = 3
@@ -574,50 +548,49 @@ offset_bottom = 224.0
 grow_horizontal = 0
 grow_vertical = 0
 
-[node name="BoxContainer" type="HBoxContainer" parent="Page4/ScorePips" unique_id=1132607494]
+[node name="BoxContainer" type="HBoxContainer" parent="Pages/Goal/ScorePips" unique_id=1132607494]
 texture_filter = 1
 layout_mode = 2
 
-[node name="TextureRect1" type="TextureRect" parent="Page4/ScorePips/BoxContainer" unique_id=1659869419]
+[node name="TextureRect1" type="TextureRect" parent="Pages/Goal/ScorePips/BoxContainer" unique_id=1659869419]
 modulate = Color(0.32941177, 0.41960785, 0.30980393, 1)
 z_index = -10
 layout_mode = 2
 texture = ExtResource("10_6gdf7")
 
-[node name="TextureRect2" type="TextureRect" parent="Page4/ScorePips/BoxContainer" unique_id=1374804849]
+[node name="TextureRect2" type="TextureRect" parent="Pages/Goal/ScorePips/BoxContainer" unique_id=1374804849]
 modulate = Color(0.32941177, 0.41960785, 0.30980393, 1)
 z_index = -11
 layout_mode = 2
 texture = ExtResource("10_6gdf7")
 
-[node name="TextureRect3" type="TextureRect" parent="Page4/ScorePips/BoxContainer" unique_id=1443535162]
+[node name="TextureRect3" type="TextureRect" parent="Pages/Goal/ScorePips/BoxContainer" unique_id=1443535162]
 modulate = Color(0.72156864, 0.72156864, 0.72156864, 1)
 z_index = -12
 layout_mode = 2
 texture = ExtResource("10_6gdf7")
 
-[node name="TextureRect4" type="TextureRect" parent="Page4/ScorePips/BoxContainer" unique_id=1084234709]
+[node name="TextureRect4" type="TextureRect" parent="Pages/Goal/ScorePips/BoxContainer" unique_id=1084234709]
 modulate = Color(0.72156864, 0.72156864, 0.72156864, 1)
 z_index = -13
 layout_mode = 2
 texture = ExtResource("10_6gdf7")
 
-[node name="TextureRect5" type="TextureRect" parent="Page4/ScorePips/BoxContainer" unique_id=832799902]
+[node name="TextureRect5" type="TextureRect" parent="Pages/Goal/ScorePips/BoxContainer" unique_id=832799902]
 modulate = Color(0.72156864, 0.72156864, 0.72156864, 1)
 z_index = -14
 layout_mode = 2
 texture = ExtResource("10_6gdf7")
 
-[node name="Panel" type="Node2D" parent="Page4" unique_id=189334174]
+[node name="Panel" type="Node2D" parent="Pages/Goal" unique_id=189334174]
 top_level = true
 z_index = 163
 script = ExtResource("11_ay5pt")
 
-[node name="Page5" type="Control" parent="." unique_id=1971898202]
-visible = false
+[node name="Cards" type="Control" parent="Pages" unique_id=1971898202]
 anchors_preset = 0
 
-[node name="Text" type="RichTextLabel" parent="Page5" unique_id=338040542]
+[node name="Text" type="RichTextLabel" parent="Pages/Cards" unique_id=338040542]
 custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 224)
 layout_mode = 0
@@ -630,16 +603,18 @@ bbcode_enabled = true
 text = "Each turn, you must play one [b]Command card[/b] from
 your hand.
 
+Cards are played by drag-and-drop mechanic.
+
 The cards in your hand are called [color=green]section cards[/color].
 They issue orders to units in certain sections of the
 map, which are separated by the red vertical lines."
 autowrap_mode = 1
 
-[node name="Page6" type="Control" parent="." unique_id=1102722765]
+[node name="Turn" type="Control" parent="Pages" unique_id=1102722765]
 visible = false
 anchors_preset = 0
 
-[node name="Text" type="RichTextLabel" parent="Page6" unique_id=1904845988]
+[node name="Text" type="RichTextLabel" parent="Pages/Turn" unique_id=1904845988]
 custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 224)
 layout_mode = 0
@@ -659,11 +634,11 @@ Turn ends.
 "
 autowrap_mode = 1
 
-[node name="Page7" type="Control" parent="." unique_id=1937720087]
+[node name="Selecting units" type="Control" parent="Pages" unique_id=1937720087]
 visible = false
 anchors_preset = 0
 
-[node name="Text" type="RichTextLabel" parent="Page7" unique_id=831090113]
+[node name="Text" type="RichTextLabel" parent="Pages/Selecting units" unique_id=831090113]
 custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 224)
 layout_mode = 0
@@ -679,11 +654,11 @@ a little differently.
 (once all movement orders have been carried out)."
 autowrap_mode = 1
 
-[node name="Page8" type="Control" parent="." unique_id=1363077334]
+[node name="Moving units" type="Control" parent="Pages" unique_id=1363077334]
 visible = false
 anchors_preset = 0
 
-[node name="Text" type="RichTextLabel" parent="Page8" unique_id=1518700950]
+[node name="Text" type="RichTextLabel" parent="Pages/Moving units" unique_id=1518700950]
 custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 224)
 layout_mode = 0
@@ -692,14 +667,17 @@ offset_right = 560.0
 offset_bottom = 256.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
-text = "Attack distance"
+text = "Next, we have to move our units. Each unit moves
+a little differently.
+[b]Armor units[/b] can move up to 3 hexes and can battle after that
+(once all movement orders have been carried out)."
 autowrap_mode = 1
 
-[node name="Page9" type="Control" parent="." unique_id=220172786]
+[node name="Attacking" type="Control" parent="Pages" unique_id=220172786]
 visible = false
 anchors_preset = 0
 
-[node name="Text" type="RichTextLabel" parent="Page9" unique_id=2111594563]
+[node name="Text" type="RichTextLabel" parent="Pages/Attacking" unique_id=2111594563]
 custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 224)
 layout_mode = 0
@@ -716,11 +694,179 @@ this one, NAME OF THE SCENARIO, requires 5.
 You get medals by destroying enemy units."
 autowrap_mode = 1
 
-[node name="Page10" type="Control" parent="." unique_id=1317684370]
+[node name="Dice" type="Control" parent="Pages" unique_id=1317684370]
 visible = false
 anchors_preset = 0
 
-[node name="Text" type="RichTextLabel" parent="Page10" unique_id=1864963729]
+[node name="Text" type="RichTextLabel" parent="Pages/Dice" unique_id=1864963729]
+custom_minimum_size = Vector2(432, 224)
+custom_maximum_size = Vector2(432, 250)
+layout_mode = 0
+offset_left = 48.0
+offset_right = 480.0
+offset_bottom = 256.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Your goal is to be the first to get a certain number of medals.
+The number required varies from scenario to scenario, but
+this one, NAME OF THE SCENARIO, requires 5.
+
+You get medals by destroying enemy units."
+autowrap_mode = 1
+
+[node name="Retreat" type="Control" parent="Pages" unique_id=796035537]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Retreat" unique_id=1810107256]
+custom_minimum_size = Vector2(432, 224)
+custom_maximum_size = Vector2(432, 250)
+layout_mode = 0
+offset_left = 48.0
+offset_right = 480.0
+offset_bottom = 256.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Your goal is to be the first to get a certain number of medals.
+The number required varies from scenario to scenario, but
+this one, NAME OF THE SCENARIO, requires 5.
+
+You get medals by destroying enemy units."
+autowrap_mode = 1
+
+[node name="Units" type="Control" parent="Pages" unique_id=1346251542]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Units" unique_id=784198580]
+custom_minimum_size = Vector2(432, 224)
+custom_maximum_size = Vector2(432, 250)
+layout_mode = 0
+offset_left = 48.0
+offset_right = 480.0
+offset_bottom = 256.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Your goal is to be the first to get a certain number of medals.
+The number required varies from scenario to scenario, but
+this one, NAME OF THE SCENARIO, requires 5.
+
+You get medals by destroying enemy units."
+autowrap_mode = 1
+
+[node name="Infantry" type="Control" parent="Pages" unique_id=197650067]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Infantry" unique_id=320565046]
+custom_minimum_size = Vector2(432, 224)
+custom_maximum_size = Vector2(432, 250)
+layout_mode = 0
+offset_left = 48.0
+offset_right = 480.0
+offset_bottom = 256.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Your goal is to be the first to get a certain number of medals.
+The number required varies from scenario to scenario, but
+this one, NAME OF THE SCENARIO, requires 5.
+
+You get medals by destroying enemy units."
+autowrap_mode = 1
+
+[node name="Tanks" type="Control" parent="Pages" unique_id=357366898]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Tanks" unique_id=696832887]
+custom_minimum_size = Vector2(432, 224)
+custom_maximum_size = Vector2(432, 250)
+layout_mode = 0
+offset_left = 48.0
+offset_right = 480.0
+offset_bottom = 256.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Your goal is to be the first to get a certain number of medals.
+The number required varies from scenario to scenario, but
+this one, NAME OF THE SCENARIO, requires 5.
+
+You get medals by destroying enemy units."
+autowrap_mode = 1
+
+[node name="Artillery" type="Control" parent="Pages" unique_id=190926719]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Artillery" unique_id=907521301]
+custom_minimum_size = Vector2(432, 224)
+custom_maximum_size = Vector2(432, 250)
+layout_mode = 0
+offset_left = 48.0
+offset_right = 480.0
+offset_bottom = 256.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Your goal is to be the first to get a certain number of medals.
+The number required varies from scenario to scenario, but
+this one, NAME OF THE SCENARIO, requires 5.
+
+You get medals by destroying enemy units."
+autowrap_mode = 1
+
+[node name="Terrain" type="Control" parent="Pages" unique_id=208024676]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Terrain" unique_id=1249696724]
+custom_minimum_size = Vector2(432, 224)
+custom_maximum_size = Vector2(432, 250)
+layout_mode = 0
+offset_left = 48.0
+offset_right = 480.0
+offset_bottom = 256.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Your goal is to be the first to get a certain number of medals.
+The number required varies from scenario to scenario, but
+this one, NAME OF THE SCENARIO, requires 5.
+
+You get medals by destroying enemy units."
+autowrap_mode = 1
+
+[node name="Line of sight" type="Control" parent="Pages" unique_id=1684079097]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Line of sight" unique_id=175261415]
+custom_minimum_size = Vector2(432, 224)
+custom_maximum_size = Vector2(432, 250)
+layout_mode = 0
+offset_left = 48.0
+offset_right = 480.0
+offset_bottom = 256.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Your goal is to be the first to get a certain number of medals.
+The number required varies from scenario to scenario, but
+this one, NAME OF THE SCENARIO, requires 5.
+
+You get medals by destroying enemy units."
+autowrap_mode = 1
+
+[node name="Turn end" type="Control" parent="Pages" unique_id=1181713521]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Turn end" unique_id=355549980]
 custom_minimum_size = Vector2(432, 224)
 custom_maximum_size = Vector2(432, 250)
 layout_mode = 0
