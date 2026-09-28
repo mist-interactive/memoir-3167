@@ -99,17 +99,32 @@ func clear_selection() -> void:
 
 func highlight_selected_unit_reachable_hexes(unit: Unit) -> void:
 	selected_unit_path_highlight_layer.clear()
+	var unit_stats: UnitStats = UnitDatabase.get_stats(unit.type)
+	var unit_max_move_and_attack: int = unit_stats.max_movement_and_attack
 	for coord in active_reachable.keys():
-		selected_unit_path_highlight_layer.highlight_cell(coord)
+		var hex_cell: HexCell = battlefieldState.map.get_cell(coord)
+		var terrain_stats: TerrainStats = TerrainDatabase.get_stats(hex_cell.ground)
+		var distance: int = battlefieldState.map.distance(unit.hex_coord, coord)
+		if distance > unit_max_move_and_attack || !terrain_stats.unit_can_move_in_and_fight(unit.type) && coord != unit.hex_coord:
+			selected_unit_path_highlight_layer.highlight_cell(coord, Vector2i(5, 0))
+		else:
+			selected_unit_path_highlight_layer.highlight_cell(coord)
 
 func highlight_hovered_unit_reachable_hexes(unit: Unit) -> void:
 	var unit_stats: UnitStats = UnitDatabase.get_stats(unit.type)
 	var path_data = BoardPathfinding.get_reachable_hexes(unit_stats.type, unit.hex_coord, battlefieldState.map, unit_manager.get_occupied_coords())
+	var unit_max_move_and_attack: int = unit_stats.max_movement_and_attack
 	var came_from: Dictionary = path_data.get("came_from", {})
 	hover_path_highlight_layer.clear()
 	var reachable_costs: Dictionary = path_data.get("costs", {})
 	for coord in reachable_costs.keys():
-		hover_path_highlight_layer.highlight_cell(coord)
+		var hex_cell: HexCell = battlefieldState.map.get_cell(coord)
+		var terrain_stats: TerrainStats = TerrainDatabase.get_stats(hex_cell.ground)
+		var distance: int = battlefieldState.map.distance(unit.hex_coord, coord)
+		if distance > unit_max_move_and_attack || !terrain_stats.unit_can_move_in_and_fight(unit.type) && coord != unit.hex_coord:
+			hover_path_highlight_layer.highlight_cell(coord, Vector2i(5, 0))
+		else:
+			hover_path_highlight_layer.highlight_cell(coord)
 
 func highlight_selected_unit_enemies_within_range_and_los(unit: Unit) -> void:
 	highlight_attackable_enemies_on_layer(unit, selected_unit_action_highlight_layer)

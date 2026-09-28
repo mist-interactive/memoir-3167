@@ -25,7 +25,7 @@ const TERRAIN_COST: Dictionary = {
 	HexCell.Ground.FOREST: 1.0,
 	HexCell.Ground.TOWN: 1.0,
 	HexCell.Ground.HILL: 1.0,
-	HexCell.Ground.MOUNTAIN: 3.0,
+	HexCell.Ground.MOUNTAIN: 2.0,
 	HexCell.Ground.WATER: -1.0,
 }
 
