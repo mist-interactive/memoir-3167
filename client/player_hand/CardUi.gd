@@ -7,7 +7,7 @@ const DISCARD_BASE_SCALE := Vector2(1.0, 1.0)
 const DRAG_THRESHOLD := 8.0
 var CLICK_SCALE := BASE_SCALE
 var HOVER_SCALE := BASE_SCALE * 1.35
-
+const CARD_Z_INDEX := 1000
 @export var background_texture: TextureRect
 @export var play_area: Control
 @export var discard_target: Control
@@ -15,13 +15,12 @@ var HOVER_SCALE := BASE_SCALE * 1.35
 
 signal card_drag_started(card: CardUI)
 signal card_drag_ended(card: CardUI)
-
+var just_returned_to_hand: bool = false
 var is_dragging: bool = false
 var is_mouse_pressed: bool = false
 var press_position: Vector2 = Vector2.ZERO
 
 var drag_offset: Vector2 = Vector2.ZERO
-var original_position: Vector2 = Vector2.ZERO
 var base_position_x: float
 
 var _instance_id: int
@@ -35,6 +34,10 @@ signal card_unhovered
 func _ready() -> void:
 	size = HandUI.card_size
 	scale = HandUI.card_scale
+
+	# Always render above other Controls in the same CanvasLayer.
+	z_as_relative = false
+	z_index = CARD_Z_INDEX
 
 func setup_visuals(instance_id: int, id: String) -> void:
 	_instance_id = instance_id
@@ -108,7 +111,7 @@ func animate_to_discard(
 	)
 
 func _reset_hover_state() -> void:
-	z_index = 0
+	z_index = CARD_Z_INDEX
 	scale = BASE_SCALE
 	if get_child_count() > 0:
 		get_child(0).visible = false
@@ -117,14 +120,18 @@ func _reset_hover_state() -> void:
 func _on_mouse_exited() -> void:
 	if not is_interactive:
 		return
+
 	if is_discarded:
 		return _animate_discard_pile_hover(0)
 
-	if not is_dragging and not is_mouse_pressed:
+	# Once the mouse actually leaves the card again,
+	# normal hover behaviour can resume.
+	just_returned_to_hand = false
+
+	if not is_dragging:
 		z_index = 0
 		scale = BASE_SCALE
 
-	position.y = position.y + SIZE.y / 10
 	card_unhovered.emit()
 
 func _on_mouse_entered() -> void:
@@ -134,11 +141,12 @@ func _on_mouse_entered() -> void:
 	if is_discarded:
 		return _animate_discard_pile_hover(1)
 
-	if not is_dragging:
-		z_index = 10
-		scale = HOVER_SCALE
+	if just_returned_to_hand:
+		return
 
-	position.y = position.y - SIZE.y / 10
+	if not is_dragging:
+		z_index = CARD_Z_INDEX + 1
+		scale = HOVER_SCALE
 
 	var card_data: CommandCard = CardDatabase.get_card(_card_id)
 	if card_data:
@@ -215,21 +223,12 @@ func _start_drag() -> void:
 
 	is_dragging = true
 	is_mouse_pressed = true
-	original_position = global_position
-	z_index = 10
 
-	scale = BASE_SCALE
+	scale = HOVER_SCALE
+	rotation_degrees = 0.0
+	z_index = CARD_Z_INDEX
 
 	drag_offset = get_global_mouse_position() - global_position
-
-	var hand = get_parent()
-
-	if hand:
-		for card in hand.get_children():
-			if card is CardUI and card != self:
-				card.mouse_filter = Control.MOUSE_FILTER_IGNORE
-
-	card_drag_started.emit(self)
 
 func _end_drag() -> void:
 	if not is_dragging:
@@ -237,7 +236,7 @@ func _end_drag() -> void:
 	
 	is_dragging = false
 	is_mouse_pressed = false
-	z_index = 0
+	z_index = CARD_Z_INDEX
 	scale = BASE_SCALE
 
 	var hand = get_parent()
@@ -300,8 +299,14 @@ func _wait_for_card_confirmation(timeout_seconds: float) -> bool:
 
 func return_to_hand() -> void:
 	top_level = false
-	global_position = original_position
-	var hand = get_parent()
+	scale = BASE_SCALE
+	rotation_degrees = 0.0
+	z_index = CARD_Z_INDEX
+
+	just_returned_to_hand = true
+
+	var hand := get_parent()
+
 	if hand and hand.has_method("_recalculate_layout"):
 		hand._recalculate_layout()
 
