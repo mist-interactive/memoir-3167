@@ -37,15 +37,7 @@ func _init(matchId: int) -> void:
 	config = ConfigLoader.load_json(CONFIG_PATH)
 
 func _physics_process(delta: float) -> void:
-	if matchState.should_sync:
-		for side: enums.Side in sides_uuid:
-			MessageBroker.send(get_player_session(side),
-				Network.Match.sync.rpc_id,
-				[matchState.get_snapshot(side)]
-			)
-		matchState.should_sync = false
-	deckManager._sync_hands()
-	unit_manager._sync_units()
+	_sync_clients()
 	check_win_condition()
 	if matchState.has_phase_ended(Time.get_ticks_msec()) && !unit_manager.unit_is_attacking:
 		go_next_phase(matchState.current_turn, true)
@@ -257,3 +249,14 @@ func get_player_session(side: enums.Side) -> PlayerSession:
 	if !sides_uuid.has(side) || !sessions.has(sides_uuid[side]):
 		return null
 	return sessions[sides_uuid[side]]
+
+func _sync_clients() -> void:
+	if matchState.should_sync:
+		for side: enums.Side in sides_uuid:
+			MessageBroker.send(get_player_session(side),
+				Network.Match.sync.rpc_id,
+				[matchState.get_snapshot(side)]
+			)
+		matchState.should_sync = false
+	deckManager._sync_hands()
+	unit_manager._sync_units()
