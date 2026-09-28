@@ -106,6 +106,10 @@ func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, 
 	var destination_stats: TerrainStats = TerrainDatabase.get_stats(destination_hex.ground)
 	if destination_stats.unit_can_move_in_and_fight(unit.type) == false:
 		unit.set_can_attack(false)
+	var unit_stats: UnitStats = UnitDatabase.get_stats(unit.type)
+	var distance: int = map.distance(old_coord, destination)
+	if distance > unit_stats.max_movement_and_attack:
+		unit.set_can_attack(false)
 	var player_logger := logger.with_context({
 		"peer_id": sides_peer_ids[owner],
 		"side": owner
