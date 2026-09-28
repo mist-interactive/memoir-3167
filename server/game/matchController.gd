@@ -7,7 +7,7 @@ var unit_manager: ServerUnitManager
 var sides_uuid: Dictionary[enums.Side, int]
 var uuid_sides: Dictionary[int, enums.Side]
 var logger: LogService
-const CONFIG_PATH: String = "res://server/game/config.json"
+const CONFIG_PATH: String = "res://config.json"
 var config: Dictionary
 @onready var match_manager: MatchManager = $"../MatchManager"
 @onready var session_manager: SessionManager = $"./SessionManager"
