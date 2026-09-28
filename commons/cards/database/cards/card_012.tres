@@ -6,12 +6,7 @@
 [resource]
 script = ExtResource("2_gsbti")
 id = "012"
-title_label = "RECON IN FORCE"
-description_label = "Issue an order to 1 unit
-in each section"
-description_label_bottom = "Order 1 Unit
-in each section"
 target_sector = 7
-deck_quantity = 20
+deck_quantity = 3
 card_art = ExtResource("1_da3ms")
 metadata/_custom_type_script = "uid://brv7b2q4f6ws5"

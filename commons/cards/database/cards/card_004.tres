@@ -6,12 +6,8 @@
 [resource]
 script = ExtResource("2_ttq3h")
 id = "004"
-title_label = "ASSAULT"
-description_label = "Issue an order to all units
-on the Left Flank"
-description_label_bottom = "Order ALL Units"
 target_sector = 1
-deck_quantity = 20
+deck_quantity = 3
 target_unit_limit = 999
 card_art = ExtResource("1_du5ka")
 metadata/_custom_type_script = "uid://brv7b2q4f6ws5"

@@ -6,12 +6,8 @@
 [resource]
 script = ExtResource("2_uevrq")
 id = "011"
-title_label = "ATTACK"
-description_label = "Issue an order to 3 units
-in the Center"
-description_label_bottom = "Order 3 Units"
 target_sector = 2
-deck_quantity = 20
+deck_quantity = 3
 target_unit_limit = 3
 card_art = ExtResource("1_ke16v")
 metadata/_custom_type_script = "uid://brv7b2q4f6ws5"
