@@ -409,6 +409,7 @@ expand_mode = 1
 stretch_mode = 1
 
 [node name="TextureRect8" type="TextureRect" parent="ResizeUI/Borders/bottom" unique_id=616215393]
+z_index = 1100
 layout_mode = 0
 offset_top = 1072.0
 offset_right = 19199.998
