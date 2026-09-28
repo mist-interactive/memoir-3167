@@ -25,5 +25,6 @@ static func get_attack_dice_count(attacker: Variant, attacker_hex: HexCell, targ
 		return 0
 	var dice_count = attacker_stats.get_attack_dice_by_distance(distance)
 	dice_count += attacker_terrain_stats.get_unit_attack_modifier(attacker.type)
-	dice_count += target_terrain_stats.get_unit_defense_modifier(target.type)
+	if !attacker_stats.attacks_ignore_terrain:
+		dice_count += target_terrain_stats.get_unit_defense_modifier(target.type)
 	return dice_count
