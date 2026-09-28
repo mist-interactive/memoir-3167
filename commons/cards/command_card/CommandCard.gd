@@ -27,9 +27,6 @@ func get_map_sectors() -> Array[enums.MapSector]:
 
 	return result
 
-
-# Client-side convenience function.
-# Do not call this from server gameplay code.
 func load_card_art() -> Texture2D:
 	if card_art_path.is_empty():
 		return null
