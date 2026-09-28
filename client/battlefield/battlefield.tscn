@@ -124,8 +124,9 @@ point_count = 3
 script = ExtResource("1_u0eng")
 unit_container = NodePath("UnitContainer")
 
-[node name="CombatManager" parent="." unique_id=994602235 node_paths=PackedStringArray("dice_roller") instance=ExtResource("2_kys61")]
+[node name="CombatManager" parent="." unique_id=994602235 node_paths=PackedStringArray("dice_roller", "player_controller") instance=ExtResource("2_kys61")]
 dice_roller = NodePath("../UICanvas/DiceView/SubViewport/Node3D")
+player_controller = NodePath("../PlayerController")
 
 [node name="PlayerController" type="Node" parent="." unique_id=1795203478 node_paths=PackedStringArray("terrain_cards", "map_ground_layer", "map_feature_layer", "unit_selection_highlight_layer", "selected_unit_path_highlight_layer", "selected_unit_action_highlight_layer", "hover_path_highlight_layer", "hover_action_highlight_layer", "unit_retreat_highlight_layer", "sector_highlight_layer", "dice_indicator_container")]
 script = ExtResource("4_eq063")

@@ -1,6 +1,7 @@
 extends Node
 
 @export var dice_roller: Node3D
+@export var player_controller: Node
 @onready var unit_manager: ClientUnitManager = $"../../UnitManager"
 
 # Called when the node enters the scene tree for the first time.
@@ -13,6 +14,7 @@ func _on_resolve_combat_result_requested(result: CombatResult) -> void:
 	if not target_unit:
 		push_error("No target unit id found from CombatResult: ", target_id)
 		return
+	player_controller.attack_in_progress = true
 	target_unit.is_in_combat = true
 	dice_roller.roll_dice(result.rolled_dices)
 	await dice_roller.dice_roll_finised
@@ -28,7 +30,7 @@ func _on_resolve_combat_result_requested(result: CombatResult) -> void:
 		_handle_unit_death(target_unit)
 	else:
 		target_unit.is_in_combat = false
-	pass
+	player_controller.attack_in_progress = false
 
 func _handle_unit_death(unit: Unit) -> void:
 	unit.queue_free()

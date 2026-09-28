@@ -27,6 +27,7 @@ var _hovered_unit: Unit = null
 
 var states: Dictionary = {}
 var current_state: PhaseState = null
+var attack_in_progress: bool = false
 
 func _ready() -> void:
 	_initialize_states()
@@ -35,8 +36,9 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if !current_state:
+		print("here")
 		return
-	if event is InputEventMouseButton and event.pressed:
+	if event is InputEventMouseButton and event.pressed and !attack_in_progress:
 		var click_position: Vector2 = map_ground_layer.get_global_mouse_position()
 		var hex: Vector2i = map_ground_layer.local_to_map(map_ground_layer.to_local(click_position))
 		if event.button_index == MOUSE_BUTTON_LEFT:
