@@ -10,15 +10,28 @@ extends Resource
 @export var deck_quantity: int = 1
 @export var target_unit: enums.UnitType = enums.UnitType.ANY
 @export var target_unit_limit: int = 1
+
 @export_group("Visuals")
-@export var card_art: Texture2D
+@export_file("*.png", "*.webp", "*.jpg")
+var card_art_path: String = ""
 
 func get_map_sectors() -> Array[enums.MapSector]:
 	var result: Array[enums.MapSector] = []
+
 	if target_sector & enums.MapSector.LEFT:
 		result.append(enums.MapSector.LEFT)
 	if target_sector & enums.MapSector.CENTER:
 		result.append(enums.MapSector.CENTER)
 	if target_sector & enums.MapSector.RIGHT:
 		result.append(enums.MapSector.RIGHT)
+
 	return result
+
+
+# Client-side convenience function.
+# Do not call this from server gameplay code.
+func load_card_art() -> Texture2D:
+	if card_art_path.is_empty():
+		return null
+
+	return load(card_art_path) as Texture2D

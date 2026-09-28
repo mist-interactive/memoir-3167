@@ -1,6 +1,5 @@
 [gd_resource type="Resource" script_class="CommandCard" format=3 uid="uid://cidu4xvkorefw"]
 
-[ext_resource type="Texture2D" uid="uid://ddtla4qu4y68q" path="res://assets/card_textures/sector-orders/a2_recon_center.png" id="1_ph2j4"]
 [ext_resource type="Script" uid="uid://brv7b2q4f6ws5" path="res://commons/cards/command_card/CommandCard.gd" id="2_muwj0"]
 
 [resource]
@@ -14,5 +13,5 @@ When drawing a new Command card, draw
 two, choose one and discard the other."
 target_sector = 2
 deck_quantity = 20
-card_art = ExtResource("1_ph2j4")
+card_art_path = "uid://ddtla4qu4y68q"
 metadata/_custom_type_script = "uid://brv7b2q4f6ws5"
