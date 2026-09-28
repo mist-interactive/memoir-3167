@@ -5,7 +5,7 @@ extends Node2D
 @export var line_width := 1.0
 @export var line_color := Color.RED
 
-@onready var score_pips: Control = $"../../../UI/ResizeUI/UiPlayerOne/ScorePips"
+@onready var score_pips: Control = $"../../../../UI/ResizeUI/UiPlayerOne/ScorePips"
 
 
 func _ready() -> void:

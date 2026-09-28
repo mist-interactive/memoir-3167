@@ -396,8 +396,6 @@ expand_icon = true
 
 [node name="Pages" type="Control" parent="." unique_id=1832416652]
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
 
 [node name="Start" type="Control" parent="Pages" unique_id=1146651962]
 visible = false
@@ -584,10 +582,12 @@ texture = ExtResource("10_6gdf7")
 
 [node name="Panel" type="Node2D" parent="Pages/Goal" unique_id=189334174]
 top_level = true
-z_index = 163
+z_index = 500
 script = ExtResource("11_ay5pt")
+line_width = 2.0
 
 [node name="Cards" type="Control" parent="Pages" unique_id=1971898202]
+visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Pages/Cards" unique_id=338040542]
