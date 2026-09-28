@@ -5,10 +5,11 @@ extends CanvasLayer
 @export var info_bg: ColorRect
 @export var info_text: RichTextLabel
 @export var timer: RichTextLabel
-
+const CONFIG_PATH: String = "res://config.json"
+var config: Dictionary
 var pause_time: float
 
-const REJOIN_WINDOW: float = 30
+var REJOIN_WINDOW: float
 const FONT: Font = preload("res://assets/fonts/PixelArmy/PixelArmy.ttf")
 
 func _ready() -> void:
@@ -19,6 +20,8 @@ func _ready() -> void:
 	_setup_timer()
 	_setup_background()
 	_center_info_pane()
+	config = ConfigLoader.load_json(CONFIG_PATH)
+	REJOIN_WINDOW = config.match.player_rejoin_window
 
 func _process(_delta: float) -> void:
 	if match_state.state == MatchState.STATE.PAUSED:
@@ -27,7 +30,6 @@ func _process(_delta: float) -> void:
 		clampi(count_down, 0, REJOIN_WINDOW)
 		timer.text = "Victory in: " + str(count_down)
 		timer.offset_transform_position = -Vector2(timer.size.x / 2, -timer.size.y / 3)
-
 
 func on_match_state_changed(new_state: MatchState.STATE):
 	if new_state == MatchState.STATE.ENDED:
