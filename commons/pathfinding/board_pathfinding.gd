@@ -80,10 +80,11 @@ static func _neighbor_filter(current_hex: Vector2i, neighbor_hex: Vector2i, unit
 
 static func _cost_fn(current_hex: Vector2i, neighbor_hex: Vector2i, unit_type: enums.UnitType, map: HexGrid, max_cost: float) -> float:
 	var terrain_type: int = map.get_cell(neighbor_hex).ground
+	var terrain_stats: TerrainStats = TerrainDatabase.get_stats(terrain_type)
 	#if terrain_type == HexCell.Feature.NONE:
 		#return 1.0
 	var movement_cost: float = map.TERRAIN_COST.get(terrain_type, 1.0)
-	if movement_cost < 0.0:
+	if movement_cost < 0.0 || terrain_stats.get_unit_max_movement(unit_type) <= 0:
 		return max_cost + 1.0
 	#TODO: Add more logic here later:
 	# If terrain forces unit to stop return max_cost

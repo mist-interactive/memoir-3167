@@ -49,7 +49,6 @@ func setup_visuals(instance_id: int, id: String) -> void:
 	if not card_data:
 		push_error("Card UI: Database missing definition for ", id)
 		return
-
 	$background_texture.texture = card_data.load_card_art()
 
 func setup_enemy_visuals(instance_id: int) -> void:
