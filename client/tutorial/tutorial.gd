@@ -103,7 +103,7 @@ func _ready() -> void:
 	top_bar.mouse_exited.connect(_on_top_bar_mouse_exited)
 
 	set_cursor_normal()
-	set_ui_state(UIState.TUTORIAL)
+	set_ui_state(UIState.MINIMIZED)
 
 func _on_page_moving_units_button_pressed(button_index: int) -> void:
 	if button_index < 0:
