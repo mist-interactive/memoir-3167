@@ -690,8 +690,8 @@ visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Pages/Turn" unique_id=1904845988]
-custom_minimum_size = Vector2(432, 224)
-custom_maximum_size = Vector2(432, 224)
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
 layout_mode = 0
 offset_left = 48.0
 offset_top = 24.0
@@ -715,8 +715,8 @@ visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Pages/Selecting units" unique_id=831090113]
-custom_minimum_size = Vector2(432, 224)
-custom_maximum_size = Vector2(432, 224)
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
 layout_mode = 0
 offset_left = 48.0
 offset_top = 24.0
@@ -725,10 +725,8 @@ offset_bottom = 248.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Next, we have to move our units. Each unit moves
-a little differently.
-[b]Armor units[/b] can move up to 3 hexes and can battle after that
-(once all movement orders have been carried out)."
+text = "Selecting units
+"
 autowrap_mode = 1
 
 [node name="Moving units" type="Control" parent="Pages" unique_id=1363077334]
