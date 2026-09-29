@@ -36,6 +36,7 @@ func handle_right_click(hex: Vector2i) -> void:
 			controller.clear_selection()
 
 func handle_mouse_motion(hex: Vector2i) -> void:
+	super.handle_mouse_motion(hex)
 	controller.hover_path_highlight_layer.clear()
 	controller.hover_action_highlight_layer.clear()
 	if not controller.battlefieldState.map.cells.has(hex):
