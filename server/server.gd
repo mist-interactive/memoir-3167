@@ -6,7 +6,6 @@ var jwt_verifier: JwtVerifier
 var peer: WebSocketMultiplayerPeer
 var port: int = 6669
 var clients: Dictionary[int, ClientState]
-var sessions: Dictionary[int, int] # uuid -> peer_id
 var logger: LogService
 @export var match_manager: MatchManager
 @export var memoir_api: MemoirApi
@@ -76,3 +75,6 @@ func _on_auth_check_requested(peer_id: int, jwt_token: String) -> void:
 	else:
 		client.authenticated = false
 		logger.info("Client %d authentication failed" % peer_id)
+
+func remove_client(peer_id: int) -> void:
+	multiplayer.multiplayer_peer.disconnect_peer(peer_id)
