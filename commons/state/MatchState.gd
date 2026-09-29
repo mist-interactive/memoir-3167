@@ -13,6 +13,7 @@ var scores: Dictionary[enums.Side, int]:
 	set(new_score):
 		scores = new_score
 		should_sync = true
+var prev_state: STATE = STATE.INITIALIZING
 var state: STATE = STATE.INITIALIZING:
 	set(newState):
 		state = newState
@@ -119,14 +120,15 @@ func new_phase_timer(duration_in_sec: float = DEFAULT_DURATION_IN_SEC) -> void:
 func pause() -> void:
 	if state != MatchState.STATE.PAUSED:
 		phase_timer.paused_at = Time.get_ticks_msec()
-	state = STATE.PAUSED
-	should_sync = true
+		prev_state = state
+		state = STATE.PAUSED
+		should_sync = true
 
 func unpause() -> void:
 	var time_used: float = phase_timer.paused_at - phase_timer.started_at
 	phase_timer.ends_at = Time.get_ticks_msec() + (phase_timer.duration - time_used)
 	phase_timer.started_at = phase_timer.ends_at - phase_timer.duration
-	state = STATE.IN_PROGRESS
+	state = prev_state
 
 func has_phase_ended(server_time: float) -> bool:
 	if state != STATE.IN_PROGRESS:
