@@ -76,3 +76,8 @@ func get_disconnected_players(uuid_sides: Dictionary[int, enums.Side]) -> Array[
 				"last_seen": session.last_seen
 			})
 	return disconnected
+
+func has_active_session(uuid: int) -> bool:
+	if !player_sessions.has(uuid) || !player_sessions[uuid].is_status_set(enums.ConnectionStatus.Connected):
+		return false
+	return true
