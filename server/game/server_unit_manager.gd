@@ -102,6 +102,10 @@ func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, 
 	selected_by_peer = enums.Side.NONE
 	moved_units_ids.append(unit_id)
 	unit.set_can_move(false)
+	var destination_hex: HexCell = battlefield.map.get_cell(destination)
+	var destination_stats: TerrainStats = TerrainDatabase.get_stats(destination_hex.ground)
+	if destination_stats.unit_can_move_in_and_fight(unit.type) == false:
+		unit.set_can_attack(false)
 	var player_logger := logger.with_context({
 		"peer_id": sides_peer_ids[owner],
 		"side": owner
@@ -162,6 +166,8 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 		return false
 	var attacker: UnitData = units_by_id[unit_id]
 	var target: UnitData = units_by_id[target_unit_id]
+	if !attacker.can_attack():
+		return false
 	if !attacker.is_my_unit(side) || target.is_my_unit(side):
 		return false
 	if attacker.uuid != selected_unit_id || side != selected_by_peer:
