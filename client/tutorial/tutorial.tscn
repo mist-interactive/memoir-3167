@@ -89,7 +89,7 @@ atlas = ExtResource("16_xgmmi")
 region = Rect2(527, 8, 480, 496)
 
 [node name="Tutorial" type="Control" unique_id=1744084876 node_paths=PackedStringArray("minimize_button", "tutorial_button", "menu_button", "previous_page_button", "next_page_button", "panel", "top_bar", "page_buttons_container", "tutorial_pages", "page_buttons", "page_moving_units_buttons", "page_moving_units_page_targets", "page_moving_units_return_pages", "help_button_target_pages")]
-z_index = 100
+z_index = 4096
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_01d67")
