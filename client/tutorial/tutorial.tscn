@@ -736,8 +736,8 @@ visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Pages/Moving units" unique_id=1518700950]
-custom_minimum_size = Vector2(432, 224)
-custom_maximum_size = Vector2(432, 224)
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
 layout_mode = 0
 offset_left = 48.0
 offset_top = 24.0
@@ -809,8 +809,8 @@ visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Pages/Attacking" unique_id=2111594563]
-custom_minimum_size = Vector2(432, 224)
-custom_maximum_size = Vector2(432, 224)
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
 layout_mode = 0
 offset_left = 48.0
 offset_top = 24.0
@@ -819,11 +819,7 @@ offset_bottom = 248.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Your goal is to be the first to get a certain number of medals.
-The number required varies from scenario to scenario, but
-this one, NAME OF THE SCENARIO, requires 5.
-
-You get medals by destroying enemy units."
+text = "Attacking"
 autowrap_mode = 1
 
 [node name="Dice" type="Control" parent="Pages" unique_id=1317684370]
@@ -831,8 +827,8 @@ visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Pages/Dice" unique_id=1864963729]
-custom_minimum_size = Vector2(432, 224)
-custom_maximum_size = Vector2(432, 250)
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
 layout_mode = 0
 offset_left = 48.0
 offset_top = 24.0
@@ -841,11 +837,7 @@ offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Your goal is to be the first to get a certain number of medals.
-The number required varies from scenario to scenario, but
-this one, NAME OF THE SCENARIO, requires 5.
-
-You get medals by destroying enemy units."
+text = "Dice"
 autowrap_mode = 1
 
 [node name="Retreat" type="Control" parent="Pages" unique_id=796035537]
@@ -853,8 +845,8 @@ visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Pages/Retreat" unique_id=1810107256]
-custom_minimum_size = Vector2(432, 224)
-custom_maximum_size = Vector2(432, 250)
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
 layout_mode = 0
 offset_left = 48.0
 offset_top = 24.0
@@ -863,11 +855,7 @@ offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Your goal is to be the first to get a certain number of medals.
-The number required varies from scenario to scenario, but
-this one, NAME OF THE SCENARIO, requires 5.
-
-You get medals by destroying enemy units."
+text = "Retreat"
 autowrap_mode = 1
 
 [node name="Units" type="Control" parent="Pages" unique_id=1346251542]
@@ -875,8 +863,8 @@ visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Pages/Units" unique_id=784198580]
-custom_minimum_size = Vector2(432, 224)
-custom_maximum_size = Vector2(432, 250)
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
 layout_mode = 0
 offset_left = 48.0
 offset_top = 24.0
@@ -885,11 +873,7 @@ offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Your goal is to be the first to get a certain number of medals.
-The number required varies from scenario to scenario, but
-this one, NAME OF THE SCENARIO, requires 5.
-
-You get medals by destroying enemy units."
+text = "Units"
 autowrap_mode = 1
 
 [node name="Infantry" type="Control" parent="Pages" unique_id=197650067]
@@ -897,8 +881,8 @@ visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Pages/Infantry" unique_id=320565046]
-custom_minimum_size = Vector2(432, 224)
-custom_maximum_size = Vector2(432, 250)
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
 layout_mode = 0
 offset_left = 48.0
 offset_top = 24.0
@@ -907,11 +891,7 @@ offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Your goal is to be the first to get a certain number of medals.
-The number required varies from scenario to scenario, but
-this one, NAME OF THE SCENARIO, requires 5.
-
-You get medals by destroying enemy units."
+text = "Infantry"
 autowrap_mode = 1
 
 [node name="Tanks" type="Control" parent="Pages" unique_id=357366898]
@@ -919,8 +899,8 @@ visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Pages/Tanks" unique_id=696832887]
-custom_minimum_size = Vector2(432, 224)
-custom_maximum_size = Vector2(432, 250)
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
 layout_mode = 0
 offset_left = 48.0
 offset_top = 24.0
@@ -929,11 +909,7 @@ offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Your goal is to be the first to get a certain number of medals.
-The number required varies from scenario to scenario, but
-this one, NAME OF THE SCENARIO, requires 5.
-
-You get medals by destroying enemy units."
+text = "Tanks"
 autowrap_mode = 1
 
 [node name="Artillery" type="Control" parent="Pages" unique_id=190926719]
@@ -941,8 +917,8 @@ visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Pages/Artillery" unique_id=907521301]
-custom_minimum_size = Vector2(432, 224)
-custom_maximum_size = Vector2(432, 250)
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
 layout_mode = 0
 offset_left = 48.0
 offset_top = 24.0
@@ -951,11 +927,7 @@ offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Your goal is to be the first to get a certain number of medals.
-The number required varies from scenario to scenario, but
-this one, NAME OF THE SCENARIO, requires 5.
-
-You get medals by destroying enemy units."
+text = "Artillery"
 autowrap_mode = 1
 
 [node name="Terrain" type="Control" parent="Pages" unique_id=208024676]
@@ -963,8 +935,8 @@ visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Pages/Terrain" unique_id=1249696724]
-custom_minimum_size = Vector2(432, 224)
-custom_maximum_size = Vector2(432, 250)
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
 layout_mode = 0
 offset_left = 48.0
 offset_top = 24.0
@@ -973,11 +945,7 @@ offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Your goal is to be the first to get a certain number of medals.
-The number required varies from scenario to scenario, but
-this one, NAME OF THE SCENARIO, requires 5.
-
-You get medals by destroying enemy units."
+text = "Terrain"
 autowrap_mode = 1
 
 [node name="Line of sight" type="Control" parent="Pages" unique_id=1684079097]
@@ -985,8 +953,8 @@ visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Pages/Line of sight" unique_id=175261415]
-custom_minimum_size = Vector2(432, 224)
-custom_maximum_size = Vector2(432, 250)
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
 layout_mode = 0
 offset_left = 48.0
 offset_top = 24.0
@@ -995,11 +963,7 @@ offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Your goal is to be the first to get a certain number of medals.
-The number required varies from scenario to scenario, but
-this one, NAME OF THE SCENARIO, requires 5.
-
-You get medals by destroying enemy units."
+text = "Line of sight"
 autowrap_mode = 1
 
 [node name="Turn end" type="Control" parent="Pages" unique_id=1181713521]
@@ -1007,8 +971,8 @@ visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Pages/Turn end" unique_id=355549980]
-custom_minimum_size = Vector2(432, 224)
-custom_maximum_size = Vector2(432, 250)
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
 layout_mode = 0
 offset_left = 48.0
 offset_top = 24.0
@@ -1017,9 +981,5 @@ offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Your goal is to be the first to get a certain number of medals.
-The number required varies from scenario to scenario, but
-this one, NAME OF THE SCENARIO, requires 5.
-
-You get medals by destroying enemy units."
+text = "Turn ends"
 autowrap_mode = 1
