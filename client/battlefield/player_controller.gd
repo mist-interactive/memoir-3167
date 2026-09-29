@@ -13,7 +13,8 @@ class_name PlayerController
 @export var hover_action_highlight_layer: TileMapLayer
 @export var unit_retreat_highlight_layer: TileMapLayer
 @export var sector_highlight_layer: TileMapLayer
-@export var dice_indicator_container: Node2D
+@export var selected_unit_dice_indicator_container: Node2D
+@export var hovered_unit_dice_indicator_container: Node2D
 @onready var unit_manager: ClientUnitManager = $"../../UnitManager"
 
 const DAMAGE_FONT: Font = preload("res://assets/fonts/PixelArmy/PixelArmy.ttf")
@@ -95,7 +96,7 @@ func clear_selection() -> void:
 	active_reachable.clear()
 	selected_unit_path_highlight_layer.clear()
 	selected_unit_action_highlight_layer.clear()
-	clear_dice_indicators()
+	clear_dice_indicators(selected_unit_dice_indicator_container)
 
 func highlight_selected_unit_reachable_hexes(unit: Unit) -> void:
 	selected_unit_path_highlight_layer.clear()
@@ -138,20 +139,24 @@ func highlight_attackable_enemies_on_layer(unit: Unit, highlight_layer: TileMapL
 		var enemy = target.get("enemy")
 		highlight_layer.highlight_cell(enemy.hex_coord)
 
-func show_attackable_enemies_dice_count(unit: Unit) -> void:
-	clear_dice_indicators()
+func show_attackable_enemies_dice_count(unit: Unit, dice_indicator_container: Node2D) -> void:
+	clear_dice_indicators(dice_indicator_container)
 	for target in unit_manager.get_attackable_enemies(unit).values():
 		var enemy = target.get("enemy")
 		var dice = target.get("dice")
-		_show_attack_dice_count(enemy, dice)
+		_show_attack_dice_count(unit, enemy, dice, dice_indicator_container)
 	
 
-func _show_attack_dice_count(enemy: Unit, dice: int) -> void:
+func _show_attack_dice_count(unit: Unit, enemy: Unit, dice: int, dice_indicator_container: Node2D) -> void:
 	var dice_indicator: Label = Label.new()
 	dice_indicator.text = str(dice)
 	dice_indicator.add_theme_font_override("font", DAMAGE_FONT)
-	dice_indicator.add_theme_color_override("font_color", Color.ALICE_BLUE)
-	dice_indicator.add_theme_color_override("font_outline_color", Color.BLACK)
+	if dice_indicator_container == selected_unit_dice_indicator_container:
+		dice_indicator.add_theme_color_override("font_color", Color.ALICE_BLUE)
+		dice_indicator.add_theme_color_override("font_outline_color", Color.BLACK)
+	else:
+		dice_indicator.add_theme_color_override("font_color", Color.BLACK)
+		dice_indicator.add_theme_color_override("font_outline_color", Color.ALICE_BLUE)
 	dice_indicator.add_theme_constant_override("outline_size", 6)
 	dice_indicator.add_theme_font_size_override("font_size", 48)
 	dice_indicator.position = enemy.position + Vector2(HexGrid.TILE_WIDTH / 2, HexGrid.TILE_HEIGHT / 2)
@@ -159,6 +164,13 @@ func _show_attack_dice_count(enemy: Unit, dice: int) -> void:
 	dice_indicator.grow_vertical = Control.GROW_DIRECTION_BOTH
 	dice_indicator.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
 	dice_indicator.vertical_alignment = VERTICAL_ALIGNMENT_CENTER
+	if dice_indicator_container == hovered_unit_dice_indicator_container && selected_unit != null && unit != selected_unit:
+		for target in unit_manager.get_attackable_enemies(selected_unit).values():
+			var selected_unit_enemy = target.get("enemy")
+			var selected_unit_dice = target.get("dice")
+			if selected_unit_enemy.hex_coord == enemy.hex_coord:
+				dice_indicator.position += Vector2(0, HexGrid.TILE_HEIGHT / 4)
+				dice_indicator.add_theme_font_size_override("font_size", 24)
 	dice_indicator_container.add_child(dice_indicator)
 
 func highlight_possible_retreats() -> void:
@@ -232,6 +244,6 @@ func _transition_to_phase(new_phase: enums.TurnPhase) -> void:
 		current_state.setup(self)
 	current_state.enter()
 
-func clear_dice_indicators() -> void:
+func clear_dice_indicators(dice_indicator_container: Node2D) -> void:
 	for child in dice_indicator_container.get_children():
 		child.queue_free()

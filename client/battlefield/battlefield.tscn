@@ -129,7 +129,7 @@ unit_container = NodePath("UnitContainer")
 dice_roller = NodePath("../UICanvas/DiceView/SubViewport/Node3D")
 player_controller = NodePath("../PlayerController")
 
-[node name="PlayerController" type="Node" parent="." unique_id=1795203478 node_paths=PackedStringArray("terrain_cards", "map_ground_layer", "map_feature_layer", "unit_selection_highlight_layer", "selected_unit_path_highlight_layer", "selected_unit_action_highlight_layer", "hover_path_highlight_layer", "hover_action_highlight_layer", "unit_retreat_highlight_layer", "sector_highlight_layer", "dice_indicator_container")]
+[node name="PlayerController" type="Node" parent="." unique_id=1795203478 node_paths=PackedStringArray("terrain_cards", "map_ground_layer", "map_feature_layer", "unit_selection_highlight_layer", "selected_unit_path_highlight_layer", "selected_unit_action_highlight_layer", "hover_path_highlight_layer", "hover_action_highlight_layer", "unit_retreat_highlight_layer", "sector_highlight_layer", "selected_unit_dice_indicator_container", "hovered_unit_dice_indicator_container")]
 script = ExtResource("4_eq063")
 terrain_cards = NodePath("../UICanvas/TerrainCards")
 map_ground_layer = NodePath("../MapVisuals/MapGround")
@@ -141,7 +141,8 @@ hover_path_highlight_layer = NodePath("../MapVisuals/HoverPathHighlight")
 hover_action_highlight_layer = NodePath("../MapVisuals/HoverActionHighlight")
 unit_retreat_highlight_layer = NodePath("../MapVisuals/RetreatHighlight")
 sector_highlight_layer = NodePath("../MapVisuals/SectorHighlight")
-dice_indicator_container = NodePath("../MapVisuals/DiceIndicatorContainer")
+selected_unit_dice_indicator_container = NodePath("../MapVisuals/SelectedUnitDiceIndicatorContainer")
+hovered_unit_dice_indicator_container = NodePath("../MapVisuals/HoveredUnitDiceIndicatorContainer")
 
 [node name="MapManager" type="Node" parent="." unique_id=225508304 node_paths=PackedStringArray("map_ground_layer", "map_features_layer", "map_highlight_layer", "map_visuals_node", "unit_container", "left_sector_divider", "right_sector_divider")]
 script = ExtResource("2_ynl45")
@@ -218,7 +219,10 @@ default_color = Color(0.79607844, 0.22352941, 0.16862746, 1)
 width = 5.0
 default_color = Color(0.79613465, 0.22224942, 0.17009893, 1)
 
-[node name="DiceIndicatorContainer" type="Node2D" parent="MapVisuals" unique_id=102868072]
+[node name="SelectedUnitDiceIndicatorContainer" type="Node2D" parent="MapVisuals" unique_id=102868072]
+z_index = 1000
+
+[node name="HoveredUnitDiceIndicatorContainer" type="Node2D" parent="MapVisuals" unique_id=1217838389]
 z_index = 1000
 
 [node name="UnitContainer" type="Node2D" parent="." unique_id=1804487023]
