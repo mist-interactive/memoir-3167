@@ -51,6 +51,7 @@ func _physics_process(delta: float) -> void:
 		return
 	if matchState.has_phase_ended(Time.get_ticks_msec()) && !unit_manager.unit_is_attacking:
 		go_next_phase(matchState.current_turn, true)
+	
 	match matchState.phase:
 		enums.TurnPhase.DRAW_HAND:
 			var hands_drawn: bool = deckManager.player_hands[enums.Side.GREEN].is_hand_drawn && deckManager.player_hands[enums.Side.RED].is_hand_drawn
@@ -63,21 +64,23 @@ func _physics_process(delta: float) -> void:
 				matchState.unpause()
 			monitor_game_abandonment()
 		MatchState.STATE.INITIALIZE_BOARD:
-			logger.info("Initializing board")
-			unit_manager.spawn_units(get_sides_peer_ids())
-			for side in sides_uuid:
-				deckManager.draw_hand(side, get_sides_peer_ids())
+			if session_manager.players_are_playing():
+				unit_manager.spawn_units(get_sides_peer_ids())
+				for side in sides_uuid:
+					deckManager.draw_hand(side, get_sides_peer_ids())
 
 func _send_heartbeat() -> void:
 	logger.info("sending heartbeat...")
 	match_manager.memoir_api.send_heartbeat(matchState.matchId)
 
 # signal handlers
-func handle_connect(uuid: int, peer_id: int) -> void:
+func handle_connect(uuid: int, peer_id: int) -> bool:
+	if session_manager.has_active_session(uuid):
+		return false
 	session_manager.register_new_session(uuid, peer_id)
 	logger.info("Client(%d) joining game" % uuid)
 	if !matchState.is_paused() && !session_manager.players_are_connected():
-		return
+		return true
 	var units: Array[Dictionary]
 	for unit: UnitData in unit_manager.units_by_id.values():
 		units.append(unit.get_snapshot())
@@ -87,6 +90,7 @@ func handle_connect(uuid: int, peer_id: int) -> void:
 	if matchState.state == MatchState.STATE.INITIALIZING:
 		sides_uuid = {enums.Side.GREEN: uuids[0], enums.Side.RED: uuids[1]}
 		uuid_sides = {uuids[0]: enums.Side.GREEN, uuids[1]: enums.Side.RED}
+		matchState.state = MatchState.STATE.INITIALIZE_BOARD
 	var snapshot: Dictionary = {
 		"match_state": matchState.get_snapshot(get_side(peer_id)),
 		"map_name": battlefield.mapName,
@@ -98,9 +102,10 @@ func handle_connect(uuid: int, peer_id: int) -> void:
 		if matchState.is_paused():
 			if _uuid != uuid:
 				continue
-		snapshot.hand_state = deckManager.player_hands[get_side(session.peer_id)].get_snapshot()
+		snapshot.hand_state = deckManager.player_hands[uuid_sides[uuid]].get_snapshot()
 		Network.Match.init.rpc_id(session.peer_id, snapshot)
-
+	return true
+	
 func handle_client_ready(uuid: int) -> void:
 	logger.info("Client(%s) is ready" % uuid)
 	session_manager.client_is_ready(uuid)
@@ -119,12 +124,14 @@ func handle_client_ready(uuid: int) -> void:
 
 func handle_client_game_ready(uuid: int) -> void:
 	session_manager.client_is_playing(uuid)
-	if session_manager.players_are_playing() && matchState.state == MatchState.STATE.INITIALIZING:
-		matchState.state = MatchState.STATE.INITIALIZE_BOARD
 
-func handle_disconnect(side: enums.Side) -> void:
-	session_manager.client_disconnected(sides_uuid[side])
-	matchState.pause()
+func handle_disconnect(peer_id: int) -> void:
+	if !sides_uuid.is_empty():
+		for session: PlayerSession in session_manager.get_sessions().values():
+			if session.peer_id == peer_id:
+				session.set_status(enums.ConnectionStatus.Disconnected)
+				session.last_seen = Time.get_ticks_msec()
+				matchState.pause()
 
 # Action handlers
 func handle_continue_next_phase(side: enums.Side) -> void:
