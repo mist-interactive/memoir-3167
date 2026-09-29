@@ -7,7 +7,7 @@ class_name TerrainCards
 @export var map_ground_layer: TileMapLayer
 var _current_terrain_card: TerrainCardUI = null
 
-func restore_size() ->void:
+func restore_size() -> void:
 	ui_control.restore()
 
 func display_terrain_card(hex: Vector2) -> void:

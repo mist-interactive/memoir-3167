@@ -1,6 +1,5 @@
 [gd_resource type="Resource" script_class="CommandCard" format=3 uid="uid://d2jhch5pla0nn"]
 
-[ext_resource type="Texture2D" uid="uid://k0ytxe6cvixe" path="res://assets/card_textures/sector-orders/a1_pincer.png" id="1_yo210"]
 [ext_resource type="Script" uid="uid://brv7b2q4f6ws5" path="res://commons/cards/command_card/CommandCard.gd" id="2_mjfqd"]
 
 [resource]
@@ -9,5 +8,5 @@ id = "002"
 target_sector = 5
 deck_quantity = 3
 target_unit_limit = 2
-card_art = ExtResource("1_yo210")
+card_art_path = "uid://k0ytxe6cvixe"
 metadata/_custom_type_script = "uid://brv7b2q4f6ws5"
