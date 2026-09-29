@@ -82,34 +82,41 @@ offset_right = 1550.0
 offset_bottom = 956.0
 grow_horizontal = 0
 grow_vertical = 0
+mouse_filter = 2
 
 [node name="BoxContainer" type="HBoxContainer" parent="ResizeUI/UiPlayerOne/ScorePips" unique_id=340862218]
 texture_filter = 1
 layout_mode = 2
+mouse_filter = 2
 
 [node name="TextureRect1" type="TextureRect" parent="ResizeUI/UiPlayerOne/ScorePips/BoxContainer" unique_id=2067447044]
 z_index = -10
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("2_xaod4")
 
 [node name="TextureRect2" type="TextureRect" parent="ResizeUI/UiPlayerOne/ScorePips/BoxContainer" unique_id=389831737]
 z_index = -11
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("2_xaod4")
 
 [node name="TextureRect3" type="TextureRect" parent="ResizeUI/UiPlayerOne/ScorePips/BoxContainer" unique_id=444964470]
 z_index = -12
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("2_xaod4")
 
 [node name="TextureRect4" type="TextureRect" parent="ResizeUI/UiPlayerOne/ScorePips/BoxContainer" unique_id=1978110536]
 z_index = -13
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("2_xaod4")
 
 [node name="TextureRect5" type="TextureRect" parent="ResizeUI/UiPlayerOne/ScorePips/BoxContainer" unique_id=1151708755]
 z_index = -14
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("2_xaod4")
 
 [node name="Name" type="Label" parent="ResizeUI/UiPlayerOne" unique_id=1287425533]
@@ -176,28 +183,35 @@ offset_right = 1552.0
 offset_bottom = 84.0
 grow_horizontal = 0
 grow_vertical = 0
+mouse_filter = 2
 
 [node name="BoxContainer" type="HBoxContainer" parent="ResizeUI/UiPlayerTwo/ScorePips" unique_id=279185606]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="TextureRect1" type="TextureRect" parent="ResizeUI/UiPlayerTwo/ScorePips/BoxContainer" unique_id=2018023485]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("2_xaod4")
 
 [node name="TextureRect2" type="TextureRect" parent="ResizeUI/UiPlayerTwo/ScorePips/BoxContainer" unique_id=1463592112]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("2_xaod4")
 
 [node name="TextureRect3" type="TextureRect" parent="ResizeUI/UiPlayerTwo/ScorePips/BoxContainer" unique_id=1730851166]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("2_xaod4")
 
 [node name="TextureRect4" type="TextureRect" parent="ResizeUI/UiPlayerTwo/ScorePips/BoxContainer" unique_id=1003635735]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("2_xaod4")
 
 [node name="TextureRect5" type="TextureRect" parent="ResizeUI/UiPlayerTwo/ScorePips/BoxContainer" unique_id=1283414423]
 layout_mode = 2
+mouse_filter = 2
 texture = ExtResource("2_xaod4")
 
 [node name="Name" type="Label" parent="ResizeUI/UiPlayerTwo" unique_id=2096575138]
@@ -331,6 +345,7 @@ offset_top = 104.0
 offset_right = 1130.0
 offset_bottom = 360.0
 rotation = 1.5707964
+mouse_filter = 2
 texture = ExtResource("8_idgig")
 expand_mode = 1
 stretch_mode = 1
@@ -346,6 +361,7 @@ offset_right = 8995.998
 offset_bottom = 184.00024
 rotation = 1.5707964
 scale = Vector2(0.1, 0.1)
+mouse_filter = 2
 texture = ExtResource("9_idgig")
 expand_mode = 1
 stretch_mode = 1
@@ -363,6 +379,7 @@ offset_top = 104.0
 offset_right = 19199.998
 offset_bottom = 184.0
 scale = Vector2(0.1, 0.1)
+mouse_filter = 2
 texture = ExtResource("11_77ma2")
 expand_mode = 1
 stretch_mode = 1
@@ -385,6 +402,7 @@ layout_mode = 0
 offset_right = 19199.998
 offset_bottom = 80.00122
 scale = Vector2(0.1, 0.1)
+mouse_filter = 2
 texture = ExtResource("11_77ma2")
 expand_mode = 1
 stretch_mode = 1
@@ -394,6 +412,7 @@ flip_h = true
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+mouse_filter = 2
 
 [node name="TextureRect2" type="TextureRect" parent="ResizeUI/Borders/bottom" unique_id=433934365]
 z_index = -99
@@ -466,6 +485,7 @@ offset_right = 10411.997
 offset_bottom = 184.00006
 rotation = 1.5707964
 scale = Vector2(0.1, 0.1)
+mouse_filter = 2
 texture = ExtResource("9_idgig")
 expand_mode = 1
 stretch_mode = 1
