@@ -8,7 +8,6 @@ var failed_auth: bool = false:
 	set(val):
 		failed_auth = val
 		should_sync = true
-
 var display_name: String:
 	set(val):
 		display_name = val
