@@ -75,14 +75,12 @@ func load_cursor() -> void:
 
 	set_cursor_normal()
 
-
 func set_cursor_normal() -> void:
 	Input.set_custom_mouse_cursor(
 		cursor_normal,
 		Input.CURSOR_ARROW,
 		Vector2(8, 8)
 	)
-
 
 func set_cursor_clickable() -> void:
 	Input.set_custom_mouse_cursor(
@@ -91,15 +89,12 @@ func set_cursor_clickable() -> void:
 		Vector2(32, 8)
 	)
 
-
 func _on_button_mouse_entered() -> void:
 	if not button.disabled:
 		set_cursor_clickable()
 
-
 func _on_button_mouse_exited() -> void:
 	set_cursor_normal()
-
 
 func update_player_color() -> void:
 	match matchState.mySide:
@@ -128,12 +123,10 @@ func update_player_color() -> void:
 		enums.Side.NONE:
 			return
 
-
 func set_box_color(control: Control, color: Color) -> void:
 	var style := control.get_theme_stylebox("normal").duplicate() as StyleBoxFlat
 	style.bg_color = color
 	control.add_theme_stylebox_override("normal", style)
-
 
 func update_ui() -> void:
 	var viewport_size := get_viewport_rect().size
@@ -144,7 +137,6 @@ func update_ui() -> void:
 
 	ui.scale = Vector2.ONE * scale_factor
 	ui.position = (viewport_size - DESIGN_SIZE * scale_factor) / 2.0
-
 
 func _physics_process(delta: float) -> void:
 	var server_now: float = clock.get_server_time()
@@ -186,7 +178,6 @@ func _physics_process(delta: float) -> void:
 		show() if debug_hidden else hide()
 		debug_hidden = !debug_hidden
 
-
 func get_next_phase() -> enums.TurnPhase:
 	match matchState.phase:
 		enums.TurnPhase.SPAWN_UNITS:
@@ -211,7 +202,6 @@ func get_next_phase() -> enums.TurnPhase:
 			return enums.TurnPhase.SPAWN_UNITS
 
 	return enums.TurnPhase.SPAWN_UNITS
-
 
 func update_score_pips() -> void:
 	var my_score: int = matchState.scores[matchState.mySide]
@@ -251,7 +241,6 @@ func update_score_pips() -> void:
 		else:
 			score_pips_enemy[i].modulate = Color(0.722, 0.722, 0.722, 1.0)
 
-
 func player_id_text(side: enums.Side) -> String:
 	if side == enums.Side.GREEN:
 		return "Green"
@@ -259,7 +248,6 @@ func player_id_text(side: enums.Side) -> String:
 		return "Red"
 	else:
 		return "None"
-
 
 func get_turn_phase_txt(phase: enums.TurnPhase) -> String:
 	match phase:
@@ -282,7 +270,6 @@ func get_turn_phase_txt(phase: enums.TurnPhase) -> String:
 
 	return "Unknown"
 
-
 func get_game_state_txt(state: MatchState.STATE) -> String:
 	match state:
 		MatchState.STATE.INITIALIZING:
@@ -299,7 +286,6 @@ func get_game_state_txt(state: MatchState.STATE) -> String:
 			return "Ended"
 
 	return "Unknown"
-
 
 func _on_confirm() -> void:
 	match matchState.phase:
