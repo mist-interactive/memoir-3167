@@ -368,25 +368,8 @@ func _end_drag() -> void:
 
 		Network.Actions.play_card.rpc(_instance_id)
 
-		var confirmed := await _wait_for_card_confirmation(0.1)
-
-		if confirmed:
-			var target_pos := Vector2.ZERO
-
-			if discard_target:
-				target_pos = discard_target.global_position + (discard_target.size / 2.0)
-
-			animate_to_discard(
-				target_pos,
-				func():
-					queue_free()
-
-					var hand := get_parent()
-					if hand and hand.has_method("_recalculate_layout"):
-						hand._recalculate_layout()
-			)
-		else:
-			return_to_hand()
+		await _wait_for_card_confirmation(0.1)
+		return_to_hand()
 	else:
 		return_to_hand()
 
@@ -407,27 +390,12 @@ func _unlock_cards() -> void:
 				)
 
 
-func _wait_for_card_confirmation(timeout_seconds: float) -> bool:
+func _wait_for_card_confirmation(timeout_seconds: float) -> void:
 	if not handState:
-		return false
-
-	var confirmed := false
-
-	var on_played := func(confirmed_id: int, _c_id: String):
-		if confirmed_id == _instance_id:
-			confirmed = true
-
-	handState.card_played.connect(on_played)
-
+		return
 	var timer := get_tree().create_timer(timeout_seconds)
-
-	while not confirmed and timer.time_left > 0:
+	while timer.time_left > 0:
 		await get_tree().process_frame
-
-	if handState.card_played.is_connected(on_played):
-		handState.card_played.disconnect(on_played)
-
-	return confirmed
 
 
 func return_to_hand() -> void:

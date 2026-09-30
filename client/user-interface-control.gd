@@ -5,10 +5,6 @@ extends Control
 
 @onready var ui = $ResizeUI
 
-@onready var turn = $ResizeUI/Turn
-@onready var state = $ResizeUI/State
-@onready var scores = $ResizeUI/Scores
-@onready var winner = $ResizeUI/Winner
 @onready var phase = $ResizeUI/PlayButton/Phase
 @onready var button = $ResizeUI/PlayButton/Button
 @onready var next_phase = $ResizeUI/PlayButton/NextPhase
@@ -175,7 +171,7 @@ func _physics_process(_delta: float) -> void:
 	update_score_pips()
 
 	if Input.is_action_just_released("toggle_debug_overlay"):
-		show() if debug_hidden else hide()
+		visible = debug_hidden
 		debug_hidden = !debug_hidden
 
 func get_next_phase() -> enums.TurnPhase:
@@ -249,8 +245,8 @@ func player_id_text(side: enums.Side) -> String:
 	else:
 		return "None"
 
-func get_turn_phase_txt(phase: enums.TurnPhase) -> String:
-	match phase:
+func get_turn_phase_txt(_phase: enums.TurnPhase) -> String:
+	match _phase:
 		enums.TurnPhase.SPAWN_UNITS:
 			return "Spawn Units"
 		enums.TurnPhase.DRAW_HAND:
