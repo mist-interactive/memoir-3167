@@ -22,6 +22,7 @@
 [ext_resource type="Texture2D" uid="uid://wd8gerj4bli1" path="res://assets/sprites/dice/textures/dice-sides.png" id="13_wygn3"]
 [ext_resource type="Script" uid="uid://divj852txeen4" path="res://client/battlefield/unit_retreat_highlight.gd" id="14_1ra3n"]
 [ext_resource type="Script" uid="uid://cl0168wcrdlf1" path="res://client/battlefield/discard_pile_ui.gd" id="15_eq063"]
+[ext_resource type="Script" uid="uid://bbg13a7s1xgdj" path="res://client/battlefield/dashed_line_2d.gd" id="16_6eckn"]
 [ext_resource type="PackedScene" uid="uid://c3nofdwjiv8vk" path="res://client/user-interface.tscn" id="19_3y24m"]
 [ext_resource type="PackedScene" uid="uid://chpts1xx3dkee" path="res://client/tutorial/tutorial.tscn" id="22_1ra3n"]
 [ext_resource type="Script" uid="uid://d0i075tkk6mwe" path="res://client/battlefield/terrain_cards.gd" id="23_vln62"]
@@ -212,13 +213,24 @@ tile_set = SubResource("TileSet_ql7mu")
 script = ExtResource("11_tjobt")
 metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
 
-[node name="LeftSectorDivider" type="Line2D" parent="MapVisuals" unique_id=1538020218]
+[node name="LeftSectorDividerOld" type="Line2D" parent="MapVisuals" unique_id=1538020218]
+visible = false
 width = 5.0
 default_color = Color(0.79607844, 0.22352941, 0.16862746, 1)
 
-[node name="RightSectorDivider" type="Line2D" parent="MapVisuals" unique_id=479535643]
+[node name="LeftSectorDivider" type="Node2D" parent="MapVisuals" unique_id=1478436615]
+top_level = true
+z_index = 500
+script = ExtResource("16_6eckn")
+
+[node name="RightSectorDividerOld" type="Line2D" parent="MapVisuals" unique_id=479535643]
 width = 5.0
 default_color = Color(0.79613465, 0.22224942, 0.17009893, 1)
+
+[node name="RightSectorDivider" type="Node2D" parent="MapVisuals" unique_id=163568741]
+top_level = true
+z_index = 500
+script = ExtResource("16_6eckn")
 
 [node name="SelectedUnitDiceIndicatorContainer" type="Node2D" parent="MapVisuals" unique_id=102868072]
 z_index = 1000
