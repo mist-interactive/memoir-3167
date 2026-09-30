@@ -90,7 +90,7 @@ func handle_connect(uuid: int, peer_id: int) -> bool:
 	var snapshot: Dictionary = {
 		"match_state": matchState.get_snapshot(get_side(peer_id)),
 		"map_name": battlefield.mapName,
-		"units": units
+		"unit_manager": unit_manager.snapshot()
 	}
 	var sessions: Dictionary[int, PlayerSession] = session_manager.get_sessions()
 	for _uuid: int in sessions:
