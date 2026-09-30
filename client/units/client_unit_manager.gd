@@ -16,11 +16,14 @@ func _init(initialState: BattlefieldState) -> void:
 # snapshot used for reconnection
 func initialize(active_container: Node, snapshot: Dictionary = {}) -> void:
 	self.active_container = active_container
-	if !snapshot.is_empty() && snapshot.has("units"):
-		print("snapshot.units", snapshot.units)
+	if snapshot.is_empty():
+		return
+	if snapshot.has("units"):
 		for unit: Dictionary in snapshot.units:
 			_on_spawn_unit_requested(unit)
 			_on_sync_unit_requested(unit)
+	if snapshot.has("selected_units_ids"):
+		selected_units_ids = snapshot.selected_units_ids
 
 func _on_sync_unit_requested(snapshot: Dictionary) -> void:
 	var uuid: int = snapshot.uuid

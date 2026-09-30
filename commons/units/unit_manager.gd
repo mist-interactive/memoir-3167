@@ -21,6 +21,15 @@ func _init(initialState: BattlefieldState) -> void:
 	base_dir[enums.Side.GREEN] = battlefield.base_dir_1
 	base_dir[enums.Side.RED] = battlefield.base_dir_2
 
+func snapshot() -> Dictionary:
+	var units: Array[Dictionary]
+	for unit: Variant in units_by_id.values():
+		units.append(unit.get_snapshot())
+	return {
+		"units": units,
+		"selected_units_ids": selected_units_ids
+	}
+
 func add_unit(unit: Variant, coord: Vector2i) -> void:
 	if !map.cells.has(coord) || unit_grid.has(coord):
 		return
@@ -134,6 +143,7 @@ func get_retreating_unit() -> Variant:
 		if unit.must_retreat():
 			return unit
 	return null
+
 func get_attackable_enemies(unit: Variant) -> Dictionary:
 	var reachable_enemies: Dictionary = get_enemies_within_range_and_los(unit)
 	if !reachable_enemies || reachable_enemies.size() == 0:
