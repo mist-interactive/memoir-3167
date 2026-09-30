@@ -37,10 +37,7 @@ func _init(matchId: int) -> void:
 	config = ConfigLoader.load_json(CONFIG_PATH)
 
 func _physics_process(delta: float) -> void:
-	var sides_peer_ids: Dictionary[enums.Side, int] = get_sides_peer_ids()
-	matchState.sync(sides_peer_ids)
-	deckManager._sync_hands(sides_peer_ids)
-	unit_manager._sync_units(sides_peer_ids)
+	_sync_clients()
 	check_win_condition()
 	if matchState.has_phase_ended(Time.get_ticks_msec()) && !unit_manager.unit_is_attacking:
 		go_next_phase(matchState.current_turn, true)
@@ -56,9 +53,9 @@ func _physics_process(delta: float) -> void:
 				matchState.unpause()
 		MatchState.STATE.INITIALIZE_BOARD:
 			logger.info("Initializing board")
-			unit_manager.spawn_units(get_sides_peer_ids())
+			unit_manager.spawn_units()
 			for side in sides_uuid:
-				deckManager.draw_hand(side, get_sides_peer_ids())
+				deckManager.draw_hand(side, get_player_session(side))
 
 func _send_heartbeat() -> void:
 	logger.info("sending heartbeat...")
@@ -90,23 +87,21 @@ func handle_connect(uuid: int, peer_id: int) -> void:
 			if _uuid != uuid:
 				continue
 		snapshot.hand_state = deckManager.player_hands[get_side(session.peer_id)].get_snapshot()
-		Network.Match.init.rpc_id(session.peer_id, snapshot)
+		MessageBroker.send(session, Network.Match.init.rpc_id, [snapshot])
 
 func handle_client_ready(uuid: int) -> void:
 	logger.info("Client(%s) is ready" % uuid)
 	session_manager.client_is_ready(uuid)
 	if !matchState.is_paused() && !session_manager.players_are_ready():
 		return
-	var peer_ids: Array[int] = []
 	var sessions: Dictionary[int, PlayerSession] = session_manager.get_sessions()
 	for _uuid: int in sessions:
 		var session: PlayerSession = sessions[_uuid]
 		if matchState.is_paused():
 			if _uuid == uuid:
-				peer_ids.append(session.peer_id)
+				MessageBroker.send(session, Network.Match.start_game.rpc_id)
 		elif session.is_status_set(enums.ConnectionStatus.Ready):
-			peer_ids.append(session.peer_id)
-	Network.broadcast(Network.Match.start_game.rpc_id, peer_ids)
+			MessageBroker.send(session, Network.Match.start_game.rpc_id)
 
 func handle_client_game_ready(uuid: int) -> void:
 	session_manager.client_is_playing(uuid)
@@ -245,3 +240,23 @@ func get_match_result() -> MatchResult:
 	}
 	result.status = MatchState.STATE.ENDED
 	return result
+
+func get_player_sessions() -> Array[PlayerSession]:
+	return session_manager.get_sessions().values()
+
+func get_player_session(side: enums.Side) -> PlayerSession:
+	var sessions: Dictionary[int, PlayerSession] = session_manager.get_sessions()
+	if !sides_uuid.has(side) || !sessions.has(sides_uuid[side]):
+		return null
+	return sessions[sides_uuid[side]]
+
+func _sync_clients() -> void:
+	if matchState.should_sync:
+		for side: enums.Side in sides_uuid:
+			MessageBroker.send(get_player_session(side),
+				Network.Match.sync.rpc_id,
+				[matchState.get_snapshot(side)]
+			)
+		matchState.should_sync = false
+	deckManager._sync_hands()
+	unit_manager._sync_units()

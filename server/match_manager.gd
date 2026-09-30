@@ -109,7 +109,6 @@ func _on_retreat_unit(peer_id: int, unit_id: int, destination: Vector2i) -> void
 	var matchCtl: matchController = get_match(peer_id)
 	if !matchCtl || !matchCtl.isInProgress() || !matchCtl.isPlayerTurn(peer_id) || !matchCtl.isPhase(enums.TurnPhase.RESOLVE_RETREAT):
 		return
-	print("handling retreat...")
 	matchCtl.handle_retreat_unit(matchCtl.get_side(peer_id), unit_id, destination)
 
 func _on_attack_unit(peer_id: int, unit_id: int, target_unit_id: int) -> void:

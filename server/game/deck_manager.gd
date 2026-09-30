@@ -20,13 +20,15 @@ func _init() -> void:
 	player_hands[enums.Side.RED] = HandState.new()
 	initialize_match_deck()
 
-func _sync_hands(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
-	for side in sides_peer_ids:
-		var peer_id: int = sides_peer_ids[side]
+func _sync_hands() -> void:
+	for side in [enums.Side.RED, enums.Side.GREEN]:
 		var hand: HandState = player_hands[side]
-		if not hand.should_sync || peer_id < 0:
+		if not hand.should_sync:
 			continue
-		Network.Hand.sync.rpc_id(peer_id, hand.get_snapshot())
+		MessageBroker.send(match_controller.get_player_session(side),
+			Network.Hand.sync.rpc_id,
+			[hand.get_snapshot()]
+		)
 		hand.should_sync = false
 		logger.info("synced new hand state")
 
@@ -107,9 +109,9 @@ func play_card(side: enums.Side, instance_id: int, sides_peer_ids: Dictionary[en
 	player_logger.info("Played card", {"instance_id":instance_id, "card_id": card_id})
 	return true
 
-func draw_hand(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) -> void:
+func draw_hand(side: enums.Side, player_session: PlayerSession) -> void:
 	var player_logger := logger.with_context({
-		"peer_id": sides_peer_ids[side],
+		"peer_id": player_session.peer_id,
 		"side": side
 	})
 	if !player_hands[side].is_hand_drawn:

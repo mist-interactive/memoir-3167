@@ -41,10 +41,10 @@ func get_snapshot() -> Dictionary:
 		"num_of_retreat": num_of_retreat
 	}
 
-func sync(peer_ids: Array[int]) -> void:
+func sync(sessions: Array[PlayerSession]) -> void:
 	if !isDirty:
 		return
-	Network.broadcast(Network.Units.sync_unit.rpc_id, peer_ids, [get_snapshot()])
+	MessageBroker.broadcast(sessions, Network.Units.sync_unit.rpc_id, [get_snapshot()])
 	isDirty = false
 
 func is_my_unit(side: enums.Side) -> bool:

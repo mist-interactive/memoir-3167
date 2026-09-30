@@ -26,14 +26,17 @@ func has_unit_moved(unit_id: int) -> bool:
 func has_unit_attacked(unit_id: int) -> bool:
 	return attacked_units_ids.has(unit_id)
 
-func _sync_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
+func _sync_units() -> void:
 	for uuid in units_by_id:
 		var unit: UnitData = units_by_id[uuid]
-		unit.sync(sides_peer_ids.values())
+		unit.sync(match_controller.get_player_sessions())
 	if !death_queue.is_empty():
 		isDirty = true
 		for uuid: int in death_queue:
-			Network.broadcast(Network.Units.destroy_unit.rpc_id, sides_peer_ids.values(), [uuid])
+			MessageBroker.broadcast(match_controller.get_player_sessions(),
+				Network.Units.destroy_unit.rpc_id,
+				[uuid]
+			)
 			unit_grid.erase(units_by_id[uuid].hex_coord)
 			units_by_id.erase(uuid)
 		death_queue.clear()
@@ -45,7 +48,10 @@ func _sync_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 			"moved_units_ids": moved_units_ids,
 			"attacked_units_ids": attacked_units_ids
 		}
-		Network.broadcast(Network.Units.sync_all.rpc_id, sides_peer_ids.values(), [snapshot])
+		MessageBroker.broadcast(match_controller.get_player_sessions(),
+				Network.Units.sync_all.rpc_id,
+				[snapshot]
+		)
 		isDirty = false
 
 func select_unit(owner: enums.Side, unit_id: int) -> bool:
@@ -97,7 +103,10 @@ func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, 
 	var old_coord := unit.hex_coord
 	if !move_unit(unit, old_coord, destination):
 		return false
-	Network.broadcast(Network.Actions.sync_unit_path.rpc_id, sides_peer_ids.values(),[unit_id, unit_path] )
+	MessageBroker.broadcast(match_controller.get_player_sessions(),
+		Network.Actions.sync_unit_path.rpc_id,
+		[unit_id, unit_path]
+	)
 	selected_unit_id = -1
 	selected_by_peer = enums.Side.NONE
 	moved_units_ids.append(unit_id)
@@ -131,7 +140,10 @@ func retreat_unit(owner: enums.Side, unit_id: int, destination: Vector2i, sides_
 	var unit_path = BoardPathfinding.get_unit_path(unit, unit.hex_coord, destination, battlefield.map, get_occupied_coords())
 	if !move_unit(unit, unit.hex_coord, destination):
 		return false
-	Network.broadcast(Network.Actions.sync_unit_path.rpc_id,sides_peer_ids.values(),[unit_id, unit_path])
+	MessageBroker.broadcast(match_controller.get_player_sessions(),
+		Network.Actions.sync_unit_path.rpc_id,
+		[unit_id, unit_path]
+	)
 	unit.num_of_retreat -= level
 	if unit.num_of_retreat <= 0:
 		unit.set_must_retreat(false)
@@ -155,7 +167,10 @@ func retreat_randomly(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, i
 		if !move_unit(unit, unit.hex_coord, random_hex):
 			logger.error("Failure to retreat to random hex", {"hex": random_hex})
 		else:
-			Network.broadcast(Network.Actions.sync_unit_path.rpc_id,sides_peer_ids.values(),[unit.uuid, unit_path])
+			MessageBroker.broadcast(match_controller.get_player_sessions(),
+				Network.Actions.sync_unit_path.rpc_id,
+				[unit.uuid, unit_path]
+			)
 	# takes dmg based on number of fail retreats
 	unit.hit_point -= (unit.num_of_retreat - max_retreatable_level)
 	unit.num_of_retreat = 0
@@ -189,8 +204,10 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	combat_result.initialize(attacker, target, rolled_dices)
 	
 	resolve_combat(combat_result, side, sides_peer_ids)
-	Network.broadcast(Network.Actions.resolve_combat_result.rpc_id, sides_peer_ids.values(), [combat_result.to_dict()])
-
+	MessageBroker.broadcast(match_controller.get_player_sessions(),
+		Network.Actions.resolve_combat_result.rpc_id,
+		[combat_result.to_dict()]
+	)
 	selected_unit_id = -1
 	selected_by_peer = enums.Side.NONE
 	attacker.set_can_attack(false)
@@ -212,7 +229,7 @@ func generate_server_unit_id() -> int:
 	_unit_id_counter += 1
 	return _unit_id_counter
 
-func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
+func spawn_units() -> void:
 	#tmp GREEN_SIDE --> owner_id=1, RED_SIDE --> owner_id=2
 
 	for elem in battlefield.units_to_spawn_player_1:
@@ -227,7 +244,10 @@ func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 			"hex_coord": coord,
 			"hit_point": unit.hit_point
 		}
-		Network.broadcast(Network.Units.spawn_unit.rpc_id, sides_peer_ids.values(), [new_unit])
+		MessageBroker.broadcast(match_controller.get_player_sessions(),
+			Network.Units.spawn_unit.rpc_id,
+			[new_unit]
+		)
 		add_unit(unit, coord)
 	
 	for elem in battlefield.units_to_spawn_player_2:
@@ -242,7 +262,10 @@ func spawn_units(sides_peer_ids: Dictionary[enums.Side, int]) -> void:
 			"hex_coord": coord,
 			"hit_point": unit.hit_point
 		}
-		Network.broadcast(Network.Units.spawn_unit.rpc_id, sides_peer_ids.values(), [new_unit])
+		MessageBroker.broadcast(match_controller.get_player_sessions(),
+			Network.Units.spawn_unit.rpc_id,
+			[new_unit]
+		)
 		add_unit(unit, coord)
 
 func resolve_combat(result: CombatResult, side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) -> void:
