@@ -88,6 +88,10 @@ region = Rect2(273, 519, 480, 496)
 atlas = ExtResource("16_xgmmi")
 region = Rect2(527, 8, 480, 496)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_henba"]
+atlas = ExtResource("9_ld8p5")
+region = Rect2(512, 0, 127, 128)
+
 [node name="Tutorial" type="Control" unique_id=1744084876 node_paths=PackedStringArray("minimize_button", "tutorial_button", "menu_button", "previous_page_button", "next_page_button", "panel", "top_bar", "page_buttons_container", "tutorial_pages", "page_buttons", "page_moving_units_buttons", "page_moving_units_page_targets", "page_moving_units_return_pages", "help_button_target_pages")]
 z_index = 4096
 layout_mode = 3
@@ -1081,7 +1085,6 @@ text = "Terrain"
 autowrap_mode = 1
 
 [node name="Line of sight" type="Control" parent="Pages" unique_id=1684079097]
-visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Pages/Line of sight" unique_id=175261415]
@@ -1095,8 +1098,45 @@ offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Line of sight"
+text = "There is a line of sight mechanic that prevents your units shooting through certain terrain.
+(hills, mountain, towns, forests)"
 autowrap_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="Pages/Line of sight" unique_id=1488646593]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 112.0
+offset_right = 96.0
+offset_bottom = 144.0
+texture = SubResource("AtlasTexture_henba")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="Pages/Line of sight" unique_id=53134242]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 112.0
+offset_right = 96.0
+offset_bottom = 144.0
+texture = SubResource("AtlasTexture_henba")
+expand_mode = 1
+
+[node name="TextureRect3" type="TextureRect" parent="Pages/Line of sight" unique_id=1600920458]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 112.0
+offset_right = 96.0
+offset_bottom = 144.0
+texture = SubResource("AtlasTexture_henba")
+expand_mode = 1
+
+[node name="TextureRect4" type="TextureRect" parent="Pages/Line of sight" unique_id=704306311]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 112.0
+offset_right = 96.0
+offset_bottom = 144.0
+texture = SubResource("AtlasTexture_henba")
+expand_mode = 1
 
 [node name="Turn end" type="Control" parent="Pages" unique_id=1181713521]
 visible = false
@@ -1113,5 +1153,7 @@ offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Turn ends"
+text = "When you have finished the combat phase,
+the turn ends and the game will automatically draw you a new command card.
+Now it's your opponent's turn to play."
 autowrap_mode = 1
