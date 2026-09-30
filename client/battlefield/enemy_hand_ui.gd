@@ -21,18 +21,15 @@ func _ready() -> void:
 	handState.enemy_card_drawn.connect(_on_enemy_card_drawn)
 	handState.enemy_card_played.connect(_on_enemy_played_card)
 
-
 func _on_enemy_draw_hand() -> void:
 	for instance_id in handState.opponent_cards:
 		_add_card_node(instance_id)
 
 	_recalculate_layout()
 
-
 func _on_enemy_card_drawn(instance_id: int) -> void:
 	_add_card_node(instance_id)
 	_recalculate_layout()
-
 
 func _add_card_node(instance_id: int) -> void:
 	var new_card: CardUI = card_ui_scene.instantiate() as CardUI
@@ -53,7 +50,6 @@ func _add_card_node(instance_id: int) -> void:
 	new_card.background_texture.flip_v = true
 	new_card.background_texture.flip_h = true
 
-
 func _on_enemy_played_card(instance_id: int, card_id: String) -> void:
 	var card_node := get_node_or_null(str(instance_id)) as CardUI
 
@@ -66,7 +62,6 @@ func _on_enemy_played_card(instance_id: int, card_id: String) -> void:
 
 	_remove_card_node_and_animate(card_node, instance_id)
 	_recalculate_layout()
-
 
 func _remove_card_node_and_animate(card_node: CardUI, instance_id: int ) -> void:
 	card_node.background_texture.flip_v = false
@@ -83,11 +78,9 @@ func _remove_card_node_and_animate(card_node: CardUI, instance_id: int ) -> void
 			discard_pile_ui.add_card_node(card_node)
 	)
 
-
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_RESIZED:
 		_recalculate_layout()
-
 
 func _recalculate_layout() -> void:
 	var cards: Array[CardUI] = []

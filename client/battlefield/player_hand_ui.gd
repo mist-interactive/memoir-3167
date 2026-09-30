@@ -25,7 +25,6 @@ func _ready() -> void:
 	handState.card_played.connect(_on_card_played)
 	handState.card_drawn.connect(_on_model_card_added)
 
-
 func _on_hand_drawn() -> void:
 	var hand_data: Dictionary = handState.card_ids
 	_clear_hand()
@@ -36,11 +35,9 @@ func _on_hand_drawn() -> void:
 
 	_recalculate_layout()
 
-
 func _on_model_card_added(instance_id: int, card_id: String) -> void:
 	_instantiate_card_node(instance_id, card_id)
 	_recalculate_layout()
-
 
 func _on_card_played(instance_id: int, card_id: String) -> void:
 	var card_node := get_node_or_null(str(instance_id)) as CardUI
@@ -51,7 +48,6 @@ func _on_card_played(instance_id: int, card_id: String) -> void:
 
 	card_node.is_discarded = true
 	_remove_card_node_and_animate(card_node, instance_id)
-
 
 func _remove_card_node_and_animate(card_node: CardUI, instance_id: int) -> void:
 	var target_pos: Vector2 = (
@@ -70,7 +66,6 @@ func _remove_card_node_and_animate(card_node: CardUI, instance_id: int) -> void:
 		_recalculate_layout()
 	)
 
-
 func _instantiate_card_node(instance_id: int, card_id: String) -> void:
 	var new_card: CardUI = card_ui_scene.instantiate() as CardUI
 
@@ -88,11 +83,9 @@ func _instantiate_card_node(instance_id: int, card_id: String) -> void:
 	# Scale the card visually
 	new_card.scale = Vector2.ONE * card_scale
 
-
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_RESIZED:
 		_recalculate_layout()
-
 
 func _recalculate_layout() -> void:
 	var cards: Array[CardUI] = []
@@ -186,7 +179,6 @@ func _recalculate_layout() -> void:
 			target_rot,
 			0.2
 		).set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-
 
 func _clear_hand() -> void:
 	for child: Node in get_children():

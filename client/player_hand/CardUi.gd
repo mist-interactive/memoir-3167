@@ -8,11 +8,13 @@ const DRAG_THRESHOLD := 8.0
 var CLICK_SCALE := BASE_SCALE
 var HOVER_SCALE := BASE_SCALE * 1.35
 const CARD_Z_INDEX := 1000
+const DRAG_Z_INDEX := 100000
 @export var background_texture: TextureRect
 @export var play_area: Control
 @export var discard_target: Control
 @onready var handState: HandState = $"../../../../../HandState"
 
+static var active_drag_card: CardUI = null
 signal card_drag_started(card: CardUI)
 signal card_drag_ended(card: CardUI)
 var just_returned_to_hand: bool = false
@@ -53,6 +55,10 @@ func setup_enemy_visuals(instance_id: int) -> void:
 	var card_data: CommandCard = CardDatabase.get_card("000")
 	_instance_id = instance_id
 	$background_texture.texture = card_data.load_card_art()
+	mouse_default_cursor_shape = Control.CURSOR_ARROW
+	is_interactive = false
+	mouse_filter = Control.MOUSE_FILTER_IGNORE
+	$background_texture.mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 func animate_to_discard(
 	target_global_pos: Vector2,
@@ -120,21 +126,26 @@ func _on_mouse_exited() -> void:
 	if not is_interactive:
 		return
 
+	# While dragging, the mouse leaving the card is expected.
+	# Don't reset hover state or emit unhovered.
+	if is_dragging:
+		return
+
 	if is_discarded:
 		return _animate_discard_pile_hover(0)
 
-	# Once the mouse actually leaves the card again,
-	# normal hover behaviour can resume.
 	just_returned_to_hand = false
 
-	if not is_dragging:
-		z_index = 0
-		scale = BASE_SCALE
+	z_index = 0
+	scale = BASE_SCALE
 
 	card_unhovered.emit()
 
 func _on_mouse_entered() -> void:
 	if not is_interactive:
+		return
+
+	if is_dragging:
 		return
 
 	if is_discarded:
@@ -143,9 +154,8 @@ func _on_mouse_entered() -> void:
 	if just_returned_to_hand:
 		return
 
-	if not is_dragging:
-		z_index = CARD_Z_INDEX + 1
-		scale = HOVER_SCALE
+	z_index = CARD_Z_INDEX + 1
+	scale = HOVER_SCALE
 
 	var card_data: CommandCard = CardDatabase.get_card(_card_id)
 	if card_data:
@@ -177,6 +187,10 @@ func _gui_input(event: InputEvent) -> void:
 	if not is_interactive or is_discarded:
 		return
 
+	# Don't allow any other card to interact while another card is dragging.
+	if active_drag_card != null and active_drag_card != self:
+		return
+
 	if event is InputEventMouseButton:
 		var mouse_event := event as InputEventMouseButton
 
@@ -203,6 +217,10 @@ func _gui_input(event: InputEvent) -> void:
 func _input(event: InputEvent) -> void:
 	if not is_interactive:
 		return
+
+	if active_drag_card != self:
+		return
+
 	if not is_dragging:
 		return
 
@@ -220,29 +238,44 @@ func _start_drag() -> void:
 	if is_dragging:
 		return
 
+	active_drag_card = self
 	is_dragging = true
 	is_mouse_pressed = true
 
+	Input.mouse_mode = Input.MOUSE_MODE_CONFINED
+
+	var hand := get_parent()
+	if hand:
+		for card in hand.get_children():
+			if card is CardUI and card != self:
+				card.mouse_filter = Control.MOUSE_FILTER_IGNORE
+
 	scale = HOVER_SCALE
 	rotation_degrees = 0.0
-	z_index = CARD_Z_INDEX
+
+	# Put the dragged card above all other cards.
+	z_as_relative = false
+	z_index = DRAG_Z_INDEX
 
 	drag_offset = get_global_mouse_position() - global_position
 
 func _end_drag() -> void:
 	if not is_dragging:
 		return
-	
+
 	is_dragging = false
 	is_mouse_pressed = false
+	z_as_relative = false
 	z_index = CARD_Z_INDEX
 	scale = BASE_SCALE
 
-	var hand = get_parent()
-	if hand:
-		for card in hand.get_children():
-			if card is CardUI:
-				card.mouse_filter = Control.MOUSE_FILTER_STOP
+	# Allow the cursor to leave the game window again.
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+
+	_unlock_cards()
+
+	if active_drag_card == self:
+		active_drag_card = null
 
 	if is_over_play_area():
 		# 1. Freeze card at drop location
@@ -263,6 +296,7 @@ func _end_drag() -> void:
 
 			animate_to_discard(target_pos, func():
 				queue_free()
+				var hand := get_parent()
 				if hand and hand.has_method("_recalculate_layout"):
 					hand._recalculate_layout()
 			)
@@ -273,6 +307,18 @@ func _end_drag() -> void:
 		return_to_hand()
 
 	card_drag_ended.emit(self)
+
+func _unlock_cards() -> void:
+	var hand := get_parent()
+
+	if hand:
+		for card in hand.get_children():
+			if card is CardUI:
+				card.mouse_filter = (
+					Control.MOUSE_FILTER_STOP
+					if card.is_interactive
+					else Control.MOUSE_FILTER_IGNORE
+				)
 
 func _wait_for_card_confirmation(timeout_seconds: float) -> bool:
 	if not handState:
