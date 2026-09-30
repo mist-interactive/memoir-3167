@@ -1,10 +1,10 @@
 class_name PhaseStateRetreat
 extends PhaseState
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	controller.highlight_possible_retreats()
 
-func handle_left_click(hex: Vector2i) -> void:
+func handle_left_click(_hex: Vector2i) -> void:
 	pass
 
 func handle_right_click(hex: Vector2i) -> void:
@@ -12,7 +12,7 @@ func handle_right_click(hex: Vector2i) -> void:
 		return
 	for unit: Unit in controller.unit_manager.units_by_id.values():
 		if unit.num_of_retreat > 0 && unit.hex_coord != hex:
-			var side: enums.Side
+			var side: enums.Side = enums.Side.NONE
 			if controller.matchState.is_my_turn():
 				side = controller.matchState.mySide
 			else:

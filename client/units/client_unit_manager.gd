@@ -14,8 +14,8 @@ func _init(initialState: BattlefieldState) -> void:
 	Network.Units.unit_destroyed_requested.connect(_on_unit_destroyed)
 	
 # snapshot used for reconnection
-func initialize(active_container: Node, snapshot: Dictionary = {}) -> void:
-	self.active_container = active_container
+func initialize(new_active_container: Node, snapshot: Dictionary = {}) -> void:
+	self.active_container = new_active_container
 	if !snapshot.is_empty() && snapshot.has("units"):
 		print("snapshot.units", snapshot.units)
 		for unit: Dictionary in snapshot.units:

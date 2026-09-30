@@ -24,7 +24,6 @@ var active_reachable: Dictionary = {}
 var _selected_hex: Vector2i = Vector2i(INT32_MAX, INT32_MAX)
 var selected_unit: Unit = null
 var _hovered_hex: Vector2i = Vector2i(INT32_MAX, INT32_MAX)
-var _hovered_unit: Unit = null
 
 var states: Dictionary = {}
 var current_state: PhaseState = null
@@ -105,7 +104,7 @@ func highlight_selected_unit_reachable_hexes(unit: Unit) -> void:
 	for coord in active_reachable.keys():
 		var hex_cell: HexCell = battlefieldState.map.get_cell(coord)
 		var terrain_stats: TerrainStats = TerrainDatabase.get_stats(hex_cell.ground)
-		var distance: int = battlefieldState.map.distance(unit.hex_coord, coord)
+		var distance: int = HexGrid.distance(unit.hex_coord, coord)
 		if distance > unit_max_move_and_attack || !terrain_stats.unit_can_move_in_and_fight(unit.type) && coord != unit.hex_coord:
 			selected_unit_path_highlight_layer.highlight_cell(coord, Vector2i(5, 0))
 		else:
@@ -115,13 +114,12 @@ func highlight_hovered_unit_reachable_hexes(unit: Unit) -> void:
 	var unit_stats: UnitStats = UnitDatabase.get_stats(unit.type)
 	var path_data = BoardPathfinding.get_reachable_hexes(unit_stats.type, unit.hex_coord, battlefieldState.map, unit_manager.get_occupied_coords())
 	var unit_max_move_and_attack: int = unit_stats.max_movement_and_attack
-	var came_from: Dictionary = path_data.get("came_from", {})
 	hover_path_highlight_layer.clear()
 	var reachable_costs: Dictionary = path_data.get("costs", {})
 	for coord in reachable_costs.keys():
 		var hex_cell: HexCell = battlefieldState.map.get_cell(coord)
 		var terrain_stats: TerrainStats = TerrainDatabase.get_stats(hex_cell.ground)
-		var distance: int = battlefieldState.map.distance(unit.hex_coord, coord)
+		var distance: int = HexGrid.distance(unit.hex_coord, coord)
 		if distance > unit_max_move_and_attack || !terrain_stats.unit_can_move_in_and_fight(unit.type) && coord != unit.hex_coord:
 			hover_path_highlight_layer.highlight_cell(coord, Vector2i(5, 0))
 		else:
@@ -167,7 +165,6 @@ func _show_attack_dice_count(unit: Unit, enemy: Unit, dice: int, dice_indicator_
 	if dice_indicator_container == hovered_unit_dice_indicator_container && selected_unit != null && unit != selected_unit:
 		for target in unit_manager.get_attackable_enemies(selected_unit).values():
 			var selected_unit_enemy = target.get("enemy")
-			var selected_unit_dice = target.get("dice")
 			if selected_unit_enemy.hex_coord == enemy.hex_coord:
 				dice_indicator.position += Vector2(0, HexGrid.TILE_HEIGHT / 4)
 				dice_indicator.add_theme_font_size_override("font_size", 24)
@@ -178,7 +175,7 @@ func highlight_possible_retreats() -> void:
 	selected_unit_path_highlight_layer.clear()
 	for unit: Unit in unit_manager.units_by_id.values():
 		if unit.num_of_retreat > 0:
-			var side: enums.Side
+			var side: enums.Side = enums.Side.NONE
 			if matchState.is_my_turn():
 				side = matchState.mySide
 			else:

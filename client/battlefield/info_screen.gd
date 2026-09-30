@@ -27,7 +27,7 @@ func _process(_delta: float) -> void:
 	if match_state.state == MatchState.STATE.PAUSED:
 		var server_now: float = network_clock.get_server_time()
 		var count_down: int = ceili(((pause_time + REJOIN_WINDOW * 1000) - server_now )/ 1000)
-		clampi(count_down, 0, REJOIN_WINDOW)
+		clampi(count_down, 0, REJOIN_WINDOW as int)
 		timer.text = "Victory in: " + str(count_down)
 		timer.offset_transform_position = -Vector2(timer.size.x / 2, -timer.size.y / 3)
 

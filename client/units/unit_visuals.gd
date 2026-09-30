@@ -47,6 +47,8 @@ static func update_unit_visuals(unit: Unit) -> void:
 	apply_unit_visuals(unit.unit_figures, unit.owner_id, unit.type, unit.hit_point)
 
 static func apply_unit_visuals(unit_figures: Array[Variant], owner_id: int, unit_type: int, unit_health: int) -> void:
+	if owner_id == enums.Side.NONE:
+		return
 	if not ANIMATION_MAP.has(owner_id):
 		push_warning("Invalid owner_id in apply_unit_visuals: ", owner_id)
 		return

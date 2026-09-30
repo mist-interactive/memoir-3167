@@ -76,14 +76,13 @@ func _setup_camera_limits() -> void:
 	var top_left_center := target_map.map_to_local(map_rect.position)
 	var bottom_right_center := target_map.map_to_local(map_rect.end - Vector2i(1, 1))
 
-	limit_left = int(top_left_center.x - (tile_size.x * horizontal_padding_tiles)) + map_manager.map_offset.x
-	limit_right = int(bottom_right_center.x + (tile_size.x * horizontal_padding_tiles)) + map_manager.map_offset.x
-	limit_top = int(top_left_center.y - (tile_size.y * vertical_padding_tiles)) + map_manager.map_offset.y
-	limit_bottom = int(bottom_right_center.y + (tile_size.y * vertical_padding_tiles)) + map_manager.map_offset.y
+	limit_left = (top_left_center.x - (tile_size.x * horizontal_padding_tiles)) + map_manager.map_offset.x as int
+	limit_right = (bottom_right_center.x + (tile_size.x * horizontal_padding_tiles)) + map_manager.map_offset.x as int
+	limit_top = (top_left_center.y - (tile_size.y * vertical_padding_tiles)) + map_manager.map_offset.y as int
+	limit_bottom = (bottom_right_center.y + (tile_size.y * vertical_padding_tiles)) + map_manager.map_offset.y as int
 	pass
 
 func _set_zoom_and_center_camera_on_map() -> void:
-	var tile_size: Vector2i = target_map.tile_set.tile_size
 	var map_width_px = limit_right - limit_left
 	var map_height_px = limit_bottom - limit_top
 	var viewport_size := get_viewport_rect().size
@@ -93,6 +92,6 @@ func _set_zoom_and_center_camera_on_map() -> void:
 	min_zoom = fit_ratio
 	zoom.x = max(x_ratio, y_ratio)
 	zoom.y = max(x_ratio, y_ratio)
-	position.x = (limit_left + limit_right) / 2
-	position.y = (limit_top + limit_bottom) / 2
+	position.x = (limit_left + limit_right) / 2.0
+	position.y = (limit_top + limit_bottom) / 2.0
 	pass

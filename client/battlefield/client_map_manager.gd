@@ -11,8 +11,6 @@ extends Node
 @export var left_sector_divider: Line2D
 @export var right_sector_divider: Line2D
 @onready var battlefield_state: BattlefieldState = $"../../BattlefieldState"
-@onready var hand_ui: PlayerHandUI = $"../UICanvas/MarginContainer/PlayerHandUI"
-@onready var enemy_hand_ui: EnemyHandUI = $"../UICanvas/MarginContainer2/EnemyHandUI"
 
 var sector_index: Dictionary[enums.MapSector, Array] = {
 	enums.MapSector.LEFT: [] as Array[Vector2i],
@@ -38,7 +36,7 @@ func _ready() -> void:
 		FEATURE_TO_TILE[enum_value] = key
 	call_deferred("load_map", (battlefield_state.mapName))
 
-func load_map(map_name: String) -> void:
+func load_map(_map_name: String) -> void:
 	_load_map_data_to_tilemap_layers()
 	_draw_sector_dividers()
 	_offset_map_to_hex_grid()
@@ -71,6 +69,7 @@ func _load_map_data_to_tilemap_layers() -> void:
 			var atlas_coord: Vector2i = tile_info[1]
 			map_features_layer.set_cell(coord, source_id, atlas_coord)
 		else:
+			if feature_type != HexCell.Ground.NONE:
 				push_error("Client doesn't have visual data for the Feature enum: ", feature_type)
 	pass
 

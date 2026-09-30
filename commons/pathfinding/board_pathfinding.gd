@@ -16,10 +16,10 @@ static func get_line_of_sight(from_hex: Vector2i, to_hex: Vector2i, map: HexGrid
 	var line_b: Array[Vector2i] = _hex_line_epsilon(from_hex, to_hex, -epsilon)
 	return _is_line_clear(line_b, from_hex, to_hex, max_sight_elevation, map, occupied_coords)
 
-static func get_distance_between_hexes(from_hex: Vector2i, to_hex: Vector2i, map: HexGrid) -> int:
+static func get_distance_between_hexes(from_hex: Vector2i, to_hex: Vector2i, _map: HexGrid) -> int:
 	if from_hex == to_hex:
 		return 0
-	var distance = map.distance(from_hex, to_hex)
+	var distance = HexGrid.distance(from_hex, to_hex)
 	return distance
 
 static func get_reachable_hexes(unit_type: enums.UnitType, start_coord: Vector2i, map: HexGrid, occupied_coords: Dictionary) -> Dictionary:
@@ -59,7 +59,7 @@ static func get_unit_path(unit: Variant, start: Vector2i, destination: Vector2i,
 	var path = reconstruct_path(start, destination, reachable_data.get("came_from", {}))
 	return path
 
-static func _neighbor_filter(current_hex: Vector2i, neighbor_hex: Vector2i, unit_type: enums.UnitType, map: HexGrid, occupied_coords: Dictionary, start_coord: Vector2i) -> bool:
+static func _neighbor_filter(current_hex: Vector2i, neighbor_hex: Vector2i, _unit_type: enums.UnitType, map: HexGrid, occupied_coords: Dictionary, start_coord: Vector2i) -> bool:
 	if not map.is_valid(neighbor_hex):
 		return false
 	if occupied_coords.has(neighbor_hex):
@@ -78,7 +78,7 @@ static func _neighbor_filter(current_hex: Vector2i, neighbor_hex: Vector2i, unit
 	#TODO: Add more terrains specific logic here later
 	return true
 
-static func _cost_fn(current_hex: Vector2i, neighbor_hex: Vector2i, unit_type: enums.UnitType, map: HexGrid, max_cost: float) -> float:
+static func _cost_fn(_current_hex: Vector2i, neighbor_hex: Vector2i, unit_type: enums.UnitType, map: HexGrid, max_cost: float) -> float:
 	var terrain_type: int = map.get_cell(neighbor_hex).ground
 	var terrain_stats: TerrainStats = TerrainDatabase.get_stats(terrain_type)
 	#if terrain_type == HexCell.Feature.NONE:
@@ -90,13 +90,13 @@ static func _cost_fn(current_hex: Vector2i, neighbor_hex: Vector2i, unit_type: e
 	# If terrain forces unit to stop return max_cost
 	return movement_cost
 
-static func _should_exit(current: Vector2i) -> bool:
+static func _should_exit(_current: Vector2i) -> bool:
 	return false
 
-static func _priority_fn(current: Vector2i, g: float) -> float:
+static func _priority_fn(_current: Vector2i, g: float) -> float:
 	return g
 
-static func _on_better_path(neighbor: Vector2i, current: Vector2i, cost: float, came_from_dict: Dictionary) -> void:
+static func _on_better_path(neighbor: Vector2i, current: Vector2i, _cost: float, came_from_dict: Dictionary) -> void:
 	came_from_dict[neighbor] = current
 	
 static func _get_hex_elevation(coord: Vector2i, map: HexGrid) -> int:
@@ -131,7 +131,7 @@ static func _is_line_clear(line: Array[Vector2i], from_hex: Vector2i, to_hex: Ve
 	var from_hex_cell: HexCell = map.get_cell(from_hex)
 	if !from_hex_cell:
 		return false
-	var from_hex_type: HexCell.Ground = from_hex_cell.ground
+	var from_hex_type: HexCell.Ground = from_hex_cell.ground as HexCell.Ground
 	for coord in line:
 		if coord == from_hex || coord == to_hex:
 			continue
