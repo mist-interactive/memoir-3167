@@ -5,13 +5,15 @@ var battlefield: BattlefieldState
 var deckManager: DeckManager
 var unit_manager: ServerUnitManager
 var sides_uuid: Dictionary[enums.Side, int]
+var uuid_sides: Dictionary[int, enums.Side]
 var logger: LogService
-const CONFIG_PATH: String = "res://server/game/config.json"
+const CONFIG_PATH: String = "res://config.json"
 var config: Dictionary
 @onready var match_manager: MatchManager = $"../MatchManager"
 @onready var session_manager: SessionManager = $"./SessionManager"
 
 signal match_completed(resut: MatchResult)
+signal match_abandoned(match_id: int, uuids: Array)
 
 func _ready() -> void:
 	assert(match_manager != null)
@@ -21,6 +23,9 @@ func _ready() -> void:
 	hearbeat.name = "heartbeat"
 	add_child(hearbeat)
 	hearbeat.start(config.match.heartbeat)
+	var abandonment_timer = get_tree().create_timer(config.match.player_rejoin_window)
+	abandonment_timer.timeout.connect(_on_abandonment_timer_expired)
+	abandonment_timer.timeout
 
 func _init(matchId: int) -> void:
 	name = "Match_" + str(matchId)
@@ -39,8 +44,11 @@ func _init(matchId: int) -> void:
 func _physics_process(delta: float) -> void:
 	_sync_clients()
 	check_win_condition()
+	if matchState.state == matchState.STATE.ENDED:
+		return
 	if matchState.has_phase_ended(Time.get_ticks_msec()) && !unit_manager.unit_is_attacking:
 		go_next_phase(matchState.current_turn, true)
+
 	match matchState.phase:
 		enums.TurnPhase.DRAW_HAND:
 			var hands_drawn: bool = deckManager.player_hands[enums.Side.GREEN].is_hand_drawn && deckManager.player_hands[enums.Side.RED].is_hand_drawn
@@ -51,22 +59,25 @@ func _physics_process(delta: float) -> void:
 		MatchState.STATE.PAUSED:
 			if session_manager.players_are_playing():
 				matchState.unpause()
+			monitor_game_abandonment()
 		MatchState.STATE.INITIALIZE_BOARD:
-			logger.info("Initializing board")
-			unit_manager.spawn_units()
-			for side in sides_uuid:
-				deckManager.draw_hand(side, get_player_session(side))
+			if session_manager.players_are_playing():
+				unit_manager.spawn_units(get_sides_peer_ids())
+				for side in sides_uuid:
+					deckManager.draw_hand(side, get_sides_peer_ids())
 
 func _send_heartbeat() -> void:
 	logger.info("sending heartbeat...")
 	match_manager.memoir_api.send_heartbeat(matchState.matchId)
 
 # signal handlers
-func handle_connect(uuid: int, peer_id: int) -> void:
+func handle_connect(uuid: int, peer_id: int) -> bool:
+	if session_manager.has_active_session(uuid):
+		return false
 	session_manager.register_new_session(uuid, peer_id)
 	logger.info("Client(%d) joining game" % uuid)
 	if !matchState.is_paused() && !session_manager.players_are_connected():
-		return
+		return true
 	var units: Array[Dictionary]
 	for unit: UnitData in unit_manager.units_by_id.values():
 		units.append(unit.get_snapshot())
@@ -75,6 +86,8 @@ func handle_connect(uuid: int, peer_id: int) -> void:
 	assert(uuids.size() == 2)
 	if matchState.state == MatchState.STATE.INITIALIZING:
 		sides_uuid = {enums.Side.GREEN: uuids[0], enums.Side.RED: uuids[1]}
+		uuid_sides = {uuids[0]: enums.Side.GREEN, uuids[1]: enums.Side.RED}
+		matchState.state = MatchState.STATE.INITIALIZE_BOARD
 	var snapshot: Dictionary = {
 		"match_state": matchState.get_snapshot(get_side(peer_id)),
 		"map_name": battlefield.mapName,
@@ -86,7 +99,7 @@ func handle_connect(uuid: int, peer_id: int) -> void:
 		if matchState.is_paused():
 			if _uuid != uuid:
 				continue
-		snapshot.hand_state = deckManager.player_hands[get_side(session.peer_id)].get_snapshot()
+		snapshot.hand_state = deckManager.player_hands[uuid_sides[uuid]].get_snapshot()
 		MessageBroker.send(session, Network.Match.init.rpc_id, [snapshot])
 
 func handle_client_ready(uuid: int) -> void:
@@ -105,12 +118,14 @@ func handle_client_ready(uuid: int) -> void:
 
 func handle_client_game_ready(uuid: int) -> void:
 	session_manager.client_is_playing(uuid)
-	if session_manager.players_are_playing() && matchState.state == MatchState.STATE.INITIALIZING:
-		matchState.state = MatchState.STATE.INITIALIZE_BOARD
 
-func handle_disconnect(side: enums.Side) -> void:
-	session_manager.client_disconnected(sides_uuid[side])
-	matchState.pause()
+func handle_disconnect(peer_id: int) -> void:
+	if !sides_uuid.is_empty():
+		for session: PlayerSession in session_manager.get_sessions().values():
+			if session.peer_id == peer_id:
+				session.set_status(enums.ConnectionStatus.Disconnected)
+				session.last_seen = Time.get_ticks_msec()
+				matchState.pause()
 
 # Action handlers
 func handle_continue_next_phase(side: enums.Side) -> void:
@@ -124,7 +139,7 @@ func handle_select_unit(side: enums.Side, unit_id: int) -> void:
 	if !unit_manager.validate_unit_selection(unit_id, deckManager.get_card()):
 		return
 	unit_manager.select_unit(side, unit_id)
-	
+
 func handle_deselect_unit(side: enums.Side, unit_id: int) -> void:
 	unit_manager.deselect_unit(side, unit_id)
 
@@ -171,7 +186,7 @@ func get_sides_peer_ids() -> Dictionary[enums.Side, int]:
 func check_win_condition() -> void:
 	if matchState.winner != enums.Side.NONE:
 		return
-	match matchState.get_winner(67):
+	match matchState.get_winner(config.match.max_score):
 		enums.Side.GREEN:
 			matchState.state = MatchState.STATE.ENDED
 			matchState.winner = enums.Side.GREEN
@@ -260,3 +275,24 @@ func _sync_clients() -> void:
 		matchState.should_sync = false
 	deckManager._sync_hands()
 	unit_manager._sync_units()
+
+func monitor_game_abandonment() -> void:
+	var disconnected_players: Array[Dictionary] = session_manager.get_disconnected_players(uuid_sides)
+
+	if disconnected_players.is_empty():
+		return
+
+	var player_who_abandoned_game: Dictionary = disconnected_players[0]
+
+	for player: Dictionary in disconnected_players:
+		if player.last_seen < player_who_abandoned_game.last_seen:
+			player_who_abandoned_game = player
+	var time_elased_since_last_seen: float = (Time.get_ticks_msec() - player_who_abandoned_game.last_seen) / 1000
+	var has_player_abandoned_game: bool = time_elased_since_last_seen > config.match.player_rejoin_window
+	if has_player_abandoned_game:
+		var other_side: enums.Side = enums.Side.GREEN if player_who_abandoned_game.side == enums.Side.RED else enums.Side.RED
+		matchState.scores[other_side] = config.match.max_score
+
+func _on_abandonment_timer_expired() -> void:
+	if session_manager.get_sessions().size() != 2 || matchState.state != matchState.STATE.PAUSED && matchState.state != matchState.STATE.IN_PROGRESS:
+		match_abandoned.emit(matchState.matchId, session_manager.get_sessions().keys())

@@ -30,13 +30,28 @@ func create_new_match(match_id: int) -> void:
 	matches[match_id] = matchNode
 	matchNode.logger.info("Created match")
 	matchNode.match_completed.connect(_on_match_completed)
+	matchNode.match_abandoned.connect(_on_match_abandoned)
 
+func _on_match_abandoned(match_id: int, uuids: Array):
+	for uuid: int in uuids:
+		var peer_id: int = get_peer_id(uuid)
+		if peer_id != -1:
+			uuid_to_peer.erase(uuid)
+		if peer_id != -1:
+			peer_to_match.erase(peer_id)
+	matches[match_id].queue_free()
+	matches.erase(match_id)
+	memoir_api.match_abandoned(match_id)
+
+	
 func _on_match_completed(result: MatchResult) -> void:
 	match_result[result.match_id] = result
 	for uuid: int in result.uuids:
 		var peer_id: int = get_peer_id(uuid)
-		uuid_to_peer.erase(uuid)
-		peer_to_match.erase(peer_id)
+		if peer_id != -1:
+			uuid_to_peer.erase(uuid)
+		if peer_id != -1:
+			peer_to_match.erase(peer_id)
 	await get_tree().create_timer(2).timeout
 	matches[result.match_id].queue_free()
 	matches.erase(result.match_id)
@@ -46,18 +61,19 @@ func _on_player_connect(peer_id: int, uuid: int, match_id: int) -> void:
 	server.logger.info("Client(%d) wants to connect to match(%d)" % [uuid, match_id])
 	if !matches.has(match_id):
 		create_new_match(match_id)
-	
 	peer_to_match[peer_id] = match_id
-	uuid_to_peer[uuid] = peer_id
-	server.clients[peer_id].connected_to_game = true
 	var matchCtl: matchController = get_match(peer_id)
-	matchCtl.handle_connect(uuid, peer_id)
+	if !matchCtl.handle_connect(uuid, peer_id):
+		server.remove_client(peer_id)
+		return
+	server.clients[peer_id].connected_to_game = true
+	uuid_to_peer[uuid] = peer_id
 
 func _on_player_disconnect(peer_id: int) -> void:
 	var matchCtl: matchController = get_match(peer_id)
 	if !matchCtl:
 		return
-	matchCtl.handle_disconnect(matchCtl.get_side(peer_id))
+	matchCtl.handle_disconnect(peer_id)
 	var uuid: int = get_uuid(peer_id)
 	uuid_to_peer.erase(uuid)
 	peer_to_match.erase(peer_id)
@@ -125,7 +141,7 @@ func _on_draw_card(peer_id: int) -> void:
 
 # helpers
 func get_peer_id(uuid: int) -> int:
-	return uuid_to_peer[uuid]
+	return uuid_to_peer[uuid] if uuid_to_peer.has(uuid) else -1
 
 func get_uuid(peer_id: int) -> int:
 	for uuid in uuid_to_peer:

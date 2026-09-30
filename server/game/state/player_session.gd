@@ -2,7 +2,7 @@ class_name PlayerSession
 extends RefCounted
 
 var status_mask: enums.ConnectionStatus = enums.ConnectionStatus.Disconnected
-var last_seen: Time
+var last_seen: float
 var peer_id: int
 
 func set_status(status: enums.ConnectionStatus) -> void:
