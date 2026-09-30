@@ -138,7 +138,7 @@ func update_ui() -> void:
 	ui.scale = Vector2.ONE * scale_factor
 	ui.position = (viewport_size - DESIGN_SIZE * scale_factor) / 2.0
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	var server_now: float = clock.get_server_time()
 	var count_down: float = matchState.phase_timer.get_time_left_ms(matchState.state, server_now)
 
@@ -205,7 +205,7 @@ func get_next_phase() -> enums.TurnPhase:
 
 func update_score_pips() -> void:
 	var my_score: int = matchState.scores[matchState.mySide]
-	var enemy_side: enums.Side
+	var enemy_side: enums.Side = enums.Side.NONE
 
 	if matchState.mySide == enums.Side.RED:
 		enemy_side = enums.Side.GREEN

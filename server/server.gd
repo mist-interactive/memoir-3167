@@ -36,7 +36,7 @@ func _ready() -> void:
 func _init() -> void:
 	logger = LogService.new({"service": "server"})
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	for peer_id in clients.keys():
 		var client: ClientState = clients[peer_id]
 		client.sync()

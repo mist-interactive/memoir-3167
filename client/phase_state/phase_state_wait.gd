@@ -10,13 +10,13 @@ func exit() -> void:
 	pass
 
 ## Triggered by PlayerController on left click.
-func handle_left_click(hex: Vector2i) -> void:
+func handle_left_click(_hex: Vector2i) -> void:
 	pass
 	
 ## Triggered by PlayerController on right click.
-func handle_right_click(hex: Vector2i) -> void:
+func handle_right_click(_hex: Vector2i) -> void:
 	pass
 
 ## Triggered by PlayerController when the mouse moves to a new hex.
-func handle_mouse_motion(hex: Vector2i) -> void:
+func handle_mouse_motion(_hex: Vector2i) -> void:
 	pass

@@ -90,4 +90,3 @@ func can_act_in_current_phase(turn_phase: enums.TurnPhase) -> bool:
 			return can_attack()
 		_:
 			return true
-	pass

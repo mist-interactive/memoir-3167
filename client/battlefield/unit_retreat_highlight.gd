@@ -1,3 +1,5 @@
+@tool
+
 extends HexagonTileMapLayer
 @onready var matchState: MatchState = $"../../../matchState"
 @onready var unit_manager: UnitManager = $"../../../UnitManager"

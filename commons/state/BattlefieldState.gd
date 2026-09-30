@@ -40,10 +40,10 @@ func build_sector_index() -> void:
 		if cell.sector & enums.MapSector.RIGHT != 0:
 			(sector_index[enums.MapSector.RIGHT] as Array).append(coords)
 
-func _init(mapName: String) -> void:
+func _init(map_name: String) -> void:
 	name = "BattlefieldState"
-	self.mapName = mapName
-	loaded = parseAndLoadMap(mapName)
+	self.mapName = map_name
+	loaded = parseAndLoadMap(map_name)
 
 ## Reads a JSON map file from res://maps/, populates the map dictionary,
 ## assigns sectors to hex cells, and builds the sector lookup table.

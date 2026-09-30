@@ -1,3 +1,5 @@
+@tool
+
 extends HexagonTileMapLayer
 @onready var matchState: MatchState = $"../../../matchState"
 @onready var unit_manager: UnitManager = $"../../../UnitManager"
@@ -7,7 +9,7 @@ var player_hex := {}
 func _ready() -> void:
 	pass
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	clear()
 	highlight_selected_units()
 

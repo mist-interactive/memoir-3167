@@ -116,7 +116,7 @@ func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, 
 	if destination_stats.unit_can_move_in_and_fight(unit.type) == false:
 		unit.set_can_attack(false)
 	var unit_stats: UnitStats = UnitDatabase.get_stats(unit.type)
-	var distance: int = map.distance(old_coord, destination)
+	var distance: int = HexGrid.distance(old_coord, destination)
 	if distance > unit_stats.max_movement_and_attack:
 		unit.set_can_attack(false)
 	var player_logger := logger.with_context({
@@ -195,7 +195,7 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	if !targets.has(target_unit_id):
 		return false
 	unit_is_attacking = true
-	var distance: int = battlefield.map.distance(attacker.hex_coord, target.hex_coord)
+	var distance: int = HexGrid.distance(attacker.hex_coord, target.hex_coord)
 	var attacker_hex: HexCell = battlefieldState.map.get_cell(attacker.hex_coord)
 	var target_hex: HexCell = battlefieldState.map.get_cell(target.hex_coord)
 	var num_of_dice: int = CombatResolver.get_attack_dice_count(attacker, attacker_hex, target, target_hex, distance)

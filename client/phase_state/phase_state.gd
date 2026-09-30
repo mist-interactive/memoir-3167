@@ -51,7 +51,7 @@ func handle_left_click(hex: Vector2i) -> void:
 	else:
 		controller.clear_selection()
 	
-func handle_right_click(hex: Vector2i) -> void:
+func handle_right_click(_hex: Vector2i) -> void:
 	controller.clear_selection()
 
 func handle_mouse_motion(hex: Vector2i) -> void:

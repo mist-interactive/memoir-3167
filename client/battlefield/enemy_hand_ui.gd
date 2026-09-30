@@ -63,7 +63,7 @@ func _on_enemy_played_card(instance_id: int, card_id: String) -> void:
 	_remove_card_node_and_animate(card_node, instance_id)
 	_recalculate_layout()
 
-func _remove_card_node_and_animate(card_node: CardUI, instance_id: int ) -> void:
+func _remove_card_node_and_animate(card_node: CardUI, _instance_id: int ) -> void:
 	card_node.background_texture.flip_v = false
 	card_node.background_texture.flip_h = false
 	
