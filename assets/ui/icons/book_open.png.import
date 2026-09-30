@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://barrtf6onnmos"
-path="res://.godot/imported/dot-bold-highlight.svg-c7131358c876db8de1fa72b9ec732679.ctex"
+uid="uid://e540m44l5f10"
+path="res://.godot/imported/book_open.png-d9449ecc06de980b2118c73ba3bdb801.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/dot-bold-highlight.svg"
-dest_files=["res://.godot/imported/dot-bold-highlight.svg-c7131358c876db8de1fa72b9ec732679.ctex"]
+source_file="res://assets/ui/icons/book_open.png"
+dest_files=["res://.godot/imported/book_open.png-d9449ecc06de980b2118c73ba3bdb801.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

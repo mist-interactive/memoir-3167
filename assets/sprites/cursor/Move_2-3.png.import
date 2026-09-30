@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dq2x4hie1ewlp"
-path="res://.godot/imported/dot-bold-disabled.svg-c116771cdc86fb63f3519480bd987313.ctex"
+uid="uid://j4ispa33o76"
+path="res://.godot/imported/Move_2-3.png-ee9532d75895df102eaeac0b56f519f7.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/ui/dot-bold-disabled.svg"
-dest_files=["res://.godot/imported/dot-bold-disabled.svg-c116771cdc86fb63f3519480bd987313.ctex"]
+source_file="res://assets/sprites/cursor/Move_2-3.png"
+dest_files=["res://.godot/imported/Move_2-3.png-ee9532d75895df102eaeac0b56f519f7.ctex"]
 
 [params]
 
@@ -38,6 +38,3 @@ process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
 detect_3d/compress_to=1
-svg/scale=1.0
-editor/scale_with_editor_scale=false
-editor/convert_colors_with_editor_theme=false

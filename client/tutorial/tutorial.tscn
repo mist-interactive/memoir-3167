@@ -1,0 +1,1117 @@
+[gd_scene format=3 uid="uid://chpts1xx3dkee"]
+
+[ext_resource type="Script" uid="uid://bgndi18hwb1i6" path="res://client/tutorial/tutorial.gd" id="1_01d67"]
+[ext_resource type="StyleBox" uid="uid://cwi2mp0dqvrrp" path="res://assets/ui/tutorial/panel_style_box_transparent.tres" id="2_tof3e"]
+[ext_resource type="StyleBox" uid="uid://dlp0a77syspn5" path="res://assets/ui/tutorial/new_style_box_flat.tres" id="2_vxa7d"]
+[ext_resource type="StyleBox" uid="uid://xn0vb05g38cy" path="res://assets/ui/tutorial/new_style_box_flat_pressed.tres" id="3_tof3e"]
+[ext_resource type="StyleBox" uid="uid://dd43wx8xrmgkn" path="res://assets/ui/tutorial/new_style_box_flat_hover.tres" id="4_yod4y"]
+[ext_resource type="StyleBox" uid="uid://bvm1c0r1aq8kl" path="res://assets/ui/tutorial/minimize_button.tres" id="5_1olk6"]
+[ext_resource type="Texture2D" uid="uid://b38hdgbvl7a1i" path="res://assets/ui/icons/grid.png" id="6_tof3e"]
+[ext_resource type="StyleBox" uid="uid://dqcuyiwe2762i" path="res://assets/ui/tutorial/minimize_button_pressed.tres" id="6_xgmmi"]
+[ext_resource type="Texture2D" uid="uid://che41u85asu1a" path="res://assets/ui/icons/arrow-right-02.png" id="7_1olk6"]
+[ext_resource type="StyleBox" uid="uid://coxriq677sheq" path="res://assets/ui/tutorial/minimize_button_hover.tres" id="7_adm3a"]
+[ext_resource type="Texture2D" uid="uid://cbhnpuse8knwx" path="res://assets/ui/icons/arrow-left-02.png" id="8_xgmmi"]
+[ext_resource type="Texture2D" uid="uid://e540m44l5f10" path="res://assets/ui/icons/book_open.png" id="8_xpfqi"]
+[ext_resource type="Texture2D" uid="uid://bklyrlmknh4ui" path="res://assets/sprites/hex/hex_tile_set_128x128.png" id="9_ld8p5"]
+[ext_resource type="Texture2D" uid="uid://barrtf6onnmos" path="res://assets/ui/dot-bold-highlight.svg" id="10_6gdf7"]
+[ext_resource type="Script" uid="uid://btu6vlirbmya1" path="res://client/tutorial/dashed_rectangle.gd" id="11_ay5pt"]
+[ext_resource type="Texture2D" uid="uid://wd8gerj4bli1" path="res://assets/sprites/dice/textures/dice-sides.png" id="16_xgmmi"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxa7d"]
+bg_color = Color(0.39308554, 0.3930855, 0.39308548, 0.85490197)
+border_width_top = 34
+border_color = Color(0.28235295, 0.28235295, 0.28235295, 0.9098039)
+border_blend = true
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tof3e"]
+bg_color = Color(0.22745098, 0.22745098, 0.22745098, 0.6862745)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(0.09019608, 0.09019608, 0.09019608, 0.44313726)
+border_blend = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yod4y"]
+bg_color = Color(0.60392326, 0.60392326, 0.6039232, 0.56078434)
+border_width_left = 6
+border_width_top = 6
+border_width_right = 6
+border_width_bottom = 6
+border_color = Color(1, 1, 1, 1)
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1olk6"]
+bg_color = Color(0.20751238, 0.20751238, 0.20751238, 0.56078434)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(1, 1, 1, 1)
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ekcev"]
+bg_color = Color(1, 1, 1, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+corner_detail = 20
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ik1hn"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+border_width_left = 12
+border_width_top = 12
+border_width_right = 12
+border_width_bottom = 12
+border_color = Color(0.96035105, 0.96035105, 0.96035093, 0)
+border_blend = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ik1hn"]
+atlas = ExtResource("16_xgmmi")
+region = Rect2(16, 8, 480, 496)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ekcev"]
+atlas = ExtResource("16_xgmmi")
+region = Rect2(1038, 8, 480, 496)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oxsgp"]
+atlas = ExtResource("16_xgmmi")
+region = Rect2(786, 524, 480, 496)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5j0pj"]
+atlas = ExtResource("16_xgmmi")
+region = Rect2(273, 519, 480, 496)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_764ab"]
+atlas = ExtResource("16_xgmmi")
+region = Rect2(527, 8, 480, 496)
+
+[node name="Tutorial" type="Control" unique_id=1744084876 node_paths=PackedStringArray("minimize_button", "tutorial_button", "menu_button", "previous_page_button", "next_page_button", "panel", "top_bar", "page_buttons_container", "tutorial_pages", "page_buttons", "page_moving_units_buttons", "page_moving_units_page_targets", "page_moving_units_return_pages", "help_button_target_pages")]
+z_index = 4096
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_01d67")
+minimize_button = NodePath("TopBar/MinimizeButton")
+tutorial_button = NodePath("TutorialButton")
+menu_button = NodePath("TopBar/HelpMenuButton")
+previous_page_button = NodePath("TopBar/PreviousPageButton")
+next_page_button = NodePath("TopBar/NextPageButton")
+panel = NodePath("Panel")
+top_bar = NodePath("TopBar")
+page_buttons_container = NodePath("GridContainer")
+tutorial_pages = [NodePath("Pages/Start"), NodePath("Pages/About"), NodePath("Pages/Info"), NodePath("Pages/Goal"), NodePath("Pages/Cards"), NodePath("Pages/Turn"), NodePath("Pages/Selecting units"), NodePath("Pages/Moving units"), NodePath("Pages/Attacking"), NodePath("Pages/Dice"), NodePath("Pages/Retreat"), NodePath("Pages/Units"), NodePath("Pages/Infantry"), NodePath("Pages/Tanks"), NodePath("Pages/Artillery"), NodePath("Pages/Terrain"), NodePath("Pages/Line of sight"), NodePath("Pages/Turn end")]
+page_buttons = [NodePath("GridContainer/Button1"), NodePath("GridContainer/Button2"), NodePath("GridContainer/Button3"), NodePath("GridContainer/Button4"), NodePath("GridContainer/Button5"), NodePath("GridContainer/Button6"), NodePath("GridContainer/Button7"), NodePath("GridContainer/Button8"), NodePath("GridContainer/Button9"), NodePath("GridContainer/Button10"), NodePath("GridContainer/Button11"), NodePath("GridContainer/Button12"), NodePath("GridContainer/Button13"), NodePath("GridContainer/Button14"), NodePath("GridContainer/Button15"), NodePath("GridContainer/Button16"), NodePath("GridContainer/Button17"), NodePath("GridContainer/Button18")]
+page_moving_units_buttons = [NodePath("Pages/Moving units/Infantry"), NodePath("Pages/Moving units/Tanks"), NodePath("Pages/Moving units/Artillery")]
+page_moving_units_page_targets = [NodePath("Pages/Infantry"), NodePath("Pages/Tanks"), NodePath("Pages/Artillery")]
+page_moving_units_return_pages = [NodePath("Pages/Moving units"), NodePath("Pages/Moving units"), NodePath("Pages/Moving units")]
+help_button_target_pages = [NodePath("Pages/Cards"), NodePath("Pages/Selecting units"), NodePath("Pages/Moving units"), NodePath("Pages/Attacking"), NodePath("Pages/Retreat"), NodePath("Pages/Turn end")]
+
+[node name="Panel" type="Panel" parent="." unique_id=698563448]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 480.0
+offset_bottom = 256.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_styles/panel = ExtResource("2_tof3e")
+
+[node name="TopBar" type="Panel" parent="." unique_id=569886929]
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 480.0
+offset_bottom = 24.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_vxa7d")
+
+[node name="HelpMenuButton" type="Button" parent="TopBar" unique_id=41334009]
+z_index = 3
+layout_mode = 0
+offset_right = 24.0
+offset_bottom = 24.0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_tof3e")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_yod4y")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1olk6")
+icon = ExtResource("6_tof3e")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="MinimizeButton" type="Button" parent="TopBar" unique_id=553180294]
+z_index = 1
+layout_mode = 0
+offset_left = 456.0
+offset_right = 480.0
+offset_bottom = 24.0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = ExtResource("5_1olk6")
+theme_override_styles/pressed = ExtResource("6_xgmmi")
+theme_override_styles/hover = ExtResource("7_adm3a")
+
+[node name="Panel" type="Panel" parent="TopBar/MinimizeButton" unique_id=755935779]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 11.0
+offset_right = 20.0
+offset_bottom = 13.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ekcev")
+
+[node name="NextPageButton" type="Button" parent="TopBar" unique_id=1276541451]
+z_index = 3
+layout_mode = 0
+offset_left = 248.0
+offset_right = 272.0
+offset_bottom = 24.0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_tof3e")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_yod4y")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1olk6")
+icon = ExtResource("7_1olk6")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="PreviousPageButton" type="Button" parent="TopBar" unique_id=1283273046]
+z_index = 3
+layout_mode = 0
+offset_left = 208.0
+offset_right = 232.0
+offset_bottom = 24.0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_tof3e")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_yod4y")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1olk6")
+icon = ExtResource("8_xgmmi")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="GridContainer" type="GridContainer" parent="." unique_id=1248784971]
+visible = false
+z_index = 1
+layout_mode = 0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 256.0
+mouse_filter = 2
+theme_override_constants/h_separation = 0
+theme_override_constants/v_separation = 0
+columns = 3
+
+[node name="Button1" type="Button" parent="GridContainer" unique_id=1955560250]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Start"
+icon_alignment = 1
+
+[node name="Button2" type="Button" parent="GridContainer" unique_id=1363031225]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "About"
+icon_alignment = 1
+
+[node name="Button3" type="Button" parent="GridContainer" unique_id=708698516]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Info"
+icon_alignment = 1
+
+[node name="Button4" type="Button" parent="GridContainer" unique_id=972347071]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Goal"
+icon_alignment = 1
+
+[node name="Button5" type="Button" parent="GridContainer" unique_id=258594844]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Cards"
+icon_alignment = 1
+
+[node name="Button6" type="Button" parent="GridContainer" unique_id=794168869]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Turn"
+icon_alignment = 1
+
+[node name="Button7" type="Button" parent="GridContainer" unique_id=1413540167]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Selecting units"
+icon_alignment = 1
+
+[node name="Button8" type="Button" parent="GridContainer" unique_id=162367697]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Moving units"
+icon_alignment = 1
+
+[node name="Button9" type="Button" parent="GridContainer" unique_id=1049593327]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Attacking"
+icon_alignment = 1
+
+[node name="Button10" type="Button" parent="GridContainer" unique_id=198499186]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Dice"
+icon_alignment = 1
+
+[node name="Button11" type="Button" parent="GridContainer" unique_id=1859511656]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Retreat"
+icon_alignment = 1
+
+[node name="Button12" type="Button" parent="GridContainer" unique_id=2103025049]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Units"
+icon_alignment = 1
+
+[node name="Button13" type="Button" parent="GridContainer" unique_id=1150482153]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Infantry"
+icon_alignment = 1
+
+[node name="Button14" type="Button" parent="GridContainer" unique_id=277113990]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Tanks"
+icon_alignment = 1
+
+[node name="Button15" type="Button" parent="GridContainer" unique_id=1792824274]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Artillery"
+icon_alignment = 1
+
+[node name="Button16" type="Button" parent="GridContainer" unique_id=931681832]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Terrain"
+icon_alignment = 1
+
+[node name="Button17" type="Button" parent="GridContainer" unique_id=1115210823]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Line of sight"
+icon_alignment = 1
+
+[node name="Button18" type="Button" parent="GridContainer" unique_id=1062811598]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Turn end"
+icon_alignment = 1
+
+[node name="TutorialButton" type="Button" parent="." unique_id=1384915526]
+top_level = true
+z_index = -1
+layout_mode = 0
+offset_left = 1.0
+offset_top = 4.0
+offset_right = 33.0
+offset_bottom = 36.0
+icon = ExtResource("8_xpfqi")
+expand_icon = true
+
+[node name="Pages" type="Control" parent="." unique_id=1832416652]
+anchors_preset = 0
+
+[node name="Start" type="Control" parent="Pages" unique_id=1146651962]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Start" unique_id=499704849]
+custom_minimum_size = Vector2(448, 232)
+custom_maximum_size = Vector2(448, 232)
+layout_mode = 0
+offset_left = 16.0
+offset_top = 24.0
+offset_right = 464.0
+offset_bottom = 248.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Let's learn how to play Memoir '67!
+Tips:
+
+• Use       to minimize tutorial explanations if needed.
+• Use       to open a menu with all tutorial buttons.
+• Use        to navigate tutorial pages
+• Press [b]M[/b] to open the tutorial for your current
+situation
+"
+autowrap_mode = 1
+
+[node name="HelpMenuButton" type="Button" parent="Pages/Start" unique_id=779086282]
+z_index = 3
+layout_mode = 0
+offset_left = 70.0
+offset_top = 130.0
+offset_right = 94.0
+offset_bottom = 154.0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_tof3e")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_yod4y")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1olk6")
+icon = ExtResource("6_tof3e")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="MinimizeButton" type="Button" parent="Pages/Start" unique_id=112363696]
+z_index = 1
+layout_mode = 0
+offset_left = 70.0
+offset_top = 107.0
+offset_right = 94.0
+offset_bottom = 131.0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = ExtResource("5_1olk6")
+theme_override_styles/pressed = ExtResource("6_xgmmi")
+theme_override_styles/hover = ExtResource("7_adm3a")
+
+[node name="Panel" type="Panel" parent="Pages/Start/MinimizeButton" unique_id=1978950260]
+layout_mode = 0
+offset_left = 4.0
+offset_top = 11.0
+offset_right = 20.0
+offset_bottom = 13.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_ekcev")
+
+[node name="NextPageButton" type="Button" parent="Pages/Start" unique_id=1676985876]
+z_index = 3
+layout_mode = 0
+offset_left = 80.0
+offset_top = 152.0
+offset_right = 104.0
+offset_bottom = 176.0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_tof3e")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_yod4y")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1olk6")
+icon = ExtResource("7_1olk6")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="PreviousPageButton" type="Button" parent="Pages/Start" unique_id=969889907]
+z_index = 3
+layout_mode = 0
+offset_left = 64.0
+offset_top = 152.0
+offset_right = 88.0
+offset_bottom = 176.0
+theme_override_font_sizes/font_size = 8
+theme_override_styles/normal = SubResource("StyleBoxFlat_tof3e")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_yod4y")
+theme_override_styles/hover = SubResource("StyleBoxFlat_1olk6")
+icon = ExtResource("8_xgmmi")
+flat = true
+icon_alignment = 1
+expand_icon = true
+
+[node name="About" type="Control" parent="Pages" unique_id=1144873852]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/About" unique_id=1934843559]
+custom_minimum_size = Vector2(448, 232)
+custom_maximum_size = Vector2(448, 232)
+layout_mode = 0
+offset_left = 32.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 248.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Memoir '67 is an unique historical game that allows players to effectively portray stylized WWII battles.
+Lead the [color=#98433F]axis[/color] or [color=#546B4F]allies[/color] to victory"
+autowrap_mode = 1
+
+[node name="Info" type="Control" parent="Pages" unique_id=1662929342]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Info" unique_id=2147230938]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 248.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Memoir '67 is intentionally designed with simple
+general mechanics.
+
+[b]This tutorial will mostly focus on the general
+mechanics.[/b] Most scenario-specific mechanics have
+to do with terrain, which you can easily see
+by hovering over them with your mouse."
+autowrap_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="Pages/Info" unique_id=1604452279]
+layout_mode = 0
+offset_left = 240.0
+offset_top = 216.0
+offset_right = 472.0
+offset_bottom = 248.0
+texture = ExtResource("9_ld8p5")
+expand_mode = 1
+
+[node name="Goal" type="Control" parent="Pages" unique_id=1379314264]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Goal" unique_id=1079395697]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 248.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Your goal is to be the first to get a certain number of
+[color=red]points[/color]. The number required varies from scenario
+to scenario, but this one,
+Invasion Of The Mist Forest, requires 5.
+
+You get points by destroying enemy units."
+autowrap_mode = 1
+
+[node name="ScorePips" type="MarginContainer" parent="Pages/Goal" unique_id=875274473]
+z_index = 15
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 296.0
+offset_top = 216.0
+offset_right = 472.0
+offset_bottom = 248.0
+grow_horizontal = 0
+grow_vertical = 0
+
+[node name="BoxContainer" type="HBoxContainer" parent="Pages/Goal/ScorePips" unique_id=1132607494]
+texture_filter = 1
+layout_mode = 2
+
+[node name="TextureRect1" type="TextureRect" parent="Pages/Goal/ScorePips/BoxContainer" unique_id=1659869419]
+modulate = Color(0.32941177, 0.41960785, 0.30980393, 1)
+z_index = -10
+layout_mode = 2
+texture = ExtResource("10_6gdf7")
+
+[node name="TextureRect2" type="TextureRect" parent="Pages/Goal/ScorePips/BoxContainer" unique_id=1374804849]
+modulate = Color(0.32941177, 0.41960785, 0.30980393, 1)
+z_index = -11
+layout_mode = 2
+texture = ExtResource("10_6gdf7")
+
+[node name="TextureRect3" type="TextureRect" parent="Pages/Goal/ScorePips/BoxContainer" unique_id=1443535162]
+modulate = Color(0.72156864, 0.72156864, 0.72156864, 1)
+z_index = -12
+layout_mode = 2
+texture = ExtResource("10_6gdf7")
+
+[node name="TextureRect4" type="TextureRect" parent="Pages/Goal/ScorePips/BoxContainer" unique_id=1084234709]
+modulate = Color(0.72156864, 0.72156864, 0.72156864, 1)
+z_index = -13
+layout_mode = 2
+texture = ExtResource("10_6gdf7")
+
+[node name="TextureRect5" type="TextureRect" parent="Pages/Goal/ScorePips/BoxContainer" unique_id=832799902]
+modulate = Color(0.72156864, 0.72156864, 0.72156864, 1)
+z_index = -14
+layout_mode = 2
+texture = ExtResource("10_6gdf7")
+
+[node name="Panel" type="Node2D" parent="Pages/Goal" unique_id=189334174]
+top_level = true
+z_index = 500
+script = ExtResource("11_ay5pt")
+line_width = 2.0
+
+[node name="Cards" type="Control" parent="Pages" unique_id=1971898202]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Cards" unique_id=338040542]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 248.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Each turn, you must play one [b]Command card[/b] from
+your hand.
+
+Cards are played by drag-and-drop mechanic.
+
+The cards in your hand are called [color=green]section cards[/color].
+They issue orders to units in certain sections of the
+map, which are separated by the red vertical lines."
+autowrap_mode = 1
+
+[node name="Turn" type="Control" parent="Pages" unique_id=1102722765]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Turn" unique_id=1904845988]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 248.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "[color=cyan]After playing a command card, we must follow this
+sequence:[/color]
+1. Announce which units we intend to move.
+2. Move them, one at a time.
+3. Attack, one at a time.
+
+Turn ends.
+"
+autowrap_mode = 1
+
+[node name="Selecting units" type="Control" parent="Pages" unique_id=1937720087]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Selecting units" unique_id=831090113]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 248.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Selecting units
+"
+autowrap_mode = 1
+
+[node name="Moving units" type="Control" parent="Pages" unique_id=1363077334]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Moving units" unique_id=1518700950]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 248.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Next, we have to move our units. Each unit moves
+a little differently.
+(see individual unit pages for reference)
+Attacking commences once all movement orders
+have been carried out."
+autowrap_mode = 1
+
+[node name="Infantry" type="Button" parent="Pages/Moving units" unique_id=279453091]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 0
+offset_left = 144.0
+offset_top = 176.0
+offset_right = 208.0
+offset_bottom = 216.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Infantry"
+icon_alignment = 1
+
+[node name="Tanks" type="Button" parent="Pages/Moving units" unique_id=140972645]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 0
+offset_left = 208.0
+offset_top = 176.0
+offset_right = 272.0
+offset_bottom = 216.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Tanks"
+icon_alignment = 1
+
+[node name="Artillery" type="Button" parent="Pages/Moving units" unique_id=772337076]
+custom_minimum_size = Vector2(64, 24)
+layout_mode = 0
+offset_left = 272.0
+offset_top = 176.0
+offset_right = 336.0
+offset_bottom = 216.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+offset_transform_enabled = true
+theme_override_font_sizes/font_size = 12
+theme_override_styles/normal = ExtResource("2_vxa7d")
+theme_override_styles/pressed = ExtResource("3_tof3e")
+theme_override_styles/hover = ExtResource("4_yod4y")
+text = "Artillery"
+icon_alignment = 1
+
+[node name="Attacking" type="Control" parent="Pages" unique_id=220172786]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Attacking" unique_id=2111594563]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 248.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Now it's time for battle!
+
+Select your units again "
+autowrap_mode = 1
+
+[node name="Dice" type="Control" parent="Pages" unique_id=1317684370]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Dice" unique_id=1864963729]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(384, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 56.0
+offset_right = 432.0
+offset_bottom = 288.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Score 1 hit on infantry"
+autowrap_mode = 1
+
+[node name="Text2" type="RichTextLabel" parent="Pages/Dice" unique_id=1319321249]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(384, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 96.0
+offset_right = 432.0
+offset_bottom = 328.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Score 1 hit on armor"
+autowrap_mode = 1
+
+[node name="Text3" type="RichTextLabel" parent="Pages/Dice" unique_id=131109517]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(384, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 136.0
+offset_right = 432.0
+offset_bottom = 368.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Score 1 hit on any type"
+autowrap_mode = 1
+
+[node name="Text4" type="RichTextLabel" parent="Pages/Dice" unique_id=1111637245]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(200, 232)
+layout_mode = 0
+offset_left = 280.0
+offset_top = 56.0
+offset_right = 664.0
+offset_bottom = 288.0
+theme_override_constants/outline_size = 3
+theme_override_font_sizes/normal_font_size = 12
+theme_override_font_sizes/bold_font_size = 12
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "After removing troops for
+successful hits, any rolled
+flags apply. For each
+rolled flag, the target must
+[b]retreat[/b] one space toward its 
+owner's side of the map."
+autowrap_mode = 1
+
+[node name="Text5" type="RichTextLabel" parent="Pages/Dice" unique_id=451880087]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(384, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 176.0
+offset_right = 432.0
+offset_bottom = 408.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Rolling star means you miss the target."
+autowrap_mode = 1
+
+[node name="Infantry" type="TextureRect" parent="Pages/Dice" unique_id=2062211118]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 64.0
+offset_right = 48.0
+offset_bottom = 96.0
+texture = SubResource("AtlasTexture_ik1hn")
+expand_mode = 1
+
+[node name="Armor" type="TextureRect" parent="Pages/Dice" unique_id=132749665]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 104.0
+offset_right = 48.0
+offset_bottom = 136.0
+texture = SubResource("AtlasTexture_ekcev")
+expand_mode = 1
+
+[node name="Grenade" type="TextureRect" parent="Pages/Dice" unique_id=807850562]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 144.0
+offset_right = 48.0
+offset_bottom = 176.0
+texture = SubResource("AtlasTexture_oxsgp")
+expand_mode = 1
+
+[node name="Retreat" type="TextureRect" parent="Pages/Dice" unique_id=659837620]
+layout_mode = 0
+offset_left = 248.0
+offset_top = 64.0
+offset_right = 280.0
+offset_bottom = 96.0
+texture = SubResource("AtlasTexture_5j0pj")
+expand_mode = 1
+
+[node name="Miss" type="TextureRect" parent="Pages/Dice" unique_id=1321681137]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 184.0
+offset_right = 48.0
+offset_bottom = 216.0
+texture = SubResource("AtlasTexture_764ab")
+expand_mode = 1
+
+[node name="Retreat" type="Control" parent="Pages" unique_id=796035537]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Retreat" unique_id=1810107256]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 274.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Retreat"
+autowrap_mode = 1
+
+[node name="Units" type="Control" parent="Pages" unique_id=1346251542]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Units" unique_id=784198580]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 274.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Units"
+autowrap_mode = 1
+
+[node name="Infantry" type="Control" parent="Pages" unique_id=197650067]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Infantry" unique_id=320565046]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 274.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Next, let's learn about infantry units.
+
+Infantry can move 1-2 hexes. However, if they move
+2 hexes, they will not be able to fight in the next step!"
+autowrap_mode = 1
+
+[node name="Tanks" type="Control" parent="Pages" unique_id=357366898]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Tanks" unique_id=696832887]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 274.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Tanks"
+autowrap_mode = 1
+
+[node name="Artillery" type="Control" parent="Pages" unique_id=190926719]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Artillery" unique_id=907521301]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 274.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Artillery"
+autowrap_mode = 1
+
+[node name="Terrain" type="Control" parent="Pages" unique_id=208024676]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Terrain" unique_id=1249696724]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 274.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Terrain"
+autowrap_mode = 1
+
+[node name="Line of sight" type="Control" parent="Pages" unique_id=1684079097]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Line of sight" unique_id=175261415]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 274.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Line of sight"
+autowrap_mode = 1
+
+[node name="Turn end" type="Control" parent="Pages" unique_id=1181713521]
+visible = false
+anchors_preset = 0
+
+[node name="Text" type="RichTextLabel" parent="Pages/Turn end" unique_id=355549980]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 24.0
+offset_right = 480.0
+offset_bottom = 274.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Turn ends"
+autowrap_mode = 1

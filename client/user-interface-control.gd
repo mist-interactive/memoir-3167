@@ -50,7 +50,16 @@ const AXIS := "Axis"
 const ally_color: Color = Color(0.329, 0.42, 0.31, 1.0)
 const enemy_color: Color = Color(0.596, 0.263, 0.247, 1.0)
 
+var cursor_normal: Texture2D
+var cursor_clickable: Texture2D
+
+
 func _ready() -> void:
+	load_cursor()
+
+	button.mouse_entered.connect(_on_button_mouse_entered)
+	button.mouse_exited.connect(_on_button_mouse_exited)
+
 	get_viewport().size_changed.connect(update_ui)
 	update_ui()
 	update_score_pips()
@@ -59,6 +68,33 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey:
 		if event.keycode == KEY_SPACE and event.pressed and not event.echo:
 			_on_confirm()
+
+func load_cursor() -> void:
+	cursor_normal = load("res://assets/sprites/cursor/Normal-3.png")
+	cursor_clickable = load("res://assets/sprites/cursor/Link-3.png")
+
+	set_cursor_normal()
+
+func set_cursor_normal() -> void:
+	Input.set_custom_mouse_cursor(
+		cursor_normal,
+		Input.CURSOR_ARROW,
+		Vector2(8, 8)
+	)
+
+func set_cursor_clickable() -> void:
+	Input.set_custom_mouse_cursor(
+		cursor_clickable,
+		Input.CURSOR_ARROW,
+		Vector2(32, 8)
+	)
+
+func _on_button_mouse_entered() -> void:
+	if not button.disabled:
+		set_cursor_clickable()
+
+func _on_button_mouse_exited() -> void:
+	set_cursor_normal()
 
 func update_player_color() -> void:
 	match matchState.mySide:
@@ -87,22 +123,20 @@ func update_player_color() -> void:
 		enums.Side.NONE:
 			return
 
-
 func set_box_color(control: Control, color: Color) -> void:
 	var style := control.get_theme_stylebox("normal").duplicate() as StyleBoxFlat
 	style.bg_color = color
 	control.add_theme_stylebox_override("normal", style)
 
-
-func update_ui():
+func update_ui() -> void:
 	var viewport_size := get_viewport_rect().size
 	var scale_factor := minf(
 		viewport_size.x / DESIGN_SIZE.x,
 		viewport_size.y / DESIGN_SIZE.y
 	)
+
 	ui.scale = Vector2.ONE * scale_factor
 	ui.position = (viewport_size - DESIGN_SIZE * scale_factor) / 2.0
-
 
 func _physics_process(delta: float) -> void:
 	var server_now: float = clock.get_server_time()
@@ -123,7 +157,6 @@ func _physics_process(delta: float) -> void:
 	var remaining := count_down / 1000.0
 	remaining = clamp(remaining, 0.0, max_time)
 
-	# Starts at 0 and increases to full width as time runs out
 	var progress := 1.0 - (remaining / max_time)
 	var border_width := int(progress * time_progress_bar.size.x)
 
@@ -144,7 +177,6 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_released("toggle_debug_overlay"):
 		show() if debug_hidden else hide()
 		debug_hidden = !debug_hidden
-
 
 func get_next_phase() -> enums.TurnPhase:
 	match matchState.phase:
@@ -171,7 +203,6 @@ func get_next_phase() -> enums.TurnPhase:
 
 	return enums.TurnPhase.SPAWN_UNITS
 
-
 func update_score_pips() -> void:
 	var my_score: int = matchState.scores[matchState.mySide]
 	var enemy_side: enums.Side
@@ -188,13 +219,12 @@ func update_score_pips() -> void:
 	var my_active_color: Color
 	var enemy_active_color: Color
 
-	# Your pips use the enemy's color
 	if matchState.mySide == enums.Side.RED:
-		my_active_color = Color.GREEN
-		enemy_active_color = Color.RED
+		my_active_color = ally_color
+		enemy_active_color = enemy_color
 	elif matchState.mySide == enums.Side.GREEN:
-		my_active_color = Color.RED
-		enemy_active_color = Color.GREEN
+		my_active_color = enemy_color
+		enemy_active_color = ally_color
 	else:
 		my_active_color = Color.WHITE
 		enemy_active_color = Color.WHITE
@@ -219,7 +249,6 @@ func player_id_text(side: enums.Side) -> String:
 	else:
 		return "None"
 
-
 func get_turn_phase_txt(phase: enums.TurnPhase) -> String:
 	match phase:
 		enums.TurnPhase.SPAWN_UNITS:
@@ -241,7 +270,6 @@ func get_turn_phase_txt(phase: enums.TurnPhase) -> String:
 
 	return "Unknown"
 
-
 func get_game_state_txt(state: MatchState.STATE) -> String:
 	match state:
 		MatchState.STATE.INITIALIZING:
@@ -258,7 +286,6 @@ func get_game_state_txt(state: MatchState.STATE) -> String:
 			return "Ended"
 
 	return "Unknown"
-
 
 func _on_confirm() -> void:
 	match matchState.phase:
