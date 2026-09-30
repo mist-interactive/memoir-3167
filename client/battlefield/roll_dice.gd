@@ -64,7 +64,7 @@ func roll_dice(results: Array[enums.RolledDice]) -> void:
 		var target_rotation: Vector3 = face_rotations[face]
 
 		# Start from the current Euler rotation.
-		var start_rotation := die.rotation
+		var _start_rotation := die.rotation
 
 		var spins := randi_range(min_spins, max_spins)
 
