@@ -18,11 +18,11 @@ signal match_abandoned(match_id: int, uuids: Array)
 func _ready() -> void:
 	assert(match_manager != null)
 	assert(session_manager != null)
-	var hearbeat: Timer = Timer.new()
-	hearbeat.timeout.connect(_send_heartbeat)
-	hearbeat.name = "heartbeat"
-	add_child(hearbeat)
-	hearbeat.start(config.match.heartbeat)
+	var heartbeat: Timer = Timer.new()
+	heartbeat.timeout.connect(_send_heartbeat)
+	heartbeat.name = "heartbeat"
+	add_child(heartbeat)
+	heartbeat.start(config.match.heartbeat)
 	var abandonment_timer = get_tree().create_timer(config.match.player_rejoin_window)
 	abandonment_timer.timeout.connect(_on_abandonment_timer_expired)
 	abandonment_timer.timeout
@@ -41,7 +41,7 @@ func _init(matchId: int) -> void:
 	add_child(SessionManager.new())
 	config = ConfigLoader.load_json(CONFIG_PATH)
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	_sync_clients()
 	check_win_condition()
 	if matchState.state == matchState.STATE.ENDED:
@@ -62,9 +62,9 @@ func _physics_process(delta: float) -> void:
 			monitor_game_abandonment()
 		MatchState.STATE.INITIALIZE_BOARD:
 			if session_manager.players_are_playing():
-				unit_manager.spawn_units(get_sides_peer_ids())
+				unit_manager.spawn_units()
 				for side in sides_uuid:
-					deckManager.draw_hand(side, get_sides_peer_ids())
+					deckManager.draw_hand(side, get_player_session(side))
 
 func _send_heartbeat() -> void:
 	logger.info("sending heartbeat...")
@@ -81,7 +81,6 @@ func handle_connect(uuid: int, peer_id: int) -> bool:
 	var units: Array[Dictionary]
 	for unit: UnitData in unit_manager.units_by_id.values():
 		units.append(unit.get_snapshot())
-	var peer_ids: Array[int]
 	var uuids: Array[int] = session_manager.get_uuids()
 	assert(uuids.size() == 2)
 	if matchState.state == MatchState.STATE.INITIALIZING:
@@ -101,6 +100,7 @@ func handle_connect(uuid: int, peer_id: int) -> bool:
 				continue
 		snapshot.hand_state = deckManager.player_hands[uuid_sides[uuid]].get_snapshot()
 		MessageBroker.send(session, Network.Match.init.rpc_id, [snapshot])
+	return true
 
 func handle_client_ready(uuid: int) -> void:
 	logger.info("Client(%s) is ready" % uuid)
