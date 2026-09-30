@@ -58,7 +58,7 @@ func _physics_process(_delta: float) -> void:
 	match matchState.state:
 		MatchState.STATE.PAUSED:
 			if session_manager.players_are_playing():
-				matchState.unpause()
+				matchState.unpause(true)
 			monitor_game_abandonment()
 		MatchState.STATE.INITIALIZE_BOARD:
 			if session_manager.players_are_playing():
