@@ -5,19 +5,27 @@ var SIZE := HandUI.card_size
 var BASE_SCALE := HandUI.card_scale
 const DISCARD_BASE_SCALE := Vector2(1.0, 1.0)
 const DRAG_THRESHOLD := 8.0
+
 var CLICK_SCALE := BASE_SCALE
 var HOVER_SCALE := BASE_SCALE * 1.35
+
 const CARD_Z_INDEX := 1000
 const DRAG_Z_INDEX := 100000
-@export var background_texture: TextureRect
 
+@export var background_texture: TextureRect
 @export var play_area: Control
 @export var discard_target: Control
+
 @onready var handState: HandState = $"../../../../../HandState"
 
 static var active_drag_card: CardUI = null
+
 signal card_drag_started(card: CardUI)
 signal card_drag_ended(card: CardUI)
+
+signal card_hovered(target_sector: enums.MapSector)
+signal card_unhovered
+
 var just_returned_to_hand: bool = false
 var is_dragging: bool = false
 var is_mouse_pressed: bool = false
@@ -36,8 +44,6 @@ var cursor_normal: Texture2D
 var cursor_hover: Texture2D
 var cursor_drag: Texture2D
 
-signal card_hovered(target_sector: enums.MapSector)
-signal card_unhovered
 
 func _ready() -> void:
 	size = HandUI.card_size
@@ -93,12 +99,16 @@ func setup_visuals(instance_id: int, id: String) -> void:
 	if not card_data:
 		push_error("Card UI: Database missing definition for ", id)
 		return
+
 	$background_texture.texture = card_data.load_card_art()
+
 
 func setup_enemy_visuals(instance_id: int) -> void:
 	var card_data: CommandCard = CardDatabase.get_card("000")
+
 	_instance_id = instance_id
 	$background_texture.texture = card_data.load_card_art()
+
 	mouse_default_cursor_shape = Control.CURSOR_ARROW
 	is_interactive = false
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
@@ -106,11 +116,11 @@ func setup_enemy_visuals(instance_id: int) -> void:
 	$background_texture.flip_h = true
 	$background_texture.flip_v = true
 
+
 func animate_to_discard(
 	target_global_pos: Vector2,
 	on_complete_callback: Callable
 ) -> void:
-	
 	is_discarded = true
 	is_interactive = false
 	is_mouse_over = false
@@ -163,12 +173,16 @@ func animate_to_discard(
 			on_complete_callback.call()
 	)
 
+
 func _reset_hover_state() -> void:
 	z_index = CARD_Z_INDEX
 	scale = BASE_SCALE
+
 	if get_child_count() > 0:
 		get_child(0).visible = false
+
 	card_unhovered.emit()
+
 
 func _on_mouse_exited() -> void:
 	is_mouse_over = false
@@ -184,19 +198,19 @@ func _on_mouse_exited() -> void:
 
 	if is_discarded:
 		set_cursor_normal()
-		return _animate_discard_pile_hover(0)
+		_animate_discard_pile_hover(0)
+		return
 
 	just_returned_to_hand = false
 
-	if not is_dragging and not is_mouse_pressed:
+	if not is_mouse_pressed:
 		z_index = 0
 		scale = BASE_SCALE
 
-	if not is_dragging:
-		set_cursor_normal()
+	set_cursor_normal()
 
-	position.y = position.y + SIZE.y / 10
 	card_unhovered.emit()
+
 
 func _on_mouse_entered() -> void:
 	is_mouse_over = true
@@ -209,19 +223,17 @@ func _on_mouse_entered() -> void:
 		return
 
 	if is_discarded:
-		return _animate_discard_pile_hover(1)
-
-	if not is_dragging:
-		z_index = 10
-		scale = HOVER_SCALE
-		set_cursor_hover()
+		_animate_discard_pile_hover(1)
+		return
 
 	z_index = CARD_Z_INDEX + 1
 	scale = HOVER_SCALE
+	set_cursor_hover()
 
 	var card_data: CommandCard = CardDatabase.get_card(_card_id)
 	if card_data:
 		card_hovered.emit(card_data.target_sector)
+
 
 func _animate_discard_pile_hover(state: int) -> void:
 	var discard_scale := get_discard_scale()
@@ -229,10 +241,11 @@ func _animate_discard_pile_hover(state: int) -> void:
 	if state == 1:
 		scale = discard_scale * 1.5
 		base_position_x = position.x
-		position.x = position.x - (size.x * 0.25)
+		position.x -= size.x * 0.25
 	else:
 		scale = discard_scale
 		position.x = base_position_x
+
 
 func get_discard_scale() -> Vector2:
 	if not discard_target:
@@ -244,6 +257,7 @@ func get_discard_scale() -> Vector2:
 		BASE_SCALE.x / parent_global_scale.x,
 		BASE_SCALE.y / parent_global_scale.y
 	)
+
 
 func _gui_input(event: InputEvent) -> void:
 	if not is_interactive or is_discarded:
@@ -263,7 +277,6 @@ func _gui_input(event: InputEvent) -> void:
 			is_mouse_pressed = true
 			press_position = get_global_mouse_position()
 			accept_event()
-
 		else:
 			if not is_dragging:
 				is_mouse_pressed = false
@@ -275,6 +288,7 @@ func _gui_input(event: InputEvent) -> void:
 
 			if mouse_position.distance_to(press_position) >= DRAG_THRESHOLD:
 				_start_drag()
+
 
 func _input(event: InputEvent) -> void:
 	if not is_interactive:
@@ -296,6 +310,7 @@ func _input(event: InputEvent) -> void:
 			_end_drag()
 			accept_event()
 
+
 func _start_drag() -> void:
 	if is_dragging:
 		return
@@ -307,6 +322,7 @@ func _start_drag() -> void:
 	Input.mouse_mode = Input.MOUSE_MODE_CONFINED
 
 	var hand := get_parent()
+
 	if hand:
 		for card in hand.get_children():
 			if card is CardUI and card != self:
@@ -323,14 +339,8 @@ func _start_drag() -> void:
 
 	set_cursor_drag()
 
-	var hand = get_parent()
-
-	if hand:
-		for card in hand.get_children():
-			if card is CardUI and card != self:
-				card.mouse_filter = Control.MOUSE_FILTER_IGNORE
-
 	card_drag_started.emit(self)
+
 
 func _end_drag() -> void:
 	if not is_dragging:
@@ -352,6 +362,7 @@ func _end_drag() -> void:
 
 	if is_over_play_area():
 		var drop_pos := global_position
+
 		top_level = true
 		global_position = drop_pos
 
@@ -361,14 +372,18 @@ func _end_drag() -> void:
 
 		if confirmed:
 			var target_pos := Vector2.ZERO
+
 			if discard_target:
 				target_pos = discard_target.global_position + (discard_target.size / 2.0)
 
-			animate_to_discard(target_pos, func():
-				queue_free()
-				var hand := get_parent()
-				if hand and hand.has_method("_recalculate_layout"):
-					hand._recalculate_layout()
+			animate_to_discard(
+				target_pos,
+				func():
+					queue_free()
+
+					var hand := get_parent()
+					if hand and hand.has_method("_recalculate_layout"):
+						hand._recalculate_layout()
 			)
 		else:
 			return_to_hand()
@@ -377,6 +392,7 @@ func _end_drag() -> void:
 
 	update_cursor()
 	card_drag_ended.emit(self)
+
 
 func _unlock_cards() -> void:
 	var hand := get_parent()
@@ -390,11 +406,13 @@ func _unlock_cards() -> void:
 					else Control.MOUSE_FILTER_IGNORE
 				)
 
+
 func _wait_for_card_confirmation(timeout_seconds: float) -> bool:
 	if not handState:
 		return false
 
 	var confirmed := false
+
 	var on_played := func(confirmed_id: int, _c_id: String):
 		if confirmed_id == _instance_id:
 			confirmed = true
@@ -411,6 +429,7 @@ func _wait_for_card_confirmation(timeout_seconds: float) -> bool:
 
 	return confirmed
 
+
 func return_to_hand() -> void:
 	top_level = false
 	scale = BASE_SCALE
@@ -424,8 +443,10 @@ func return_to_hand() -> void:
 	if hand and hand.has_method("_recalculate_layout"):
 		hand._recalculate_layout()
 
+
 func is_over_play_area() -> bool:
 	if not play_area:
 		return false
+
 	var card_center := global_position + size * 0.5
 	return play_area.get_global_rect().has_point(card_center)
