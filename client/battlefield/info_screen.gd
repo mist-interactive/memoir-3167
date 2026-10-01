@@ -9,7 +9,7 @@ const CONFIG_PATH: String = "res://config.json"
 var config: Dictionary
 var pause_time: float
 
-var REJOIN_WINDOW: float
+var rejoin_window: float
 const FONT: Font = preload("res://assets/fonts/PixelArmy/PixelArmy.ttf")
 
 func _ready() -> void:
@@ -21,18 +21,21 @@ func _ready() -> void:
 	_setup_background()
 	_center_info_pane()
 	config = ConfigLoader.load_json(CONFIG_PATH)
-	REJOIN_WINDOW = config.match.player_rejoin_window
+	rejoin_window = config.match.player_rejoin_window
+	if match_state.state == MatchState.STATE.PAUSED:
+		on_match_state_changed(MatchState.STATE.PAUSED)
 
 func _process(_delta: float) -> void:
 	if match_state.state == MatchState.STATE.PAUSED:
 		var server_now: float = network_clock.get_server_time()
-		var count_down: int = ceili(((pause_time + REJOIN_WINDOW * 1000) - server_now )/ 1000)
-		clampi(count_down, 0, REJOIN_WINDOW as int)
+		var count_down: int = ceili(((pause_time + rejoin_window * 1000) - server_now )/ 1000)
+		count_down = clampi(count_down, 0, rejoin_window as int)
 		timer.text = "Victory in: " + str(count_down)
 		timer.offset_transform_position = -Vector2(timer.size.x / 2, -timer.size.y / 3)
 
 func on_match_state_changed(new_state: MatchState.STATE):
 	if new_state == MatchState.STATE.ENDED:
+		timer.text = ""
 		var winner: int = match_state.get_winner()
 		if winner == match_state.mySide:
 			info_bg.color = Color.DARK_OLIVE_GREEN
@@ -47,9 +50,9 @@ func on_match_state_changed(new_state: MatchState.STATE):
 		info_text.text = "Opponent disconnected"
 		visible = true
 	elif new_state == MatchState.STATE.IN_PROGRESS:
-		info_text.clear()
+		info_text.text = ""
 		visible = false
-	_center_info_pane()
+	call_deferred("_center_info_pane")
 
 func _center_info_pane() -> void:
 	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
