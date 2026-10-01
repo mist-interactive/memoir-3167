@@ -78,12 +78,6 @@ func _ready() -> void:
 
 	for page in tutorial_pages:
 		page.mouse_filter = Control.MOUSE_FILTER_IGNORE
-
-		var rich_text_label: RichTextLabel = page.get_node("Text")
-		rich_text_label.size = PAGE_SIZE
-		rich_text_label.position = PAGE_POSITION
-		rich_text_label.custom_minimum_size = PAGE_CUSTOM_MIN
-		rich_text_label.custom_maximum_size = PAGE_CUSTOM_MAX
 		
 	for i in range(page_moving_units_buttons.size()):
 		var button := page_moving_units_buttons[i]

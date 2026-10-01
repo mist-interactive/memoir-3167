@@ -88,6 +88,22 @@ region = Rect2(273, 519, 480, 496)
 atlas = ExtResource("16_xgmmi")
 region = Rect2(527, 8, 480, 496)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_henba"]
+atlas = ExtResource("9_ld8p5")
+region = Rect2(512, 0, 127, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3mjco"]
+atlas = ExtResource("9_ld8p5")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ywmym"]
+atlas = ExtResource("9_ld8p5")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_77ma2"]
+atlas = ExtResource("9_ld8p5")
+region = Rect2(256, 0, 128, 128)
+
 [node name="Tutorial" type="Control" unique_id=1744084876 node_paths=PackedStringArray("minimize_button", "tutorial_button", "menu_button", "previous_page_button", "next_page_button", "panel", "top_bar", "page_buttons_container", "tutorial_pages", "page_buttons", "page_moving_units_buttons", "page_moving_units_page_targets", "page_moving_units_return_pages", "help_button_target_pages")]
 z_index = 4096
 layout_mode = 3
@@ -746,15 +762,14 @@ offset_bottom = 248.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Selecting units
-"
+text = "After playing a command card, select available units on the section ruled by the card. selection is limited by the number showed on the card"
 autowrap_mode = 1
 
 [node name="Moving units" type="Control" parent="Pages" unique_id=1363077334]
 visible = false
 anchors_preset = 0
 
-[node name="Text" type="RichTextLabel" parent="Pages/Moving units" unique_id=1518700950]
+[node name="Texts" type="RichTextLabel" parent="Pages/Moving units" unique_id=1518700950]
 custom_minimum_size = Vector2(432, 232)
 custom_maximum_size = Vector2(432, 232)
 layout_mode = 0
@@ -840,7 +855,12 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
 text = "Now it's time for battle!
 
-Select your units again "
+Re-select the unit you wish to attack with and then
+click on any highlighted enemy unit to commence
+dice roll which determines the combat results.
+Do this for any previously selected unit.
+(restrictions may have been applied to certain units
+based on movement)"
 autowrap_mode = 1
 
 [node name="Dice" type="Control" parent="Pages" unique_id=1317684370]
@@ -984,7 +1004,13 @@ offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Retreat"
+text = "Whenever you or enemy roll a retreat flag on dice.
+The targeted unit has to retreat so the turn
+can continue.
+Do this by clicking on the unit and selecting any
+of the highlighted hexes behind it.
+(If there was no possible hexes to retreat to, the unit
+has taken damage instead)"
 autowrap_mode = 1
 
 [node name="Units" type="Control" parent="Pages" unique_id=1346251542]
@@ -1002,7 +1028,11 @@ offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Units"
+text = "There are three different types of units in the game.
+Infantry, Tanks(Armored), Artillery(Armored)
+
+Each unit has their unique mechanics and stats,
+that you can see on their respective tutorial pages."
 autowrap_mode = 1
 
 [node name="Infantry" type="Control" parent="Pages" unique_id=197650067]
@@ -1023,7 +1053,8 @@ bbcode_enabled = true
 text = "Next, let's learn about infantry units.
 
 Infantry can move 1-2 hexes. However, if they move
-2 hexes, they will not be able to fight in the next step!"
+2 hexes, they will not be able to fight
+in the next step!"
 autowrap_mode = 1
 
 [node name="Tanks" type="Control" parent="Pages" unique_id=357366898]
@@ -1041,7 +1072,10 @@ offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Tanks"
+text = "Next, let's learn about Tank(Armored) units.
+
+Tanks can move up to 3 hexes,
+and still be able to battle."
 autowrap_mode = 1
 
 [node name="Artillery" type="Control" parent="Pages" unique_id=190926719]
@@ -1059,7 +1093,9 @@ offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Artillery"
+text = "Next, let's learn about Artillery(Armored) units.
+
+Artillery can move up to 1 hexes, but will not be able to battle afterwars in the next step."
 autowrap_mode = 1
 
 [node name="Terrain" type="Control" parent="Pages" unique_id=208024676]
@@ -1077,7 +1113,7 @@ offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Terrain"
+text = "You can see all terrain specific ruling on the left side of your game by hovering over a terrain hex."
 autowrap_mode = 1
 
 [node name="Line of sight" type="Control" parent="Pages" unique_id=1684079097]
@@ -1095,8 +1131,45 @@ offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Line of sight"
+text = "There is a line of sight mechanic that prevents your units shooting through certain terrain.
+(hills, mountain, towns, forests)"
 autowrap_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="Pages/Line of sight" unique_id=1488646593]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 112.0
+offset_right = 96.0
+offset_bottom = 144.0
+texture = SubResource("AtlasTexture_henba")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="Pages/Line of sight" unique_id=53134242]
+layout_mode = 0
+offset_left = 128.0
+offset_top = 112.0
+offset_right = 160.0
+offset_bottom = 144.0
+texture = SubResource("AtlasTexture_3mjco")
+expand_mode = 1
+
+[node name="TextureRect3" type="TextureRect" parent="Pages/Line of sight" unique_id=1600920458]
+layout_mode = 0
+offset_left = 192.0
+offset_top = 111.0
+offset_right = 224.0
+offset_bottom = 143.0
+texture = SubResource("AtlasTexture_ywmym")
+expand_mode = 1
+
+[node name="TextureRect4" type="TextureRect" parent="Pages/Line of sight" unique_id=704306311]
+layout_mode = 0
+offset_left = 256.0
+offset_top = 112.0
+offset_right = 288.0
+offset_bottom = 144.0
+texture = SubResource("AtlasTexture_77ma2")
+expand_mode = 1
 
 [node name="Turn end" type="Control" parent="Pages" unique_id=1181713521]
 visible = false
@@ -1113,5 +1186,7 @@ offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Turn ends"
+text = "When you have finished the combat phase,
+the turn ends and the game will automatically draw you a new command card.
+Now it's your opponent's turn to play."
 autowrap_mode = 1
