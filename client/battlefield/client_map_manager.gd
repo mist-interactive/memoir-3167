@@ -8,8 +8,8 @@ extends Node
 @export var map_visuals_node: Node
 @export var unit_container: Node
 @export var unit_scene: PackedScene
-@export var left_sector_divider: Line2D
-@export var right_sector_divider: Line2D
+@export var left_sector_divider: Node2D
+@export var right_sector_divider: Node2D
 @onready var battlefield_state: BattlefieldState = $"../../BattlefieldState"
 
 var sector_index: Dictionary[enums.MapSector, Array] = {
@@ -79,28 +79,75 @@ func _draw_sector_dividers() -> void:
 	var top_row: int = used_rect.position.y
 	var bottom_row: int = used_rect.end.y - 1
 	
-	# Convert grid rows to pixel Y coordinates. 
-	# We add/subtract an arbitrary pixel amount (e.g., 100) so the lines extend slightly past the grid.
-	var line_top_y: float = map_ground_layer.map_to_local(Vector2i(0, top_row)).y - (battlefield_state.map.tile_half_height)
-	var line_bottom_y: float = map_ground_layer.map_to_local(Vector2i(0, bottom_row)).y + (battlefield_state.map.tile_half_height)
+	# 2. Calculate the Y bounds in map_ground_layer local space
+	var line_top_y: float = (
+		map_ground_layer.map_to_local(Vector2i(0, top_row)).y
+		- battlefield_state.map.HEX_SIZE * 2
+	)
 	
-	# 2. Calculate the Left and Right Divider X Coordinate
-	var left_pure_hex_pos := map_ground_layer.map_to_local(Vector2i(battlefield_state.left_sector_max, 0))
-	var left_center_adj_hex_pos := map_ground_layer.map_to_local(Vector2i(battlefield_state.left_sector_max + 1, 0))
-	var left_line_x: float = (left_pure_hex_pos.x + left_center_adj_hex_pos.x) / 2.0
+	var line_bottom_y: float = (
+		map_ground_layer.map_to_local(Vector2i(0, bottom_row)).y
+		+ battlefield_state.map.tile_half_height
+	)
 	
-	var right_pure_hex_pos := map_ground_layer.map_to_local(Vector2i(battlefield_state.right_sector_min, 0))
-	var right_center_adj_hex_pos := map_ground_layer.map_to_local(Vector2i(battlefield_state.right_sector_min - 1, 0))
-	var right_line_x: float = (right_pure_hex_pos.x + right_center_adj_hex_pos.x) / 2.0
+	# 3. Calculate the Left Divider X coordinate
+	var left_pure_hex_pos := map_ground_layer.map_to_local(
+		Vector2i(battlefield_state.left_sector_max, 0)
+	)
 	
-	# 4. Apply the coordinates to the Line2D nodes
-	left_sector_divider.clear_points()
-	left_sector_divider.add_point(Vector2(left_line_x, line_top_y))
-	left_sector_divider.add_point(Vector2(left_line_x, line_bottom_y))
+	var left_center_adj_hex_pos := map_ground_layer.map_to_local(
+		Vector2i(battlefield_state.left_sector_max + 1, 0)
+	)
 	
-	right_sector_divider.clear_points()
-	right_sector_divider.add_point(Vector2(right_line_x, line_top_y))
-	right_sector_divider.add_point(Vector2(right_line_x, line_bottom_y))
+	var left_line_x: float = (
+		left_pure_hex_pos.x + left_center_adj_hex_pos.x
+	) / 2.0 - battlefield_state.map.HEX_SIZE
+	
+	# 4. Calculate the Right Divider X coordinate
+	var right_pure_hex_pos := map_ground_layer.map_to_local(
+		Vector2i(battlefield_state.right_sector_min, 0)
+	)
+	
+	var right_center_adj_hex_pos := map_ground_layer.map_to_local(
+		Vector2i(battlefield_state.right_sector_min - 1, 0)
+	)
+	
+	var right_line_x: float = (
+		right_pure_hex_pos.x + right_center_adj_hex_pos.x
+	) / 2.0 - battlefield_state.map.HEX_SIZE
+	
+	# ---------------------------------------------------------
+	# LEFT DIVIDER
+	# ---------------------------------------------------------
+	
+	# First create the points in map_ground_layer's local space.
+	var left_top_local := Vector2(left_line_x, line_top_y)
+	var left_bottom_local := Vector2(left_line_x, line_bottom_y)
+	
+	# Convert those points to global space.
+	var left_top_global := map_ground_layer.to_global(left_top_local)
+	var left_bottom_global := map_ground_layer.to_global(left_bottom_local)
+	
+	# Convert global space into the divider Node2D's local space.
+	var left_start := left_sector_divider.to_local(left_top_global)
+	var left_end := left_sector_divider.to_local(left_bottom_global)
+	
+	left_sector_divider.set_line(left_start, left_end)
+	
+	# ---------------------------------------------------------
+	# RIGHT DIVIDER
+	# ---------------------------------------------------------
+	
+	var right_top_local := Vector2(right_line_x, line_top_y)
+	var right_bottom_local := Vector2(right_line_x, line_bottom_y)
+	
+	var right_top_global := map_ground_layer.to_global(right_top_local)
+	var right_bottom_global := map_ground_layer.to_global(right_bottom_local)
+	
+	var right_start := right_sector_divider.to_local(right_top_global)
+	var right_end := right_sector_divider.to_local(right_bottom_global)
+	
+	right_sector_divider.set_line(right_start, right_end)
 
 func build_sector_index() -> void:
 	# 1. Clear existing coordinates without breaking inner array typing
