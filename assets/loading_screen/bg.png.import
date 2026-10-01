@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://bns1xujgustfq"
-path="res://.godot/imported/a4_recon_center.png-aa6d21a1aba911dc302ce8a7288b879e.ctex"
+uid="uid://c5g2a7dx6hcss"
+path="res://.godot/imported/bg.png-39a2c2dde0f6750af213539f920a2a04.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/card_textures/sector-orders/a4_recon_center.png"
-dest_files=["res://.godot/imported/a4_recon_center.png-aa6d21a1aba911dc302ce8a7288b879e.ctex"]
+source_file="res://assets/loading_screen/bg.png"
+dest_files=["res://.godot/imported/bg.png-39a2c2dde0f6750af213539f920a2a04.ctex"]
 
 [params]
 

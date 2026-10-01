@@ -42,18 +42,21 @@ func _on_sync_requested(snapshot: Dictionary, flush_queue: bool = true):
 					Event.new(enemy_card_drawn, [instance_id])
 				)
 	
-	var new_discard_pile: Array[CardInstance]
+	var new_discard_pile: Array[CardInstance] = []
+
 	for packed in snapshot.discard_pile:
 		new_discard_pile.append(CardInstance.from_dict(packed))
-	
-	if discard_pile.size() != new_discard_pile.size():
+
+	if new_discard_pile.size() > discard_pile.size():
 		var card: CardInstance = new_discard_pile.back()
 		var args: Array = [card.instance_id, card.card_id]
 		var enemyPlayed: bool = card.owner_side != match_state.mySide
+
 		var event: Event = Event.new(
 			enemy_card_played if enemyPlayed else card_played,
 			args
 		)
+
 		event_queue.append(event)
 	
 	card_ids = snapshot.card_ids

@@ -1,8 +1,6 @@
-extends HexagonTileMapLayer
-@onready var matchState: MatchState = $"../../../matchState"
-@onready var unit_manager: UnitManager = $"../../../UnitManager"
+@tool
 
-var player_hex := {}
+extends HexagonTileMapLayer
 
 func _ready() -> void:
 	pass

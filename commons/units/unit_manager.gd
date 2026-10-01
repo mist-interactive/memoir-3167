@@ -21,6 +21,15 @@ func _init(initialState: BattlefieldState) -> void:
 	base_dir[enums.Side.GREEN] = battlefield.base_dir_1
 	base_dir[enums.Side.RED] = battlefield.base_dir_2
 
+func snapshot() -> Dictionary:
+	var units: Array[Dictionary]
+	for unit: Variant in units_by_id.values():
+		units.append(unit.get_snapshot())
+	return {
+		"units": units,
+		"selected_units_ids": selected_units_ids
+	}
+
 func add_unit(unit: Variant, coord: Vector2i) -> void:
 	if !map.cells.has(coord) || unit_grid.has(coord):
 		return
@@ -79,7 +88,7 @@ func get_enemies_within_range_and_los(unit: Variant) -> Dictionary:
 			continue
 		if other_unit.owner_id == unit.owner_id:
 			continue
-		if map.distance(unit.hex_coord, other_unit.hex_coord) > unit_max_range:
+		if HexGrid.distance(unit.hex_coord, other_unit.hex_coord) > unit_max_range:
 			continue
 		if unit_stats.attacks_ignore_los:
 			valid_targets[other_unit.uuid] = coord
@@ -95,7 +104,6 @@ func get_retreat_coords(side: enums.Side, coord: Vector2i, unit: Variant, retrea
 	var tree: BinaryTree = BinaryTree.new(coord);
 	var left_coord: Vector2i = Vector2i(coord.x if coord.y % 2 != 0 else coord.x - 1 , coord.y + base_dir[side].y)
 	var right_coord: Vector2i = Vector2i(coord.x if coord.y % 2 == 0 else coord.x + 1 , coord.y + base_dir[side].y)
-	var cell: HexCell = battlefield.map.get_cell(coord);
 	if is_traversable(unit, left_coord):
 		tree.left = get_retreat_coords(side, left_coord, unit, retreat - 1)
 	if is_traversable(unit, right_coord):
@@ -134,6 +142,7 @@ func get_retreating_unit() -> Variant:
 		if unit.must_retreat():
 			return unit
 	return null
+
 func get_attackable_enemies(unit: Variant) -> Dictionary:
 	var reachable_enemies: Dictionary = get_enemies_within_range_and_los(unit)
 	if !reachable_enemies || reachable_enemies.size() == 0:
@@ -144,7 +153,7 @@ func get_attackable_enemies(unit: Variant) -> Dictionary:
 	for enemy_uuid in reachable_enemies:
 		var enemy: Variant = get_unit_by_id(enemy_uuid)
 		var enemy_hex: HexCell = battlefield.map.get_cell(enemy.hex_coord)
-		var distance: int = battlefield.map.distance(unit.hex_coord, enemy.hex_coord)
+		var distance: int = HexGrid.distance(unit.hex_coord, enemy.hex_coord)
 		var dice: int = CombatResolver.get_attack_dice_count(unit, unit_hex, enemy, enemy_hex, distance)
 		if dice > 0:
 			targets[enemy.uuid] = {

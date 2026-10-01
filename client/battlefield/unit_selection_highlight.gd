@@ -1,13 +1,19 @@
+@tool
+
 extends HexagonTileMapLayer
-@onready var matchState: MatchState = $"../../../matchState"
-@onready var unit_manager: UnitManager = $"../../../UnitManager"
+var match_state: MatchState
+var unit_manager: UnitManager
 
 var player_hex := {}
 
 func _ready() -> void:
-	pass
+	if Engine.is_editor_hint():
+		set_process(false)
+		return
+	match_state = $"../../../matchState"
+	unit_manager = $"../../../UnitManager"
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	clear()
 	highlight_selected_units()
 
@@ -17,7 +23,7 @@ func highlight_selected_units() -> void:
 		if unit == null:
 			continue
 		var highlight_atlas_coordinate := Vector2i(2, 0)
-		if !unit.can_act_in_current_phase(matchState.phase):
+		if !unit.can_act_in_current_phase(match_state.phase):
 			highlight_atlas_coordinate = Vector2i(3, 0)
 		highlight_cell(unit.hex_coord, highlight_atlas_coordinate)
 

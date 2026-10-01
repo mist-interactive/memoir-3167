@@ -72,8 +72,14 @@ func _on_server_disconnect() -> void:
 
 func initialize_connection() -> taskResult:
 	if OS.has_feature("web"):
-		var host = JavaScriptBridge.eval("window.location.hostname")
-		url = "ws://" + host + ":8080/ws"
+		var proto = JavaScriptBridge.eval("window.location.protocol")
+		var ws_proto = "wss://" if str(proto) == "https:" else "ws://"
+		var host = JavaScriptBridge.eval("window.location.host")
+		if host != null and str(host) != "":
+			url = ws_proto + str(host) + "/ws"
+		else:
+			url = "wss://localhost:8443/ws"
+		print("Web client resolved WebSocket URL: ", url)
 
 	while reconnectAttempts < MAX_RECONNECT_ATTEMPS && not connected:
 		var err: Error = await reconnect_to_server()

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="CommandCard" format=3 uid="uid://chqq2y182ca4y"]
+[gd_resource type="Resource" script_class="CommandCard" format=3 uid="uid://dwws2w08mefvr"]
 
 [ext_resource type="Script" uid="uid://brv7b2q4f6ws5" path="res://commons/cards/command_card/CommandCard.gd" id="2_des3f"]
 
@@ -7,5 +7,6 @@ script = ExtResource("2_des3f")
 id = "015"
 target_sector = 2
 deck_quantity = 3
-card_art_path = "uid://bns1xujgustfq"
+target_unit_limit = 2
+card_art_path = "uid://bvp8scfqi1i8b"
 metadata/_custom_type_script = "uid://brv7b2q4f6ws5"

@@ -35,7 +35,6 @@ func _sync_hands() -> void:
 func initialize_match_deck() -> void:
 	draw_pile.clear()
 	discard_pile.clear()
-	
 	for card_id in CardDatabase.card_registry.keys():
 		var card_data = CardDatabase.get_card(card_id)
 		
@@ -46,20 +45,39 @@ func initialize_match_deck() -> void:
 		
 		for i in range(command_card.deck_quantity):
 			draw_pile.append(card_id)
-	
-	shuffle_deck()
+		draw_pile.shuffle()
 
 func draw_card_from_pile() -> Dictionary:
 	if draw_pile.is_empty():
-		shuffle_deck()
-		if draw_pile.is_empty(): return {}
-	
-	var card_instance = {
-		"instance_id":  _next_instance_id,
-		"card_id": draw_pile.pop_back()
+		_refill_draw_pile()
+
+	if draw_pile.is_empty():
+		return {}
+
+	var card_id: String = draw_pile.pop_back()
+
+	var card_instance := {
+		"instance_id": _next_instance_id,
+		"card_id": card_id
 	}
+
 	_next_instance_id += 1
 	return card_instance
+
+
+func _refill_draw_pile() -> void:
+	if discard_pile.is_empty():
+		return
+
+	for card_instance: CardInstance in discard_pile:
+		draw_pile.append(card_instance.card_id)
+
+	discard_pile.clear()
+	draw_pile.shuffle()
+
+	logger.info("Refilled draw pile", {
+		"cards": draw_pile.size()
+	})
 
 func draw_card(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) -> bool:
 	var card_instance: Dictionary = draw_card_from_pile()
@@ -84,13 +102,6 @@ func draw_card(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) ->
 
 	player_logger.info("Draw a card", card_instance)
 	return true
-
-func shuffle_deck() -> void:
-	if draw_pile.is_empty() and not discard_pile.is_empty():
-		draw_pile.assign(discard_pile)
-		discard_pile.clear()
-	
-	draw_pile.shuffle()
 
 func play_card(side: enums.Side, instance_id: int, sides_peer_ids: Dictionary[enums.Side, int]) -> bool:
 	var player_logger := logger.with_context({

@@ -58,7 +58,7 @@ func _physics_process(_delta: float) -> void:
 	match matchState.state:
 		MatchState.STATE.PAUSED:
 			if session_manager.players_are_playing():
-				matchState.unpause()
+				matchState.unpause(true)
 			monitor_game_abandonment()
 		MatchState.STATE.INITIALIZE_BOARD:
 			if session_manager.players_are_playing():
@@ -90,7 +90,7 @@ func handle_connect(uuid: int, peer_id: int) -> bool:
 	var snapshot: Dictionary = {
 		"match_state": matchState.get_snapshot(get_side(peer_id)),
 		"map_name": battlefield.mapName,
-		"units": units
+		"unit_manager": unit_manager.snapshot()
 	}
 	var sessions: Dictionary[int, PlayerSession] = session_manager.get_sessions()
 	for _uuid: int in sessions:

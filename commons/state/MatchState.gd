@@ -108,7 +108,7 @@ func pause_and_store_phase_timer() -> void:
 
 func continue_from_prev_phase_timer() -> void:
 	phase_timer.sync(prev_phase_timer.to_dict())
-	unpause()
+	unpause(false)
 	should_sync = true
 
 func new_phase_timer(duration_in_sec: float = DEFAULT_DURATION_IN_SEC) -> void:
@@ -124,11 +124,11 @@ func pause() -> void:
 		state = STATE.PAUSED
 		should_sync = true
 
-func unpause() -> void:
+func unpause(continue_from_prev_state: bool = false) -> void:
 	var time_used: float = phase_timer.paused_at - phase_timer.started_at
 	phase_timer.ends_at = Time.get_ticks_msec() + (phase_timer.duration - time_used)
 	phase_timer.started_at = phase_timer.ends_at - phase_timer.duration
-	state = prev_state
+	state = prev_state if continue_from_prev_state else STATE.IN_PROGRESS
 
 func has_phase_ended(server_time: float) -> bool:
 	if state != STATE.IN_PROGRESS:
