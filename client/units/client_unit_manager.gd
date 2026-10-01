@@ -12,15 +12,18 @@ func _init(initialState: BattlefieldState) -> void:
 	Network.Units.spawn_unit_requested.connect(_on_spawn_unit_requested)
 	Network.Actions.sync_unit_path_received.connect(_on_sync_unit_path_received)
 	Network.Units.unit_destroyed_requested.connect(_on_unit_destroyed)
-	
+
 # snapshot used for reconnection
-func initialize(new_active_container: Node, snapshot: Dictionary = {}) -> void:
-	self.active_container = new_active_container
-	if !snapshot.is_empty() && snapshot.has("units"):
-		print("snapshot.units", snapshot.units)
+func initialize(active_container: Node, snapshot: Dictionary = {}) -> void:
+	self.active_container = active_container
+	if snapshot.is_empty():
+		return
+	if snapshot.has("units"):
 		for unit: Dictionary in snapshot.units:
 			_on_spawn_unit_requested(unit)
 			_on_sync_unit_requested(unit)
+	if snapshot.has("selected_units_ids"):
+		selected_units_ids = snapshot.selected_units_ids
 
 func _on_sync_unit_requested(snapshot: Dictionary) -> void:
 	var uuid: int = snapshot.uuid
@@ -54,7 +57,7 @@ func _on_sync_unit_path_received(unit_id: int, path: Array[Vector2i]) -> void:
 	if !unit:
 		return
 	unit.move_along_path(path)
-	
+
 func _on_unit_destroyed(unit_id: int) -> void:
 	var unit: Unit = units_by_id[unit_id]
 	if !unit:

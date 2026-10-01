@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("2_uevrq")
 id = "011"
-target_sector = 2
+target_sector = 7
 deck_quantity = 3
 target_unit_limit = 3
 card_art_path = "uid://cvb6jytknpo7l"
