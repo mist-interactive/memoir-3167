@@ -415,5 +415,7 @@ func is_over_play_area() -> bool:
 	if not play_area:
 		return false
 
-	var card_center := global_position + size * 0.5
-	return play_area.get_global_rect().has_point(card_center)
+	var card_rect := get_global_rect()
+	var play_rect := play_area.get_global_rect()
+
+	return play_rect.has_point(card_rect.get_center())
