@@ -101,7 +101,7 @@ func _draw_sector_dividers() -> void:
 	
 	var left_line_x: float = (
 		left_pure_hex_pos.x + left_center_adj_hex_pos.x
-	) / 2.0
+	) / 2.0 - battlefield_state.map.HEX_SIZE
 	
 	# 4. Calculate the Right Divider X coordinate
 	var right_pure_hex_pos := map_ground_layer.map_to_local(
@@ -114,7 +114,7 @@ func _draw_sector_dividers() -> void:
 	
 	var right_line_x: float = (
 		right_pure_hex_pos.x + right_center_adj_hex_pos.x
-	) / 2.0
+	) / 2.0 - battlefield_state.map.HEX_SIZE
 	
 	# ---------------------------------------------------------
 	# LEFT DIVIDER
