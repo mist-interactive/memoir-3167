@@ -1,11 +1,29 @@
 [gd_scene format=3 uid="uid://bkaktjljq8pme"]
 
 [ext_resource type="Script" uid="uid://byxlusre1qg1i" path="res://client/loader/LoadingScene.gd" id="1_wbw4t"]
-[ext_resource type="Texture2D" uid="uid://dps0o8domy171" path="res://winter-of-wonder.webp" id="2_wpa7w"]
+[ext_resource type="Texture2D" uid="uid://c5g2a7dx6hcss" path="res://assets/loading_screen/bg.png" id="2_qcqul"]
 
-[node name="Loader" type="Node2D" unique_id=1067640567 node_paths=PackedStringArray("progressBar")]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qcqul"]
+bg_color = Color(0.6039216, 0.6039216, 0.6039216, 0.4627451)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+corner_detail = 1
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cg8qr"]
+bg_color = Color(0.9098039, 0.9098039, 0.9098039, 0.9098039)
+corner_radius_top_left = 100
+corner_radius_top_right = 100
+corner_radius_bottom_right = 100
+corner_radius_bottom_left = 100
+corner_detail = 1
+
+[node name="Loader" type="Node2D" unique_id=1067640567 node_paths=PackedStringArray("progressBar", "taskLabel", "background")]
 script = ExtResource("1_wbw4t")
 progressBar = NodePath("CanvasLayer/ProgressBar")
+taskLabel = NodePath("CanvasLayer/Label")
+background = NodePath("TextureRect")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=839037456]
 
@@ -22,6 +40,9 @@ offset_bottom = 266.55997
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_horizontal = 8
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_styles/background = SubResource("StyleBoxFlat_qcqul")
+theme_override_styles/fill = SubResource("StyleBoxFlat_cg8qr")
 step = 1.0
 
 [node name="Label" type="Label" parent="CanvasLayer" unique_id=335725005]
@@ -36,10 +57,15 @@ offset_right = 40.0
 offset_bottom = -7.8480225
 grow_horizontal = 2
 grow_vertical = 0
-theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 text = "Loading....."
 
-[node name="WinterOfWonder" type="Sprite2D" parent="." unique_id=1918396535]
-position = Vector2(579.5372, 329.0625)
-scale = Vector2(0.7703626, 0.7703627)
-texture = ExtResource("2_wpa7w")
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1391288296]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_qcqul")
+expand_mode = 1
+stretch_mode = 6

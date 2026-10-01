@@ -2,8 +2,8 @@ extends Node2D
 class_name Loader
 var tasks: Array[Task]
 @export var progressBar: ProgressBar
-@onready var taskLabel = $CanvasLayer/Label
-@onready var background = $WinterOfWonder
+@export var taskLabel: Label
+@export var background: TextureRect
 
 class Task:
 	var weight: float
@@ -19,7 +19,15 @@ func stage(name: String, job: Callable, weight: float = 1.0) -> Loader:
 	return self
 	
 func _ready() -> void:
-	self.hide_loader()
+	get_viewport().size_changed.connect(_on_viewport_size_changed)
+	_on_viewport_size_changed()
+	hide_loader()
+
+func _on_viewport_size_changed() -> void:
+	background.position = Vector2.ZERO
+	background.size = get_viewport_rect().size
+	background.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	background.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 	
 func run() -> void:
 	var total_weight: float = 0.0
