@@ -762,15 +762,14 @@ offset_bottom = 248.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "Selecting units
-"
+text = "After playing a command card, select available units on the section ruled by the card. selection is limited by the number showed on the card"
 autowrap_mode = 1
 
 [node name="Moving units" type="Control" parent="Pages" unique_id=1363077334]
 visible = false
 anchors_preset = 0
 
-[node name="Text" type="RichTextLabel" parent="Pages/Moving units" unique_id=1518700950]
+[node name="Texts" type="RichTextLabel" parent="Pages/Moving units" unique_id=1518700950]
 custom_minimum_size = Vector2(432, 232)
 custom_maximum_size = Vector2(432, 232)
 layout_mode = 0
@@ -1080,6 +1079,7 @@ and still be able to battle."
 autowrap_mode = 1
 
 [node name="Artillery" type="Control" parent="Pages" unique_id=190926719]
+visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Pages/Artillery" unique_id=907521301]
