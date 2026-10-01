@@ -136,7 +136,6 @@ func animate_to_discard(
 	top_level = true
 	global_position = start_global_pos
 
-	z_index = 100
 	mouse_filter = Control.MOUSE_FILTER_IGNORE
 
 	var target_scale := get_discard_scale()
