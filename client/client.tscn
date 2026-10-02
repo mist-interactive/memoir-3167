@@ -9,19 +9,6 @@ script = ExtResource("1_6t3qf")
 loader = NodePath("UI/Loader")
 game = NodePath("Game")
 
-[node name="uuid" type="Label" parent="." unique_id=1944412330]
-modulate = Color(0.5590801, 0.21166807, 0.5204157, 1)
-top_level = true
-z_index = 1000
-anchors_preset = -1
-anchor_right = 0.017
-anchor_bottom = 0.035
-offset_left = 182.0
-offset_top = 54.0
-offset_right = 202.416
-offset_bottom = 54.32
-text = "434"
-
 [node name="UI" type="Node" parent="." unique_id=959618433]
 
 [node name="Loader" parent="UI" unique_id=1067640567 instance=ExtResource("2_7kp2r")]
