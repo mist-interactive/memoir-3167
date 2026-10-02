@@ -62,7 +62,7 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey:
-		if event.keycode == KEY_SPACE and event.pressed and not event.echo:
+		if event.keycode == KEY_SPACE and event.is_released():
 			_on_confirm()
 
 func load_cursor() -> void:
@@ -97,6 +97,8 @@ func update_player_color() -> void:
 		enums.Side.RED:
 			P1faction.text = AXIS
 			P2faction.text = ALLIES
+			P1name.text = matchState.player_names[enums.Side.RED]
+			P2name.text = matchState.player_names[enums.Side.GREEN]
 
 			set_box_color(P1faction, enemy_color)
 			set_box_color(P1name, enemy_color)
@@ -108,7 +110,9 @@ func update_player_color() -> void:
 		enums.Side.GREEN:
 			P1faction.text = ALLIES
 			P2faction.text = AXIS
-
+			P1name.text = matchState.player_names[enums.Side.GREEN]
+			P2name.text = matchState.player_names[enums.Side.RED]
+			
 			set_box_color(P1faction, ally_color)
 			set_box_color(P1name, ally_color)
 			set_box_color(P1box, ally_color)

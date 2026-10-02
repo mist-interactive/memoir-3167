@@ -9,6 +9,7 @@ const DEFAULT_DURATION_IN_SEC = 10
 var matchId: int
 var mySide: enums.Side
 var winner: enums.Side
+var player_names: Dictionary[enums.Side, String]
 var scores: Dictionary[enums.Side, int]:
 	set(new_score):
 		scores = new_score
@@ -53,6 +54,7 @@ func get_snapshot(side: enums.Side = enums.Side.NONE) -> Dictionary:
 	return {
 		"matchId": self.matchId,
 		"winner": self.winner,
+		"player_names": self.player_names,
 		"scores": self.scores,
 		"state": self.state,
 		"phase": self.phase,
@@ -69,6 +71,7 @@ func _on_sync(snapshot: Dictionary):
 		event_queue.push_back(Event.new(match_state_changed, [snapshot.state]))
 	matchId = snapshot.matchId
 	winner = snapshot.winner
+	player_names = snapshot.player_names
 	scores = snapshot.scores
 	state = snapshot.state
 	phase = snapshot.phase
