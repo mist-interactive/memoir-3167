@@ -35,7 +35,7 @@ func _process(_delta: float) -> void:
 func on_match_state_changed(new_state: MatchState.STATE):
 	if new_state == MatchState.STATE.ENDED:
 		timer.text = ""
-		var winner: int = match_state.get_winner()
+		var winner: int = match_state.get_winner(config.match.max_score)
 		if winner == match_state.mySide:
 			info_bg.color = Color.DARK_OLIVE_GREEN
 			info_text.text = "Victory!"
