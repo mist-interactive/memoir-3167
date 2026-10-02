@@ -7,7 +7,6 @@ extends CanvasLayer
 @export var timer: RichTextLabel
 const CONFIG_PATH: String = "res://config.json"
 var config: Dictionary
-var pause_time: float
 
 var rejoin_window: float
 const FONT: Font = preload("res://assets/fonts/PixelArmy/PixelArmy.ttf")
@@ -28,7 +27,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if match_state.state == MatchState.STATE.PAUSED:
 		var server_now: float = network_clock.get_server_time()
-		var count_down: int = ceili(((pause_time + rejoin_window * 1000) - server_now )/ 1000)
+		var count_down: int = ceili(((match_state.phase_timer.paused_at + rejoin_window * 1000) - server_now )/ 1000)
 		count_down = clampi(count_down, 0, rejoin_window as int)
 		timer.text = "Victory in: " + str(count_down)
 		timer.offset_transform_position = -Vector2(timer.size.x / 2, -timer.size.y / 3)
@@ -45,7 +44,6 @@ func on_match_state_changed(new_state: MatchState.STATE):
 			info_text.text = "Defeat!"
 		visible = true
 	elif new_state == MatchState.STATE.PAUSED:
-		pause_time = match_state.phase_timer.paused_at
 		info_bg.color = Color.DIM_GRAY
 		info_text.text = "Opponent disconnected"
 		visible = true
