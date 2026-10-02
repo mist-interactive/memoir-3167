@@ -143,6 +143,9 @@ func _on_draw_card(peer_id: int) -> void:
 func get_peer_id(uuid: int) -> int:
 	return uuid_to_peer[uuid] if uuid_to_peer.has(uuid) else -1
 
+func get_peer_name(peer_id: int) -> String:
+	return server.clients[peer_id].display_name if server.clients.has(peer_id) else ""
+
 func get_uuid(peer_id: int) -> int:
 	for uuid in uuid_to_peer:
 		if uuid_to_peer[uuid] == peer_id:
