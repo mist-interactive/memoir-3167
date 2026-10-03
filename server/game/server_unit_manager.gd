@@ -18,13 +18,19 @@ func _init(initialState: BattlefieldState) -> void:
 	super(initialState)
 
 func is_unit_selected(unit_id: int) -> bool:
-	return selected_units_ids.has(unit_id)
+	if !units_by_id.has(unit_id):
+		return false
+	return units_by_id[unit_id].is_selected()
 
-func has_unit_moved(unit_id: int) -> bool:
-	return moved_units_ids.has(unit_id)
+func unit_can_move(unit_id: int) -> bool:
+	if !units_by_id.has(unit_id):
+		return false
+	return units_by_id[unit_id].can_move()
 
-func has_unit_attacked(unit_id: int) -> bool:
-	return attacked_units_ids.has(unit_id)
+func unit_can_attack(unit_id: int) -> bool:
+	if !units_by_id.has(unit_id):
+		return false
+	return units_by_id[unit_id].can_attack()
 
 func _sync_units() -> void:
 	for uuid in units_by_id:
@@ -45,8 +51,6 @@ func _sync_units() -> void:
 			"selected_unit_id": selected_unit_id,
 			"selected_by_peer": selected_by_peer,
 			"selected_units_ids" : selected_units_ids,
-			"moved_units_ids": moved_units_ids,
-			"attacked_units_ids": attacked_units_ids
 		}
 		MessageBroker.broadcast(match_controller.get_player_sessions(),
 				Network.Units.sync_all.rpc_id,
@@ -109,7 +113,6 @@ func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, 
 	)
 	selected_unit_id = -1
 	selected_by_peer = enums.Side.NONE
-	moved_units_ids.append(unit_id)
 	unit.set_can_move(false)
 	var destination_hex: HexCell = battlefield.map.get_cell(destination)
 	var destination_stats: TerrainStats = TerrainDatabase.get_stats(destination_hex.ground)
@@ -211,7 +214,6 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	selected_unit_id = -1
 	selected_by_peer = enums.Side.NONE
 	attacker.set_can_attack(false)
-	attacked_units_ids.append(unit_id)
 	var player_logger := logger.with_context({
 		"peer_id": sides_peer_ids[side],
 		"side": side
@@ -300,8 +302,6 @@ func next_phase(phase: enums.TurnPhase, prev_phase: enums.TurnPhase = enums.Turn
 		for id in selected_units_ids:
 			units_by_id[id].set_default_actions()
 		selected_units_ids.clear()
-		moved_units_ids.clear()
-		attacked_units_ids.clear()
 	selected_unit_id = -1
 	isDirty = true
 	matchState.phase = phase
@@ -365,7 +365,7 @@ func validate_unit_selection(unit_id: int, card: CommandCard) -> bool:
 		enums.TurnPhase.SELECT:
 			return false if !can_card_target_unit(card, unit_id) else true
 		enums.TurnPhase.MOVE:
-			return false if !is_unit_selected(unit_id) || has_unit_moved(unit_id) else true
+			return false if !is_unit_selected(unit_id) || !unit_can_move(unit_id) else true
 		enums.TurnPhase.ATTACK:
-			return false if !is_unit_selected(unit_id) || has_unit_attacked(unit_id) else true
+			return false if !is_unit_selected(unit_id) || !unit_can_attack(unit_id) else true
 	return false
