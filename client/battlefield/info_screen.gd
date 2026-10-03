@@ -5,6 +5,8 @@ extends CanvasLayer
 @export var info_bg: ColorRect
 @export var info_text: RichTextLabel
 @export var timer: RichTextLabel
+@export var dice_roller: Node3D
+
 const CONFIG_PATH: String = "res://config.json"
 var config: Dictionary
 
@@ -34,6 +36,8 @@ func _process(_delta: float) -> void:
 
 func on_match_state_changed(new_state: MatchState.STATE):
 	if new_state == MatchState.STATE.ENDED:
+		await dice_roller.dice_roll_finished
+		await get_tree().create_timer(1.5).timeout
 		timer.text = ""
 		var winner: int = match_state.get_winner(config.match.max_score)
 		if winner == match_state.mySide:

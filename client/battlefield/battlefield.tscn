@@ -398,12 +398,13 @@ client_map_manager = NodePath("../MapManager")
 background_tilemap = NodePath(".")
 metadata/_custom_type_script = "uid://buj6ft1vvdf2f"
 
-[node name="InfoScreen" type="CanvasLayer" parent="." unique_id=1750566238 node_paths=PackedStringArray("info_pane", "info_bg", "info_text", "timer")]
+[node name="InfoScreen" type="CanvasLayer" parent="." unique_id=1750566238 node_paths=PackedStringArray("info_pane", "info_bg", "info_text", "timer", "dice_roller")]
 script = ExtResource("28_kys61")
 info_pane = NodePath("InfoPane")
 info_bg = NodePath("InfoPane/InfoBG")
 info_text = NodePath("InfoPane/InfoText")
 timer = NodePath("InfoPane/Timer")
+dice_roller = NodePath("../UICanvas/DiceView/SubViewport/Node3D")
 
 [node name="InfoPane" type="Node2D" parent="InfoScreen" unique_id=758314268]
 
