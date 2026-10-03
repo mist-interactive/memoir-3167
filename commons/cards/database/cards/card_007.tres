@@ -6,6 +6,6 @@
 script = ExtResource("2_33u5v")
 id = "007"
 target_sector = 1
-deck_quantity = 3
+deck_quantity = 2
 card_art_path = "uid://bu6dtbkxjbx8l"
 metadata/_custom_type_script = "uid://brv7b2q4f6ws5"
