@@ -60,18 +60,26 @@ func _ready() -> void:
 	update_ui()
 	update_score_pips()
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		print(
-			"key=", event.keycode,
-			"pressed=", event.pressed,
-			"echo=", event.echo,
-			"released=", event.is_released()
-		)
+var last_confirm_time := -150
 
-		if event.keycode == KEY_SPACE and event.is_released():
-			print("CONFIRM")
-			_on_confirm()
+func _unhandled_input(event: InputEvent) -> void:
+	if not (event is InputEventKey):
+		return
+
+	if event.keycode != KEY_SPACE:
+		return
+
+	if not event.is_released():
+		return
+
+	var now := Time.get_ticks_msec()
+
+	if now - last_confirm_time < 150:
+		return
+
+	last_confirm_time = now
+	_on_confirm()
+
 
 
 func load_cursor() -> void:
