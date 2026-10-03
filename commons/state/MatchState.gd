@@ -21,6 +21,7 @@ var state: STATE = STATE.INITIALIZING:
 		should_sync = true
 var phase: enums.TurnPhase = enums.TurnPhase.DRAW_HAND:
 	set(newPhase):
+		previous_turn_phase = phase
 		phase = newPhase
 		should_sync = true
 var current_turn: enums.Side:
@@ -34,6 +35,7 @@ var phase_timer: PhaseTimer = PhaseTimer.new():
 var prev_phase_timer: PhaseTimer = PhaseTimer.new()
 enum STATE {INITIALIZING, READY, INITIALIZE_BOARD, IN_PROGRESS, PAUSED, ENDED}
 var should_sync: bool = true
+var previous_turn_phase: enums.TurnPhase = enums.TurnPhase.NONE
 
 func _init(snapshot: Dictionary = {}) -> void:
 	name = "matchState"

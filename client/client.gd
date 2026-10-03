@@ -57,6 +57,8 @@ func _ready() -> void:
 	) \
 	.run()
 	game.add_child(game.battlefieldRenderer)
+	
+	
 
 func _on_connected_to_server() -> void:
 	connected = true
