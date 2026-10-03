@@ -128,8 +128,8 @@ func has_unit_that_can_move() -> bool:
 	return false
 
 func has_unit_that_must_retreat() -> bool:
-	for unit_id: int in selected_units_ids:
-		if units_by_id[unit_id].must_retreat():
+	for unit: Variant in units_by_id.values():
+		if unit.must_retreat():
 			return true	
 	return false
 

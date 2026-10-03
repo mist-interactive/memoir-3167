@@ -222,8 +222,7 @@ func go_next_phase(side: enums.Side, ran_out_time: bool = false) -> void:
 		unit_manager.next_phase(enums.TurnPhase.RESOLVE_RETREAT)
 		matchState.new_phase_timer(config.match.phase_duration.retreat)
 		change_turn(side, false)
-	elif matchState.is_phase(enums.TurnPhase.ATTACK) || (matchState.is_phase(enums.TurnPhase.SELECT) && unit_manager.selected_units_ids.is_empty() ||
-		 matchState.is_phase(enums.TurnPhase.MOVE) && !unit_manager.has_unit_that_can_attack()):
+	elif matchState.is_phase(enums.TurnPhase.ATTACK) || (matchState.is_phase(enums.TurnPhase.SELECT) && unit_manager.selected_units_ids.is_empty()) || matchState.is_phase(enums.TurnPhase.MOVE) && !unit_manager.has_unit_that_can_attack():
 		unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)
 		matchState.new_phase_timer(config.match.phase_duration.play_card)
 		change_turn(side)
