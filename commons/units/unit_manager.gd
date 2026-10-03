@@ -36,9 +36,7 @@ func add_unit(unit: Variant, coord: Vector2i) -> void:
 	unit.hex_coord = coord
 	unit_grid[coord] = unit.uuid
 	units_by_id[unit.uuid] = unit
-	#if multiplayer.is_server():
-		#print("Unit registered at ", coord, " | Total units: ", unit_grid.size())
-		#
+
 func remove_unit(coord: Vector2i) -> void:
 	if unit_grid.has(coord):
 		var uuid: int = unit_grid[coord]

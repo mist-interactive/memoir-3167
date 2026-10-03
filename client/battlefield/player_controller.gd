@@ -68,18 +68,6 @@ func apply_sector_highlights(hexes: Array[Vector2i]) -> void:
 func _on_card_unhovered() -> void:
 	sector_highlight_layer.clear()
 
-func _print_unit_stats(unit_stats: UnitStats) -> void:
-	print("Unit type: ", enums.UnitType.find_key(unit_stats.type))
-	print("Unit max movement: ", unit_stats.max_movement)
-	print("Unit max movement and attack: ", unit_stats.max_movement_and_attack)
-	print("Unit can move and attack: ", unit_stats.can_move_and_attack)
-	print("Unit health: ", unit_stats.max_health)
-	print("Unit max attack range: ", unit_stats.max_attack_range)
-	for i in range(0, unit_stats.attack_dice_by_distance.size()):
-		print("Unit's attack dice to distance %s is %s" % [i + 1, unit_stats.attack_dice_by_distance[i]])
-	print("Unit can overrun: ", unit_stats.can_overrun)
-	print("Unit can take ground: ", unit_stats.can_take_ground)
-
 func select_unit(unit: Unit) -> void:
 	if !unit:
 		return
@@ -226,11 +214,9 @@ func _initialize_states() -> void:
 		state.setup(self)
 
 func _on_phase_changed(new_phase: enums.TurnPhase) -> void:
-	print("Phase changed to: ", enums.TurnPhase.find_key(new_phase))
 	_transition_to_phase(new_phase)
 
 func _transition_to_phase(new_phase: enums.TurnPhase) -> void:
-	print("Transitioning to phase: ", enums.TurnPhase.find_key(new_phase))
 	if states.is_empty():
 		return
 	if current_state:

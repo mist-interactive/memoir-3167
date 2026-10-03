@@ -55,13 +55,8 @@ func print_tree() -> void:
 	
 	while not nodes.is_empty():
 		var node = nodes.pop_front()
-
-		print("Node ", node.value)
-
 		if node.left:
-			print("  ├─ left  → ", node.left.value)
 			nodes.push_back(node.left)
 
 		if node.right:
-			print("  └─ right → ", node.right.value)
 			nodes.push_back(node.right)

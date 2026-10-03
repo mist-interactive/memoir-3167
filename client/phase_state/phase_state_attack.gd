@@ -21,16 +21,12 @@ func handle_left_click(hex: Vector2i) -> void:
 func handle_right_click(hex: Vector2i) -> void:
 	var selected_unit = controller.selected_unit
 	if not selected_unit:
-		print("No unit selected")
 		return
 	var is_my_unit: bool = selected_unit.owner_id == controller.matchState.mySide
 	if !is_my_unit:
-		print("Not my unit selected")
 		return
 	var target_unit: Unit = controller.unit_manager.get_unit_at(hex)
 	if target_unit and target_unit.owner_id != controller.matchState.mySide:
-		print("trying to pew pew")
 		if controller.unit_manager.get_enemies_within_range_and_los(selected_unit).has(target_unit.uuid):
-			print("actual pew pew")
 			Network.Actions.attack_unit.rpc_id(1, controller.unit_manager.selected_unit_id, target_unit.uuid)
 			controller.clear_selection()

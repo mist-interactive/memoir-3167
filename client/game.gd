@@ -13,7 +13,6 @@ func _ready() -> void:
 	assert(WebClient != null)
 
 func initialize_game(snapshot: Dictionary):
-	print("client(%d) initializing game" % multiplayer.get_unique_id())
 	client.players_connected = true
 	self.initial_snapshot = snapshot
 	add_child(MatchState.new(snapshot.match_state if snapshot.has("match_state") else {}))

@@ -93,8 +93,6 @@ func parseAndLoadMap(map_name: String) -> bool:
 
 	# 4. Rebuild Sector Lookup Table
 	build_sector_index()
-
-	print("Successfully parsed and loaded map: %s (%d hexes indexed)." % [map_name, map.cells.size()])
 	return true
 
 func get_map_sectors_by_hex(hex: Vector2i) -> Array[enums.MapSector]:

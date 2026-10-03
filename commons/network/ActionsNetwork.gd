@@ -66,6 +66,4 @@ signal sync_unit_path_received()
 func sync_unit_path(unit_id: int, path: Array[Vector2i]) -> void:
 	if multiplayer.is_server():
 		return
-	print(unit_id)
-	print(path)
 	sync_unit_path_received.emit(unit_id, path)

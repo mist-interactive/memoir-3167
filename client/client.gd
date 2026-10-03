@@ -34,7 +34,6 @@ func _ready() -> void:
 		return taskResult.new()
 	) \
 	.stage("Joining game...", func():
-		print("joining game, uuid: %d , match_id: %d" % [client.uuid, auth_data.get("match_id")])
 		var uuid: int = client.uuid if not OS.has_feature("editor") else auth_data.get("uuid")
 		Network.Match.connect_match.rpc_id(1, uuid, auth_data.get("match_id"))
 		await loader.wait_untill(func(): return client.connected_to_game)
@@ -60,12 +59,10 @@ func _ready() -> void:
 	game.add_child(game.battlefieldRenderer)
 
 func _on_connected_to_server() -> void:
-	print("Connected to server")
 	connected = true
 	reconnectAttempts = 0
 
 func _on_server_disconnect() -> void:
-	print("Lost connection to server")
 	connected = false
 
 func initialize_connection() -> taskResult:
@@ -77,7 +74,6 @@ func initialize_connection() -> taskResult:
 			url = ws_proto + str(host) + "/ws"
 		else:
 			url = "wss://localhost:8443/ws"
-		print("Web client resolved WebSocket URL: ", url)
 
 	while reconnectAttempts < MAX_RECONNECT_ATTEMPS && not connected:
 		var err: Error = await reconnect_to_server()
@@ -102,12 +98,11 @@ func reconnect_to_server() -> Error:
 	if reconnectAttempts > 1:
 		await get_tree().create_timer(2).timeout
 	multiplayer.multiplayer_peer = peer
-	multiplayer.connection_failed.connect(func(): print("server failed"); failed = true)
-	multiplayer.connected_to_server.connect(func(): print("serve connect"); connected = true)
+	multiplayer.connection_failed.connect(func(): failed = true)
+	multiplayer.connected_to_server.connect(func(): connected = true)
 	return OK
 
 func _get_authentication_data() -> Dictionary:
-	print(OS.get_cmdline_args())
 	if not OS.has_feature("web"):
 		return {
 		"token": "jwt_local_dummy_text",
