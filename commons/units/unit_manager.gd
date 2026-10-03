@@ -10,8 +10,6 @@ var battlefield: BattlefieldState
 var selected_unit_id: int = -1
 var selected_by_peer: enums.Side = enums.Side.NONE
 var selected_units_ids: Array[int]
-var moved_units_ids: Array[int]
-var attacked_units_ids: Array[int]
 var base_dir: Dictionary[enums.Side, Vector2i]
 
 func _init(initialState: BattlefieldState) -> void:
@@ -123,16 +121,16 @@ func has_unit_that_can_attack() -> bool:
 			return true
 	return false
 
-func has_movable_unit() -> bool:
-	for id: int in selected_units_ids:
-		if units_by_id[id].can_move():
-			return true
+func has_unit_that_can_move() -> bool:
+	for unit_id: int in selected_units_ids:
+		if units_by_id[unit_id].can_move():
+			return true	
 	return false
 
-func has_retreatable_unit() -> bool:
-	for unit: UnitData in units_by_id.values():
-		if unit.must_retreat():
-			return true
+func has_unit_that_must_retreat() -> bool:
+	for unit_id: int in selected_units_ids:
+		if units_by_id[unit_id].must_retreat():
+			return true	
 	return false
 
 func get_retreating_unit() -> Variant:
