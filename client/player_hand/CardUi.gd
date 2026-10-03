@@ -10,7 +10,7 @@ var CLICK_SCALE := BASE_SCALE
 var HOVER_SCALE := BASE_SCALE * 1.35
 
 const CARD_Z_INDEX := 1000
-const DRAG_Z_INDEX := 100000
+const DRAG_Z_INDEX := 4000
 
 @export var background_texture: TextureRect
 @export var play_area: Control

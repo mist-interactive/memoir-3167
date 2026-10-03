@@ -60,10 +60,27 @@ func _ready() -> void:
 	update_ui()
 	update_score_pips()
 
+var last_confirm_time := -150
+
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventKey:
-		if event.keycode == KEY_SPACE and event.is_released():
-			_on_confirm()
+	if not (event is InputEventKey):
+		return
+
+	if event.keycode != KEY_SPACE:
+		return
+
+	if not event.is_released():
+		return
+
+	var now := Time.get_ticks_msec()
+
+	if now - last_confirm_time < 150:
+		return
+
+	last_confirm_time = now
+	_on_confirm()
+
+
 
 func load_cursor() -> void:
 	cursor_normal = load("res://assets/sprites/cursor/Normal-3.png")
