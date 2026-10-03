@@ -283,7 +283,6 @@ func resolve_combat(result: CombatResult, side: enums.Side, sides_peer_ids: Dict
 	if result.retreat > 0:
 		var other_side = enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
 		var tree: BinaryTree = get_retreat_coords(other_side, target.hex_coord, target, result.retreat)
-		tree.print_tree()
 		if tree.left == null && tree.right == null:
 			result.dmg += result.retreat
 			result.retreat = 0

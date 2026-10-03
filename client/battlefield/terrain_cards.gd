@@ -19,11 +19,9 @@ func display_terrain_card(hex: Vector2) -> void:
 	var _local_hex_pos: Vector2 = map_ground_layer.map_to_local(hex)
 	new_card.global_position = Vector2(0.0, 0.0)
 	if new_card == null:
-		print("TerrainCards: Failed to instantiate card_ui_scene")
 		return
 
 	if not new_card is TerrainCardUI:
-		print("TerrainCards: card_ui_scene root is not TerrainCardUI. Got: " + str(new_card.get_class()))
 		new_card.queue_free()
 		return
 

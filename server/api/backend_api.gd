@@ -61,11 +61,9 @@ func _request(
 		return Response._error(url, error_string(error))
 
 	var res = await http.request_completed
-	print("res: ", res)
 	var result = res[0]
 	var status_code = res[1]
 	var res_body = res[3]
-	print("res_body:", res_body)
 	var parsed_res_body = JSON.parse_string(res_body.get_string_from_utf8())
 	var success: bool = result == HTTPRequest.RESULT_SUCCESS and status_code >= 200 and status_code < 300
 	return Response.new(url, success, status_code, parsed_res_body)
