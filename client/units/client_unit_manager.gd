@@ -37,8 +37,6 @@ func _on_sync_all_requested(snapshot: Dictionary):
 	selected_unit_id = snapshot.selected_unit_id
 	selected_by_peer = snapshot.selected_by_peer
 	selected_units_ids = snapshot.selected_units_ids
-	moved_units_ids = snapshot.moved_units_ids
-	attacked_units_ids = snapshot.attacked_units_ids
 	unit_grid.clear()
 	for unit: Unit in units_by_id.values():
 		unit_grid[unit.hex_coord] = unit.uuid
