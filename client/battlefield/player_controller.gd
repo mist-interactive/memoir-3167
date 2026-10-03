@@ -12,6 +12,7 @@ class_name PlayerController
 @export var hover_path_highlight_layer: TileMapLayer
 @export var hover_action_highlight_layer: TileMapLayer
 @export var unit_retreat_highlight_layer: TileMapLayer
+@export var attacked_unit_highlight_layer: TileMapLayer
 @export var sector_highlight_layer: TileMapLayer
 @export var selected_unit_dice_indicator_container: Node2D
 @export var hovered_unit_dice_indicator_container: Node2D
@@ -182,7 +183,7 @@ func highlight_possible_retreats() -> void:
 				side = enums.Side.RED if matchState.mySide == enums.Side.GREEN else enums.Side.GREEN
 			var tree: BinaryTree = unit_manager.get_retreat_coords(side, unit.hex_coord, unit, unit.num_of_retreat)
 			var coords: Array[Variant] = tree.to_array()
-			unit_selection_highlight_layer.highlight_cell(unit.hex_coord)
+			unit_retreat_highlight_layer.highlight_cell(unit.hex_coord)
 			for i in range(1, coords.size()):
 				unit_retreat_highlight_layer.highlight_cell(coords[i])
 			break
