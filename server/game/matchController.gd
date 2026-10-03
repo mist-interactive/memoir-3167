@@ -153,7 +153,7 @@ func handle_deselect_unit(side: enums.Side, unit_id: int) -> void:
 
 func handle_move_unit(side: enums.Side, unit_id: int, destination: Vector2i) -> void:
 	if unit_manager.move_unit_request(side, unit_id, destination, get_sides_peer_ids()):
-		if unit_manager.moved_units_ids.size() == unit_manager.selected_units_ids.size():
+		if !unit_manager.has_unit_that_can_move():
 			go_next_phase(side)
 
 func handle_retreat_unit(side: enums.Side, unit_id: int, destination: Vector2i) -> void:
@@ -162,7 +162,7 @@ func handle_retreat_unit(side: enums.Side, unit_id: int, destination: Vector2i) 
 
 func handle_attack_unit(side: enums.Side, unit_id: int, target_unit_id: int) -> void:
 	if await unit_manager.attack_unit(side, unit_id, target_unit_id, get_sides_peer_ids()):
-		if unit_manager.attacked_units_ids.size() == unit_manager.selected_units_ids.size():
+		if !unit_manager.has_unit_that_can_attack():
 			go_next_phase(side)
 			unit_manager.unit_is_attacking = false
 
@@ -217,12 +217,13 @@ func go_next_phase(side: enums.Side, ran_out_time: bool = false) -> void:
 		matchState.new_phase_timer(config.match.phase_duration.select if is_card_played else config.match.phase_duration.play_card)
 		if !is_card_played:
 			change_turn(side, false)
-	elif matchState.is_phase(enums.TurnPhase.ATTACK) && unit_manager.has_retreatable_unit():
+	elif matchState.is_phase(enums.TurnPhase.ATTACK) && unit_manager.has_unit_that_must_retreat():
 		matchState.pause_and_store_phase_timer()
 		unit_manager.next_phase(enums.TurnPhase.RESOLVE_RETREAT)
 		matchState.new_phase_timer(config.match.phase_duration.retreat)
 		change_turn(side, false)
-	elif matchState.is_phase(enums.TurnPhase.ATTACK) || (matchState.is_phase(enums.TurnPhase.SELECT) && unit_manager.selected_units_ids.is_empty()):
+	elif matchState.is_phase(enums.TurnPhase.ATTACK) || (matchState.is_phase(enums.TurnPhase.SELECT) && unit_manager.selected_units_ids.is_empty() ||
+		 matchState.is_phase(enums.TurnPhase.MOVE) && !unit_manager.has_unit_that_can_attack()):
 		unit_manager.next_phase(enums.TurnPhase.PLAY_CARD)
 		matchState.new_phase_timer(config.match.phase_duration.play_card)
 		change_turn(side)
