@@ -19,7 +19,7 @@ func _on_resolve_combat_result_requested(result: CombatResult) -> void:
 	player_controller.attack_in_progress = true
 	target_unit.is_in_combat = true
 	dice_roller.roll_dice(result.rolled_dices)
-	await dice_roller.dice_roll_finised
+	await dice_roller.dice_roll_finished
 	await get_tree().create_timer(0.2).timeout
 	target_unit.hit_point -= result.dmg
 	if result.dmg > 0:

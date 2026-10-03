@@ -4,7 +4,7 @@ extends Node3D
 @export var min_spins: int = 6
 @export var max_spins: int = 10
 
-signal dice_roll_finised
+signal dice_roll_finished
 
 var rolling := false
 
@@ -108,4 +108,4 @@ func roll_dice(results: Array[enums.RolledDice]) -> void:
 		die.rotation = face_rotations[face]
 
 	rolling = false
-	dice_roll_finised.emit()
+	dice_roll_finished.emit()
