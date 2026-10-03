@@ -318,8 +318,6 @@ func _start_drag() -> void:
 	is_dragging = true
 	is_mouse_pressed = true
 
-	Input.mouse_mode = Input.MOUSE_MODE_CONFINED
-
 	var hand := get_parent()
 
 	if hand:
