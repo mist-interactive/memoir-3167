@@ -62,8 +62,17 @@ func _ready() -> void:
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey:
+		print(
+			"key=", event.keycode,
+			"pressed=", event.pressed,
+			"echo=", event.echo,
+			"released=", event.is_released()
+		)
+
 		if event.keycode == KEY_SPACE and event.is_released():
+			print("CONFIRM")
 			_on_confirm()
+
 
 func load_cursor() -> void:
 	cursor_normal = load("res://assets/sprites/cursor/Normal-3.png")
