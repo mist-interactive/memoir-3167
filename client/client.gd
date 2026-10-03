@@ -13,7 +13,6 @@ var players_ready: bool = false
 var initialized: bool = false
 var reconnectAttempts: int = 0
 const MAX_RECONNECT_ATTEMPS: int = 3
-@onready var uuid = $uuid
 var js_callback: JavaScriptObject
 
 signal react_data_received(token: String, match_id: int)
@@ -22,7 +21,6 @@ func _ready() -> void:
 	multiplayer.connected_to_server.connect(_on_connected_to_server)
 	multiplayer.server_disconnected.connect(_on_server_disconnect)
 	var auth_data: Dictionary = await _get_authentication_data()
-	uuid.text = str(auth_data["uuid"])
 	if auth_data.is_empty():
 		push_error("No authentication data was received.")
 		return

@@ -87,6 +87,9 @@ func handle_connect(uuid: int, peer_id: int) -> bool:
 		sides_uuid = {enums.Side.GREEN: uuids[0], enums.Side.RED: uuids[1]}
 		uuid_sides = {uuids[0]: enums.Side.GREEN, uuids[1]: enums.Side.RED}
 		matchState.state = MatchState.STATE.INITIALIZE_BOARD
+		matchState.player_names[enums.Side.GREEN] = match_manager.get_peer_name(get_player_session(enums.Side.GREEN).peer_id)
+		matchState.player_names[enums.Side.RED] = match_manager.get_peer_name(get_player_session(enums.Side.RED).peer_id)
+
 	var snapshot: Dictionary = {
 		"match_state": matchState.get_snapshot(get_side(peer_id)),
 		"map_name": battlefield.mapName,
@@ -118,6 +121,11 @@ func handle_client_ready(uuid: int) -> void:
 
 func handle_client_game_ready(uuid: int) -> void:
 	session_manager.client_is_playing(uuid)
+	if matchState.is_paused() && !session_manager.players_are_playing():
+		var side: enums.Side = uuid_sides[uuid]
+		var other_side: enums.Side = enums.Side.RED if side == enums.Side.GREEN else enums.Side.GREEN
+		matchState.phase_timer.paused_at = get_player_session(other_side).last_seen
+		matchState.should_sync = true
 
 func handle_disconnect(peer_id: int) -> void:
 	if !sides_uuid.is_empty():

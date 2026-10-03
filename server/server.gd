@@ -68,10 +68,8 @@ func _on_auth_check_requested(peer_id: int, jwt_token: String) -> void:
 	if jwt_payload != null:
 		client.uuid = jwt_payload.payload.get("user_id")
 		client.authenticated = true
-		var user_id = jwt_payload.payload.get("user_id")
-		var username = jwt_payload.payload.get("username")
+		client.display_name = jwt_payload.payload.get("username")
 		logger.info("Client %d authenticated" % peer_id)
-		logger.info("user_id %d username %s" % [user_id, username])
 	else:
 		client.authenticated = false
 		logger.info("Client %d authentication failed" % peer_id)
