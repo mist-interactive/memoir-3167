@@ -14,6 +14,7 @@ const enemy_color: Color = Color(0.596, 0.263, 0.247, 1.0)
 const CONFIG_PATH: String = "res://config.json"
 var config: Dictionary
 var _hide_tween: Tween
+var use_narrow_bg_box: bool = false
 
 var rejoin_window: float
 const FONT: Font = preload("res://assets/fonts/PixelArmy/PixelArmy.ttf")
@@ -49,13 +50,14 @@ func on_match_state_changed(new_state: MatchState.STATE):
 		timer.text = ""
 		var winner: int = match_state.get_winner(config.match.max_score)
 		if winner == match_state.mySide:
-			info_bg.color = Color.DARK_OLIVE_GREEN
+			info_bg.color = Color.GOLDENROD
 			info_text.text = "Victory!"
 		else:
-			info_bg.color = Color.DARK_RED
+			info_bg.color = Color.SILVER
 			info_text.text = "Defeat!"
 		visible = true
-		call_deferred("_center_info_pane", true)
+		use_narrow_bg_box = true
+		call_deferred("_center_info_pane")
 		return
 	elif new_state == MatchState.STATE.PAUSED:
 		info_bg.color = Color.DIM_GRAY
@@ -65,6 +67,7 @@ func on_match_state_changed(new_state: MatchState.STATE):
 		info_text.text = ""
 		timer.text = ""
 		visible = false
+	use_narrow_bg_box = false
 	call_deferred("_center_info_pane")
 
 func _on_phase_state_changed(new_phase: enums.TurnPhase) -> void:
@@ -103,8 +106,8 @@ func _on_phase_state_changed(new_phase: enums.TurnPhase) -> void:
 			new_phase_str = ""
 	if new_phase_str != "":
 		info_text.text = new_phase_str
-		
-		call_deferred("_center_info_pane", true)
+		use_narrow_bg_box = true
+		call_deferred("_center_info_pane")
 		if match_state.previous_turn_phase == enums.TurnPhase.RESOLVE_RETREAT && new_phase == enums.TurnPhase.ATTACK:
 			return
 		timer.text = ""
@@ -117,14 +120,14 @@ func _on_phase_state_changed(new_phase: enums.TurnPhase) -> void:
 			visible = false)
 
 
-func _center_info_pane(phase_info: bool = false) -> void:
+func _center_info_pane() -> void:
 	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
 	info_pane.position = (viewport_size / 2)
 	info_text.offset_transform_position = -Vector2(info_text.size.x / 2, info_text.size.y / 2)
-	if !phase_info:
-		info_bg.size = viewport_size / 4
-	else:
+	if use_narrow_bg_box:
 		info_bg.size = Vector2(viewport_size.x, 40)
+	else:
+		info_bg.size = viewport_size / 4
 	info_bg.offset_transform_position = -Vector2(info_bg.size.x / 2, info_bg.size.y / 2)
 	timer.offset_transform_position = -Vector2(timer.size.x / 2, -timer.size.y / 3)
 	
