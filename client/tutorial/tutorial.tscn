@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://bklyrlmknh4ui" path="res://assets/sprites/hex/hex_tile_set_128x128.png" id="9_ld8p5"]
 [ext_resource type="Texture2D" uid="uid://barrtf6onnmos" path="res://assets/ui/dot-bold-highlight.svg" id="10_6gdf7"]
 [ext_resource type="Script" uid="uid://btu6vlirbmya1" path="res://client/tutorial/dashed_rectangle.gd" id="11_ay5pt"]
+[ext_resource type="Texture2D" uid="uid://bytaguj5p1rtm" path="res://assets/sprites/hex/higlight_tile_set_128x128.png" id="16_adm3a"]
 [ext_resource type="Texture2D" uid="uid://wd8gerj4bli1" path="res://assets/sprites/dice/textures/dice-sides.png" id="16_xgmmi"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vxa7d"]
@@ -67,6 +68,26 @@ border_width_right = 12
 border_width_bottom = 12
 border_color = Color(0.96035105, 0.96035105, 0.96035093, 0)
 border_blend = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mfjvi"]
+atlas = ExtResource("16_adm3a")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u86el"]
+atlas = ExtResource("16_adm3a")
+region = Rect2(640, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_adm3a"]
+atlas = ExtResource("16_adm3a")
+region = Rect2(256, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xpfqi"]
+atlas = ExtResource("16_adm3a")
+region = Rect2(384, 0, 128, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ld8p5"]
+atlas = ExtResource("16_adm3a")
+region = Rect2(128, 0, 128, 128)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ik1hn"]
 atlas = ExtResource("16_xgmmi")
@@ -493,9 +514,7 @@ Tips:
 • Use       to minimize tutorial explanations if needed.
 • Use       to open a menu with all tutorial buttons.
 • Use        to navigate tutorial pages
-• Press [b]M[/b] to open the tutorial for your current
-situation
-"
+• Use [ SPACE ] to move to the next phase of your turn"
 autowrap_mode = 1
 
 [node name="HelpMenuButton" type="Button" parent="Pages/Start" unique_id=779086282]
@@ -762,7 +781,71 @@ offset_bottom = 248.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "After playing a command card, select available units on the section ruled by the card. selection is limited by the number showed on the card"
+text = "After playing a command card, select available units on the section ruled by the card. selection is limited by the number showed on the card
+
+When hovering over an unit you can see the movement distance in white / orange hex"
+autowrap_mode = 1
+
+[node name="TextureRect" type="TextureRect" parent="Pages/Selecting units" unique_id=1001051210]
+layout_mode = 0
+offset_left = 101.0
+offset_top = 175.0
+offset_right = 133.0
+offset_bottom = 207.0
+texture = SubResource("AtlasTexture_mfjvi")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="TextureRect2" type="TextureRect" parent="Pages/Selecting units" unique_id=1380634676]
+layout_mode = 0
+offset_left = 101.0
+offset_top = 215.0
+offset_right = 133.0
+offset_bottom = 247.0
+texture = SubResource("AtlasTexture_u86el")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Texts2" type="RichTextLabel" parent="Pages/Selecting units" unique_id=541296331]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 125.0
+offset_top = 167.0
+offset_right = 557.0
+offset_bottom = 399.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Move and attack"
+autowrap_mode = 1
+
+[node name="Texts3" type="RichTextLabel" parent="Pages/Selecting units" unique_id=154703784]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 125.0
+offset_top = 207.0
+offset_right = 557.0
+offset_bottom = 439.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Move and cannot attack"
+autowrap_mode = 1
+
+[node name="Texts4" type="RichTextLabel" parent="Pages/Selecting units" unique_id=608495450]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 187.0
+offset_right = 480.0
+offset_bottom = 419.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "HEX"
 autowrap_mode = 1
 
 [node name="Moving units" type="Control" parent="Pages" unique_id=1363077334]
@@ -782,18 +865,20 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
 text = "Next, we have to move our units. Each unit moves
 a little differently.
-(see individual unit pages for reference)
+(see unit pages for reference)
 Attacking commences once all movement orders
-have been carried out."
+have been carried out.
+
+"
 autowrap_mode = 1
 
 [node name="Infantry" type="Button" parent="Pages/Moving units" unique_id=279453091]
 custom_minimum_size = Vector2(64, 24)
 layout_mode = 0
-offset_left = 144.0
-offset_top = 176.0
-offset_right = 208.0
-offset_bottom = 216.0
+offset_left = 256.0
+offset_top = 136.0
+offset_right = 320.0
+offset_bottom = 176.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 offset_transform_enabled = true
@@ -807,10 +892,10 @@ icon_alignment = 1
 [node name="Tanks" type="Button" parent="Pages/Moving units" unique_id=140972645]
 custom_minimum_size = Vector2(64, 24)
 layout_mode = 0
-offset_left = 208.0
-offset_top = 176.0
-offset_right = 272.0
-offset_bottom = 216.0
+offset_left = 320.0
+offset_top = 136.0
+offset_right = 384.0
+offset_bottom = 176.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 offset_transform_enabled = true
@@ -824,10 +909,10 @@ icon_alignment = 1
 [node name="Artillery" type="Button" parent="Pages/Moving units" unique_id=772337076]
 custom_minimum_size = Vector2(64, 24)
 layout_mode = 0
-offset_left = 272.0
-offset_top = 176.0
-offset_right = 336.0
-offset_bottom = 216.0
+offset_left = 384.0
+offset_top = 136.0
+offset_right = 448.0
+offset_bottom = 176.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 offset_transform_enabled = true
@@ -838,8 +923,69 @@ theme_override_styles/hover = ExtResource("4_yod4y")
 text = "Artillery"
 icon_alignment = 1
 
+[node name="TextureRect" type="TextureRect" parent="Pages/Moving units" unique_id=1107492088]
+layout_mode = 0
+offset_left = 101.0
+offset_top = 175.0
+offset_right = 133.0
+offset_bottom = 207.0
+texture = SubResource("AtlasTexture_adm3a")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="TextureRect2" type="TextureRect" parent="Pages/Moving units" unique_id=2009517353]
+layout_mode = 0
+offset_left = 101.0
+offset_top = 215.0
+offset_right = 133.0
+offset_bottom = 247.0
+texture = SubResource("AtlasTexture_xpfqi")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Texts2" type="RichTextLabel" parent="Pages/Moving units" unique_id=298809909]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 125.0
+offset_top = 167.0
+offset_right = 557.0
+offset_bottom = 399.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Selected, Not yet moved"
+autowrap_mode = 1
+
+[node name="Texts3" type="RichTextLabel" parent="Pages/Moving units" unique_id=495281529]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 125.0
+offset_top = 207.0
+offset_right = 557.0
+offset_bottom = 439.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Selected, Already moved"
+autowrap_mode = 1
+
+[node name="Texts4" type="RichTextLabel" parent="Pages/Moving units" unique_id=17326817]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 187.0
+offset_right = 480.0
+offset_bottom = 419.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "HEX"
+autowrap_mode = 1
+
 [node name="Attacking" type="Control" parent="Pages" unique_id=220172786]
-visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Pages/Attacking" unique_id=2111594563]
@@ -854,13 +1000,83 @@ theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
 text = "Now it's time for battle!
+1. select unit to attack with.
+2. select enemy unit which hex is colored in RED
+3. Dice roll commences and opponent may have to
+retreat before you can issue your next attack
+"
+autowrap_mode = 1
 
-Re-select the unit you wish to attack with and then
-click on any highlighted enemy unit to commence
-dice roll which determines the combat results.
-Do this for any previously selected unit.
-(restrictions may have been applied to certain units
-based on movement)"
+[node name="TextureRect" type="TextureRect" parent="Pages/Attacking" unique_id=292614256]
+layout_mode = 0
+offset_left = 101.0
+offset_top = 175.0
+offset_right = 133.0
+offset_bottom = 207.0
+texture = SubResource("AtlasTexture_adm3a")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="TextureRect2" type="TextureRect" parent="Pages/Attacking" unique_id=131980102]
+layout_mode = 0
+offset_left = 101.0
+offset_top = 215.0
+offset_right = 133.0
+offset_bottom = 247.0
+texture = SubResource("AtlasTexture_xpfqi")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="TextureRect3" type="TextureRect" parent="Pages/Attacking" unique_id=545938007]
+layout_mode = 0
+offset_left = 397.0
+offset_top = 79.0
+offset_right = 429.0
+offset_bottom = 111.0
+texture = SubResource("AtlasTexture_ld8p5")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="Texts2" type="RichTextLabel" parent="Pages/Attacking" unique_id=1809736390]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 125.0
+offset_top = 167.0
+offset_right = 557.0
+offset_bottom = 399.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Selected, Has not attacked yet"
+autowrap_mode = 1
+
+[node name="Texts3" type="RichTextLabel" parent="Pages/Attacking" unique_id=679402893]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 125.0
+offset_top = 207.0
+offset_right = 557.0
+offset_bottom = 439.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "Selected, Already attacked / cannot attack"
+autowrap_mode = 1
+
+[node name="Texts4" type="RichTextLabel" parent="Pages/Attacking" unique_id=626417892]
+custom_minimum_size = Vector2(432, 232)
+custom_maximum_size = Vector2(432, 232)
+layout_mode = 0
+offset_left = 48.0
+offset_top = 187.0
+offset_right = 480.0
+offset_bottom = 419.0
+theme_override_constants/outline_size = 3
+theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
+bbcode_enabled = true
+text = "HEX"
 autowrap_mode = 1
 
 [node name="Dice" type="Control" parent="Pages" unique_id=1317684370]
