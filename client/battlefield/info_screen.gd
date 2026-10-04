@@ -71,6 +71,8 @@ func on_match_state_changed(new_state: MatchState.STATE):
 	call_deferred("_center_info_pane")
 
 func _on_phase_state_changed(new_phase: enums.TurnPhase) -> void:
+	if match_state.state == MatchState.STATE.ENDED:
+		return
 	if match_state.current_turn == enums.Side.GREEN:
 		info_bg.color = ally_color
 	else:
