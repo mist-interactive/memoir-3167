@@ -73,6 +73,8 @@ func _on_auth_check_requested(peer_id: int, jwt_token: String) -> void:
 	else:
 		client.authenticated = false
 		logger.info("Client %d authentication failed" % peer_id)
+		await get_tree().create_timer(1.0).timeout
+		remove_client(peer_id)
 
 func remove_client(peer_id: int) -> void:
 	multiplayer.multiplayer_peer.disconnect_peer(peer_id)
