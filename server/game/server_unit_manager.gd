@@ -292,6 +292,7 @@ func resolve_combat(result: CombatResult, side: enums.Side, sides_peer_ids: Dict
 	if target.hit_point <= 0:
 		death_queue.append(target_id)
 		matchState.scores[side] += 1
+		matchState.should_sync = true
 		return
 	if  result.retreat > 0:
 		target.num_of_retreat = result.retreat
