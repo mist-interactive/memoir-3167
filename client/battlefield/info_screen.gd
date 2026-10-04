@@ -60,6 +60,7 @@ func on_match_state_changed(new_state: MatchState.STATE):
 		visible = true
 	elif new_state == MatchState.STATE.IN_PROGRESS:
 		info_text.text = ""
+		timer.text = ""
 		visible = false
 	call_deferred("_center_info_pane")
 
@@ -103,6 +104,7 @@ func _on_phase_state_changed(new_phase: enums.TurnPhase) -> void:
 		call_deferred("_center_info_pane", true)
 		if match_state.previous_turn_phase == enums.TurnPhase.RESOLVE_RETREAT && new_phase == enums.TurnPhase.ATTACK:
 			return
+		timer.text = ""
 		visible = true
 		if _hide_tween && _hide_tween.is_valid():
 			_hide_tween.kill()
