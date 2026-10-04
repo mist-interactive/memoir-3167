@@ -120,7 +120,7 @@ func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, 
 		unit.set_can_attack(false)
 	var unit_stats: UnitStats = UnitDatabase.get_stats(unit.type)
 	var distance: int = HexGrid.distance(old_coord, destination)
-	if distance > unit_stats.max_movement_and_attack:
+	if distance > unit_stats.max_movement_and_attack || get_attackable_enemies(unit).is_empty():
 		unit.set_can_attack(false)
 	var player_logger := logger.with_context({
 		"peer_id": sides_peer_ids[owner],
