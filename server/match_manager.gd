@@ -60,10 +60,7 @@ func _on_match_completed(result: MatchResult) -> void:
 func _on_player_connect(peer_id: int, uuid: int, match_id: int) -> void:
 	server.logger.info("Client(%d) wants to connect to match(%d)" % [uuid, match_id])
 	if !matches.has(match_id):
-		if await memoir_api.send_heartbeat(match_id):
-			create_new_match(match_id)
-		else:
-			server.remove_client(peer_id)
+		create_new_match(match_id)
 	peer_to_match[peer_id] = match_id
 	var matchCtl: matchController = get_match(peer_id)
 	if !matchCtl.handle_connect(uuid, peer_id):
