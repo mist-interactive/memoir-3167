@@ -31,6 +31,8 @@ var hit_point: int = -1:
 			explosion_animation.play("explosion")
 			await explosion_animation.animation_finished
 			explosion_animation.visible = false
+			if hit_point <= 0:
+				queue_free()
 
 var _is_initialized: bool = false
 var _move_tween: Tween

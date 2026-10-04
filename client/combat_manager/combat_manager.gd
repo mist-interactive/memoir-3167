@@ -22,12 +22,6 @@ func _on_resolve_combat_result_requested(result: CombatResult) -> void:
 	await dice_roller.dice_roll_finished
 	await get_tree().create_timer(0.2).timeout
 	target_unit.hit_point -= result.dmg
-	if target_unit.hit_point <= 0:
-		_handle_unit_death(target_unit)
-	else:
-		target_unit.is_in_combat = false
+	target_unit.is_in_combat = false
 	player_controller.attack_in_progress = false
 	player_controller.attacked_unit_highlight_layer.clear()
-
-func _handle_unit_death(unit: Unit) -> void:
-	unit.queue_free()
