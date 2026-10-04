@@ -18,13 +18,19 @@ func _init(initialState: BattlefieldState) -> void:
 	super(initialState)
 
 func is_unit_selected(unit_id: int) -> bool:
-	return selected_units_ids.has(unit_id)
+	if !units_by_id.has(unit_id):
+		return false
+	return units_by_id[unit_id].is_selected()
 
-func has_unit_moved(unit_id: int) -> bool:
-	return moved_units_ids.has(unit_id)
+func unit_can_move(unit_id: int) -> bool:
+	if !units_by_id.has(unit_id):
+		return false
+	return units_by_id[unit_id].can_move()
 
-func has_unit_attacked(unit_id: int) -> bool:
-	return attacked_units_ids.has(unit_id)
+func unit_can_attack(unit_id: int) -> bool:
+	if !units_by_id.has(unit_id):
+		return false
+	return units_by_id[unit_id].can_attack()
 
 func _sync_units() -> void:
 	for uuid in units_by_id:
@@ -45,8 +51,6 @@ func _sync_units() -> void:
 			"selected_unit_id": selected_unit_id,
 			"selected_by_peer": selected_by_peer,
 			"selected_units_ids" : selected_units_ids,
-			"moved_units_ids": moved_units_ids,
-			"attacked_units_ids": attacked_units_ids
 		}
 		MessageBroker.broadcast(match_controller.get_player_sessions(),
 				Network.Units.sync_all.rpc_id,
@@ -109,7 +113,6 @@ func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, 
 	)
 	selected_unit_id = -1
 	selected_by_peer = enums.Side.NONE
-	moved_units_ids.append(unit_id)
 	unit.set_can_move(false)
 	var destination_hex: HexCell = battlefield.map.get_cell(destination)
 	var destination_stats: TerrainStats = TerrainDatabase.get_stats(destination_hex.ground)
@@ -117,7 +120,7 @@ func move_unit_request( owner: enums.Side, unit_id: int, destination: Vector2i, 
 		unit.set_can_attack(false)
 	var unit_stats: UnitStats = UnitDatabase.get_stats(unit.type)
 	var distance: int = HexGrid.distance(old_coord, destination)
-	if distance > unit_stats.max_movement_and_attack:
+	if distance > unit_stats.max_movement_and_attack || get_attackable_enemies(unit).is_empty():
 		unit.set_can_attack(false)
 	var player_logger := logger.with_context({
 		"peer_id": sides_peer_ids[owner],
@@ -147,6 +150,12 @@ func retreat_unit(owner: enums.Side, unit_id: int, destination: Vector2i, sides_
 	unit.num_of_retreat -= level
 	if unit.num_of_retreat <= 0:
 		unit.set_must_retreat(false)
+	else:
+		tree = get_retreat_coords(owner, unit.hex_coord, unit, unit.num_of_retreat)
+		if tree.left == null && tree.right == null:
+			unit.hit_point -= unit.num_of_retreat
+			unit.num_of_retreat = 0
+			unit.set_must_retreat(false)
 	return unit.num_of_retreat <= 0
 
 func retreat_randomly(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) -> void:
@@ -211,7 +220,6 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	selected_unit_id = -1
 	selected_by_peer = enums.Side.NONE
 	attacker.set_can_attack(false)
-	attacked_units_ids.append(unit_id)
 	var player_logger := logger.with_context({
 		"peer_id": sides_peer_ids[side],
 		"side": side
@@ -290,6 +298,7 @@ func resolve_combat(result: CombatResult, side: enums.Side, sides_peer_ids: Dict
 	if target.hit_point <= 0:
 		death_queue.append(target_id)
 		matchState.scores[side] += 1
+		matchState.should_sync = true
 		return
 	if  result.retreat > 0:
 		target.num_of_retreat = result.retreat
@@ -300,8 +309,6 @@ func next_phase(phase: enums.TurnPhase, prev_phase: enums.TurnPhase = enums.Turn
 		for id in selected_units_ids:
 			units_by_id[id].set_default_actions()
 		selected_units_ids.clear()
-		moved_units_ids.clear()
-		attacked_units_ids.clear()
 	selected_unit_id = -1
 	isDirty = true
 	matchState.phase = phase
@@ -365,7 +372,7 @@ func validate_unit_selection(unit_id: int, card: CommandCard) -> bool:
 		enums.TurnPhase.SELECT:
 			return false if !can_card_target_unit(card, unit_id) else true
 		enums.TurnPhase.MOVE:
-			return false if !is_unit_selected(unit_id) || has_unit_moved(unit_id) else true
+			return false if !is_unit_selected(unit_id) || !unit_can_move(unit_id) else true
 		enums.TurnPhase.ATTACK:
-			return false if !is_unit_selected(unit_id) || has_unit_attacked(unit_id) else true
+			return false if !is_unit_selected(unit_id) || !unit_can_attack(unit_id) else true
 	return false

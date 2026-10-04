@@ -19,7 +19,21 @@ extends Node2D
 var uuid: int = -1
 var type: enums.UnitType = enums.UnitType.INFANTRY
 var actions: enums.UnitActions = enums.UnitActions.NONE
-var hit_point: int = -1
+var hit_point: int = -1:
+	set(new_hp):
+		if new_hp >= hit_point:
+			hit_point = new_hp
+			return
+		else:
+			hit_point = new_hp
+			explosion_animation.visible = true
+			UnitVisuals.update_unit_visuals(self)
+			explosion_animation.play("explosion")
+			await explosion_animation.animation_finished
+			explosion_animation.visible = false
+			if hit_point <= 0:
+				queue_free()
+
 var _is_initialized: bool = false
 var _move_tween: Tween
 var num_of_retreat: int = -1

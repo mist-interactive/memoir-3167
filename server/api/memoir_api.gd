@@ -53,11 +53,10 @@ func match_abandoned(match_id: int) -> void:
 		logger.error("failed to post match result", res.to_dict())
 		return
 
-func send_heartbeat(match_id: int) -> void:
+func send_heartbeat(match_id: int) -> bool:
 	if OS.has_feature("editor"):
-		return
-	logger.info("sending heartbeat" % match_id)
+		return true
 	var res: Response = await put("/internal/matches/%d/heartbeat" % match_id, {}, ["x-api-key: %s" % api_key])
 	if !res.success:
 		logger.error("Failed to send heartbeat" % api_key, res.to_dict())
-		return
+	return res.success

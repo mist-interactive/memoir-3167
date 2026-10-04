@@ -14,6 +14,7 @@ const enemy_color: Color = Color(0.596, 0.263, 0.247, 1.0)
 const CONFIG_PATH: String = "res://config.json"
 var config: Dictionary
 var _hide_tween: Tween
+var use_narrow_bg_box: bool = false
 
 var rejoin_window: float
 const FONT: Font = preload("res://assets/fonts/PixelArmy/PixelArmy.ttf")
@@ -43,17 +44,21 @@ func _process(_delta: float) -> void:
 
 func on_match_state_changed(new_state: MatchState.STATE):
 	if new_state == MatchState.STATE.ENDED:
-		await dice_roller.dice_roll_finished
-		await get_tree().create_timer(1.5).timeout
+		if dice_roller.rolling:
+			await dice_roller.dice_roll_finished
+			await get_tree().create_timer(1.5).timeout
 		timer.text = ""
 		var winner: int = match_state.get_winner(config.match.max_score)
 		if winner == match_state.mySide:
-			info_bg.color = Color.DARK_OLIVE_GREEN
+			info_bg.color = Color.GOLDENROD
 			info_text.text = "Victory!"
 		else:
-			info_bg.color = Color.DARK_RED
+			info_bg.color = Color.SILVER
 			info_text.text = "Defeat!"
 		visible = true
+		use_narrow_bg_box = true
+		call_deferred("_center_info_pane")
+		return
 	elif new_state == MatchState.STATE.PAUSED:
 		info_bg.color = Color.DIM_GRAY
 		info_text.text = "Opponent disconnected"
@@ -62,9 +67,12 @@ func on_match_state_changed(new_state: MatchState.STATE):
 		info_text.text = ""
 		timer.text = ""
 		visible = false
+	use_narrow_bg_box = false
 	call_deferred("_center_info_pane")
 
 func _on_phase_state_changed(new_phase: enums.TurnPhase) -> void:
+	if match_state.state == MatchState.STATE.ENDED:
+		return
 	if match_state.current_turn == enums.Side.GREEN:
 		info_bg.color = ally_color
 	else:
@@ -100,8 +108,8 @@ func _on_phase_state_changed(new_phase: enums.TurnPhase) -> void:
 			new_phase_str = ""
 	if new_phase_str != "":
 		info_text.text = new_phase_str
-		
-		call_deferred("_center_info_pane", true)
+		use_narrow_bg_box = true
+		call_deferred("_center_info_pane")
 		if match_state.previous_turn_phase == enums.TurnPhase.RESOLVE_RETREAT && new_phase == enums.TurnPhase.ATTACK:
 			return
 		timer.text = ""
@@ -114,16 +122,14 @@ func _on_phase_state_changed(new_phase: enums.TurnPhase) -> void:
 			visible = false)
 
 
-func _center_info_pane(phase_info: bool = false) -> void:
+func _center_info_pane() -> void:
 	var viewport_size: Vector2 = get_viewport().get_visible_rect().size
 	info_pane.position = (viewport_size / 2)
 	info_text.offset_transform_position = -Vector2(info_text.size.x / 2, info_text.size.y / 2)
-	if !phase_info:
-		info_bg.modulate.a = 1.0
-		info_bg.size = viewport_size / 4
-	else:
+	if use_narrow_bg_box:
 		info_bg.size = Vector2(viewport_size.x, 40)
-		info_bg.modulate.a = 0.5
+	else:
+		info_bg.size = viewport_size / 4
 	info_bg.offset_transform_position = -Vector2(info_bg.size.x / 2, info_bg.size.y / 2)
 	timer.offset_transform_position = -Vector2(timer.size.x / 2, -timer.size.y / 3)
 	
@@ -153,4 +159,5 @@ func _setup_timer() -> void:
 
 func _setup_background() ->  void:
 	info_bg.offset_transform_enabled = true
+	info_bg.modulate.a = 0.6
 	info_bg.set_anchors_preset(Control.PRESET_CENTER)
