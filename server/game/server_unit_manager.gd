@@ -208,7 +208,7 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	var attacker_hex: HexCell = battlefieldState.map.get_cell(attacker.hex_coord)
 	var target_hex: HexCell = battlefieldState.map.get_cell(target.hex_coord)
 	var num_of_dice: int = CombatResolver.get_attack_dice_count(attacker, attacker_hex, target, target_hex, distance)
-	var rolled_dices: Array[enums.RolledDice] = [enums.RolledDice.RETREAT, enums.RolledDice.RETREAT] #Dice.roll(num_of_dice)
+	var rolled_dices: Array[enums.RolledDice] = Dice.roll(num_of_dice)
 	var combat_result: CombatResult = CombatResult.new()
 	combat_result.initialize(attacker, target, rolled_dices)
 	
