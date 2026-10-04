@@ -43,8 +43,9 @@ func _process(_delta: float) -> void:
 
 func on_match_state_changed(new_state: MatchState.STATE):
 	if new_state == MatchState.STATE.ENDED:
-		await dice_roller.dice_roll_finished
-		await get_tree().create_timer(1.5).timeout
+		if dice_roller.rolling:
+			await dice_roller.dice_roll_finished
+			await get_tree().create_timer(1.5).timeout
 		timer.text = ""
 		var winner: int = match_state.get_winner(config.match.max_score)
 		if winner == match_state.mySide:
@@ -54,6 +55,8 @@ func on_match_state_changed(new_state: MatchState.STATE):
 			info_bg.color = Color.DARK_RED
 			info_text.text = "Defeat!"
 		visible = true
+		call_deferred("_center_info_pane", true)
+		return
 	elif new_state == MatchState.STATE.PAUSED:
 		info_bg.color = Color.DIM_GRAY
 		info_text.text = "Opponent disconnected"
@@ -119,11 +122,9 @@ func _center_info_pane(phase_info: bool = false) -> void:
 	info_pane.position = (viewport_size / 2)
 	info_text.offset_transform_position = -Vector2(info_text.size.x / 2, info_text.size.y / 2)
 	if !phase_info:
-		info_bg.modulate.a = 1.0
 		info_bg.size = viewport_size / 4
 	else:
 		info_bg.size = Vector2(viewport_size.x, 40)
-		info_bg.modulate.a = 0.5
 	info_bg.offset_transform_position = -Vector2(info_bg.size.x / 2, info_bg.size.y / 2)
 	timer.offset_transform_position = -Vector2(timer.size.x / 2, -timer.size.y / 3)
 	
@@ -153,4 +154,5 @@ func _setup_timer() -> void:
 
 func _setup_background() ->  void:
 	info_bg.offset_transform_enabled = true
+	info_bg.modulate.a = 0.6
 	info_bg.set_anchors_preset(Control.PRESET_CENTER)
