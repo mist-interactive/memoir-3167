@@ -150,6 +150,12 @@ func retreat_unit(owner: enums.Side, unit_id: int, destination: Vector2i, sides_
 	unit.num_of_retreat -= level
 	if unit.num_of_retreat <= 0:
 		unit.set_must_retreat(false)
+	else:
+		tree = get_retreat_coords(owner, unit.hex_coord, unit, unit.num_of_retreat)
+		if tree.left == null && tree.right == null:
+			unit.hit_point -= unit.num_of_retreat
+			unit.num_of_retreat = 0
+			unit.set_must_retreat(false)
 	return unit.num_of_retreat <= 0
 
 func retreat_randomly(side: enums.Side, sides_peer_ids: Dictionary[enums.Side, int]) -> void:
@@ -202,7 +208,7 @@ func attack_unit(side: enums.Side, unit_id: int, target_unit_id: int, sides_peer
 	var attacker_hex: HexCell = battlefieldState.map.get_cell(attacker.hex_coord)
 	var target_hex: HexCell = battlefieldState.map.get_cell(target.hex_coord)
 	var num_of_dice: int = CombatResolver.get_attack_dice_count(attacker, attacker_hex, target, target_hex, distance)
-	var rolled_dices: Array[enums.RolledDice] = Dice.roll(num_of_dice)
+	var rolled_dices: Array[enums.RolledDice] = [enums.RolledDice.RETREAT, enums.RolledDice.RETREAT] #Dice.roll(num_of_dice)
 	var combat_result: CombatResult = CombatResult.new()
 	combat_result.initialize(attacker, target, rolled_dices)
 	
