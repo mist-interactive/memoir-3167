@@ -10,7 +10,7 @@ var retreat_path: Array[Vector2i] = []
 func _init() -> void:
 	pass
 
-func initialize(unit: UnitData, target: UnitData, rolled_dices: Array[enums.RolledDice]) -> void:
+func initialize(unit: Variant, target: Variant, rolled_dices: Array[enums.RolledDice]) -> void:
 	self.target = target.owner_id
 	self.unit_ids[target.owner_id] = target.uuid
 	self.unit_ids[unit.owner_id] = unit.uuid

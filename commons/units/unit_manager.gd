@@ -134,7 +134,7 @@ func has_unit_that_must_retreat() -> bool:
 	return false
 
 func get_retreating_unit() -> Variant:
-	for unit: UnitData in units_by_id.values():
+	for unit: Variant in units_by_id.values():
 		if unit.must_retreat():
 			return unit
 	return null
