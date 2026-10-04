@@ -986,6 +986,7 @@ text = "HEX"
 autowrap_mode = 1
 
 [node name="Attacking" type="Control" parent="Pages" unique_id=220172786]
+visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Pages/Attacking" unique_id=2111594563]
@@ -1333,7 +1334,6 @@ text = "You can see all terrain specific ruling on the left side of your game by
 autowrap_mode = 1
 
 [node name="Line of sight" type="Control" parent="Pages" unique_id=1684079097]
-visible = false
 anchors_preset = 0
 
 [node name="Text" type="RichTextLabel" parent="Pages/Line of sight" unique_id=175261415]
@@ -1347,43 +1347,47 @@ offset_bottom = 274.0
 theme_override_constants/outline_size = 3
 theme_override_styles/normal = SubResource("StyleBoxFlat_ik1hn")
 bbcode_enabled = true
-text = "There is a line of sight mechanic that prevents your units shooting through certain terrain.
-(hills, mountain, towns, forests)"
+text = "Units need a clear Line of Sight to attack.
+
+Terrain and units can block your attacks, allowing
+enemies to stay protected behind them.
+Hills, mountains, towns, forests, and other units
+can all block Line of Sight."
 autowrap_mode = 1
 
 [node name="TextureRect" type="TextureRect" parent="Pages/Line of sight" unique_id=1488646593]
 layout_mode = 0
 offset_left = 64.0
-offset_top = 112.0
+offset_top = 184.0
 offset_right = 96.0
-offset_bottom = 144.0
+offset_bottom = 216.0
 texture = SubResource("AtlasTexture_henba")
 expand_mode = 1
 
 [node name="TextureRect2" type="TextureRect" parent="Pages/Line of sight" unique_id=53134242]
 layout_mode = 0
-offset_left = 128.0
-offset_top = 112.0
-offset_right = 160.0
-offset_bottom = 144.0
+offset_left = 104.0
+offset_top = 184.0
+offset_right = 136.0
+offset_bottom = 216.0
 texture = SubResource("AtlasTexture_3mjco")
 expand_mode = 1
 
 [node name="TextureRect3" type="TextureRect" parent="Pages/Line of sight" unique_id=1600920458]
 layout_mode = 0
-offset_left = 192.0
-offset_top = 111.0
-offset_right = 224.0
-offset_bottom = 143.0
+offset_left = 144.0
+offset_top = 183.0
+offset_right = 176.0
+offset_bottom = 215.0
 texture = SubResource("AtlasTexture_ywmym")
 expand_mode = 1
 
 [node name="TextureRect4" type="TextureRect" parent="Pages/Line of sight" unique_id=704306311]
 layout_mode = 0
-offset_left = 256.0
-offset_top = 112.0
-offset_right = 288.0
-offset_bottom = 144.0
+offset_left = 184.0
+offset_top = 184.0
+offset_right = 216.0
+offset_bottom = 216.0
 texture = SubResource("AtlasTexture_77ma2")
 expand_mode = 1
 
